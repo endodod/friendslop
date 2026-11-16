@@ -10,7 +10,7 @@ import { act } from "@/lib/useRoom";
 import { play } from "@/lib/sfx";
 import { Avatar, CoinCount, Icon, PlayerName, ThemeBadge, Timer, usePlayers } from "../ui";
 import { Confetti } from "../fx";
-import { AnswerLabel, FORMAT_INPUTS } from "./formats";
+import { AnswerLabel, FORMAT_INPUTS, ScaleEnds } from "./formats";
 
 const Q = GAME_CONFIG.question;
 
@@ -80,6 +80,9 @@ export function QuestionView({ round, display, onSubmit, myAnswerOverride, rewar
               <Avatar player={target} size={display ? 64 : 44} ring />
               <h2 className={`font-display leading-tight ${display ? "text-5xl" : "text-2xl sm:text-3xl"}`}>{q.prompt}</h2>
             </div>
+            {q.number && (q.number.minLabel || q.number.maxLabel) && (
+              <ScaleEnds min={q.number.min} max={q.number.max} minLabel={q.number.minLabel} maxLabel={q.number.maxLabel} />
+            )}
             {round.stage === "answering" && (
               <Answering
                 round={round}
@@ -271,7 +274,7 @@ function Reveal({ round, display, rewardLabel }: { round: PublicQuestionRound; d
               <div className="min-w-0 flex-1">
                 <AnswerLabel q={q} a={r?.answer} />
               </div>
-              {targetShown && r && <MatchBadge match={r.match} perfect={r.perfect && (q.format === "number" || q.format === "scale")} score={q.format === "ranking" ? r.score : undefined} />}
+              {targetShown && r && <MatchBadge match={r.match} close={r.close} perfect={r.perfect && (q.format === "number" || q.format === "scale")} score={q.format === "ranking" ? r.score : undefined} />}
               {isResults && r && r.coins > 0 && <CoinCount value={r.coins} className="text-xl text-accent" />}
             </motion.li>
           );
@@ -287,7 +290,9 @@ function Reveal({ round, display, rewardLabel }: { round: PublicQuestionRound; d
           {!targetShown ? (
             <motion.div
               key="hidden"
-              exit={{ rotateY: 90 }}
+              // Own finite transition: otherwise the exit inherits the drumroll's
+              // `repeat: Infinity` and the answer never gets revealed.
+              exit={{ rotateY: 90, scale: 1, rotate: 0, transition: { duration: 0.15 } }}
               animate={drumming ? { scale: [1, 1.08, 1], rotate: [0, -2, 2, 0] } : {}}
               transition={drumming ? { repeat: Infinity, duration: 0.3 } : undefined}
               className="flex h-16 w-40 items-center justify-center rounded-2xl bg-panel-2 font-display text-4xl text-muted"
@@ -333,17 +338,17 @@ function Reveal({ round, display, rewardLabel }: { round: PublicQuestionRound; d
   );
 }
 
-function MatchBadge({ match, perfect, score }: { match: boolean; perfect: boolean; score?: number }) {
+function MatchBadge({ match, perfect, close, score }: { match: boolean; perfect: boolean; close?: boolean; score?: number }) {
   return (
     <motion.span
       initial={{ scale: 0 }}
       animate={{ scale: 1 }}
       className={`inline-flex items-center gap-1 rounded-full px-3 py-1 font-display text-sm ${
-        match ? (perfect ? "bg-accent text-[#241a00]" : "bg-good text-[#06210f]") : "bg-bad/80 text-white"
+        match ? (perfect ? "bg-accent text-[#241a00]" : "bg-good text-[#06210f]") : close ? "bg-[#ff8a3d] text-[#2a1200]" : "bg-bad/80 text-white"
       }`}
     >
-      {match ? <Check size={14} strokeWidth={4} /> : <X size={14} strokeWidth={4} />}
-      {perfect ? "PERFECT" : match ? "MATCH" : "MISS"}
+      {match || close ? <Check size={14} strokeWidth={4} /> : <X size={14} strokeWidth={4} />}
+      {perfect ? "PERFECT" : match ? "MATCH" : close ? "CLOSE" : "MISS"}
       {score !== undefined && ` ${Math.round(score * 100)}%`}
     </motion.span>
   );

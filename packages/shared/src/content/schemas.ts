@@ -59,6 +59,8 @@ export const QuestionSchema = z
     /** tiles: 2–6 answers. ranking: 3–4 items to order. */
     answers: z.array(LocalizedStringSchema).optional(),
     number: NumberSpecSchema.optional(),
+    /** scale (and optionally number): what the ends of the range mean, e.g. 1 = "spotless", 10 = "disaster zone". */
+    scaleLabels: z.object({ min: LocalizedStringSchema, max: LocalizedStringSchema }).optional(),
     /** higherLower: the value players compare against (shown as part of the prompt). */
     reference: z.number().optional(),
     truthSource: z.object({ provider: DataProviderIdSchema, generator: z.string().min(1) }).optional(),
@@ -81,6 +83,8 @@ export const QuestionSchema = z
       if (q.number.step > q.number.max - q.number.min)
         ctx.addIssue({ code: "custom", message: "number.step larger than the range" });
     }
+    if (q.format === "scale" && !q.scaleLabels)
+      ctx.addIssue({ code: "custom", message: "scale questions need scaleLabels (what the lowest and highest values mean)" });
     if (q.format === "higherLower" && q.reference === undefined)
       ctx.addIssue({ code: "custom", message: "higherLower questions need a `reference` value" });
     if ((q.format === "player" || q.format === "number" || q.format === "scale" || q.format === "higherLower") && n > 0)
@@ -160,6 +164,7 @@ export const ITEM_EFFECTS = [
   "shield",
   "peek",
   "wideTolerance",
+  "warpToStar",
 ] as const;
 export const ItemSchema = z.object({
   id,
@@ -231,6 +236,10 @@ export const MinigameMetaSchema = z.object({
   id,
   name: LocalizedStringSchema,
   icon: iconId,
+  /** One line: how you win. Shown during the intro and as a banner while playing. */
+  goal: LocalizedStringSchema,
+  /** Step-by-step tutorial shown on the intro screen (2–4 short steps). */
+  howTo: z.array(LocalizedStringSchema).min(1).max(5),
   rules: LocalizedStringSchema,
   controls: LocalizedStringSchema,
   bonus: LocalizedStringSchema,

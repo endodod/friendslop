@@ -47,6 +47,7 @@ export type GameAction =
   | { type: "answer"; playerId: PlayerId; answer: Answer }
   | { type: "minigameInput"; playerId: PlayerId; input: unknown }
   | { type: "minigameSubmit"; playerId: PlayerId; submission: unknown }
+  | { type: "ready"; playerId: PlayerId }
   | { type: "continue" };
 
 export interface EngineResult {
@@ -82,6 +83,7 @@ function isConnected(room: RoomState, pid: PlayerId): boolean {
 function goto(d: Draft, phase: Phase, durationMs: number | null) {
   const { g, s } = d;
   g.phase = phase;
+  g.ready = [];
   g.phaseStartedAt = s.ctx.now;
   g.phaseEndsAt = durationMs === null ? null : s.ctx.now + durationMs;
   emit(s, { type: "phase", phase });
@@ -152,6 +154,7 @@ export function createGame(room: RoomState, ctx: EngineContext, mode: GameMode):
     bonusStars: null,
     finalRanking: null,
     log: [],
+    ready: [],
   };
   g.starTileId = pickStarTile(board, content, g, ctx.rng);
   return g;
@@ -165,6 +168,8 @@ export function startGame(
 ): EngineResult {
   const g = createGame(room, ctx, mode);
   if (mode === "minigameDebug") g.debugMinigameId = opts.minigameId && ctx.minigames[opts.minigameId] ? opts.minigameId : null;
+  // Practice modes skip the board-game tutorial.
+  if (mode !== "board") g.phaseEndsAt = ctx.now + 1500;
   const next: RoomState = { ...room, stage: "game", game: g, players: room.players.map((p) => ({ ...p, ready: false })) };
   const events: GameEvent[] = [{ type: "phase", phase: "gameStart" }];
   return { room: next, events };
@@ -262,7 +267,15 @@ function handleAction(d: Draft, a: GameAction, isHost: boolean): void {
     case "shopLeave": {
       requirePhase(d, "shop");
       requireActive(d, a.playerId);
-      return turnEnd(d);
+      return leaveShop(d);
+    }
+    case "ready": {
+      requirePhase(d, "gameStart", "minigameIntro");
+      if (!g.ready.includes(a.playerId)) g.ready.push(a.playerId);
+      // Everyone who's here and needs to read it tapped "Got it!" → move on.
+      const needed = (g.phase === "minigameIntro" ? g.minigame!.participants : g.order).filter((p) => isConnected(d.room, p));
+      if (needed.every((p) => g.ready.includes(p))) onTimeout(d);
+      return;
     }
     case "starBuy": {
       requirePhase(d, "starPurchase");
@@ -335,7 +348,7 @@ function onTimeout(d: Draft) {
     case "minigameQuestion":
       return advanceQuestionStage(d);
     case "shop":
-      return turnEnd(d);
+      return leaveShop(d);
     case "starPurchase": {
       const p = g.players[activeId(g)];
       return resolveStar(d, p.coins >= GAME_CONFIG.economy.starCost);
@@ -416,7 +429,7 @@ function advanceMovement(d: Draft) {
   const p = g.players[pid];
   const mv = g.movement!;
   const path: string[] = [];
-  let stop: "junction" | "starPass" | "landed" = "landed";
+  let stop: "junction" | "starPass" | "shopPass" | "landed" = "landed";
   while (mv.remaining > 0) {
     const options = nextTiles(board, p.tileId);
     let to: string;
@@ -434,6 +447,11 @@ function advanceMovement(d: Draft) {
     p.stats.stepsMoved++;
     if (to === g.starTileId && mv.remaining > 0) {
       stop = "starPass";
+      break;
+    }
+    // Walking past a Shop: stop to buy if you can afford something (like the star).
+    if (mv.remaining > 0 && isShopTile(d, to) && canShop(d, pid)) {
+      stop = "shopPass";
       break;
     }
   }
@@ -458,7 +476,31 @@ function afterMovement(d: Draft) {
     g.star = { passing: true };
     return goto(d, "starPurchase", T.starPurchaseMs);
   }
+  if (mv.next === "shopPass") {
+    g.shop = { stock: shopStock(s.ctx.content, s), bought: [], passing: true };
+    return goto(d, "shop", T.shopMs);
+  }
   return land(d);
+}
+
+function isShopTile(d: Draft, tileId: string): boolean {
+  const type = d.g.tileTypes[tileId];
+  return !!type && tileDef(d.s.ctx.content, type).effect === "shop" && tileId !== d.g.starTileId;
+}
+
+function canShop(d: Draft, pid: PlayerId): boolean {
+  const p = d.g.players[pid];
+  const cheapest = Math.min(...d.s.ctx.content.items.map((i) => i.price));
+  return p.items.length < GAME_CONFIG.economy.maxItems && p.coins >= cheapest;
+}
+
+/** Leaving the shop: keep walking if we only stopped while passing it. */
+function leaveShop(d: Draft) {
+  const { g } = d;
+  const passing = g.shop?.passing;
+  g.shop = null;
+  if (passing && g.movement && g.movement.remaining > 0) return advanceMovement(d);
+  return turnEnd(d);
 }
 
 function takeDirection(d: Draft, tileId: string) {
@@ -877,7 +919,7 @@ function setupMinigame(d: Draft, id: string, origin: "round" | "duel", participa
     payout: null,
     introTargetId: null,
   };
-  goto(d, "minigameIntro", origin === "duel" ? 4500 : M.introMs);
+  goto(d, "minigameIntro", origin === "duel" ? Math.min(M.introMs, 20000) : M.introMs);
 }
 
 function afterMinigameIntro(d: Draft) {

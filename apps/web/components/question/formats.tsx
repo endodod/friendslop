@@ -136,6 +136,7 @@ function ScaleInput({ q, value, onChange }: FormatInputProps) {
   const vals: number[] = [];
   for (let n = spec.min; n <= spec.max; n += spec.step) vals.push(n);
   return (
+    <div className="flex flex-col gap-2">
     <div className="grid grid-cols-5 gap-2">
       {vals.map((n) => {
         const sel = value?.kind === "number" && value.value === n;
@@ -157,6 +158,24 @@ function ScaleInput({ q, value, onChange }: FormatInputProps) {
           </motion.button>
         );
       })}
+    </div>
+    </div>
+  );
+}
+
+/** "1 = spotless … 10 = disaster zone": what the ends of a scale mean. */
+export function ScaleEnds({ min, max, minLabel, maxLabel }: { min: number; max: number; minLabel?: string; maxLabel?: string }) {
+  if (!minLabel && !maxLabel) return null;
+  return (
+    <div className="flex items-stretch justify-between gap-3 text-sm">
+      <span className="flex max-w-[48%] items-center gap-2 rounded-xl bg-[hsl(200_85%_62%/0.18)] px-3 py-1.5">
+        <span className="font-display text-lg text-[hsl(200_85%_70%)]">{min}</span>
+        <span className="leading-tight">= {minLabel}</span>
+      </span>
+      <span className="flex max-w-[48%] items-center gap-2 rounded-xl bg-[hsl(0_85%_62%/0.18)] px-3 py-1.5 text-right">
+        <span className="leading-tight">{maxLabel} =</span>
+        <span className="font-display text-lg text-[hsl(0_85%_72%)]">{max}</span>
+      </span>
     </div>
   );
 }
@@ -299,6 +318,7 @@ export function AnswerLabel({ q, a, big }: { q: Q; a: Answer | null | undefined;
       return (
         <span className={`font-display tabular-nums ${cls}`}>
           {a.value}
+          {q.format === "scale" && <span className="ml-0.5 text-[0.6em] text-muted">/{q.number?.max ?? 10}</span>}
           {q.number?.unit && <span className="ml-1 text-[0.6em] text-muted">{q.number.unit}</span>}
         </span>
       );

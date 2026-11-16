@@ -63,3 +63,9 @@ Defaults picked where the build prompt left room, or where the environment force
 ## Hosting
 - **Free hosting target:** web on Vercel (Root Directory `apps/web`), game server on Render's free web service via `render.yaml`. The server can't run on serverless platforms (long-lived WebSockets, in-memory rooms, 15 Hz tick).
 - Render's free plan sleeps when idle, so the web app pings `/health` on page load and shows a "waking up" message while the socket can't connect. The Render start command runs `tsx` directly (no pnpm at runtime) to keep cold starts short.
+
+## Playtest feedback
+- **Tutorials:** the game start and every mini-game intro are tutorial screens (goal + steps). They end when everyone taps "Got it!" (max 30 s; the host can skip). Practice modes skip the board tutorial. While a mini-game runs, a goal banner with a "?" (full rules) stays on top. A "?" in the top bar explains board rules, tiles and items at any time.
+- **Scale questions (1–10)** label both ends (`scaleLabels`) and pay by distance: exact 5, one off 3 (match), two off 1 ("close", not a match), further 0. Wide Tolerance halves the distance.
+- **Spending coins:** walking past a Shop stops you to shop (only if you can afford an item and have room), like passing the star. New item: Star Warp (12 coins) teleports you right in front of the star. Your turn screen always shows your items or where to get them.
+- Fixed: the target's answer reveal could hang because the "?" card's exit animation inherited the drumroll's infinite repeat.

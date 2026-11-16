@@ -58,6 +58,8 @@ export const ClientEvents = {
   }),
   "game:abort": z.object({}),
   "game:continue": z.object({}),
+  /** "Got it!" on a tutorial screen (game start, mini-game intro). */
+  "game:ready": z.object({}),
   "game:playAgain": z.object({}),
   "turn:useItem": z.object({ itemId: z.string().max(64), targetId: PlayerIdSchema.optional() }),
   "turn:roll": z.object({ value: z.number().int().min(1).max(6).optional() }),

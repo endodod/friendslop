@@ -94,6 +94,7 @@ export function registerSocketHandlers(io: Server<any, ServerToClientEvents, any
     on("game:abort", () => rooms.abort(current(), socket.data));
     on("game:playAgain", () => rooms.playAgain(current(), socket.data));
     on("game:continue", () => rooms.action(current(), socket.data, { type: "continue" }));
+    on("game:ready", () => rooms.action(current(), socket.data, { type: "ready", playerId: me() }));
 
     on("turn:roll", (p) => rooms.action(current(), socket.data, { type: "roll", playerId: me(), value: p.value }));
     on("turn:useItem", (p) =>

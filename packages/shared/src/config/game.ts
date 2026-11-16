@@ -19,7 +19,8 @@ export const GAME_CONFIG = {
 
   /** Phase timers in milliseconds. Every phase that waits for input has one. */
   timers: {
-    gameStartMs: 4000,
+    /** Max time on the how-to-play screen (ends early once everyone taps "Got it!"). */
+    gameStartMs: 30000,
     turnStartMs: 20000,
     rollingMs: 1400,
     hopMs: 330,
@@ -52,6 +53,11 @@ export const GAME_CONFIG = {
     dataTargetCorrectCoins: 3,
     /** Default tolerance for the `scale` format (absolute). */
     scaleTolerance: 1,
+    /**
+     * `scale` (1–10) questions pay by distance from the target's answer: index = steps away.
+     * Exact = 5 (match + perfect bonus), 1 off = 3 (match), 2 off = 1 (close, no match).
+     */
+    scaleCoinsByDistance: [5, 3, 1] as number[],
     /** Ranking: share of items in the correct position needed to count as a match. */
     rankingMatchShare: 0.5,
     /** Wide Tolerance item multiplies tolerance by this. */
@@ -61,7 +67,8 @@ export const GAME_CONFIG = {
   },
 
   minigame: {
-    introMs: 7000,
+    /** Max time on the tutorial screen (ends early once every participant taps "Got it!"). */
+    introMs: 30000,
     countdownMs: 3600,
     resultsMs: 6500,
     /** Extra time after a mini-game's duration before forcing results. */

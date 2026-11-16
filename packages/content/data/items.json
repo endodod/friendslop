@@ -1,12 +1,79 @@
 {
   "version": 1,
   "items": [
-    { "id": "double-dice", "name": "Double Dice", "description": "Roll two dice this turn.", "icon": "double-dice", "price": 5, "useTiming": "turnStart", "effect": "doubleDice" },
-    { "id": "custom-dice", "name": "Custom Dice", "description": "Choose your roll: 1 to 6.", "icon": "custom-dice", "price": 6, "useTiming": "turnStart", "effect": "customDice" },
-    { "id": "steal", "name": "Steal", "description": "Take 5 coins from a player of your choice.", "icon": "steal", "price": 7, "useTiming": "turnStart", "effect": "steal", "needsTarget": true },
-    { "id": "pick-target", "name": "Pick the Target", "description": "The next question round is about a player you choose.", "icon": "pick-target", "price": 4, "useTiming": "turnStart", "effect": "pickTarget", "needsTarget": true },
-    { "id": "shield", "name": "Shield", "description": "Automatically blocks the next steal or negative event.", "icon": "shield", "price": 5, "useTiming": "passive", "effect": "shield" },
-    { "id": "peek", "name": "Peek", "description": "During a question: see how many picked each answer so far (never the target's).", "icon": "peek", "price": 4, "useTiming": "onQuestion", "effect": "peek" },
-    { "id": "wide-tolerance", "name": "Wide Tolerance", "description": "During a number question: your answer gets double tolerance.", "icon": "wide-tolerance", "price": 3, "useTiming": "onQuestion", "effect": "wideTolerance" }
+    {
+      "id": "double-dice",
+      "name": "Double Dice",
+      "description": "Roll two dice this turn.",
+      "icon": "double-dice",
+      "price": 5,
+      "useTiming": "turnStart",
+      "effect": "doubleDice"
+    },
+    {
+      "id": "custom-dice",
+      "name": "Custom Dice",
+      "description": "Choose your roll: 1 to 6.",
+      "icon": "custom-dice",
+      "price": 6,
+      "useTiming": "turnStart",
+      "effect": "customDice"
+    },
+    {
+      "id": "steal",
+      "name": "Steal",
+      "description": "Take 5 coins from a player of your choice.",
+      "icon": "steal",
+      "price": 7,
+      "useTiming": "turnStart",
+      "effect": "steal",
+      "needsTarget": true
+    },
+    {
+      "id": "pick-target",
+      "name": "Pick the Target",
+      "description": "The next question round is about a player you choose.",
+      "icon": "pick-target",
+      "price": 4,
+      "useTiming": "turnStart",
+      "effect": "pickTarget",
+      "needsTarget": true
+    },
+    {
+      "id": "shield",
+      "name": "Shield",
+      "description": "Automatically blocks the next steal or negative event.",
+      "icon": "shield",
+      "price": 5,
+      "useTiming": "passive",
+      "effect": "shield"
+    },
+    {
+      "id": "peek",
+      "name": "Peek",
+      "description": "During a question: see how many picked each answer so far (never the target's).",
+      "icon": "peek",
+      "price": 4,
+      "useTiming": "onQuestion",
+      "effect": "peek"
+    },
+    {
+      "id": "wide-tolerance",
+      "name": "Wide Tolerance",
+      "description": "During a number question: your answer gets double tolerance.",
+      "icon": "wide-tolerance",
+      "price": 3,
+      "useTiming": "onQuestion",
+      "effect": "wideTolerance"
+    },
+    {
+      "id": "star-warp",
+      "name": "Star Warp",
+      "description": "Teleport right in front of the star, then roll.",
+      "icon": "star-fly",
+      "price": 12,
+      "useTiming": "turnStart",
+      "effect": "warpToStar"
+    }
   ]
 }

@@ -9,6 +9,7 @@ import { act } from "@/lib/useRoom";
 import { useRemaining } from "@/lib/time";
 import { Avatar, CoinCount, Icon, PlayerName, StarCount, Timer, useIsHost, usePlayers } from "../ui";
 import { DieFace, RollingDie } from "./Dice";
+import { BoardRules, ReadyUp } from "./HowToPlay";
 
 const T = GAME_CONFIG.timers;
 
@@ -97,29 +98,29 @@ export function PhasePanel({ board, display }: { board: Board | null; display?: 
   );
 }
 
-function GameStartPanel() {
+export function GameStartPanel() {
   const { g, players } = useGameCtx();
   return (
-    <Panel>
-      <h2 className="font-display text-4xl text-accent">Let&apos;s go!</h2>
-      <p className="text-muted">
-        {g.turnCount} rounds. Most stars wins. Stars cost {GAME_CONFIG.economy.starCost} coins.
-      </p>
-      <ol className="flex flex-col gap-2">
-        {g.order.map((pid, i) => (
-          <motion.li
-            key={pid}
-            initial={{ x: -30, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ delay: 0.3 + i * 0.25 }}
-            className="flex items-center gap-3 font-display text-xl"
-          >
-            <span className="text-muted">{i + 1}.</span>
-            <Avatar player={players[pid]} size={36} />
-            <PlayerName player={players[pid]} />
-          </motion.li>
-        ))}
-      </ol>
+    <Panel testId="game-start">
+      <h2 className="font-display text-4xl text-accent">How to play</h2>
+      <BoardRules compact />
+      <div className="flex flex-col gap-2 rounded-2xl bg-bg-2 p-3">
+        <p className="font-display text-muted">
+          {g.turnCount} rounds · turn order
+        </p>
+        <ol className="flex flex-wrap gap-3">
+          {g.order.map((pid, i) => (
+            <li key={pid} className="flex items-center gap-2 font-display text-lg">
+              <span className="text-muted">{i + 1}.</span>
+              <Avatar player={players[pid]} size={30} />
+              <PlayerName player={players[pid]} />
+            </li>
+          ))}
+        </ol>
+      </div>
+      <p className="text-center text-sm text-muted">Tiles and items are explained under the ? button at the top.</p>
+      <Timer endsAt={g.phaseEndsAt} totalMs={T.gameStartMs} silent />
+      <ReadyUp who={g.order} />
       <SkipButton />
     </Panel>
   );
@@ -147,6 +148,12 @@ function TurnStartPanel({ display }: { display?: boolean }) {
     <Panel testId="turn-start">
       <h2 className="font-display text-3xl">Your turn!</h2>
       <Timer endsAt={g.phaseEndsAt} totalMs={T.turnStartMs} />
+      {items.length === 0 && (
+        <p className="flex items-center gap-2 rounded-2xl bg-bg-2 p-3 text-sm text-muted">
+          <Icon id="shop" size={20} className="shrink-0 text-good" />
+          No items yet. Buy them at green Shop tiles (you can also stop when walking past one).
+        </p>
+      )}
       {items.length > 0 && (
         <div className="flex flex-col gap-2">
           <p className="font-display text-lg text-muted">Your items</p>
@@ -344,6 +351,7 @@ function ShopPanel({ display }: { display?: boolean }) {
       <h2 className="flex items-center gap-2 font-display text-3xl">
         <ShoppingBag /> Shop {!canAct && <span className="text-xl text-muted">· {active?.name} is browsing</span>}
       </h2>
+      {g.shop?.passing && <p className="text-sm text-muted">Walking past the shop: buy something or keep going.</p>}
       <Timer endsAt={g.phaseEndsAt} totalMs={T.shopMs} silent={!canAct} />
       {canAct && (
         <p className="text-muted">
@@ -378,7 +386,7 @@ function ShopPanel({ display }: { display?: boolean }) {
       </ul>
       {canAct && (
         <button className="btn-secondary" onClick={() => act("shop:leave", {})}>
-          Done shopping
+          {g.shop?.passing ? "Keep walking" : "Done shopping"}
         </button>
       )}
     </Panel>

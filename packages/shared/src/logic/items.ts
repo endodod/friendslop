@@ -6,6 +6,7 @@ import type { GameState, PlayerId } from "../engine/types";
 import { localize } from "../i18n";
 import { shuffle, weightedPick } from "../rng";
 import { transferCoins } from "./economy";
+import { getBoard, prevTiles } from "./board";
 
 export function getItem(content: ContentBundle, id: string): Item {
   const it = content.items.find((i) => i.id === id);
@@ -65,6 +66,16 @@ export function applyTurnStartItem(g: GameState, s: Step, playerId: PlayerId, it
       p.stats.steals += taken > 0 ? 1 : 0;
       g.players[targetId].stats.stolenFrom += taken > 0 ? 1 : 0;
       emit(s, { type: "sfx", id: "steal" });
+      break;
+    }
+    case "warpToStar": {
+      // Land right in front of the star; your roll then (very likely) passes it.
+      const board = getBoard(s.ctx.content, g.boardId);
+      const before = prevTiles(board, g.starTileId).filter((t) => t !== g.starTileId);
+      if (!before.length) fail("INVALID_INPUT", "Can't warp right now.");
+      p.tileId = before[Math.floor(s.ctx.rng() * before.length)];
+      emit(s, { type: "tokenTeleported", playerId, tileId: p.tileId });
+      emit(s, { type: "sfx", id: "star" });
       break;
     }
     case "pickTarget":

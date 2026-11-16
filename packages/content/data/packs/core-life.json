@@ -20,6 +20,10 @@
           "value": 1
         }
       },
+      "scaleLabels": {
+        "min": "spotless",
+        "max": "disaster zone"
+      },
       "usage": [
         "tile",
         "minigameIntro",
@@ -186,6 +190,10 @@
           "type": "absolute",
           "value": 1
         }
+      },
+      "scaleLabels": {
+        "min": "dead until noon",
+        "max": "up at 5 AM, happy about it"
       },
       "usage": [
         "tile",

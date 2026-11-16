@@ -25,6 +25,9 @@ export function HotOrNotClient(p: MinigameClientProps<HotOrNotPublic, { myGuess:
         <p.ui.Avatar player={target} size={48} ring />
         <h2 className="font-display text-2xl leading-tight">{r.question.prompt}</h2>
       </div>
+      {r.question.number && (r.question.number.minLabel || r.question.number.maxLabel) && (
+        <p.ui.ScaleEnds min={r.question.number.min} max={r.question.number.max} minLabel={r.question.number.minLabel} maxLabel={r.question.number.maxLabel} />
+      )}
 
       {r.stage === "intro" && <p className="text-center font-display text-3xl">About {target?.name}…</p>}
 

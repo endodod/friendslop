@@ -74,7 +74,7 @@ export interface ResolvedQuestion {
   themeId: string;
   prompt: string;
   options?: QuestionOption[];
-  number?: { min: number; max: number; step: number; unit?: string; tolerance: Tolerance };
+  number?: { min: number; max: number; step: number; unit?: string; tolerance: Tolerance; minLabel?: string; maxLabel?: string };
   reference?: number;
   /** For `player` format: who can be picked. */
   playerChoices?: PlayerId[];
@@ -95,6 +95,8 @@ export interface PlayerQuestionResult {
   isTarget: boolean;
   match: boolean;
   perfect: boolean;
+  /** Close but not a match: earned partial points (scale questions). */
+  close?: boolean;
   /** 0..1 closeness, used for ranking/duel ordering */
   score: number;
   coins: number;
@@ -272,11 +274,12 @@ export interface GameState {
 
   dice: { values: number[]; total: number; kind: "normal" | "double" | "custom" } | null;
   pendingDice: { kind: "double" } | { kind: "custom" } | null;
-  movement: { remaining: number; path: string[]; next: "junction" | "starPass" | "landed"; chosen?: string } | null;
+  movement: { remaining: number; path: string[]; next: "junction" | "starPass" | "shopPass" | "landed"; chosen?: string } | null;
   junction: { tileId: string; options: string[] } | null;
   tileResult: { tileId: string; type: string; coinsDelta?: number } | null;
   question: QuestionRound | null;
-  shop: { stock: string[]; bought: string[] } | null;
+  /** `passing`: stopped at a Shop while walking past it; movement continues afterwards. */
+  shop: { stock: string[]; bought: string[]; passing?: boolean } | null;
   event: { cardId: string; text: string; affected: PlayerId[]; blocked: PlayerId[] } | null;
   star: { passing: boolean } | null;
   duel: { challengerId: PlayerId; opponentId: PlayerId | null } | null;
@@ -292,6 +295,8 @@ export interface GameState {
   bonusStars: { awards: BonusStarAward[]; revealed: number } | null;
   finalRanking: PlayerId[] | null;
   log: GameLogEntry[];
+  /** Players who tapped "Got it!" on the current tutorial screen (game start, mini-game intro). */
+  ready: PlayerId[];
   /** minigameDebug mode: play this mini-game first. */
   debugMinigameId?: string | null;
 }

@@ -61,6 +61,10 @@
           "value": 1
         }
       },
+      "scaleLabels": {
+        "min": "zen monk",
+        "max": "controller through the wall"
+      },
       "usage": [
         "tile",
         "minigameIntro",

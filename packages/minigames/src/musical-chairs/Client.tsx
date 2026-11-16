@@ -26,7 +26,7 @@ export function MusicalChairsClient(p: MinigameClientProps<ChairsPublic, { bonus
       <p className="text-center font-display text-2xl">
         {stage === "music" ? "♪ Music is playing… ♪" : stage === "grab" ? "SIT DOWN!" : `Round ${p.pub.round} over`}
       </p>
-      <div className="relative aspect-square w-full overflow-hidden rounded-3xl bg-bg-2">
+      <div className="relative mx-auto aspect-square w-full max-w-[min(100%,52dvh)] overflow-hidden rounded-3xl bg-bg-2">
         {stage === "music" && !chairs && (
           <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 3, ease: "linear" }} className="absolute inset-0 flex items-center justify-center">
             <p.ui.Icon id="music" size={90} className="text-accent" />
@@ -45,8 +45,8 @@ export function MusicalChairsClient(p: MinigameClientProps<ChairsPublic, { bonus
                 p.ui.vibrate(30);
               }}
               aria-label={who ? `chair taken by ${p.players[who]?.name}` : `chair ${i + 1}`}
-              className="absolute flex h-24 w-24 -translate-x-1/2 -translate-y-1/2 touch-none items-center justify-center rounded-3xl bg-accent shadow-[0_6px_0_#b38a12]"
-              style={{ left: `${c.x + 6}%`, top: `${c.y + 6}%` }}
+              className="absolute flex h-[22%] w-[22%] min-h-14 min-w-14 -translate-x-1/2 -translate-y-1/2 touch-none items-center justify-center rounded-3xl bg-accent shadow-[0_6px_0_#b38a12]"
+              style={{ left: `${12 + c.x * 0.8}%`, top: `${12 + c.y * 0.9}%` }}
             >
               {who ? <p.ui.Avatar player={p.players[who]} size={60} /> : <p.ui.Icon id="chairs" size={54} className="text-[#241a00]" />}
             </motion.button>

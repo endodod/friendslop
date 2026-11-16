@@ -77,6 +77,10 @@
           "value": 1
         }
       },
+      "scaleLabels": {
+        "min": "silent",
+        "max": "the neighbors know every word"
+      },
       "usage": [
         "tile",
         "minigameIntro",
@@ -158,6 +162,10 @@
           "type": "absolute",
           "value": 1
         }
+      },
+      "scaleLabels": {
+        "min": "two left feet",
+        "max": "owns the dance floor"
       },
       "usage": [
         "tile",

@@ -105,6 +105,10 @@
           "value": 1
         }
       },
+      "scaleLabels": {
+        "min": "burns water",
+        "max": "should open a restaurant"
+      },
       "usage": [
         "tile",
         "minigameIntro",
@@ -145,6 +149,10 @@
           "type": "absolute",
           "value": 1
         }
+      },
+      "scaleLabels": {
+        "min": "black pepper is too hot",
+        "max": "eats chilis raw"
       },
       "usage": [
         "tile",

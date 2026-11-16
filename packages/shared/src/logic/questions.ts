@@ -119,7 +119,12 @@ export function resolveQuestion(q: Question, pack: Pack, args: ResolveArgs): Res
       step: 1,
       tolerance: { type: "absolute" as const, value: GAME_CONFIG.question.scaleTolerance },
     };
-    base.number = { ...spec, unit: spec.unit ? loc(spec.unit) : undefined };
+    base.number = {
+      ...spec,
+      unit: spec.unit ? loc(spec.unit) : undefined,
+      minLabel: q.scaleLabels ? loc(q.scaleLabels.min) : undefined,
+      maxLabel: q.scaleLabels ? loc(q.scaleLabels.max) : undefined,
+    };
   }
   if (q.format === "higherLower") {
     base.reference = q.reference;
@@ -195,12 +200,19 @@ export function scoreQuestion(args: {
       });
     }
     let coins = 0;
-    if (r.match) {
-      matchedCount++;
+    let close = false;
+    if (r.match) matchedCount++;
+    if (q.format === "scale" && ans?.kind === "number" && truth?.kind === "number") {
+      // Graded: the closer to the target's rating, the more coins (Wide Tolerance halves the distance).
+      const steps = Math.round(Math.abs(ans.value - truth.value) / (q.number?.step ?? 1));
+      const effective = args.boosts?.[pid]?.wide ? Math.ceil(steps / cfg.wideToleranceMultiplier) : steps;
+      coins = cfg.scaleCoinsByDistance[effective] ?? 0;
+      close = !r.match && coins > 0;
+    } else if (r.match) {
       coins += cfg.guesserMatchCoins;
-      if (r.perfect && (q.format === "number" || q.format === "scale")) coins += cfg.perfectBonusCoins;
+      if (r.perfect && q.format === "number") coins += cfg.perfectBonusCoins;
     }
-    perPlayer[pid] = { answer: ans, isTarget: false, ...r, coins: pay ? coins * mult : 0 };
+    perPlayer[pid] = { answer: ans, isTarget: false, ...r, close, coins: pay ? coins * mult : 0 };
   }
 
   const targetAnswer = answers[targetId] ?? null;

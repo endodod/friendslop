@@ -10,10 +10,11 @@ import { send } from "@/lib/socket";
 import { play, vibrate } from "@/lib/sfx";
 import { act } from "@/lib/useRoom";
 import { Avatar, CoinCount, Icon, Timer, usePlayers } from "../ui";
-import { AnswerLabel, FORMAT_INPUTS } from "../question/formats";
+import { AnswerLabel, FORMAT_INPUTS, ScaleEnds } from "../question/formats";
 import { QuestionView } from "../question/QuestionView";
 import { Confetti } from "../fx";
 import { SkipButton } from "../game/PhasePanel";
+import { HelpButton, MinigameTutorial, ReadyUp } from "../game/HowToPlay";
 
 const M = GAME_CONFIG.minigame;
 
@@ -29,6 +30,7 @@ export const uiKit: MinigameUiKit = {
   },
   AnswerLabel: ({ question, answer, big }) => <AnswerLabel q={question} a={answer} big={big} />,
   Timer: (p) => <Timer {...p} />,
+  ScaleEnds: (p) => <ScaleEnds {...p} />,
   play,
   vibrate,
 };
@@ -69,25 +71,46 @@ function Intro() {
   const meta = clientContent.minigames.find((m) => m.id === mg.id)!;
   useEffect(() => play("whoosh"), []);
   return (
-    <div className="flex flex-col items-center gap-4 py-4 text-center" data-testid="minigame-intro">
-      <motion.div initial={{ scale: 0, rotate: -180 }} animate={{ scale: 1, rotate: 0 }} transition={{ type: "spring", stiffness: 120 }}>
-        <Icon id={meta.icon} size={110} className="text-accent" />
-      </motion.div>
-      <p className="font-display text-xl text-muted">{mg.origin === "duel" ? "Duel!" : "Mini-game"}</p>
-      <h2 className="font-display text-5xl">{localize(meta.name)}</h2>
+    <div className="flex flex-col gap-4" data-testid="minigame-intro">
+      <div className="flex items-center gap-4">
+        <motion.div initial={{ scale: 0, rotate: -180 }} animate={{ scale: 1, rotate: 0 }} transition={{ type: "spring", stiffness: 120 }}>
+          <Icon id={meta.icon} size={72} className="text-accent" />
+        </motion.div>
+        <div>
+          <p className="font-display text-lg text-muted">{mg.origin === "duel" ? "Duel!" : "Mini-game"}</p>
+          <h2 className="font-display text-4xl leading-none sm:text-5xl">{localize(meta.name)}</h2>
+        </div>
+      </div>
       {mg.origin === "duel" && (
-        <div className="flex items-center gap-3 font-display text-2xl">
+        <div className="flex items-center justify-center gap-3 font-display text-2xl">
           <Avatar player={players[mg.participants[0]]} size={48} /> vs <Avatar player={players[mg.participants[1]]} size={48} />
         </div>
       )}
-      <p className="max-w-lg text-xl">{localize(meta.rules)}</p>
-      <p className="rounded-2xl bg-bg-2 px-4 py-2 text-muted">🎮 {localize(meta.controls)}</p>
+      <MinigameTutorial id={mg.id} showBonus={mg.kind !== "questionOnly"} />
       {mg.kind !== "questionOnly" && (
-        <p className="text-accent">
-          Bonus for matching the intro question: <span className="font-display">{localize(meta.bonus)}</span>
-        </p>
+        <p className="text-center text-sm text-muted">First a quick question. Match the target to get the bonus!</p>
       )}
+      <Timer endsAt={g.phaseEndsAt} totalMs={mg.origin === "duel" ? 20000 : M.introMs} silent />
+      <ReadyUp who={mg.participants} />
       <SkipButton />
+    </div>
+  );
+}
+
+/** Always-visible reminder of what you're trying to do, with the rules one tap away. */
+function GoalBanner({ id }: { id: string }) {
+  const meta = clientContent.minigames.find((m) => m.id === id);
+  if (!meta) return null;
+  return (
+    <div className="flex items-center gap-3 rounded-2xl bg-accent/15 px-3 py-2 ring-1 ring-accent/60">
+      <Icon id={meta.icon} size={28} className="shrink-0 text-accent" />
+      <p className="flex-1 leading-tight">
+        <span className="font-display">{localize(meta.name)}</span>
+        <span className="block text-sm text-ink/90">
+          <span className="font-display text-accent">Goal:</span> {localize(meta.goal)}
+        </span>
+      </p>
+      <HelpButton minigameId={id} />
     </div>
   );
 }
@@ -148,6 +171,7 @@ function Playing({ display }: { display: boolean }) {
   const C = entry.Component;
   return (
     <div className="flex flex-col gap-3" data-testid={`minigame-${mg.id}`}>
+      <GoalBanner id={mg.id} />
       {!isParticipant && !display && (
         <p className="rounded-2xl bg-bg-2 p-2 text-center text-muted">You&apos;re watching this one.</p>
       )}

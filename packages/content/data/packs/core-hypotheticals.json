@@ -168,6 +168,10 @@
           "value": 1
         }
       },
+      "scaleLabels": {
+        "min": "nobody would ever know",
+        "max": "instantly, it's on their story"
+      },
       "usage": [
         "tile",
         "minigameIntro",

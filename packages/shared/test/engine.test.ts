@@ -286,6 +286,62 @@ describe("items", () => {
   });
 });
 
+describe("spending coins", () => {
+  it("walking past a Shop stops to shop, then keeps walking", () => {
+    const h = new Harness(2);
+    toTurnStart(h);
+    const pid = h.active();
+    h.room.game!.tileTypes["m2"] = "shop";
+    h.room.game!.starTileId = "m20";
+    rollExactly(h, 3);
+    expect(h.g.players[pid].tileId).toBe("m2");
+    h.timeout();
+    expect(h.g.phase).toBe("shop");
+    expect(h.g.shop!.passing).toBe(true);
+    const item = h.g.shop!.stock.find((i) => h.ctx().content.items.find((x) => x.id === i)!.price <= 10)!;
+    h.act({ type: "shopBuy", playerId: pid, itemId: item });
+    h.act({ type: "shopLeave", playerId: pid });
+    expect(h.g.phase).toBe("moving");
+    expect(h.g.players[pid].tileId).toBe("m3");
+  });
+
+  it("doesn't stop at a Shop you can't afford", () => {
+    const h = new Harness(2);
+    toTurnStart(h);
+    const pid = h.active();
+    h.room.game!.tileTypes["m2"] = "shop";
+    h.room.game!.players[pid].coins = 0;
+    h.room.game!.starTileId = "m20";
+    rollExactly(h, 3);
+    expect(h.g.players[pid].tileId).toBe("m3");
+  });
+
+  it("Star Warp puts you right in front of the star", () => {
+    const h = new Harness(2);
+    toTurnStart(h);
+    const pid = h.active();
+    h.room.game!.starTileId = "m10";
+    h.room.game!.players[pid].items.push("star-warp");
+    h.act({ type: "useItem", playerId: pid, itemId: "star-warp" });
+    expect(h.g.players[pid].tileId).toBe("m9");
+    expect(h.g.phase).toBe("turnStart");
+  });
+});
+
+describe("tutorial screens", () => {
+  it("game start ends once everyone tapped Got it", () => {
+    const h = new Harness(3);
+    expect(h.g.phase).toBe("gameStart");
+    const [a, b, c] = h.g.order;
+    h.act({ type: "ready", playerId: a });
+    h.act({ type: "ready", playerId: b });
+    expect(h.g.phase).toBe("gameStart");
+    h.act({ type: "ready", playerId: c });
+    expect(h.g.phase).toBe("turnStart");
+    expect(h.g.ready).toEqual([]);
+  });
+});
+
 describe("events", () => {
   it("drawing an event applies it and shows the card", () => {
     const h = new Harness(4, { seed: 7 });

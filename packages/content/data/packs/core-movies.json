@@ -39,6 +39,10 @@
           "value": 1
         }
       },
+      "scaleLabels": {
+        "min": "heart of stone",
+        "max": "cries at the opening logo"
+      },
       "usage": [
         "tile",
         "minigameIntro",
@@ -120,6 +124,10 @@
           "type": "absolute",
           "value": 1
         }
+      },
+      "scaleLabels": {
+        "min": "phone off, fully focused",
+        "max": "watches TikTok the whole time"
       },
       "usage": [
         "tile",

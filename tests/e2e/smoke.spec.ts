@@ -17,6 +17,7 @@ async function act(page: Page, opts: { roll?: boolean } = {}): Promise<boolean> 
     }
     return false;
   };
+  if (await tryClick('[data-testid="got-it"]')) return true;
   if (opts.roll !== false && (await tryClick('[data-testid="roll-button"]'))) return true;
   const lock = page.locator('[data-testid="lock-in"]');
   if (await lock.count()) {
@@ -25,7 +26,7 @@ async function act(page: Page, opts: { roll?: boolean } = {}): Promise<boolean> 
   }
   if (await tryClick('[data-testid="junction"] button.btn-secondary')) return true;
   if (await tryClick('[data-testid="star"] button.btn-secondary')) return true;
-  if (await tryClick('[data-testid="shop"] >> text=Done shopping')) return true;
+  if (await tryClick('[data-testid="shop"] >> text=/Done shopping|Keep walking/')) return true;
   if (await tryClick('[data-testid="duel-pick"] button.btn-secondary')) return true;
   return false;
 }
@@ -56,6 +57,10 @@ test("create room → 2 players join → play one full turn", async ({ browser }
   await a.getByTestId("ready-button").click();
   await b.getByTestId("ready-button").click();
   await a.getByTestId("start-button").click();
+
+  // How-to-play screen: everyone taps "Got it!"
+  await a.getByTestId("got-it").click();
+  await b.getByTestId("got-it").click();
 
   // Wait for the first turn
   const roller = await Promise.race([

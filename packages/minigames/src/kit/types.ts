@@ -24,6 +24,8 @@ export interface MinigameUiKit {
   /** Compact rendering of an answer. */
   AnswerLabel: ComponentType<{ question: PublicQuestionRound["question"]; answer: Answer | null | undefined; big?: boolean }>;
   Timer: ComponentType<{ endsAt: number | null; totalMs?: number }>;
+  /** "1 = …, 10 = …" labels for scale questions. */
+  ScaleEnds: ComponentType<{ min: number; max: number; minLabel?: string; maxLabel?: string }>;
   play: (sfx: string, opts?: { volume?: number; rate?: number }) => void;
   vibrate: (pattern: number | number[]) => void;
 }

@@ -25,7 +25,7 @@ export function CountItClient(p: MinigameClientProps<SoloPublic, SoloPrivate>) {
       <p className="text-center font-display text-xl">
         Round {counts.length + 1}/{ROUNDS} · count the <p.ui.Icon id={KINDS[r.ask]} size={24} className="align-[-5px] text-accent" />
       </p>
-      <div className="relative aspect-square w-full overflow-hidden rounded-3xl bg-bg-2">
+      <div className="relative mx-auto aspect-square w-full max-w-[min(100%,52dvh)] overflow-hidden rounded-3xl bg-bg-2">
         {stage === "flash" &&
           r.items.map((it, i) => (
             <span key={i} className="absolute text-ink" style={{ left: `${it.x}%`, top: `${it.y}%` }}>

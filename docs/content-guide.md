@@ -47,6 +47,7 @@ that folder is loaded, so a new pack is just a new file.
 | `prompt` | yes | Localized string. Must mention `{target}` (except `player` "most likely to" prompts). |
 | `answers` | tiles / ranking | `tiles`: 2–6 answers (4 is best). `ranking`: 3–4 items. |
 | `number` | number / scale / higherLower | `{ "min", "max", "step", "unit"?, "tolerance": { "type": "absolute" \| "relative", "value" } }` |
+| `scaleLabels` | scale | What the ends mean: `{ "min": "spotless", "max": "disaster zone" }`. Shown as "1 = spotless … disaster zone = 10". Required for `scale`, optional for `number`. |
 | `reference` | higherLower | The value players compare against. Must be inside `number.min..max`. |
 | `tags` | no | `spicy` (hidden by the family-friendly filter), `classic`, `quick`, `deep`, `mostLikely` |
 | `weight` | no | Selection weight, default 1. |
@@ -75,6 +76,7 @@ Placeholders in prompts and answers:
 { "id": "life.room", "themes": ["life"], "format": "scale",
   "prompt": "How chaotic is {target}'s room right now, 1–10?",
   "number": { "min": 1, "max": 10, "step": 1, "tolerance": { "type": "absolute", "value": 1 } },
+  "scaleLabels": { "min": "spotless", "max": "disaster zone" },
   "usage": ["tile", "minigameIntro"] }
 
 { "id": "hot.pineapple", "themes": ["hot-takes"], "format": "higherLower",
@@ -152,7 +154,7 @@ SVG with the board's `aspect` ratio (width / height).
 
 - `useTiming`: `turnStart` (before rolling), `onQuestion` (while answering, before locking in), `passive` (automatic).
 - `effect` must be one of the implemented effects: `doubleDice`, `customDice`, `steal`,
-  `pickTarget`, `shield`, `peek`, `wideTolerance`. New effects need code in
+  `pickTarget`, `shield`, `peek`, `wideTolerance`, `warpToStar`. New effects need code in
   `packages/shared/src/logic/items.ts` (turn start) or `engine/game.ts` (question time).
 
 ## Event cards
@@ -172,8 +174,8 @@ Effects: `swapRandom`, `allMoveBack` (`params.steps`), `stealFromLeader` (`param
 
 ## Mini-games
 
-Metadata in `minigames.json` (`name`, `icon`, `rules`, `controls`, `bonus`, `weight`,
-`enabled`). Set `weight: 0` or `enabled: false` to take one out of rotation. The logic and UI are
+Metadata in `minigames.json`: `name`, `icon`, `goal` (one line, shown on the tutorial screen and as a
+banner while playing), `howTo` (2–4 tutorial steps), `rules`, `controls`, `bonus`, `weight`, `enabled`. Set `weight: 0` or `enabled: false` to take one out of rotation. The logic and UI are
 code: see `packages/minigames/README.md`.
 
 ## Tuning numbers

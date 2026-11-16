@@ -114,6 +114,33 @@ describe("scoring", () => {
     });
     expect(r.perPlayer.a.coins).toBe(5);
   });
+  it("scale (1–10): exact 5, one off 3 (match), two off 1 (close), further 0", () => {
+    const q: ResolvedQuestion = { ...numberQ, format: "scale", number: { min: 1, max: 10, step: 1, tolerance: { type: "absolute", value: 1 } } };
+    const n = (value: number) => ({ kind: "number" as const, value });
+    const r = scoreQuestion({
+      question: q,
+      targetId: "t",
+      participants: ["t", "a", "b", "c", "d"],
+      answers: { t: n(7), a: n(7), b: n(6), c: n(9), d: n(3) },
+    });
+    expect([r.perPlayer.a.coins, r.perPlayer.b.coins, r.perPlayer.c.coins, r.perPlayer.d.coins]).toEqual([5, 3, 1, 0]);
+    expect([r.perPlayer.a.match, r.perPlayer.b.match, r.perPlayer.c.match]).toEqual([true, true, false]);
+    expect(r.perPlayer.c.close).toBe(true);
+    expect(r.perPlayer.d.close).toBe(false);
+    expect(r.matchedCount).toBe(2); // close answers don't count as matches
+    expect(r.perPlayer.t.coins).toBe(4);
+  });
+  it("scale with Wide Tolerance halves the distance", () => {
+    const q: ResolvedQuestion = { ...numberQ, format: "scale", number: { min: 1, max: 10, step: 1, tolerance: { type: "absolute", value: 1 } } };
+    const r = scoreQuestion({
+      question: q,
+      targetId: "t",
+      participants: ["t", "a"],
+      answers: { t: { kind: "number", value: 7 }, a: { kind: "number", value: 9 } },
+      boosts: { a: { wide: true } },
+    });
+    expect(r.perPlayer.a).toMatchObject({ match: true, coins: 3 });
+  });
   it("2 players: one guesser, same rules", () => {
     const r = scoreQuestion({
       question: tilesQ,

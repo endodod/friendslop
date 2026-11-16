@@ -5,7 +5,8 @@ Each mini-game is one folder: `src/<id>/logic.ts` (server rules, pure) + `src/<i
 ## Adding a mini-game
 
 1. **Metadata** — add an entry to `packages/content/data/minigames.json`:
-   `id`, `name`, `icon`, `rules`, `controls`, `bonus` (what matching the intro question gives), `weight`.
+   `id`, `name`, `icon`, `goal` (one line: how you win), `howTo` (2–4 tutorial steps), `rules`, `controls`,
+   `bonus` (what matching the intro question gives), `weight`. The tutorial screen and the in-game goal banner use these.
 2. **Logic** — `src/<id>/logic.ts` exporting a `MiniGameDefinition` (see `packages/shared/src/minigame/types.ts`):
    - `kind`: `soloScored` | `sharedRealtime` | `turnBased` | `questionOnly`
    - `init({ players, bonuses, seed, rng, now, services })` → state. `bonuses` are the players who matched the intro question; apply the bonus yourself.

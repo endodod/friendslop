@@ -11,10 +11,12 @@ import { MinigameView } from "../minigame/MinigameView";
 import { useScreenShake } from "../fx";
 import { CoinCount, Icon, MuteButton, StarCount, useIsHost, usePlayers } from "../ui";
 import { BonusStarsView, GameEndBanner, Podium } from "./EndScreens";
-import { PhasePanel, SkipButton } from "./PhasePanel";
+import { GameStartPanel, PhasePanel, SkipButton } from "./PhasePanel";
+import { HelpButton } from "./HowToPlay";
 import { Scoreboard } from "./Scoreboard";
 
 const FOCUS_PHASES = new Set([
+  "gameStart",
   "questionRound",
   "minigameIntro",
   "minigameQuestion",
@@ -42,6 +44,8 @@ function useIsWide() {
 function FocusContent({ display }: { display: boolean }) {
   const g = useStore((s) => s.pub!.game!);
   switch (g.phase) {
+    case "gameStart":
+      return g.mode === "board" ? <GameStartPanel /> : <p className="py-10 text-center font-display text-3xl">Get ready…</p>;
     case "questionRound":
       return g.question ? (
         <>
@@ -88,6 +92,7 @@ function TopBar({ compact }: { compact?: boolean }) {
           <CoinCount value={me.coins} size={18} />
         </span>
       )}
+      <HelpButton minigameId={g.minigame?.id ?? null} />
       <MuteButton />
       {isHost && g.phase !== "podium" && (
         <button
