@@ -142,7 +142,7 @@ function Playing({ display }: { display: boolean }) {
   const players = usePlayers();
   const mg = g.minigame!;
   const entry = MINIGAME_CLIENTS[mg.id];
-  const isParticipant = !!playerId && mg.participants.includes(playerId);
+  const isParticipant = !!playerId && (mg.inputPlayers ?? mg.participants).includes(playerId);
   const kitPlayers = useMemo(() => players, [players]);
   if (!entry) return <p className="text-center text-muted">This mini-game has no client yet.</p>;
   const C = entry.Component;

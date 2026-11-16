@@ -9,7 +9,8 @@ import { RoomManager } from "./rooms/manager";
 import { registerSocketHandlers } from "./socket";
 
 async function main() {
-  const content = loadContent(); // throws with a list of problems if content is invalid
+  // Throws with a list of problems if content is invalid. CONTENT_DIR points at another content folder.
+  const content = loadContent(process.env.CONTENT_DIR || undefined);
   console.log(
     `[content] ${content.packs.length} packs, ${content.packs.reduce((n, p) => n + p.questions.length, 0)} questions, ` +
       `${content.themes.length} themes, ${content.boards.length} boards, ${Object.keys(MINIGAMES).length} mini-games`,

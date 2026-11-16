@@ -304,7 +304,7 @@ function TileEffectPanel() {
   const r = g.tileResult;
   const def = clientContent.tiles.find((d) => d.id === r?.type);
   return (
-    <Panel>
+    <Panel testId="tile-effect">
       <motion.div
         initial={{ scale: 0.4, rotate: -20 }}
         animate={{ scale: 1, rotate: 0 }}
@@ -426,7 +426,7 @@ function EventPanel() {
   const { g } = useGameCtx();
   const card = clientContent.events.find((e) => e.id === g.event?.cardId);
   return (
-    <Panel>
+    <Panel testId="event">
       <motion.div
         initial={{ rotateY: 180, scale: 0.5 }}
         animate={{ rotateY: 0, scale: 1 }}

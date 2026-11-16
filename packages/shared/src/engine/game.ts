@@ -782,7 +782,7 @@ function enterResults(d: Draft) {
   for (const [pid, res] of Object.entries(r.perPlayer)) {
     const st = g.players[pid]?.stats;
     if (!st) continue;
-    if (!res.isTarget) {
+    if (!res.isTarget && res.answer) {
       st.guesses++;
       if (res.match) st.matchesMade++;
       if (res.perfect && res.match) st.perfectMatches++;

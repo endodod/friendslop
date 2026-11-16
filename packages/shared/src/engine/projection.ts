@@ -25,7 +25,11 @@ export type PublicQuestionRound = Omit<QuestionRound, "answers" | "answeredAt" |
   boosted: PlayerId[];
 };
 
-export type PublicMinigame = Omit<MinigameRuntime, "state" | "seed"> & { state: unknown };
+export type PublicMinigame = Omit<MinigameRuntime, "state" | "seed"> & {
+  state: unknown;
+  /** Everyone who may send input: participants plus extra players (e.g. the duel's target). */
+  inputPlayers: PlayerId[];
+};
 
 export type PublicGamePlayer = Omit<GameState["players"][string], "items"> & { itemCount: number };
 
@@ -84,7 +88,8 @@ export function toPublicState(room: RoomState, registry: MinigameRegistry, now: 
   if (minigame) {
     const { state, seed: _seed, ...m } = minigame;
     const def = registry[minigame.id];
-    mg = { ...m, state: state != null && def ? def.publicState(state, now) : null };
+    const extra = state != null && def?.extraInputPlayers ? def.extraInputPlayers(state) : [];
+    mg = { ...m, state: state != null && def ? def.publicState(state, now) : null, inputPlayers: [...m.participants, ...extra] };
   }
   return {
     ...rest,
