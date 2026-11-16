@@ -1,7 +1,7 @@
 "use client";
 import { AnimatePresence, motion } from "framer-motion";
 import { Check, Lock, Sparkles, X } from "lucide-react";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { GAME_CONFIG, localize, type Answer, type PublicQuestionRound } from "@party-game/shared";
 import { clientContent } from "@party-game/content";
 import { useStore } from "@/lib/store";
@@ -347,8 +347,4 @@ function MatchBadge({ match, perfect, score }: { match: boolean; perfect: boolea
       {score !== undefined && ` ${Math.round(score * 100)}%`}
     </motion.span>
   );
-}
-
-export function useQuestionTotals(round: PublicQuestionRound | null) {
-  return useMemo(() => round?.participants.length ?? 0, [round]);
 }
