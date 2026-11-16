@@ -5,7 +5,8 @@ import type { Ack, ClientEventName, ClientPayload, ServerToClientEvents } from "
 let socket: Socket<ServerToClientEvents, any> | null = null;
 
 export function serverUrl(): string {
-  if (process.env.NEXT_PUBLIC_SERVER_URL) return process.env.NEXT_PUBLIC_SERVER_URL;
+  // Tolerate "https://host/" as well as "https://host".
+  if (process.env.NEXT_PUBLIC_SERVER_URL) return process.env.NEXT_PUBLIC_SERVER_URL.trim().replace(/\/+$/, "");
   if (typeof window === "undefined") return "http://localhost:4000";
   // Same host as the web page so phones on the LAN reach the game server too.
   return `${window.location.protocol}//${window.location.hostname}:4000`;
