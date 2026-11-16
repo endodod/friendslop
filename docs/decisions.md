@@ -59,3 +59,7 @@ Defaults picked where the build prompt left room, or where the environment force
 - **Speed Sync:** match = 2 points, +1 if locked in during the first half of the 8 s window; the target gets 1 per matcher.
 - **Ranking:** 1 point per item in the correct position; the target answers truthfully and scores nothing.
 - **Practice mode:** hosts can start any mini-game directly from the lobby (they then cycle). It doesn't affect board games.
+
+## Hosting
+- **Free hosting target:** web on Vercel (Root Directory `apps/web`), game server on Render's free web service via `render.yaml`. The server can't run on serverless platforms (long-lived WebSockets, in-memory rooms, 15 Hz tick).
+- Render's free plan sleeps when idle, so the web app pings `/health` on page load and shows a "waking up" message while the socket can't connect. The Render start command runs `tsx` directly (no pnpm at runtime) to keep cold starts short.

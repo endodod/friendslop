@@ -18,6 +18,12 @@ export function getSocket(): Socket<ServerToClientEvents, any> {
   return socket;
 }
 
+/** Fire a request at the server's health endpoint so a sleeping free-tier server starts booting. */
+export function wakeServer() {
+  if (typeof window === "undefined") return;
+  fetch(`${serverUrl()}/health`, { mode: "no-cors", cache: "no-store" }).catch(() => {});
+}
+
 /** Emit with an ack, as a promise. Never throws; returns { ok: false } on failure/timeout. */
 export function send<E extends ClientEventName>(event: E, payload: ClientPayload<E>, timeoutMs = 8000): Promise<Ack<any>> {
   const s = getSocket();

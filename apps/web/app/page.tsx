@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { BRANDING, PLAYER_COLORS, type JoinResult } from "@party-game/shared";
 import { ColorPicker } from "@/components/ColorPicker";
 import { Icon, Toasts } from "@/components/ui";
+import { ServerStatus } from "@/components/ServerStatus";
 import { getSocket, send } from "@/lib/socket";
 import { profileToken, saveColor, saveName, saveSeat, savedColor, savedName } from "@/lib/session";
 
@@ -52,6 +53,7 @@ export default function Landing() {
   return (
     <main className="mx-auto flex min-h-dvh max-w-md flex-col gap-6 px-4 py-8">
       <Toasts />
+      <ServerStatus />
       <motion.header initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="text-center">
         <div className="mx-auto mb-3 flex w-fit gap-2">
           {["food", "music", "gaming", "hot-takes"].map((i, k) => (

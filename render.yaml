@@ -1,0 +1,21 @@
+# Render Blueprint for the game server (free plan).
+# Render dashboard → New → Blueprint → pick this repo. Then set WEB_ORIGINS to your Vercel URL.
+# The free plan sleeps after ~15 min without traffic; the web app wakes it on page load.
+services:
+  - type: web
+    name: friendslop-server
+    runtime: node
+    plan: free
+    buildCommand: npx --yes pnpm@10.28.0 install --frozen-lockfile && npx --yes pnpm@10.28.0 --filter @party-game/server exec prisma generate
+    startCommand: cd apps/server && ./node_modules/.bin/tsx src/index.ts
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      # Your web app's URL(s), comma separated, e.g. https://friendslop.vercel.app
+      - key: WEB_ORIGINS
+        sync: false
+      # Optional: a Postgres URL (e.g. Neon free tier) for match history and question stats.
+      - key: DATABASE_URL
+        sync: false

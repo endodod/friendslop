@@ -11,6 +11,7 @@ import { useRoom } from "@/lib/useRoom";
 import { useStore } from "@/lib/store";
 import { saveColor, saveName, savedColor, savedName } from "@/lib/session";
 import { SfxBridge } from "./SfxBridge";
+import { ServerStatus } from "./ServerStatus";
 
 export function RoomClient({ code, display }: { code: string; display: boolean }) {
   const { status, error, join, leave } = useRoom(code, display);
@@ -20,6 +21,7 @@ export function RoomClient({ code, display }: { code: string; display: boolean }
     <MotionConfig reducedMotion="user">
       <Toasts />
       <ConnectionBadge />
+      <ServerStatus />
       <SfxBridge />
       {status === "connecting" || status === "joining" || (status === "joined" && !pub) ? (
         <Center>

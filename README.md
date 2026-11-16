@@ -47,6 +47,34 @@ docker compose up --build
 
 Starts Postgres, the game server (runs migrations on start) and the web app.
 
+## Free hosting
+
+The web app and the game server are deployed separately: the server keeps live games in memory
+and holds a WebSocket per player, which serverless platforms (like Vercel) can't do.
+
+**1. Game server → Render (free)**
+
+1. On [render.com](https://render.com): **New → Blueprint**, pick this repo. `render.yaml` sets up
+   a free Node web service (build, start command, health check).
+2. Note the service URL, e.g. `https://friendslop-server.onrender.com`.
+
+The free plan sleeps after ~15 minutes without traffic. The web app pings it as soon as someone
+opens the page and shows "Waking up the game server…" until it's up (usually 30–60 s). It never
+sleeps during a game. Rooms are lost on a restart/redeploy.
+
+**2. Web app → Vercel (free)**
+
+1. Import the repo on [vercel.com](https://vercel.com) and set **Root Directory** to `apps/web`
+   (leave "Include files outside the root directory" on). Framework: Next.js, no other build settings.
+2. Add the environment variable `NEXT_PUBLIC_SERVER_URL` = your Render URL, then deploy (it's baked in at build time, so redeploy after changing it).
+
+**3. Connect them**
+
+On Render, set `WEB_ORIGINS` to your Vercel URL (e.g. `https://friendslop.vercel.app`, comma-separate several).
+
+**Optional database:** set `DATABASE_URL` on Render to a free Postgres (e.g. [Neon](https://neon.tech)) and run
+`pnpm --filter @party-game/server exec prisma migrate deploy` once against it. Without it the game works the same, just without match history or question stats.
+
 ## Tests
 
 ```bash
