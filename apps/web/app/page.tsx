@@ -19,7 +19,7 @@ export default function Landing() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    setName(savedName());
+    setName((n) => n || savedName());
     setColor(savedColor() ?? PLAYER_COLORS[Math.floor(Math.random() * 4)].id);
     getSocket();
   }, []);

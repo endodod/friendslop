@@ -129,8 +129,10 @@ export function toPrivateState(
     }
   }
   const mg = g.minigame;
-  if (mg && mg.participants.includes(playerId) && g.phase === "minigamePlaying") {
-    const def = registry[mg.id];
+  const mgDef = mg ? registry[mg.id] : undefined;
+  const mgPlayers = mg ? [...mg.participants, ...(mgDef?.extraInputPlayers && mg.state != null ? mgDef.extraInputPlayers(mg.state) : [])] : [];
+  if (mg && mgPlayers.includes(playerId) && g.phase === "minigamePlaying") {
+    const def = mgDef;
     out.minigameSeed = mg.seed;
     if (def?.privateState && mg.state != null) out.minigame = def.privateState(mg.state, playerId, now);
   }

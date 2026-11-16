@@ -1,0 +1,71 @@
+import { z } from "zod";
+import { rankByScore, type MiniGameDefinition, type PlayerId } from "@party-game/shared";
+
+export const TILES = 16;
+export const TURN_MS = 8000;
+
+export interface MinefieldState {
+  players: PlayerId[];
+  bonuses: PlayerId[];
+  alive: PlayerId[];
+  out: PlayerId[];
+  grid: number;
+  /** Secret. */
+  bomb: number;
+  /** Secret per bonus player: one safe tile. */
+  safeHint: Record<PlayerId, number>;
+  opened: number[];
+  turn: number;
+  turnEndsAt: number;
+  boom: { tile: number; playerId: PlayerId; until: number } | null;
+}
+
+function newGrid(s: MinefieldState, now: number, rng: () => number): MinefieldState {
+  const bomb = Math.floor(rng() * TILES);
+  const safeHint: Record<PlayerId, number> = {};
+  for (const b of s.bonuses) {
+    let t = Math.floor(rng() * TILES);
+    while (t === bomb) t = (t + 1) % TILES;
+    safeHint[b] = t;
+  }
+  return { ...s, grid: s.grid + 1, bomb, safeHint, opened: [], boom: null, turnEndsAt: now + TURN_MS };
+}
+
+const current = (s: MinefieldState) => s.alive[s.turn % s.alive.length];
+
+function pickTile(s: MinefieldState, pid: PlayerId, tile: number, now: number): MinefieldState {
+  if (tile === s.bomb) {
+    const alive = s.alive.filter((p) => p !== pid);
+    return { ...s, alive, out: [...s.out, pid], boom: { tile, playerId: pid, until: now + 2500 }, opened: [...s.opened, tile], turn: s.turn % Math.max(1, alive.length) };
+  }
+  return { ...s, opened: [...s.opened, tile], turn: (s.turn + 1) % s.alive.length, turnEndsAt: now + TURN_MS };
+}
+
+export const minefield: MiniGameDefinition<MinefieldState, { tile: number }> = {
+  id: "minefield",
+  kind: "turnBased",
+  durationSec: 120,
+  minPlayers: 2,
+  inputSchema: z.object({ tile: z.number().int().min(0).max(TILES - 1) }),
+  init: ({ players, bonuses, now, rng }) =>
+    newGrid({ players, bonuses, alive: [...players], out: [], grid: 0, bomb: 0, safeHint: {}, opened: [], turn: 0, turnEndsAt: now, boom: null }, now, rng),
+  onInput: (s, pid, { tile }, { now }) => {
+    if (s.boom || current(s) !== pid || s.opened.includes(tile)) return s;
+    return pickTile(s, pid, tile, now);
+  },
+  tick: (s, { now, rng }) => {
+    if (s.boom) {
+      if (now >= s.boom.until && s.alive.length > 1) return newGrid(s, now, rng);
+      return s;
+    }
+    if (now >= s.turnEndsAt) {
+      const free = Array.from({ length: TILES }, (_, i) => i).filter((i) => !s.opened.includes(i));
+      return pickTile(s, current(s), free[Math.floor(rng() * free.length)], now);
+    }
+    return s;
+  },
+  isFinished: (s, now) => s.alive.length <= 1 && (!s.boom || now >= s.boom.until - 1000),
+  results: (s) => rankByScore(s.players, Object.fromEntries(s.players.map((p) => [p, s.alive.includes(p) ? 100 : s.out.indexOf(p)])), true, (v) => (v === 100 ? "Survivor" : "Boom")),
+  publicState: (s) => ({ alive: s.alive, out: s.out, opened: s.opened, current: s.boom ? null : current(s), turnEndsAt: s.turnEndsAt, boom: s.boom, grid: s.grid }),
+  privateState: (s, pid) => ({ safe: s.safeHint[pid] !== undefined && !s.opened.includes(s.safeHint[pid]) ? s.safeHint[pid] : null }),
+};

@@ -67,6 +67,15 @@ export class Harness {
     }
     return res;
   }
+  /** Tick at the current time (no jump). */
+  tick() {
+    const res = tickGame(this.room, this.ctx());
+    if (res) {
+      this.room = res.room;
+      this.events.push(...res.events);
+    }
+    return res;
+  }
   advanceTo(phase: string, max = 500) {
     for (let i = 0; i < max && this.g.phase !== phase; i++) this.timeout();
     if (this.g.phase !== phase) throw new Error(`never reached ${phase}, stuck in ${this.g.phase}`);

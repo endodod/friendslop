@@ -10,7 +10,7 @@ import { Avatar, Icon, MuteButton, useIsHost, useMe } from "../ui";
 import { ColorPicker } from "../ColorPicker";
 import { useStore } from "@/lib/store";
 import { act } from "@/lib/useRoom";
-import { LinkedAccounts } from "./LinkedAccounts";
+import { MINIGAME_CLIENTS } from "@party-game/minigames/client";
 
 export function Lobby({ code, onLeave }: { code: string; onLeave: () => Promise<void> }) {
   const pub = useStore((s) => s.pub)!;
@@ -25,6 +25,7 @@ export function Lobby({ code, onLeave }: { code: string; onLeave: () => Promise<
   const allReady = players.length >= GAME_CONFIG.players.min && players.every((p) => p.ready);
   const meRoom = players.find((p) => p.id === me?.id);
   const isDisplay = role === "display";
+  const [practice, setPractice] = useState("red-light");
 
   return (
     <main className={`mx-auto flex min-h-dvh flex-col gap-4 px-4 py-5 ${isDisplay ? "max-w-6xl" : "max-w-2xl"}`}>
@@ -141,7 +142,6 @@ export function Lobby({ code, onLeave }: { code: string; onLeave: () => Promise<
             taken={players.map((p) => p.color)}
             onChange={(color) => act("room:profile", { color })}
           />
-          <LinkedAccounts />
         </section>
       )}
 
@@ -162,13 +162,37 @@ export function Lobby({ code, onLeave }: { code: string; onLeave: () => Promise<
               {players.length < 2 ? "Need at least 2 players." : "Waiting for everyone to be ready."}
             </p>
           )}
-          <button
-            className="btn-ghost text-sm"
-            disabled={!allReady}
-            onClick={() => act("game:start", { mode: "questionDebug" })}
-          >
-            Question rounds only (no board)
-          </button>
+          <details className="text-sm text-muted">
+            <summary className="cursor-pointer py-2 text-center">Practice modes</summary>
+            <div className="flex flex-col gap-2 pt-2">
+              <button className="btn-secondary min-h-11 text-base" disabled={!allReady} onClick={() => act("game:start", { mode: "questionDebug" })}>
+                Question rounds only (no board)
+              </button>
+              <div className="flex gap-2">
+                <select
+                  className="input min-h-11 flex-1 text-base"
+                  aria-label="Mini-game to practice"
+                  value={practice}
+                  onChange={(e) => setPractice(e.target.value)}
+                >
+                  {clientContent.minigames
+                    .filter((m) => m.enabled && MINIGAME_CLIENTS[m.id] && m.id !== "duel")
+                    .map((m) => (
+                      <option key={m.id} value={m.id}>
+                        {localize(m.name)}
+                      </option>
+                    ))}
+                </select>
+                <button
+                  className="btn-secondary min-h-11 text-base"
+                  disabled={!allReady}
+                  onClick={() => act("game:start", { mode: "minigameDebug", minigameId: practice })}
+                >
+                  Play mini-games
+                </button>
+              </div>
+            </div>
+          </details>
         </section>
       )}
     </main>
@@ -237,12 +261,14 @@ function SettingsPanel({ settings, editable, canData }: { settings: RoomSettings
         disabled={!editable}
         onChange={(familyFriendly) => set({ familyFriendly })}
       />
-      <Toggle
-        label={`Data questions${canData ? "" : " (link an account first)"}`}
-        value={settings.dataQuestions && canData}
-        disabled={!editable || !canData}
-        onChange={(dataQuestions) => set({ dataQuestions })}
-      />
+      {canData && (
+        <Toggle
+          label="Data questions"
+          value={settings.dataQuestions}
+          disabled={!editable}
+          onChange={(dataQuestions) => set({ dataQuestions })}
+        />
+      )}
       <Row label="Language">
         <Segmented
           value={settings.language}

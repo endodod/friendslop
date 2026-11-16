@@ -3,7 +3,7 @@ import type { ContentBundle } from "../content/schemas";
 import { getFormat, validateAnswer } from "../formats";
 import { localize } from "../i18n";
 import { getBoard, getTile, nextTiles, pickStarTile, tileDef, computeTileTypes } from "../logic/board";
-import { changeCoins, changeStars, placementCoins, standings } from "../logic/economy";
+import { changeCoins, changeStars, placementCoins, standings, transferCoins } from "../logic/economy";
 import { applyEvent, drawEvent } from "../logic/events";
 import { applyTurnStartItem, getItem, log, shopStock } from "../logic/items";
 import {
@@ -157,8 +157,14 @@ export function createGame(room: RoomState, ctx: EngineContext, mode: GameMode):
   return g;
 }
 
-export function startGame(room: RoomState, ctx: EngineContext, mode: GameMode = "board"): EngineResult {
+export function startGame(
+  room: RoomState,
+  ctx: EngineContext,
+  mode: GameMode = "board",
+  opts: { minigameId?: string } = {},
+): EngineResult {
   const g = createGame(room, ctx, mode);
+  if (mode === "minigameDebug") g.debugMinigameId = opts.minigameId && ctx.minigames[opts.minigameId] ? opts.minigameId : null;
   const next: RoomState = { ...room, stage: "game", game: g, players: room.players.map((p) => ({ ...p, ready: false })) };
   const events: GameEvent[] = [{ type: "phase", phase: "gameStart" }];
   return { room: next, events };
@@ -275,8 +281,9 @@ function handleAction(d: Draft, a: GameAction, isHost: boolean): void {
     case "minigameSubmit": {
       requirePhase(d, "minigamePlaying");
       const mg = g.minigame!;
-      if (!mg.participants.includes(a.playerId)) fail("INVALID_INPUT", "You're not in this mini-game.");
       const def = minigameDef(d, mg.id);
+      const allowed = [...mg.participants, ...(def.extraInputPlayers?.(mg.state) ?? [])];
+      if (!allowed.includes(a.playerId)) fail("INVALID_INPUT", "You're not in this mini-game.");
       if (a.type === "minigameInput") {
         if (!def.onInput) fail("INVALID_INPUT", "This mini-game takes no input.");
         const parsed = def.inputSchema ? def.inputSchema.safeParse(a.input) : { success: true as const, data: a.input };
@@ -310,6 +317,7 @@ function onTimeout(d: Draft) {
   switch (g.phase) {
     case "gameStart":
       if (g.mode === "questionDebug") return startQuestionRound(d, "debug", pickDebugTarget(d));
+      if (g.mode === "minigameDebug") return startRoundMinigame(d);
       return turnStart(d);
     case "turnStart":
       return doRoll(d, g.pendingDice?.kind === "custom" ? randInt(s.ctx.rng, 1, 6) : undefined);
@@ -607,6 +615,7 @@ function questionServices(d: Draft): MinigameServices {
     language: room.settings.language,
     names: nm,
     allPlayers: [...g.order],
+    coins: Object.fromEntries(Object.values(g.players).map((p) => [p.id, p.coins])),
     pickQuestion: (opts) => {
       const participants = opts.participants ?? g.order;
       if (opts.allowData && room.settings.dataQuestions) {
@@ -830,8 +839,13 @@ export function eligibleMinigames(content: ContentBundle, registry: Record<strin
   });
 }
 
-function startRoundMinigame(d: Draft) {
+function startRoundMinigame(d: Draft): void {
   const { g, s } = d;
+  if (g.debugMinigameId) {
+    const id = g.debugMinigameId;
+    g.debugMinigameId = null;
+    return setupMinigame(d, id, "round", [...g.order]);
+  }
   const pool = eligibleMinigames(s.ctx.content, s.ctx.minigames, g.order.length);
   if (!pool.length) return afterMinigameResults(d);
   let fresh = pool.filter((m) => !g.history.minigamesPlayed.includes(m.id));
@@ -846,7 +860,7 @@ function startRoundMinigame(d: Draft) {
   setupMinigame(d, meta.id, "round", [...g.order]);
 }
 
-function setupMinigame(d: Draft, id: string, origin: "round" | "duel", participants: PlayerId[]) {
+function setupMinigame(d: Draft, id: string, origin: "round" | "duel", participants: PlayerId[]): void {
   const { g, s } = d;
   const def = minigameDef(d, id);
   g.minigame = {
@@ -900,13 +914,21 @@ function finishMinigame(d: Draft) {
   const def = minigameDef(d, mg.id);
   const placements = def.results(mg.state);
   mg.placements = placements;
-  const payout = def.payout
-    ? def.payout(mg.state, placements)
-    : Object.fromEntries(
-        placements.map((p) => [p.playerId, placementCoins(M.placementCoins, mg.participants.length, p.rank)]),
-      );
+  let payout: Record<PlayerId, number>;
+  if (def.transfers) {
+    payout = Object.fromEntries(mg.participants.map((p) => [p, 0]));
+    for (const t of def.transfers(mg.state, placements)) {
+      const moved = transferCoins(g, s, t.from, t.to, t.amount, `minigame:${mg.id}`);
+      payout[t.from] = (payout[t.from] ?? 0) - moved;
+      payout[t.to] = (payout[t.to] ?? 0) + moved;
+    }
+  } else {
+    payout = def.payout
+      ? def.payout(mg.state, placements)
+      : Object.fromEntries(placements.map((p) => [p.playerId, placementCoins(M.placementCoins, mg.participants.length, p.rank)]));
+    for (const [pid, coins] of Object.entries(payout)) if (coins) changeCoins(g, s, pid, coins, `minigame:${mg.id}`);
+  }
   mg.payout = payout;
-  for (const [pid, coins] of Object.entries(payout)) if (coins) changeCoins(g, s, pid, coins, `minigame:${mg.id}`);
   for (const p of placements) {
     const st = g.players[p.playerId]?.stats;
     if (!st) continue;
@@ -924,11 +946,12 @@ function startDuel(d: Draft, opponentId: PlayerId) {
   setupMinigame(d, "duel", "duel", [g.duel.challengerId, opponentId]);
 }
 
-function afterMinigameResults(d: Draft) {
+function afterMinigameResults(d: Draft): void {
   const { g } = d;
   const origin = g.minigame?.origin;
   g.minigame = null;
   if (origin === "duel") return turnEnd(d);
+  if (g.mode === "minigameDebug") return startRoundMinigame(d);
   g.round++;
   if (g.round > g.turnCount) {
     g.round = g.turnCount;

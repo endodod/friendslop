@@ -227,14 +227,14 @@ export class RoomManager {
     this.broadcast(rec, []);
   }
 
-  start(rec: LiveRoom, actor: SocketData, mode: "board" | "questionDebug") {
+  start(rec: LiveRoom, actor: SocketData, mode: "board" | "questionDebug" | "minigameDebug", minigameId?: string) {
     assertHost(rec.room, { playerId: actor.playerId ?? undefined, isDisplay: actor.role === "display" });
     if (rec.room.stage !== "lobby") fail("GAME_IN_PROGRESS", "Game already running.");
     const check = canStart(rec.room);
     if (!check.ok) fail(rec.room.players.length < 2 ? "NOT_ENOUGH_PLAYERS" : "NOT_READY", check.reason);
-    const res = startGame(rec.room, this.ctx(rec), mode);
+    const res = startGame(rec.room, this.ctx(rec), mode, { minigameId });
     this.apply(rec, res);
-    persistence.onGameStart(rec);
+    if (mode === "board") persistence.onGameStart(rec);
   }
 
   abort(rec: LiveRoom, actor: SocketData) {

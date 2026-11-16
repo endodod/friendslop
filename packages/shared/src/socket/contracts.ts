@@ -52,7 +52,10 @@ export const ClientEvents = {
   "room:profile": z.object({ name: z.string().max(40).optional(), color: z.string().max(16).optional() }),
   "room:kick": z.object({ playerId: PlayerIdSchema }),
   "player:ready": z.object({ ready: z.boolean() }),
-  "game:start": z.object({ mode: z.enum(["board", "questionDebug"]).default("board") }),
+  "game:start": z.object({
+    mode: z.enum(["board", "questionDebug", "minigameDebug"]).default("board"),
+    minigameId: z.string().max(64).optional(),
+  }),
   "game:abort": z.object({}),
   "game:continue": z.object({}),
   "game:playAgain": z.object({}),

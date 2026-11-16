@@ -251,7 +251,7 @@ export interface BonusStarAward {
   value: number;
 }
 
-export type GameMode = "board" | "questionDebug";
+export type GameMode = "board" | "questionDebug" | "minigameDebug";
 
 export interface GameState {
   mode: GameMode;
@@ -292,6 +292,8 @@ export interface GameState {
   bonusStars: { awards: BonusStarAward[]; revealed: number } | null;
   finalRanking: PlayerId[] | null;
   log: GameLogEntry[];
+  /** minigameDebug mode: play this mini-game first. */
+  debugMinigameId?: string | null;
 }
 
 // ---------------------------------------------------------------------------

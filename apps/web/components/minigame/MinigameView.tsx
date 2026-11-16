@@ -9,7 +9,8 @@ import { serverNow, useRemaining } from "@/lib/time";
 import { send } from "@/lib/socket";
 import { play, vibrate } from "@/lib/sfx";
 import { act } from "@/lib/useRoom";
-import { Avatar, CoinCount, Icon, usePlayers } from "../ui";
+import { Avatar, CoinCount, Icon, Timer, usePlayers } from "../ui";
+import { AnswerLabel, FORMAT_INPUTS } from "../question/formats";
 import { QuestionView } from "../question/QuestionView";
 import { Confetti } from "../fx";
 import { SkipButton } from "../game/PhasePanel";
@@ -22,6 +23,12 @@ export const uiKit: MinigameUiKit = {
     <QuestionView round={round} display={display} myAnswerOverride={myAnswer} onSubmit={onAnswer} totalAnswerMs={totalAnswerMs} />
   ),
   Icon: (p) => <Icon {...p} />,
+  AnswerInput: ({ question, value, onChange }) => {
+    const Input = FORMAT_INPUTS[question.format];
+    return <Input q={question} value={value} onChange={onChange} />;
+  },
+  AnswerLabel: ({ question, answer, big }) => <AnswerLabel q={question} a={answer} big={big} />,
+  Timer: (p) => <Timer {...p} />,
   play,
   vibrate,
 };

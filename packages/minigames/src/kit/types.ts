@@ -19,6 +19,11 @@ export interface MinigameUiKit {
     totalAnswerMs?: number;
   }>;
   Icon: ComponentType<{ id: string; size?: number; className?: string }>;
+  /** Format-specific answer input (tiles, number slider, player picker, …). */
+  AnswerInput: ComponentType<{ question: PublicQuestionRound["question"]; value: Answer | null; onChange: (a: Answer) => void }>;
+  /** Compact rendering of an answer. */
+  AnswerLabel: ComponentType<{ question: PublicQuestionRound["question"]; answer: Answer | null | undefined; big?: boolean }>;
+  Timer: ComponentType<{ endsAt: number | null; totalMs?: number }>;
   play: (sfx: string, opts?: { volume?: number; rate?: number }) => void;
   vibrate: (pattern: number | number[]) => void;
 }

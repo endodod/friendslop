@@ -1,4 +1,5 @@
 "use client";
+import { MotionConfig } from "framer-motion";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { PLAYER_COLORS } from "@party-game/shared";
@@ -16,7 +17,7 @@ export function RoomClient({ code, display }: { code: string; display: boolean }
   const pub = useStore((s) => s.pub);
 
   return (
-    <>
+    <MotionConfig reducedMotion="user">
       <Toasts />
       <ConnectionBadge />
       <SfxBridge />
@@ -42,7 +43,7 @@ export function RoomClient({ code, display }: { code: string; display: boolean }
       ) : (
         <Lobby code={code} onLeave={leave} />
       )}
-    </>
+    </MotionConfig>
   );
 }
 
@@ -56,7 +57,7 @@ function JoinForm({ code, error, onJoin }: { code: string; error: string | null;
   const [busy, setBusy] = useState(false);
   const pub = useStore((s) => s.pub);
   useEffect(() => {
-    setName(savedName());
+    setName((n) => n || savedName());
     setColor(savedColor() ?? PLAYER_COLORS[0].id);
   }, []);
   const taken = pub?.players.map((p) => p.color) ?? [];

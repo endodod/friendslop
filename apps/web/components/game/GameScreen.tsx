@@ -76,7 +76,7 @@ function TopBar({ compact }: { compact?: boolean }) {
   return (
     <header className="flex items-center gap-3 px-3 py-2">
       <span className="rounded-xl bg-panel-2 px-3 py-1 font-display">
-        {g.mode === "questionDebug" ? "Questions" : `Round ${g.round}/${g.turnCount}`}
+        {g.mode === "questionDebug" ? "Questions" : g.mode === "minigameDebug" ? "Mini-games" : `Round ${g.round}/${g.turnCount}`}
       </span>
       {!compact && g.mode === "board" && active && !FOCUS_PHASES.has(g.phase) && (
         <span className="truncate font-display text-muted">{active.name}&apos;s turn</span>
@@ -116,7 +116,7 @@ export function GameScreen() {
   const [showBoard, setShowBoard] = useState(false);
 
   const display = role === "display";
-  const focus = FOCUS_PHASES.has(g.phase) || g.mode === "questionDebug";
+  const focus = FOCUS_PHASES.has(g.phase) || g.mode !== "board";
   const controllerMode = !display && pub.displays > 0; // same room: phones are controllers
   const myTurn = playerId === g.order[g.activeIndex];
   const selectable = g.phase === "junctionChoice" && myTurn && !display ? (g.junction?.options ?? []) : [];

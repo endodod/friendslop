@@ -11,7 +11,8 @@
     "typecheck": "tsc -p tsconfig.json"
   },
   "dependencies": {
-    "@party-game/shared": "workspace:*"
+    "@party-game/shared": "workspace:*",
+    "zod": "^4.6.7"
   },
   "peerDependencies": {
     "framer-motion": "*",
@@ -21,6 +22,7 @@
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "framer-motion": "^14.14.0",
+    "lucide-react": "^1.73.0",
     "react": "^19.3.1",
     "react-dom": "^19.3.1"
   }

@@ -41,3 +41,21 @@ Defaults picked where the build prompt left room, or where the environment force
 - **Sounds:** Kenney.nl was not reachable from the build environment, so all sounds are synthesized by `scripts/gen-sfx.mjs` (original, CC0). Swap in Kenney packs later by replacing the files in `apps/web/public/sfx/` (same names).
 - **Icons:** game-icons.net SVGs (CC BY 3.0) downloaded into `apps/web/public/icons/`, background square removed so they work as CSS masks. Attribution data in `public/icons/credits.json`, rendered on `/credits`. `star.svg` and `cards.svg` are original.
 - **Fonts:** Lilita One (display) + Inter (body) via `@fontsource` packages, so builds don't depend on Google Fonts at build time.
+
+## Scope changes
+- **Account linking / Steam integration (Milestone 7) is skipped for now** at the product owner's request. What remains in place: the `truthSource` field in the question schema, the data-question scoring rules (×2, target self-check), `DataProvider`-ready types (`PlayerDataBundle`, `DataQuestionGenerator`, an empty generator registry), the Prisma models for linked accounts and snapshots, and the declared Steam questions in `data-steam.json`. Data tiles fall back to normal question tiles because no player has data. The lobby only shows the "data questions" toggle once some player has linked data.
+
+## Mini-games
+- **Mini-game metadata** (name, rules, controls, bonus text, weight) is content; logic + UI are code modules in `packages/minigames/src/<id>/`.
+- **Solo games** share the seed and are played locally; the server recomputes the score from submitted inputs where cheap (Stacker drop timings, Memory flip sequences, Simon presses, Spot-the-odd taps, Count-it, Quick math, Color clash, Higher/lower guesses, Whack hits) and rejects implausible input (reaction < 100 ms, drops < 120 ms, > ~25 typed chars/s, too many answers per second). Since layouts come from the shared seed, a determined cheater could precompute them; this is a friends' game, so that's accepted.
+- **Pump It** is validated per pump on the server (pop points stay secret), and rate-limited to human tapping speed.
+- **Realtime games** (Red Light, Chicken, Musical Chairs) run on the 15 Hz server tick. Red Light ignores holding for 220 ms after the light turns red (latency grace).
+- **Red Light ends when the first player finishes**; everyone else is ranked by distance.
+- **Musical Chairs bonus:** chairs show (and can be taken) 200 ms earlier for bonus players.
+- **Hot Potato** runs several fuses until one player is left; a wrong answer gives a new prompt and a 0.6 s lockout.
+- **Split or Steal** is only picked in 2-player games (`maxPlayers: 2`); an undecided player counts as "split". Payout is created from a 10-coin pot.
+- **Mystery Auction:** sealed bids, total bids capped at your coins, highest bid pays and gets the box (ties → whoever locked in first). Net result is paid out (can be negative).
+- **Duel:** at 3–4 players a third player (least targeted) is the target and answers truthfully; the closer duelist steals 5 coins. At 2 players the challenger guesses about the opponent: within tolerance → challenger steals 5, otherwise the opponent does. Steals are real transfers (`transfers` hook), so no coins are created.
+- **Speed Sync:** match = 2 points, +1 if locked in during the first half of the 8 s window; the target gets 1 per matcher.
+- **Ranking:** 1 point per item in the correct position; the target answers truthfully and scores nothing.
+- **Practice mode:** hosts can start any mini-game directly from the lobby (they then cycle). It doesn't affect board games.

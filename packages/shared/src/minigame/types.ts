@@ -21,6 +21,8 @@ export interface MinigameServices {
   language: Language;
   names: Record<PlayerId, string>;
   allPlayers: PlayerId[];
+  /** Coins at the start of the step (e.g. to cap auction bids). */
+  coins: Record<PlayerId, number>;
   pickQuestion(opts: PickQuestionOptions): ResolvedQuestion | null;
   scoreAnswers(
     question: ResolvedQuestion,
@@ -71,8 +73,12 @@ export interface MiniGameDefinition<State = any, Input = any, Submission = any> 
   /** Called when the time limit is reached; finalize anything pending. */
   onTimeout?(state: State, ctx: MinigameStepCtx): State;
   results(state: State): Placement[];
-  /** Override the default placement → coins payout (e.g. duel steals). */
+  /** Coin transfers between players instead of a payout (e.g. duel steals). Coins can't go below 0. */
+  transfers?(state: State, placements: Placement[]): { from: PlayerId; to: PlayerId; amount: number }[];
+  /** Override the default placement → coins payout. */
   payout?(state: State, placements: Placement[]): Record<PlayerId, number>;
+  /** Players outside `participants` who may still send input (e.g. the duel's third-player target). */
+  extraInputPlayers?(state: State): PlayerId[];
   /** What everyone may see. Never include secrets. */
   publicState(state: State, now: number): unknown;
   /** What one participant may see in addition (own answers, solo seed, bonus info). */
