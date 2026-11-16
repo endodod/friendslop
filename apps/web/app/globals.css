@@ -1,0 +1,91 @@
+@import "tailwindcss";
+@source "../../../packages/minigames/src";
+
+@theme {
+  --font-display: "Lilita One", system-ui, sans-serif;
+  --font-sans: "Inter Variable", system-ui, sans-serif;
+  --color-bg: #0d0b1a;
+  --color-bg-2: #161329;
+  --color-panel: #1f1b38;
+  --color-panel-2: #2a2549;
+  --color-line: #3a3462;
+  --color-ink: #f4f1ff;
+  --color-muted: #a29cc6;
+  --color-accent: #ffc933;
+  --color-good: #2fd27a;
+  --color-bad: #ff4d5e;
+  --color-info: #3d8bff;
+}
+
+:root {
+  color-scheme: dark;
+}
+
+html,
+body {
+  background: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior: none;
+}
+
+body {
+  background-image:
+    radial-gradient(circle at 15% 0%, #2a1f5e55 0, transparent 45%),
+    radial-gradient(circle at 100% 100%, #5e1f4a44 0, transparent 40%);
+  min-height: 100dvh;
+}
+
+.font-display {
+  font-family: var(--font-display);
+  letter-spacing: 0.01em;
+}
+
+/* Icons are SVG masks so they can take any color (currentColor). */
+.icon {
+  display: inline-block;
+  background-color: currentColor;
+  mask-size: contain;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  flex-shrink: 0;
+}
+
+@utility btn {
+  @apply inline-flex items-center justify-center gap-2 rounded-2xl px-5 font-display text-lg min-h-12 select-none transition-[transform,filter,opacity] active:scale-95 disabled:opacity-40 disabled:active:scale-100 cursor-pointer disabled:cursor-not-allowed;
+}
+@utility btn-primary {
+  @apply btn bg-accent text-[#241a00] shadow-[0_5px_0_#b38a12] active:shadow-[0_2px_0_#b38a12] active:translate-y-[3px];
+}
+@utility btn-secondary {
+  @apply btn bg-panel-2 text-ink shadow-[0_5px_0_#15122b] active:shadow-[0_2px_0_#15122b] active:translate-y-[3px];
+}
+@utility btn-ghost {
+  @apply btn bg-transparent text-muted hover:text-ink;
+}
+@utility card {
+  @apply rounded-3xl bg-panel border border-line/70 shadow-[0_10px_40px_#00000055];
+}
+@utility input {
+  @apply w-full rounded-2xl bg-bg-2 border-2 border-line px-4 min-h-12 text-lg outline-none focus:border-accent transition-colors;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translate(0, 0); }
+  20% { transform: translate(-6px, 3px); }
+  40% { transform: translate(5px, -4px); }
+  60% { transform: translate(-4px, -2px); }
+  80% { transform: translate(3px, 4px); }
+}
+.shake {
+  animation: shake 0.35s ease-in-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shake { animation: none; }
+  *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+}

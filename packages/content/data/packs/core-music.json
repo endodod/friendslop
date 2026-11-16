@@ -1,0 +1,191 @@
+{
+  "id": "core-music",
+  "name": "Music",
+  "language": "en",
+  "version": 1,
+  "questions": [
+    {
+      "id": "music.walk-in",
+      "themes": [
+        "music"
+      ],
+      "format": "tiles",
+      "prompt": "Which genre plays when {target} walks into a room?",
+      "answers": [
+        "Epic orchestral",
+        "Lo-fi beats",
+        "Heavy metal",
+        "Cheesy 2000s pop"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "music.aux",
+      "themes": [
+        "music"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s aux privileges get revoked. What did they play?",
+      "answers": [
+        "A 12-minute prog rock song",
+        "The same song 4 times in a row",
+        "An hour of rain sounds",
+        "Their own SoundCloud"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "music.karaoke",
+      "themes": [
+        "music"
+      ],
+      "format": "tiles",
+      "prompt": "{target} grabs the karaoke mic. What are we hearing?",
+      "answers": [
+        "Bohemian Rhapsody",
+        "A Disney song",
+        "Mr. Brightside",
+        "Nothing, they ran away"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "music.shower",
+      "themes": [
+        "music"
+      ],
+      "format": "scale",
+      "prompt": "How loudly does {target} sing in the shower, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "music.concerts",
+      "themes": [
+        "music"
+      ],
+      "format": "number",
+      "prompt": "How many concerts has {target} been to in their whole life?",
+      "number": {
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "tolerance": {
+          "type": "relative",
+          "value": 0.25
+        },
+        "unit": "concerts"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "music.guilty",
+      "themes": [
+        "music"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s secret musical guilty pleasure?",
+      "answers": [
+        "Boy bands",
+        "Musical soundtracks",
+        "Video game soundtracks",
+        "Sad country songs"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "music.band",
+      "themes": [
+        "music"
+      ],
+      "format": "tiles",
+      "prompt": "If {target} joined a band, they'd be…",
+      "answers": [
+        "The singer who can't sing",
+        "The chaotic drummer",
+        "The bassist nobody notices",
+        "The manager taking 50%"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "music.dance",
+      "themes": [
+        "music"
+      ],
+      "format": "scale",
+      "prompt": "How good is {target} on a dance floor, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "music.minutes",
+      "themes": [
+        "music"
+      ],
+      "format": "number",
+      "prompt": "How many minutes of music did {target} stream last year (in thousands)?",
+      "number": {
+        "min": 0,
+        "max": 150,
+        "step": 1,
+        "tolerance": {
+          "type": "relative",
+          "value": 0.3
+        },
+        "unit": "k min"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    }
+  ]
+}

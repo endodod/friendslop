@@ -1,0 +1,471 @@
+[
+ {
+  "id": "food",
+  "source": "https://game-icons.net/1x1/delapouite/hamburger.html",
+  "author": "delapouite",
+  "name": "hamburger",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "music",
+  "source": "https://game-icons.net/1x1/delapouite/musical-notes.html",
+  "author": "delapouite",
+  "name": "musical-notes",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "gaming",
+  "source": "https://game-icons.net/1x1/delapouite/gamepad.html",
+  "author": "delapouite",
+  "name": "gamepad",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "movies",
+  "source": "https://game-icons.net/1x1/delapouite/film-projector.html",
+  "author": "delapouite",
+  "name": "film-projector",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "life",
+  "source": "https://game-icons.net/1x1/delapouite/house.html",
+  "author": "delapouite",
+  "name": "house",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "hypotheticals",
+  "source": "https://game-icons.net/1x1/lorc/uncertainty.html",
+  "author": "lorc",
+  "name": "uncertainty",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "hot-takes",
+  "source": "https://game-icons.net/1x1/carl-olsen/flame.html",
+  "author": "carl-olsen",
+  "name": "flame",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "coin",
+  "source": "https://game-icons.net/1x1/delapouite/two-coins.html",
+  "author": "delapouite",
+  "name": "two-coins",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "coins",
+  "source": "https://game-icons.net/1x1/delapouite/coins.html",
+  "author": "delapouite",
+  "name": "coins",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "coin-loss",
+  "source": "https://game-icons.net/1x1/delapouite/coins-pile.html",
+  "author": "delapouite",
+  "name": "coins-pile",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "question",
+  "source": "https://game-icons.net/1x1/lorc/uncertainty.html",
+  "author": "lorc",
+  "name": "uncertainty",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "data",
+  "source": "https://game-icons.net/1x1/delapouite/database.html",
+  "author": "delapouite",
+  "name": "database",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "shop",
+  "source": "https://game-icons.net/1x1/delapouite/shop.html",
+  "author": "delapouite",
+  "name": "shop",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "duel",
+  "source": "https://game-icons.net/1x1/lorc/crossed-swords.html",
+  "author": "lorc",
+  "name": "crossed-swords",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "start",
+  "source": "https://game-icons.net/1x1/delapouite/checkered-flag.html",
+  "author": "delapouite",
+  "name": "checkered-flag",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "double-dice",
+  "source": "https://game-icons.net/1x1/delapouite/rolling-dices.html",
+  "author": "delapouite",
+  "name": "rolling-dices",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "custom-dice",
+  "source": "https://game-icons.net/1x1/delapouite/dice-six-faces-six.html",
+  "author": "delapouite",
+  "name": "dice-six-faces-six",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "steal",
+  "source": "https://game-icons.net/1x1/delapouite/robber.html",
+  "author": "delapouite",
+  "name": "robber",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "pick-target",
+  "source": "https://game-icons.net/1x1/lorc/archery-target.html",
+  "author": "lorc",
+  "name": "archery-target",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "shield",
+  "source": "https://game-icons.net/1x1/sbed/shield.html",
+  "author": "sbed",
+  "name": "shield",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "peek",
+  "source": "https://game-icons.net/1x1/delapouite/eye-target.html",
+  "author": "delapouite",
+  "name": "eye-target",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "wide-tolerance",
+  "source": "https://game-icons.net/1x1/delapouite/expand.html",
+  "author": "delapouite",
+  "name": "expand",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "swap",
+  "source": "https://game-icons.net/1x1/lorc/swap-bag.html",
+  "author": "lorc",
+  "name": "swap-bag",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "back",
+  "source": "https://game-icons.net/1x1/lorc/return-arrow.html",
+  "author": "lorc",
+  "name": "return-arrow",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "leader-steal",
+  "source": "https://game-icons.net/1x1/lorc/crown.html",
+  "author": "lorc",
+  "name": "crown",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "charity",
+  "source": "https://game-icons.net/1x1/delapouite/receive-money.html",
+  "author": "delapouite",
+  "name": "receive-money",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "coin-rain",
+  "source": "https://game-icons.net/1x1/delapouite/coins-pile.html",
+  "author": "delapouite",
+  "name": "coins-pile",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "drain",
+  "source": "https://game-icons.net/1x1/sbed/water-drop.html",
+  "author": "sbed",
+  "name": "water-drop",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "star-fly",
+  "source": "https://game-icons.net/1x1/lorc/fluffy-wing.html",
+  "author": "lorc",
+  "name": "fluffy-wing",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "teleport",
+  "source": "https://game-icons.net/1x1/lorc/teleport.html",
+  "author": "lorc",
+  "name": "teleport",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "share",
+  "source": "https://game-icons.net/1x1/delapouite/shaking-hands.html",
+  "author": "delapouite",
+  "name": "shaking-hands",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "mind-reader",
+  "source": "https://game-icons.net/1x1/lorc/brain.html",
+  "author": "lorc",
+  "name": "brain",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "open-book",
+  "source": "https://game-icons.net/1x1/lorc/open-book.html",
+  "author": "lorc",
+  "name": "open-book",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "enigma",
+  "source": "https://game-icons.net/1x1/lorc/domino-mask.html",
+  "author": "lorc",
+  "name": "domino-mask",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "trophy",
+  "source": "https://game-icons.net/1x1/lorc/trophy.html",
+  "author": "lorc",
+  "name": "trophy",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "perfect",
+  "source": "https://game-icons.net/1x1/lorc/archery-target.html",
+  "author": "lorc",
+  "name": "archery-target",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "skull",
+  "source": "https://game-icons.net/1x1/lorc/skull-crossed-bones.html",
+  "author": "lorc",
+  "name": "skull-crossed-bones",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "footprints",
+  "source": "https://game-icons.net/1x1/lorc/footprint.html",
+  "author": "lorc",
+  "name": "footprint",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "backpack",
+  "source": "https://game-icons.net/1x1/delapouite/backpack.html",
+  "author": "delapouite",
+  "name": "backpack",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "red-light",
+  "source": "https://game-icons.net/1x1/delapouite/traffic-lights-red.html",
+  "author": "delapouite",
+  "name": "traffic-lights-red",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "chairs",
+  "source": "https://game-icons.net/1x1/delapouite/wooden-chair.html",
+  "author": "delapouite",
+  "name": "wooden-chair",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "chicken",
+  "source": "https://game-icons.net/1x1/delapouite/chicken.html",
+  "author": "delapouite",
+  "name": "chicken",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "reaction",
+  "source": "https://game-icons.net/1x1/lorc/stopwatch.html",
+  "author": "lorc",
+  "name": "stopwatch",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "stacker",
+  "source": "https://game-icons.net/1x1/delapouite/stack.html",
+  "author": "delapouite",
+  "name": "stack",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "balloon",
+  "source": "https://game-icons.net/1x1/lorc/balloons.html",
+  "author": "lorc",
+  "name": "balloons",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "bar",
+  "source": "https://game-icons.net/1x1/delapouite/progression.html",
+  "author": "delapouite",
+  "name": "progression",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "magnifier",
+  "source": "https://game-icons.net/1x1/lorc/magnifying-glass.html",
+  "author": "lorc",
+  "name": "magnifying-glass",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "abacus",
+  "source": "https://game-icons.net/1x1/delapouite/abacus.html",
+  "author": "delapouite",
+  "name": "abacus",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "palette",
+  "source": "https://game-icons.net/1x1/delapouite/palette.html",
+  "author": "delapouite",
+  "name": "palette",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "hourglass",
+  "source": "https://game-icons.net/1x1/lorc/hourglass.html",
+  "author": "lorc",
+  "name": "hourglass",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "keyboard",
+  "source": "https://game-icons.net/1x1/delapouite/keyboard.html",
+  "author": "delapouite",
+  "name": "keyboard",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "calculator",
+  "source": "https://game-icons.net/1x1/delapouite/calculator.html",
+  "author": "delapouite",
+  "name": "calculator",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "mine",
+  "source": "https://game-icons.net/1x1/lorc/land-mine.html",
+  "author": "lorc",
+  "name": "land-mine",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "ice",
+  "source": "https://game-icons.net/1x1/lorc/frozen-block.html",
+  "author": "lorc",
+  "name": "frozen-block",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "bomb",
+  "source": "https://game-icons.net/1x1/lorc/unlit-bomb.html",
+  "author": "lorc",
+  "name": "unlit-bomb",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "potato",
+  "source": "https://game-icons.net/1x1/delapouite/potato.html",
+  "author": "delapouite",
+  "name": "potato",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "split",
+  "source": "https://game-icons.net/1x1/delapouite/money-stack.html",
+  "author": "delapouite",
+  "name": "money-stack",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "auction",
+  "source": "https://game-icons.net/1x1/lorc/gavel.html",
+  "author": "lorc",
+  "name": "gavel",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "thermometer",
+  "source": "https://game-icons.net/1x1/delapouite/thermometer-hot.html",
+  "author": "delapouite",
+  "name": "thermometer-hot",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "pointing",
+  "source": "https://game-icons.net/1x1/lorc/pointing.html",
+  "author": "lorc",
+  "name": "pointing",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "lightning",
+  "source": "https://game-icons.net/1x1/lorc/lightning-frequency.html",
+  "author": "lorc",
+  "name": "lightning-frequency",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "podium",
+  "source": "https://game-icons.net/1x1/delapouite/podium.html",
+  "author": "delapouite",
+  "name": "podium",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "crown",
+  "source": "https://game-icons.net/1x1/lorc/crown.html",
+  "author": "lorc",
+  "name": "crown",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "event",
+  "source": "https://game-icons.net/1x1/lorc/rune-stone.html",
+  "author": "lorc",
+  "name": "rune-stone",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "memory",
+  "source": "https://game-icons.net/1x1/lorc/brain-freeze.html",
+  "author": "lorc",
+  "name": "brain-freeze",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "mole",
+  "source": "https://game-icons.net/1x1/lorc/hammer-drop.html",
+  "author": "lorc",
+  "name": "hammer-drop",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "sound",
+  "source": "https://game-icons.net/1x1/delapouite/speaker.html",
+  "author": "delapouite",
+  "name": "speaker",
+  "license": "CC BY 3.0"
+ }
+]

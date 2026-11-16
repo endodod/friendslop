@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "themes": [
+    { "id": "food", "name": { "en": "Food", "de": "Essen" }, "icon": "food", "color": "#ff8a3d", "description": { "en": "Cravings, crimes against cuisine and midnight snacks.", "de": "Heißhunger, Küchenverbrechen und Mitternachtssnacks." } },
+    { "id": "music", "name": { "en": "Music", "de": "Musik" }, "icon": "music", "color": "#ff6bc6", "description": { "en": "Guilty pleasures and aux-cord crimes.", "de": "Guilty Pleasures und Aux-Kabel-Verbrechen." } },
+    { "id": "gaming", "name": { "en": "Gaming", "de": "Gaming" }, "icon": "gaming", "color": "#3d8bff", "description": { "en": "Rage quits, backlogs and secret skills.", "de": "Rage-Quits, Backlogs und geheime Skills." } },
+    { "id": "movies", "name": { "en": "Movies & Series", "de": "Filme & Serien" }, "icon": "movies", "color": "#b26bff", "description": { "en": "Comfort rewatches and hot takes on cinema.", "de": "Komfort-Rewatches und steile Thesen." } },
+    { "id": "life", "name": { "en": "Life", "de": "Leben" }, "icon": "life", "color": "#2fd27a", "description": { "en": "Habits, chaos and everyday disasters.", "de": "Gewohnheiten, Chaos und Alltagsdesaster." } },
+    { "id": "hypotheticals", "name": { "en": "Hypotheticals", "de": "Was wäre wenn" }, "icon": "hypotheticals", "color": "#2fd6d0", "description": { "en": "Zombie apocalypses, million-euro dilemmas.", "de": "Zombie-Apokalypsen und Millionen-Dilemmas." } },
+    { "id": "hot-takes", "name": { "en": "Hot Takes", "de": "Steile Thesen" }, "icon": "hot-takes", "color": "#ff4d5e", "description": { "en": "Opinions that start fights.", "de": "Meinungen, die Streit auslösen." } }
+  ]
+}

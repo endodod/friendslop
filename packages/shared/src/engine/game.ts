@@ -1,0 +1,985 @@
+import { GAME_CONFIG } from "../config/game";
+import type { ContentBundle } from "../content/schemas";
+import { getFormat, validateAnswer } from "../formats";
+import { localize } from "../i18n";
+import { getBoard, getTile, nextTiles, pickStarTile, tileDef, computeTileTypes } from "../logic/board";
+import { changeCoins, changeStars, placementCoins, standings } from "../logic/economy";
+import { applyEvent, drawEvent } from "../logic/events";
+import { applyTurnStartItem, getItem, log, shopStock } from "../logic/items";
+import {
+  bonusRecipients,
+  generateDataQuestion,
+  leastTargeted,
+  resolveQuestion,
+  scoreQuestion,
+  selectQuestion,
+} from "../logic/questions";
+import type { MinigameServices, MiniGameDefinition } from "../minigame/types";
+import { pick, randInt, shuffle, weightedPick, createRng } from "../rng";
+import { emit, uid, type EngineContext, type Step } from "./context";
+import { fail } from "./errors";
+import type {
+  Answer,
+  BonusStarAward,
+  GameEvent,
+  GameMode,
+  GameState,
+  Phase,
+  PlayerId,
+  QuestionContext,
+  QuestionRound,
+  ResolvedQuestion,
+  RoomState,
+} from "./types";
+import { emptyStats } from "./types";
+
+// ---------------------------------------------------------------------------
+// Actions
+// ---------------------------------------------------------------------------
+export type GameAction =
+  | { type: "roll"; playerId: PlayerId; value?: number }
+  | { type: "useItem"; playerId: PlayerId; itemId: string; targetId?: PlayerId }
+  | { type: "chooseDirection"; playerId: PlayerId; tileId: string }
+  | { type: "shopBuy"; playerId: PlayerId; itemId: string }
+  | { type: "shopLeave"; playerId: PlayerId }
+  | { type: "starBuy"; playerId: PlayerId; buy: boolean }
+  | { type: "duelPick"; playerId: PlayerId; opponentId: PlayerId }
+  | { type: "answer"; playerId: PlayerId; answer: Answer }
+  | { type: "minigameInput"; playerId: PlayerId; input: unknown }
+  | { type: "minigameSubmit"; playerId: PlayerId; submission: unknown }
+  | { type: "continue" };
+
+export interface EngineResult {
+  room: RoomState;
+  events: GameEvent[];
+}
+
+const T = GAME_CONFIG.timers;
+const Q = GAME_CONFIG.question;
+const M = GAME_CONFIG.minigame;
+
+// ---------------------------------------------------------------------------
+// Helpers
+// ---------------------------------------------------------------------------
+interface Draft {
+  room: RoomState;
+  g: GameState;
+  s: Step;
+}
+
+function names(room: RoomState): Record<PlayerId, string> {
+  return Object.fromEntries(room.players.map((p) => [p.id, p.name]));
+}
+
+function activeId(g: GameState): PlayerId {
+  return g.order[g.activeIndex];
+}
+
+function isConnected(room: RoomState, pid: PlayerId): boolean {
+  return room.players.find((p) => p.id === pid)?.connected ?? false;
+}
+
+function goto(d: Draft, phase: Phase, durationMs: number | null) {
+  const { g, s } = d;
+  g.phase = phase;
+  g.phaseStartedAt = s.ctx.now;
+  g.phaseEndsAt = durationMs === null ? null : s.ctx.now + durationMs;
+  emit(s, { type: "phase", phase });
+}
+
+function playerName(d: Draft, pid: PlayerId) {
+  return d.room.players.find((p) => p.id === pid)?.name ?? "?";
+}
+
+function minigameDef(d: Draft, id: string): MiniGameDefinition {
+  const def = d.s.ctx.minigames[id];
+  if (!def) throw new Error(`unknown minigame ${id}`);
+  return def;
+}
+
+// ---------------------------------------------------------------------------
+// Game start
+// ---------------------------------------------------------------------------
+export function createGame(room: RoomState, ctx: EngineContext, mode: GameMode): GameState {
+  const content = ctx.content;
+  const board = getBoard(content, room.settings.boardId);
+  const tileTypes = computeTileTypes(board, content, room.settings.pacing, ctx.rng);
+  const order = shuffle(
+    ctx.rng,
+    room.players.map((p) => p.id),
+  );
+  const g: GameState = {
+    mode,
+    matchId: uid(ctx.rng),
+    startedAt: ctx.now,
+    phase: "gameStart",
+    phaseStartedAt: ctx.now,
+    phaseEndsAt: ctx.now + T.gameStartMs,
+    round: 1,
+    turnCount: room.settings.turnCount,
+    order,
+    activeIndex: 0,
+    players: Object.fromEntries(
+      room.players.map((p) => [
+        p.id,
+        {
+          id: p.id,
+          coins: GAME_CONFIG.economy.startCoins,
+          stars: GAME_CONFIG.economy.startStars,
+          tileId: board.startTileId,
+          items: [],
+          effects: { shield: false },
+          stats: emptyStats(),
+        },
+      ]),
+    ),
+    boardId: board.id,
+    tileTypes,
+    starTileId: "",
+    dice: null,
+    pendingDice: null,
+    movement: null,
+    junction: null,
+    tileResult: null,
+    question: null,
+    shop: null,
+    event: null,
+    star: null,
+    duel: null,
+    minigame: null,
+    targetOverride: null,
+    history: { questionIds: [], lastThemeId: null, minigamesPlayed: [], targetCounts: {} },
+    bonusStars: null,
+    finalRanking: null,
+    log: [],
+  };
+  g.starTileId = pickStarTile(board, content, g, ctx.rng);
+  return g;
+}
+
+export function startGame(room: RoomState, ctx: EngineContext, mode: GameMode = "board"): EngineResult {
+  const g = createGame(room, ctx, mode);
+  const next: RoomState = { ...room, stage: "game", game: g, players: room.players.map((p) => ({ ...p, ready: false })) };
+  const events: GameEvent[] = [{ type: "phase", phase: "gameStart" }];
+  return { room: next, events };
+}
+
+// ---------------------------------------------------------------------------
+// Entry points
+// ---------------------------------------------------------------------------
+function withDraft(room: RoomState, ctx: EngineContext, fn: (d: Draft) => void): EngineResult {
+  if (!room.game) fail("WRONG_PHASE", "No game running.");
+  const draft = structuredClone(room);
+  const d: Draft = { room: draft, g: draft.game!, s: { ctx, events: [] } };
+  fn(d);
+  return { room: draft, events: d.s.events };
+}
+
+export function applyGameAction(room: RoomState, action: GameAction, ctx: EngineContext, isHost = false): EngineResult {
+  return withDraft(room, ctx, (d) => handleAction(d, action, isHost));
+}
+
+/** Called by the server loop (~15Hz). Handles timeouts, disconnect autoplay and realtime mini-games. */
+export function tickGame(room: RoomState, ctx: EngineContext): EngineResult | null {
+  const g = room.game;
+  if (!g) return null;
+  const now = ctx.now;
+  const needsMinigameTick = g.phase === "minigamePlaying" && g.minigame && ctx.minigames[g.minigame.id]?.tick;
+  const timedOut = g.phaseEndsAt !== null && now >= g.phaseEndsAt;
+  const autoplay = shouldAutoplay(room, g, now);
+  const mgFinished =
+    g.phase === "minigamePlaying" && g.minigame && ctx.minigames[g.minigame.id]?.isFinished(g.minigame.state, now);
+  if (!needsMinigameTick && !timedOut && !autoplay && !mgFinished) return null;
+  return withDraft(room, ctx, (d) => {
+    if (d.g.phase === "minigamePlaying" && d.g.minigame) {
+      const def = minigameDef(d, d.g.minigame.id);
+      if (def.tick) d.g.minigame.state = def.tick(d.g.minigame.state, mgStepCtx(d));
+      if (def.isFinished(d.g.minigame.state, now)) return finishMinigame(d);
+    }
+    if (timedOut || autoplay) onTimeout(d);
+  });
+}
+
+/** Phases that wait for one specific player (the active one). */
+function awaitingActive(phase: Phase): boolean {
+  return ["turnStart", "junctionChoice", "shop", "starPurchase", "duel"].includes(phase);
+}
+
+function shouldAutoplay(room: RoomState, g: GameState, now: number): boolean {
+  let waitingOn: PlayerId | null = null;
+  if (awaitingActive(g.phase)) waitingOn = g.phase === "duel" ? (g.duel?.challengerId ?? null) : activeId(g);
+  if (!waitingOn) return false;
+  const p = room.players.find((x) => x.id === waitingOn);
+  if (!p || p.connected) return false;
+  const since = Math.max(g.phaseStartedAt, p.disconnectedAt ?? 0);
+  return now - since >= T.disconnectedAutoplayMs;
+}
+
+/** Re-evaluate after a connection change (e.g. everyone left answered → reveal early). */
+export function onConnectionChange(room: RoomState, ctx: EngineContext): EngineResult | null {
+  const g = room.game;
+  if (!g?.question || g.question.stage !== "answering") return null;
+  return withDraft(room, ctx, (d) => maybeEndAnswering(d));
+}
+
+// ---------------------------------------------------------------------------
+// Action handling
+// ---------------------------------------------------------------------------
+function requireActive(d: Draft, pid: PlayerId) {
+  if (activeId(d.g) !== pid) fail("NOT_YOUR_TURN", "It's not your turn.");
+}
+function requirePhase(d: Draft, ...phases: Phase[]) {
+  if (!phases.includes(d.g.phase)) fail("WRONG_PHASE", "You can't do that right now.");
+}
+
+function handleAction(d: Draft, a: GameAction, isHost: boolean): void {
+  const { g } = d;
+  switch (a.type) {
+    case "roll": {
+      requirePhase(d, "turnStart");
+      requireActive(d, a.playerId);
+      return doRoll(d, a.value);
+    }
+    case "useItem":
+      return useItem(d, a.playerId, a.itemId, a.targetId);
+    case "chooseDirection": {
+      requirePhase(d, "junctionChoice");
+      requireActive(d, a.playerId);
+      if (!g.junction?.options.includes(a.tileId)) fail("INVALID_INPUT", "You can't go that way.");
+      return takeDirection(d, a.tileId);
+    }
+    case "shopBuy": {
+      requirePhase(d, "shop");
+      requireActive(d, a.playerId);
+      return shopBuy(d, a.playerId, a.itemId);
+    }
+    case "shopLeave": {
+      requirePhase(d, "shop");
+      requireActive(d, a.playerId);
+      return turnEnd(d);
+    }
+    case "starBuy": {
+      requirePhase(d, "starPurchase");
+      requireActive(d, a.playerId);
+      return resolveStar(d, a.buy);
+    }
+    case "duelPick": {
+      requirePhase(d, "duel");
+      if (g.duel?.challengerId !== a.playerId) fail("NOT_YOUR_TURN", "Not your duel.");
+      if (a.opponentId === a.playerId || !g.players[a.opponentId]) fail("INVALID_INPUT", "Pick an opponent.");
+      return startDuel(d, a.opponentId);
+    }
+    case "answer":
+      return answerQuestion(d, a.playerId, a.answer);
+    case "minigameInput":
+    case "minigameSubmit": {
+      requirePhase(d, "minigamePlaying");
+      const mg = g.minigame!;
+      if (!mg.participants.includes(a.playerId)) fail("INVALID_INPUT", "You're not in this mini-game.");
+      const def = minigameDef(d, mg.id);
+      if (a.type === "minigameInput") {
+        if (!def.onInput) fail("INVALID_INPUT", "This mini-game takes no input.");
+        const parsed = def.inputSchema ? def.inputSchema.safeParse(a.input) : { success: true as const, data: a.input };
+        if (!parsed.success) fail("INVALID_INPUT", "Invalid mini-game input.");
+        mg.state = def.onInput(mg.state, a.playerId, parsed.data, mgStepCtx(d));
+      } else {
+        if (!def.onSubmit) fail("INVALID_INPUT", "This mini-game takes no submissions.");
+        const parsed = def.submitSchema ? def.submitSchema.safeParse(a.submission) : { success: true as const, data: a.submission };
+        if (!parsed.success) fail("INVALID_INPUT", "Invalid mini-game result.");
+        mg.state = def.onSubmit(mg.state, a.playerId, parsed.data, mgStepCtx(d));
+      }
+      if (def.isFinished(mg.state, d.s.ctx.now)) finishMinigame(d);
+      return;
+    }
+    case "continue": {
+      if (!isHost) fail("NOT_HOST", "Only the host can skip.");
+      const skippable: Phase[] = ["gameStart", "tileEffect", "event", "roundEnd", "minigameIntro", "minigameResults", "gameEnd", "turnEnd"];
+      if (skippable.includes(g.phase)) return onTimeout(d);
+      if ((g.phase === "questionRound" || g.phase === "minigameQuestion") && g.question?.stage !== "answering")
+        return onTimeout(d);
+      fail("WRONG_PHASE", "Nothing to skip.");
+    }
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Timeouts: the default action of every phase
+// ---------------------------------------------------------------------------
+function onTimeout(d: Draft) {
+  const { g, s } = d;
+  switch (g.phase) {
+    case "gameStart":
+      if (g.mode === "questionDebug") return startQuestionRound(d, "debug", pickDebugTarget(d));
+      return turnStart(d);
+    case "turnStart":
+      return doRoll(d, g.pendingDice?.kind === "custom" ? randInt(s.ctx.rng, 1, 6) : undefined);
+    case "rolling":
+      g.movement = { remaining: g.dice!.total, path: [], next: "landed" };
+      return advanceMovement(d);
+    case "moving":
+      return afterMovement(d);
+    case "junctionChoice":
+      return takeDirection(d, pick(s.ctx.rng, g.junction!.options));
+    case "tileEffect":
+    case "event":
+      return turnEnd(d);
+    case "questionRound":
+    case "minigameQuestion":
+      return advanceQuestionStage(d);
+    case "shop":
+      return turnEnd(d);
+    case "starPurchase": {
+      const p = g.players[activeId(g)];
+      return resolveStar(d, p.coins >= GAME_CONFIG.economy.starCost);
+    }
+    case "duel": {
+      const others = g.order.filter((p) => p !== g.duel!.challengerId);
+      return startDuel(d, pick(s.ctx.rng, others));
+    }
+    case "turnEnd":
+      return nextTurn(d);
+    case "roundEnd":
+      return startRoundMinigame(d);
+    case "minigameIntro":
+      return afterMinigameIntro(d);
+    case "minigameCountdown":
+      return startMinigamePlay(d);
+    case "minigamePlaying": {
+      const mg = g.minigame!;
+      const def = minigameDef(d, mg.id);
+      if (def.onTimeout) mg.state = def.onTimeout(mg.state, mgStepCtx(d));
+      return finishMinigame(d);
+    }
+    case "minigameResults":
+      return afterMinigameResults(d);
+    case "gameEnd":
+      return startBonusStars(d);
+    case "bonusStars":
+      return revealNextBonusStar(d);
+    case "podium":
+      return;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Turn flow
+// ---------------------------------------------------------------------------
+function turnStart(d: Draft) {
+  const { g } = d;
+  g.dice = null;
+  g.pendingDice = null;
+  g.movement = null;
+  g.junction = null;
+  g.tileResult = null;
+  g.shop = null;
+  g.event = null;
+  g.star = null;
+  g.duel = null;
+  g.question = null;
+  goto(d, "turnStart", T.turnStartMs);
+}
+
+function doRoll(d: Draft, value?: number) {
+  const { g, s } = d;
+  const rng = s.ctx.rng;
+  const pid = activeId(g);
+  let values: number[];
+  let kind: "normal" | "double" | "custom" = "normal";
+  if (g.pendingDice?.kind === "custom") {
+    kind = "custom";
+    values = [Math.min(6, Math.max(1, value ?? randInt(rng, 1, 6)))];
+  } else if (g.pendingDice?.kind === "double") {
+    kind = "double";
+    values = [randInt(rng, 1, GAME_CONFIG.dice.sides), randInt(rng, 1, GAME_CONFIG.dice.sides)];
+  } else {
+    values = [randInt(rng, 1, GAME_CONFIG.dice.sides)];
+  }
+  g.dice = { values, total: values.reduce((a, b) => a + b, 0), kind };
+  g.pendingDice = null;
+  emit(s, { type: "diceRolled", playerId: pid, values });
+  goto(d, "rolling", T.rollingMs);
+}
+
+/** Walk until done, a junction, or passing the star. */
+function advanceMovement(d: Draft) {
+  const { g, s } = d;
+  const board = getBoard(s.ctx.content, g.boardId);
+  const pid = activeId(g);
+  const p = g.players[pid];
+  const mv = g.movement!;
+  const path: string[] = [];
+  let stop: "junction" | "starPass" | "landed" = "landed";
+  while (mv.remaining > 0) {
+    const options = nextTiles(board, p.tileId);
+    let to: string;
+    if (options.length > 1) {
+      if (!mv.chosen || !options.includes(mv.chosen)) {
+        stop = "junction";
+        break;
+      }
+      to = mv.chosen;
+      delete mv.chosen;
+    } else to = options[0];
+    p.tileId = to;
+    mv.remaining--;
+    path.push(to);
+    p.stats.stepsMoved++;
+    if (to === g.starTileId && mv.remaining > 0) {
+      stop = "starPass";
+      break;
+    }
+  }
+  mv.path = path;
+  mv.next = stop;
+  if (path.length) {
+    emit(s, { type: "tokenMoved", playerId: pid, path });
+    goto(d, "moving", path.length * T.hopMs + 250);
+  } else afterMovement(d);
+}
+
+function afterMovement(d: Draft) {
+  const { g, s } = d;
+  const board = getBoard(s.ctx.content, g.boardId);
+  const p = g.players[activeId(g)];
+  const mv = g.movement!;
+  if (mv.next === "junction") {
+    g.junction = { tileId: p.tileId, options: nextTiles(board, p.tileId) };
+    return goto(d, "junctionChoice", T.junctionMs);
+  }
+  if (mv.next === "starPass") {
+    g.star = { passing: true };
+    return goto(d, "starPurchase", T.starPurchaseMs);
+  }
+  return land(d);
+}
+
+function takeDirection(d: Draft, tileId: string) {
+  const { g } = d;
+  g.movement!.chosen = tileId;
+  g.junction = null;
+  advanceMovement(d);
+}
+
+function land(d: Draft) {
+  const { g, s } = d;
+  const pid = activeId(g);
+  const p = g.players[pid];
+  if (p.tileId === g.starTileId) {
+    g.star = { passing: false };
+    return goto(d, "starPurchase", T.starPurchaseMs);
+  }
+  const type = g.tileTypes[p.tileId] ?? getTile(getBoard(s.ctx.content, g.boardId), p.tileId).type;
+  const def = tileDef(s.ctx.content, type);
+  g.tileResult = { tileId: p.tileId, type };
+  switch (def.effect) {
+    case "coins": {
+      const amount = def.params.amount ?? 0;
+      const delta = changeCoins(g, s, pid, amount, `tile:${type}`);
+      g.tileResult.coinsDelta = delta;
+      if (amount > 0) p.stats.blueTiles++;
+      else p.stats.redTiles++;
+      emit(s, { type: "sfx", id: amount > 0 ? "coin" : "bad" });
+      return goto(d, "tileEffect", T.tileEffectMs);
+    }
+    case "question":
+      return startQuestionRound(d, "tile", pid);
+    case "data":
+      return startQuestionRound(d, "dataTile", pid);
+    case "event": {
+      const card = drawEvent(s);
+      p.stats.eventsDrawn++;
+      const res = applyEvent(g, s, card, pid, names(d.room));
+      g.event = { cardId: card.id, ...res };
+      log(g, s, res.text, pid);
+      emit(s, { type: "eventDrawn", cardId: card.id });
+      return goto(d, "event", T.eventMs);
+    }
+    case "shop":
+      g.shop = { stock: shopStock(s.ctx.content, s), bought: [] };
+      return goto(d, "shop", T.shopMs);
+    case "duel": {
+      if (!s.ctx.minigames.duel) return goto(d, "tileEffect", 900);
+      g.duel = { challengerId: pid, opponentId: null };
+      const others = g.order.filter((x) => x !== pid);
+      if (others.length === 1) return startDuel(d, others[0]);
+      return goto(d, "duel", T.duelPickMs);
+    }
+    case "none":
+    default:
+      return goto(d, "tileEffect", 900);
+  }
+}
+
+function resolveStar(d: Draft, buy: boolean) {
+  const { g, s } = d;
+  const pid = activeId(g);
+  const p = g.players[pid];
+  const cost = GAME_CONFIG.economy.starCost;
+  if (buy && p.coins >= cost) {
+    changeCoins(g, s, pid, -cost, "star");
+    changeStars(g, s, pid, 1, "bought");
+    p.stats.starsBought++;
+    log(g, s, `${playerName(d, pid)} bought a star!`, pid);
+    emit(s, { type: "sfx", id: "star" });
+    g.starTileId = pickStarTile(getBoard(s.ctx.content, g.boardId), s.ctx.content, g, s.ctx.rng);
+    emit(s, { type: "starMoved", tileId: g.starTileId });
+  }
+  const passing = g.star?.passing;
+  g.star = null;
+  if (passing && g.movement && g.movement.remaining > 0) return advanceMovement(d);
+  return turnEnd(d);
+}
+
+function shopBuy(d: Draft, pid: PlayerId, itemId: string) {
+  const { g, s } = d;
+  if (!g.shop?.stock.includes(itemId)) fail("INVALID_INPUT", "That's not for sale here.");
+  const item = getItem(s.ctx.content, itemId);
+  const p = g.players[pid];
+  if (p.items.length >= GAME_CONFIG.economy.maxItems) fail("INVENTORY_FULL", "You can only carry 3 items.");
+  if (p.coins < item.price) fail("NOT_ENOUGH_COINS", "Not enough coins.");
+  changeCoins(g, s, pid, -item.price, "shop");
+  p.items.push(itemId);
+  g.shop.bought.push(itemId);
+  emit(s, { type: "itemBought", playerId: pid, itemId });
+  emit(s, { type: "sfx", id: "buy" });
+}
+
+function useItem(d: Draft, pid: PlayerId, itemId: string, targetId?: PlayerId) {
+  const { g, s } = d;
+  const p = g.players[pid];
+  if (!p) fail("UNKNOWN_PLAYER", "Unknown player.");
+  const idx = p.items.indexOf(itemId);
+  if (idx < 0) fail("INVALID_INPUT", "You don't have that item.");
+  const item = getItem(s.ctx.content, itemId);
+  if (item.useTiming === "passive") fail("INVALID_INPUT", `${localize(item.name)} works automatically.`);
+  if (item.useTiming === "turnStart") {
+    requirePhase(d, "turnStart");
+    requireActive(d, pid);
+    applyTurnStartItem(g, s, pid, item, targetId);
+  } else {
+    // onQuestion: during the answering stage of a round you're guessing in, before locking in.
+    const q = g.question;
+    if (!q || q.stage !== "answering" || (g.phase !== "questionRound" && g.phase !== "minigameQuestion"))
+      fail("WRONG_PHASE", "Use this during a question.");
+    if (!q.participants.includes(pid) || q.targetId === pid) fail("INVALID_INPUT", "Only guessers can use this.");
+    if (q.answers[pid]) fail("INVALID_INPUT", "You already locked in.");
+    const boost = (q.boosts[pid] ??= {});
+    if (item.effect === "peek") {
+      if (!getFormat(q.question.format).discrete) fail("INVALID_INPUT", "Peek only works on multiple-choice questions.");
+      boost.peek = true;
+    } else if (item.effect === "wideTolerance") {
+      if (!getFormat(q.question.format).usesTolerance) fail("INVALID_INPUT", "Only works on number questions.");
+      boost.wide = true;
+    } else fail("INVALID_INPUT", "Can't use that now.");
+  }
+  p.items.splice(idx, 1);
+  p.stats.itemsUsed++;
+  emit(s, { type: "itemUsed", playerId: pid, itemId, targetId });
+  log(g, s, `${playerName(d, pid)} used ${localize(item.name)}${targetId ? ` on ${playerName(d, targetId)}` : ""}.`, pid);
+}
+
+function turnEnd(d: Draft) {
+  goto(d, "turnEnd", T.turnEndMs);
+}
+
+function nextTurn(d: Draft) {
+  const { g } = d;
+  g.activeIndex++;
+  if (g.activeIndex >= g.order.length) {
+    g.activeIndex = 0;
+    g.question = null;
+    return goto(d, "roundEnd", T.roundEndMs);
+  }
+  turnStart(d);
+}
+
+// ---------------------------------------------------------------------------
+// Question rounds
+// ---------------------------------------------------------------------------
+function pickDebugTarget(d: Draft): PlayerId {
+  return leastTargeted(d.s.ctx.rng, d.g.order, d.g.history.targetCounts);
+}
+
+function questionServices(d: Draft): MinigameServices {
+  const { g, s, room } = d;
+  const nm = names(room);
+  return {
+    language: room.settings.language,
+    names: nm,
+    allPlayers: [...g.order],
+    pickQuestion: (opts) => {
+      const participants = opts.participants ?? g.order;
+      if (opts.allowData && room.settings.dataQuestions) {
+        const dq = generateDataQuestion({
+          targetId: opts.targetId,
+          data: s.ctx.playerData,
+          names: nm,
+          generators: s.ctx.generators,
+          content: s.ctx.content,
+          history: g.history,
+          rng: s.ctx.rng,
+          formats: opts.formats,
+        });
+        if (dq) {
+          g.history.questionIds.push(dq.id);
+          return dq;
+        }
+      }
+      const sel = selectQuestion({
+        content: s.ctx.content,
+        settings: room.settings,
+        history: g.history,
+        rng: s.ctx.rng,
+        usage: opts.usage,
+        playerCount: participants.length,
+        formats: opts.formats,
+        tags: opts.tags,
+      });
+      if (!sel) return null;
+      g.history.questionIds.push(sel.question.id);
+      const rq = resolveQuestion(sel.question, sel.pack, {
+        targetId: opts.targetId,
+        names: nm,
+        participants,
+        rng: s.ctx.rng,
+        language: room.settings.language,
+        enabledThemes: room.settings.themes,
+      });
+      g.history.lastThemeId = rq.themeId;
+      return rq;
+    },
+    scoreAnswers: (question, targetId, participants, answers) =>
+      scoreQuestion({ question, targetId, participants, answers, payCoins: false }),
+    validateAnswer,
+    leastTargeted: (cands) => leastTargeted(s.ctx.rng, cands, g.history.targetCounts),
+    noteTargeted: (pid) => {
+      g.history.targetCounts[pid] = (g.history.targetCounts[pid] ?? 0) + 1;
+    },
+  };
+}
+
+function startQuestionRound(d: Draft, context: QuestionContext, targetId: PlayerId) {
+  const { g, s } = d;
+  // Pick the Target item overrides the next round's target.
+  if (g.targetOverride && context !== "debug") {
+    targetId = g.targetOverride.targetId;
+    g.targetOverride = null;
+  }
+  const services = questionServices(d);
+  const usage = context === "minigameIntro" ? "minigameIntro" : "tile";
+  const wantsData = context === "dataTile";
+  let question: ResolvedQuestion | null = null;
+  if (wantsData) question = services.pickQuestion({ targetId, usage, allowData: true });
+  else question = services.pickQuestion({ targetId, usage });
+  if (!question) {
+    // No content available at all: skip gracefully.
+    log(g, s, "No questions available for the enabled themes.");
+    return context === "minigameIntro" ? goto(d, "minigameCountdown", M.countdownMs) : turnEnd(d);
+  }
+  services.noteTargeted(targetId);
+  g.players[targetId].stats.timesTarget++;
+  const participants = [...g.order];
+  const round: QuestionRound = {
+    uid: uid(s.ctx.rng),
+    context: context === "dataTile" && !question.isData ? "tile" : context,
+    targetId,
+    participants,
+    question,
+    stage: "intro",
+    stageStartedAt: s.ctx.now,
+    stageEndsAt: s.ctx.now + Q.introMs,
+    answers: {},
+    answeredAt: {},
+    boosts: {},
+    result: null,
+    revealOrder: [...shuffle(s.ctx.rng, participants.filter((p) => p !== targetId)), targetId],
+    multiplier: question.isData ? Q.dataMultiplier : 1,
+    payCoins: context !== "minigameIntro",
+  };
+  g.question = round;
+  goto(d, context === "minigameIntro" ? "minigameQuestion" : "questionRound", Q.introMs);
+}
+
+function setStage(d: Draft, stage: QuestionRound["stage"], ms: number) {
+  const q = d.g.question!;
+  q.stage = stage;
+  q.stageStartedAt = d.s.ctx.now;
+  q.stageEndsAt = d.s.ctx.now + ms;
+  d.g.phaseStartedAt = d.s.ctx.now;
+  d.g.phaseEndsAt = q.stageEndsAt;
+}
+
+function answerQuestion(d: Draft, pid: PlayerId, answer: Answer): void {
+  const { g, s } = d;
+  const q = g.question;
+  if (!q || (g.phase !== "questionRound" && g.phase !== "minigameQuestion")) {
+    // Question-only mini-games route answers through minigame input.
+    if (g.phase === "minigamePlaying") return handleAction(d, { type: "minigameInput", playerId: pid, input: { answer } }, false);
+    fail("WRONG_PHASE", "No question right now.");
+  }
+  if (q.stage !== "answering") fail("WRONG_PHASE", "Answers are closed.");
+  if (!q.participants.includes(pid)) fail("INVALID_INPUT", "You're not answering this one.");
+  if (q.answers[pid]) fail("INVALID_INPUT", "Already locked in.");
+  if (!validateAnswer(q.question, answer)) fail("INVALID_INPUT", "Invalid answer.");
+  q.answers[pid] = answer;
+  q.answeredAt[pid] = s.ctx.now;
+  emit(s, { type: "answerLocked", playerId: pid });
+  maybeEndAnswering(d);
+}
+
+function maybeEndAnswering(d: Draft) {
+  const q = d.g.question!;
+  const waiting = q.participants.filter((p) => !q.answers[p] && isConnected(d.room, p));
+  if (waiting.length === 0) enterReveal(d);
+}
+
+function advanceQuestionStage(d: Draft) {
+  const q = d.g.question!;
+  switch (q.stage) {
+    case "intro":
+      return setStage(d, "answering", Q.answerMs);
+    case "answering":
+      return enterReveal(d);
+    case "reveal":
+      return enterResults(d);
+    case "results":
+      return questionDone(d);
+  }
+}
+
+function enterReveal(d: Draft) {
+  const { g, s } = d;
+  const q = g.question!;
+  q.result = scoreQuestion({
+    question: q.question,
+    targetId: q.targetId,
+    participants: q.participants,
+    answers: q.answers,
+    boosts: q.boosts,
+    multiplier: q.multiplier,
+    payCoins: q.payCoins,
+  });
+  const guessers = q.participants.length - 1;
+  setStage(d, "reveal", guessers * Q.revealPerAnswerMs + Q.targetRevealMs + 600);
+  emit(s, { type: "questionRevealed" });
+}
+
+function enterResults(d: Draft) {
+  const { g, s } = d;
+  const q = g.question!;
+  const r = q.result!;
+  const matched = Object.entries(r.perPlayer).filter(([pid, x]) => x.match && pid !== q.targetId).map(([pid]) => pid);
+  const perfect = Object.entries(r.perPlayer).filter(([pid, x]) => x.perfect && pid !== q.targetId).map(([pid]) => pid);
+  for (const [pid, res] of Object.entries(r.perPlayer)) {
+    const st = g.players[pid]?.stats;
+    if (!st) continue;
+    if (!res.isTarget) {
+      st.guesses++;
+      if (res.match) st.matchesMade++;
+      if (res.perfect && res.match) st.perfectMatches++;
+    }
+    if (res.coins) changeCoins(g, s, pid, res.coins, "question");
+  }
+  const tst = g.players[q.targetId]?.stats;
+  if (tst) {
+    tst.matchedAsTarget += r.matchedCount;
+    if (r.targetSelfCorrect === true) tst.dataSelfCorrect++;
+    if (r.targetSelfCorrect === false) tst.dataSelfWrong++;
+  }
+  emit(s, { type: "matchRevealed", playerIds: matched, perfectIds: perfect });
+  emit(s, { type: "sfx", id: matched.length ? "match" : "miss" });
+  setStage(d, "results", Q.resultsMs);
+}
+
+function questionDone(d: Draft) {
+  const { g } = d;
+  const q = g.question!;
+  switch (q.context) {
+    case "tile":
+    case "dataTile":
+      return turnEnd(d);
+    case "debug":
+      return startQuestionRound(d, "debug", pickDebugTarget(d));
+    case "minigameIntro": {
+      g.minigame!.bonuses = bonusRecipients(q.result!, q.targetId).filter((p) => g.minigame!.participants.includes(p));
+      return goto(d, "minigameCountdown", M.countdownMs);
+    }
+    default:
+      return turnEnd(d);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Mini-games
+// ---------------------------------------------------------------------------
+function mgStepCtx(d: Draft) {
+  return { now: d.s.ctx.now, rng: d.s.ctx.rng, services: questionServices(d) };
+}
+
+export function eligibleMinigames(content: ContentBundle, registry: Record<string, MiniGameDefinition>, players: number) {
+  return content.minigames.filter((m) => {
+    const def = registry[m.id];
+    return (
+      def &&
+      m.enabled &&
+      m.weight > 0 &&
+      m.id !== "duel" &&
+      def.minPlayers <= players &&
+      (def.maxPlayers ?? 4) >= players
+    );
+  });
+}
+
+function startRoundMinigame(d: Draft) {
+  const { g, s } = d;
+  const pool = eligibleMinigames(s.ctx.content, s.ctx.minigames, g.order.length);
+  if (!pool.length) return afterMinigameResults(d);
+  let fresh = pool.filter((m) => !g.history.minigamesPlayed.includes(m.id));
+  if (!fresh.length) {
+    // Everything played: start a new cycle (but don't repeat the very last one).
+    const last = g.history.minigamesPlayed[g.history.minigamesPlayed.length - 1];
+    g.history.minigamesPlayed = [];
+    fresh = pool.length > 1 ? pool.filter((m) => m.id !== last) : pool;
+  }
+  const meta = weightedPick(s.ctx.rng, fresh, (m) => m.weight)!;
+  g.history.minigamesPlayed.push(meta.id);
+  setupMinigame(d, meta.id, "round", [...g.order]);
+}
+
+function setupMinigame(d: Draft, id: string, origin: "round" | "duel", participants: PlayerId[]) {
+  const { g, s } = d;
+  const def = minigameDef(d, id);
+  g.minigame = {
+    id,
+    kind: def.kind,
+    origin,
+    participants,
+    bonuses: [],
+    seed: Math.floor(s.ctx.rng() * 2 ** 31),
+    startedAt: 0,
+    endsAt: 0,
+    state: null,
+    placements: null,
+    payout: null,
+    introTargetId: null,
+  };
+  goto(d, "minigameIntro", origin === "duel" ? 4500 : M.introMs);
+}
+
+function afterMinigameIntro(d: Draft) {
+  const { g, s } = d;
+  const mg = g.minigame!;
+  if (mg.kind === "questionOnly") return goto(d, "minigameCountdown", M.countdownMs);
+  const target = g.targetOverride?.targetId ?? leastTargeted(s.ctx.rng, mg.participants, g.history.targetCounts);
+  mg.introTargetId = target;
+  startQuestionRound(d, "minigameIntro", target);
+}
+
+function startMinigamePlay(d: Draft) {
+  const { g, s } = d;
+  const mg = g.minigame!;
+  const def = minigameDef(d, mg.id);
+  g.question = null;
+  mg.startedAt = s.ctx.now;
+  mg.endsAt = s.ctx.now + def.durationSec * 1000;
+  mg.state = def.init({
+    players: mg.participants,
+    bonuses: mg.bonuses,
+    seed: mg.seed,
+    rng: createRng(mg.seed ^ 0x5bd1e995),
+    now: s.ctx.now,
+    services: questionServices(d),
+  });
+  emit(s, { type: "minigameStarted", id: mg.id });
+  goto(d, "minigamePlaying", def.durationSec * 1000 + M.graceMs);
+}
+
+function finishMinigame(d: Draft) {
+  const { g, s } = d;
+  const mg = g.minigame!;
+  const def = minigameDef(d, mg.id);
+  const placements = def.results(mg.state);
+  mg.placements = placements;
+  const payout = def.payout
+    ? def.payout(mg.state, placements)
+    : Object.fromEntries(
+        placements.map((p) => [p.playerId, placementCoins(M.placementCoins, mg.participants.length, p.rank)]),
+      );
+  mg.payout = payout;
+  for (const [pid, coins] of Object.entries(payout)) if (coins) changeCoins(g, s, pid, coins, `minigame:${mg.id}`);
+  for (const p of placements) {
+    const st = g.players[p.playerId]?.stats;
+    if (!st) continue;
+    st.minigamesPlayed++;
+    if (p.rank === 1) st.minigameWins++;
+  }
+  emit(s, { type: "minigameFinished", id: mg.id });
+  emit(s, { type: "sfx", id: "win" });
+  goto(d, "minigameResults", M.resultsMs);
+}
+
+function startDuel(d: Draft, opponentId: PlayerId) {
+  const { g } = d;
+  g.duel = { challengerId: g.duel?.challengerId ?? activeId(g), opponentId };
+  setupMinigame(d, "duel", "duel", [g.duel.challengerId, opponentId]);
+}
+
+function afterMinigameResults(d: Draft) {
+  const { g } = d;
+  const origin = g.minigame?.origin;
+  g.minigame = null;
+  if (origin === "duel") return turnEnd(d);
+  g.round++;
+  if (g.round > g.turnCount) {
+    g.round = g.turnCount;
+    return goto(d, "gameEnd", T.gameEndMs);
+  }
+  g.activeIndex = 0;
+  turnStart(d);
+}
+
+// ---------------------------------------------------------------------------
+// Game end
+// ---------------------------------------------------------------------------
+export function computeBonusStars(g: GameState, content: ContentBundle, rng: () => number): BonusStarAward[] {
+  const { min, max } = GAME_CONFIG.bonusStars.count;
+  const count = Math.min(content.bonusStars.length, min + Math.floor(rng() * (max - min + 1)));
+  const chosen = shuffle(rng, content.bonusStars).slice(0, count);
+  return chosen.map((b) => {
+    const eligible = Object.values(g.players).filter((p) => !b.requiresTargetAtLeastOnce || p.stats.timesTarget > 0);
+    if (!eligible.length) return { bonusStarId: b.id, playerIds: [], value: 0 };
+    const vals = eligible.map((p) => p.stats[b.stat]);
+    const best = b.mode === "max" ? Math.max(...vals) : Math.min(...vals);
+    const winners = eligible.filter((p) => p.stats[b.stat] === best).map((p) => p.id);
+    // A "max" award for 0 is meaningless; nobody gets it.
+    if (b.mode === "max" && best === 0) return { bonusStarId: b.id, playerIds: [], value: 0 };
+    return { bonusStarId: b.id, playerIds: winners, value: best };
+  });
+}
+
+function startBonusStars(d: Draft) {
+  const { g, s } = d;
+  g.bonusStars = { awards: computeBonusStars(g, s.ctx.content, s.ctx.rng), revealed: 0 };
+  goto(d, "bonusStars", 1500);
+}
+
+function revealNextBonusStar(d: Draft) {
+  const { g, s } = d;
+  const bs = g.bonusStars!;
+  if (bs.revealed >= bs.awards.length) return finishGame(d);
+  const award = bs.awards[bs.revealed];
+  bs.revealed++;
+  for (const pid of award.playerIds) changeStars(g, s, pid, 1, `bonus:${award.bonusStarId}`);
+  emit(s, { type: "bonusStarRevealed", bonusStarId: award.bonusStarId, playerIds: award.playerIds });
+  emit(s, { type: "sfx", id: "star" });
+  goto(d, "bonusStars", T.bonusStarRevealMs);
+}
+
+function finishGame(d: Draft) {
+  const { g, s } = d;
+  g.finalRanking = standings(g).map((x) => x.playerId);
+  emit(s, { type: "sfx", id: "fanfare" });
+  goto(d, "podium", null);
+}
+
+export { standings };

@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "minigames": [
+    { "id": "red-light", "name": "Red Light", "icon": "red-light", "rules": "Hold to run. Move while the light is red and you're back at the start. First to the finish wins.", "controls": "Hold the button to move, let go to stop.", "bonus": "See a 0.3s warning before red." },
+    { "id": "musical-chairs", "name": "Musical Chairs", "icon": "chairs", "rules": "When the music stops, tap a chair fast. One chair fewer than players. Last one sitting wins.", "controls": "Tap a chair when the music stops.", "bonus": "Chairs glow 0.2s earlier for you." },
+    { "id": "chicken", "name": "Chicken", "icon": "chicken", "rules": "Everyone holds while the pot grows. Let go to cash out. If it crashes while you hold, you get nothing.", "controls": "Hold the button. Release to cash out.", "bonus": "See the range where it crashes." },
+    { "id": "reaction-tap", "name": "Reaction Tap", "icon": "reaction", "rules": "Tap the moment the screen turns green. Best of 3. False starts cost you.", "controls": "Tap anywhere when it's green.", "bonus": "One false start is forgiven." },
+    { "id": "stacker", "name": "Stacker", "icon": "stacker", "rules": "A block slides back and forth. Tap to drop it. Overhang gets cut. Tallest tower wins.", "controls": "Tap to drop the block.", "bonus": "Wider starting block." },
+    { "id": "pump-it", "name": "Pump It", "icon": "balloon", "rules": "Pump the balloon. Stop before it pops. Biggest unpopped balloon wins.", "controls": "Tap to pump, press Stop to bank it.", "bonus": "A hint of where it pops." },
+    { "id": "memory-flip", "name": "Memory Flip", "icon": "memory", "rules": "Find all the pairs. Fastest wins.", "controls": "Tap cards to flip them.", "bonus": "A 1-second peek at all cards." },
+    { "id": "stop-the-bar", "name": "Stop the Bar", "icon": "bar", "rules": "A bar swings back and forth. Stop it inside the zone. 3 rounds, accuracy counts.", "controls": "Tap to stop the bar.", "bonus": "A wider zone." },
+    { "id": "higher-lower-cards", "name": "Higher or Lower", "icon": "cards", "rules": "Is the next card higher or lower? Longest streak wins.", "controls": "Tap Higher or Lower.", "bonus": "One free skip." },
+    { "id": "spot-the-odd", "name": "Spot the Odd One", "icon": "magnifier", "rules": "Find the icon that's different. The grid keeps growing.", "controls": "Tap the odd one out.", "bonus": "The grid starts smaller." },
+    { "id": "count-it", "name": "Count It", "icon": "abacus", "rules": "Icons flash for a moment. How many of one kind were there? Closest wins.", "controls": "Enter your count.", "bonus": "A longer flash." },
+    { "id": "color-clash", "name": "Color Clash", "icon": "palette", "rules": "Tap the ink color, not the word. Most correct in 20 seconds.", "controls": "Tap the matching color.", "bonus": "+3 seconds." },
+    { "id": "whack-a-mole", "name": "Whack-a-Mole", "icon": "mole", "rules": "Tap icons as they pop up. Avoid the bombs!", "controls": "Tap the targets.", "bonus": "Targets stay up longer." },
+    { "id": "perfect-timing", "name": "Perfect Timing", "icon": "hourglass", "rules": "Stop a hidden timer at exactly 10.00 seconds.", "controls": "Tap Start, then tap Stop.", "bonus": "The timer is visible for the first 3 seconds." },
+    { "id": "type-race", "name": "Type Race", "icon": "keyboard", "rules": "Type the phrase as fast and accurately as you can.", "controls": "Type on your keyboard.", "bonus": "A shorter phrase." },
+    { "id": "quick-math", "name": "Quick Math", "icon": "calculator", "rules": "Solve as many sums as you can in 20 seconds.", "controls": "Tap the right answer.", "bonus": "+5 seconds." },
+    { "id": "simon", "name": "Simon", "icon": "sound", "rules": "Repeat the growing color sequence. One mistake and you're out.", "controls": "Tap the colors in order.", "bonus": "One replay of the sequence." },
+    { "id": "minefield", "name": "Minefield", "icon": "mine", "rules": "Take turns picking tiles. One hides a bomb. Last one standing wins.", "controls": "Tap a tile on your turn.", "bonus": "One safe tile is revealed to you." },
+    { "id": "thin-ice", "name": "Thin Ice", "icon": "ice", "rules": "Tiles crack after you step off them. Move in turns. Can't move? You're out.", "controls": "Tap a neighboring tile on your turn.", "bonus": "Start next to more safe tiles." },
+    { "id": "hot-potato", "name": "Hot Potato", "icon": "bomb", "rules": "Answer a quick prompt to pass the bomb. The hidden fuse explodes on someone.", "controls": "Answer to pass it on.", "bonus": "Immune for the first pass." },
+    { "id": "split-or-steal", "name": "Split or Steal", "icon": "split", "rules": "A pot of coins. Secretly choose to split or steal. Both steal? Nobody gets anything.", "controls": "Tap Split or Steal.", "bonus": "Learn if the other player took more than 3s to decide." },
+    { "id": "mystery-auction", "name": "Mystery Auction", "icon": "auction", "rules": "Bid coins on 3 mystery boxes. Highest bidder pays and gets the contents.", "controls": "Enter a bid for each box.", "bonus": "See what's inside one box." },
+    { "id": "hot-or-not", "name": "Hot or Not", "icon": "thermometer", "rules": "The target answers a number secretly. A number is shown: is their real answer higher or lower?", "controls": "Tap Higher or Lower.", "bonus": "—" },
+    { "id": "duel", "name": "Duel", "icon": "duel", "rules": "Answer a number question. Closest steals 5 coins from the other.", "controls": "Enter a number.", "bonus": "—", "weight": 0 },
+    { "id": "most-likely-to", "name": "Most Likely To", "icon": "pointing", "rules": "Who's most likely to…? Vote for a player. Being in the majority scores.", "controls": "Tap a player.", "bonus": "—" },
+    { "id": "speed-sync", "name": "Speed Sync", "icon": "lightning", "rules": "5 quick questions, 8 seconds each. Match the target fast for more points.", "controls": "Tap an answer.", "bonus": "—" },
+    { "id": "ranking", "name": "Ranking", "icon": "podium", "rules": "Rank 4 things the way the target would. Points per correct position.", "controls": "Drag to reorder, then lock in.", "bonus": "—" }
+  ]
+}

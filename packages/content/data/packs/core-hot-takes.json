@@ -1,0 +1,225 @@
+{
+  "id": "core-hot-takes",
+  "name": "Hot Takes",
+  "language": "en",
+  "version": 1,
+  "questions": [
+    {
+      "id": "hot.pineapple",
+      "themes": [
+        "hot-takes"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} rates pineapple on pizza a 5/10. Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "/10"
+      },
+      "reference": 5,
+      "tags": [
+        "classic"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "hot.cereal",
+      "themes": [
+        "hot-takes"
+      ],
+      "format": "tiles",
+      "prompt": "Is cereal a soup? {target} says…",
+      "answers": [
+        "Yes, obviously",
+        "Absolutely not",
+        "It's a salad",
+        "Refuses to engage"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "hot.socks",
+      "themes": [
+        "hot-takes"
+      ],
+      "format": "scale",
+      "prompt": "Socks with sandals: how acceptable is it to {target}, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "hot.overrated",
+      "themes": [
+        "hot-takes"
+      ],
+      "format": "tiles",
+      "prompt": "What does {target} think is the most overrated thing?",
+      "answers": [
+        "Avocado toast",
+        "Superhero movies",
+        "Sleeping 8 hours",
+        "Running for fun"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "hot.hotdog",
+      "themes": [
+        "hot-takes"
+      ],
+      "format": "tiles",
+      "prompt": "Is a hot dog a sandwich, according to {target}?",
+      "answers": [
+        "Yes",
+        "No",
+        "It's a taco",
+        "Hot dogs are their own thing"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "hot.humor",
+      "themes": [
+        "hot-takes"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} rates their own sense of humor a 7/10. Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "/10"
+      },
+      "reference": 7,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "hot.drink",
+      "themes": [
+        "hot-takes"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s pick for the best drink ever?",
+      "answers": [
+        "Water",
+        "Coffee",
+        "Tea",
+        "Energy drinks"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "hot.shower",
+      "themes": [
+        "hot-takes"
+      ],
+      "format": "tiles",
+      "prompt": "When should you shower, according to {target}?",
+      "answers": [
+        "Morning",
+        "Evening",
+        "Both",
+        "Showers are optional"
+      ],
+      "tags": [
+        "spicy"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "hot.movie-length",
+      "themes": [
+        "hot-takes"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} says the perfect movie is 120 minutes long. Higher or lower?",
+      "number": {
+        "min": 60,
+        "max": 240,
+        "step": 5,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "min"
+      },
+      "reference": 120,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "hot.date",
+      "themes": [
+        "hot-takes"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s idea of a terrible first date?",
+      "answers": [
+        "Escape room",
+        "Karaoke bar",
+        "Meeting their parents",
+        "Splitting the bill to the cent"
+      ],
+      "tags": [
+        "spicy"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    }
+  ]
+}

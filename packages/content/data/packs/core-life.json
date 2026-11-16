@@ -1,0 +1,219 @@
+{
+  "id": "core-life",
+  "name": "Life",
+  "language": "en",
+  "version": 1,
+  "questions": [
+    {
+      "id": "life.room",
+      "themes": [
+        "life"
+      ],
+      "format": "scale",
+      "prompt": "How chaotic is {target}'s room right now, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "life.snooze",
+      "themes": [
+        "life"
+      ],
+      "format": "number",
+      "prompt": "How many times does {target} hit snooze in the morning?",
+      "number": {
+        "min": 0,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        },
+        "unit": "times"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "life.tabs",
+      "themes": [
+        "life"
+      ],
+      "format": "number",
+      "prompt": "How many browser tabs does {target} have open right now?",
+      "number": {
+        "min": 1,
+        "max": 200,
+        "step": 1,
+        "tolerance": {
+          "type": "relative",
+          "value": 0.3
+        },
+        "unit": "tabs"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "life.late",
+      "themes": [
+        "life"
+      ],
+      "format": "tiles",
+      "prompt": "{target} is late again. What's the excuse?",
+      "answers": [
+        "Traffic",
+        "Overslept",
+        "\"I'm outside\" (they're not)",
+        "No excuse, just vibes"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "life.screen",
+      "themes": [
+        "life"
+      ],
+      "format": "number",
+      "prompt": "What's {target}'s daily screen time?",
+      "number": {
+        "min": 0,
+        "max": 16,
+        "step": 0.5,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        },
+        "unit": "hours"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "life.plants",
+      "themes": [
+        "life"
+      ],
+      "format": "tiles",
+      "prompt": "How are {target}'s plants doing?",
+      "answers": [
+        "Thriving jungle",
+        "Barely alive",
+        "They're plastic",
+        "What plants?"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "life.texting",
+      "themes": [
+        "life"
+      ],
+      "format": "tiles",
+      "prompt": "How long does {target} take to text back?",
+      "answers": [
+        "Instantly",
+        "A few hours",
+        "A few days",
+        "Left on read forever"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "life.emails",
+      "themes": [
+        "life"
+      ],
+      "format": "number",
+      "prompt": "How many unread emails does {target} have?",
+      "number": {
+        "min": 0,
+        "max": 5000,
+        "step": 1,
+        "tolerance": {
+          "type": "relative",
+          "value": 0.4
+        },
+        "unit": "emails"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "life.morning",
+      "themes": [
+        "life"
+      ],
+      "format": "scale",
+      "prompt": "How much of a morning person is {target}, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "life.battery",
+      "themes": [
+        "life"
+      ],
+      "format": "number",
+      "prompt": "What's {target}'s phone battery at right now?",
+      "number": {
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 10
+        },
+        "unit": "%"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    }
+  ]
+}

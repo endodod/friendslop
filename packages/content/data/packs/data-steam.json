@@ -1,0 +1,120 @@
+{
+  "id": "data-steam",
+  "name": "Steam data questions",
+  "language": "en",
+  "version": 1,
+  "description": "Questions generated from linked Steam libraries. The truth comes from real data.",
+  "questions": [
+    {
+      "id": "steam.most-played",
+      "themes": [
+        "gaming"
+      ],
+      "format": "tiles",
+      "prompt": "Which of these has {target} played the most hours?",
+      "truthSource": {
+        "provider": "steam",
+        "generator": "steam.mostPlayed"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "steam.playtime",
+      "themes": [
+        "gaming"
+      ],
+      "format": "number",
+      "prompt": "How many hours does {target} have in a game?",
+      "truthSource": {
+        "provider": "steam",
+        "generator": "steam.playtimeNumber"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "steam.shame-buy",
+      "themes": [
+        "gaming"
+      ],
+      "format": "tiles",
+      "prompt": "Which game did {target} buy and play less than 1 hour?",
+      "truthSource": {
+        "provider": "steam",
+        "generator": "steam.shameBuy"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "steam.library-ranking",
+      "themes": [
+        "gaming"
+      ],
+      "format": "ranking",
+      "prompt": "Rank these 4 games by {target}'s playtime.",
+      "truthSource": {
+        "provider": "steam",
+        "generator": "steam.libraryRanking"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "steam.library-size",
+      "themes": [
+        "gaming"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} owns more or fewer games than this?",
+      "truthSource": {
+        "provider": "steam",
+        "generator": "steam.libraryHigherLower"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "steam.recent",
+      "themes": [
+        "gaming"
+      ],
+      "format": "tiles",
+      "prompt": "What did {target} play most in the last 2 weeks?",
+      "truthSource": {
+        "provider": "steam",
+        "generator": "steam.recent"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "steam.shared-game",
+      "themes": [
+        "gaming"
+      ],
+      "format": "player",
+      "prompt": "Who has the most hours in a game you all own?",
+      "truthSource": {
+        "provider": "steam",
+        "generator": "steam.sharedGame"
+      },
+      "usage": [
+        "tile"
+      ]
+    }
+  ]
+}

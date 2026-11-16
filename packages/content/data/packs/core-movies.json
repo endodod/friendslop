@@ -1,0 +1,191 @@
+{
+  "id": "core-movies",
+  "name": "Movies & Series",
+  "language": "en",
+  "version": 1,
+  "questions": [
+    {
+      "id": "movies.rewatch",
+      "themes": [
+        "movies"
+      ],
+      "format": "tiles",
+      "prompt": "Which show would {target} rewatch for the 4th time instead of starting something new?",
+      "answers": [
+        "The Office",
+        "Friends",
+        "Brooklyn Nine-Nine",
+        "Breaking Bad"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "movies.cry",
+      "themes": [
+        "movies"
+      ],
+      "format": "scale",
+      "prompt": "How likely is {target} to cry at a Pixar movie, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "movies.horror",
+      "themes": [
+        "movies"
+      ],
+      "format": "tiles",
+      "prompt": "In a horror movie, {target} would be…",
+      "answers": [
+        "The first to die",
+        "The final survivor",
+        "The one who says \"let's split up\"",
+        "Secretly the killer"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "movies.binge",
+      "themes": [
+        "movies"
+      ],
+      "format": "number",
+      "prompt": "How many episodes can {target} binge in a single day?",
+      "number": {
+        "min": 1,
+        "max": 30,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 2
+        },
+        "unit": "episodes"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "movies.spoilers",
+      "themes": [
+        "movies"
+      ],
+      "format": "tiles",
+      "prompt": "How does {target} deal with spoilers?",
+      "answers": [
+        "Reads the plot on Wikipedia first",
+        "Mutes the entire internet",
+        "Doesn't care at all",
+        "Spoils it for everyone else"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "movies.phone",
+      "themes": [
+        "movies"
+      ],
+      "format": "scale",
+      "prompt": "How much is {target} on their phone during a movie, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "movies.biopic",
+      "themes": [
+        "movies"
+      ],
+      "format": "tiles",
+      "prompt": "A movie about {target}'s life would be a…",
+      "answers": [
+        "Comedy",
+        "Tragedy",
+        "Action thriller",
+        "Documentary nobody watches"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "movies.snack",
+      "themes": [
+        "movies"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s cinema order?",
+      "answers": [
+        "Large popcorn",
+        "Nachos with cheese",
+        "Smuggled snacks from home",
+        "Nothing"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "movies.month",
+      "themes": [
+        "movies"
+      ],
+      "format": "number",
+      "prompt": "How many movies did {target} watch in the last month?",
+      "number": {
+        "min": 0,
+        "max": 40,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 2
+        },
+        "unit": "movies"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    }
+  ]
+}

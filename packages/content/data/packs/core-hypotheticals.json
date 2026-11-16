@@ -1,0 +1,190 @@
+{
+  "id": "core-hypotheticals",
+  "name": "Hypotheticals",
+  "language": "en",
+  "version": 1,
+  "questions": [
+    {
+      "id": "hypo.million",
+      "themes": [
+        "hypotheticals"
+      ],
+      "format": "tiles",
+      "prompt": "{target} wins 1 million but has to spend it in 24 hours. First purchase?",
+      "answers": [
+        "A house",
+        "A sports car",
+        "Pays off everyone's debts",
+        "Something incredibly stupid"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "hypo.zombie",
+      "themes": [
+        "hypotheticals"
+      ],
+      "format": "tiles",
+      "prompt": "Zombie apocalypse. What's {target}'s role in the group?",
+      "answers": [
+        "The leader",
+        "The medic",
+        "Bitten, hiding it",
+        "Zombie on day one"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "hypo.superpower",
+      "themes": [
+        "hypotheticals"
+      ],
+      "format": "tiles",
+      "prompt": "{target} gets one superpower. Which one?",
+      "answers": [
+        "Teleportation",
+        "Invisibility",
+        "Flying",
+        "Infinite snacks"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "hypo.island",
+      "themes": [
+        "hypotheticals"
+      ],
+      "format": "tiles",
+      "prompt": "Stranded on a desert island, {target} brings…",
+      "answers": [
+        "A knife",
+        "A phone with no signal",
+        "A game console",
+        "A good book"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "hypo.wilderness",
+      "themes": [
+        "hypotheticals"
+      ],
+      "format": "number",
+      "prompt": "How many days could {target} survive alone in the wilderness?",
+      "number": {
+        "min": 0,
+        "max": 60,
+        "step": 1,
+        "tolerance": {
+          "type": "relative",
+          "value": 0.3
+        },
+        "unit": "days"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "hypo.jail",
+      "themes": [
+        "hypotheticals"
+      ],
+      "format": "player",
+      "prompt": "Who would {target} call first from jail?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "hypo.reality",
+      "themes": [
+        "hypotheticals"
+      ],
+      "format": "tiles",
+      "prompt": "{target} ends up on a reality show. Which one?",
+      "answers": [
+        "Love Island",
+        "Survivor",
+        "The Great British Bake Off",
+        "Naked and Afraid"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "hypo.time-machine",
+      "themes": [
+        "hypotheticals"
+      ],
+      "format": "tiles",
+      "prompt": "{target} gets one trip in a time machine. Where to?",
+      "answers": [
+        "The dinosaurs",
+        "The far future",
+        "Ancient Rome",
+        "Last week, to fix one mistake"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "hypo.lottery",
+      "themes": [
+        "hypotheticals"
+      ],
+      "format": "scale",
+      "prompt": "If {target} won the lottery, how fast would we all find out, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "hypo.zombie-team",
+      "themes": [
+        "hypotheticals"
+      ],
+      "format": "player",
+      "prompt": "Who would {target} want on their team in a zombie apocalypse?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    }
+  ]
+}

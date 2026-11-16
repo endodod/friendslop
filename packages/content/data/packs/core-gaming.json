@@ -1,0 +1,191 @@
+{
+  "id": "core-gaming",
+  "name": "Gaming",
+  "language": "en",
+  "version": 1,
+  "questions": [
+    {
+      "id": "gaming.trapped",
+      "themes": [
+        "gaming"
+      ],
+      "format": "tiles",
+      "prompt": "{target} gets trapped inside a game. Which one do they survive longest in?",
+      "answers": [
+        "Minecraft",
+        "Animal Crossing",
+        "The Sims",
+        "Dark Souls"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "gaming.dark-souls",
+      "themes": [
+        "gaming"
+      ],
+      "format": "number",
+      "prompt": "How many hours would {target} need to beat Dark Souls blind?",
+      "number": {
+        "min": 5,
+        "max": 200,
+        "step": 5,
+        "tolerance": {
+          "type": "relative",
+          "value": 0.25
+        },
+        "unit": "hours"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "gaming.rage",
+      "themes": [
+        "gaming"
+      ],
+      "format": "scale",
+      "prompt": "How hard does {target} rage quit, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "gaming.backlog",
+      "themes": [
+        "gaming"
+      ],
+      "format": "number",
+      "prompt": "How many unplayed games are sitting in {target}'s backlog?",
+      "number": {
+        "min": 0,
+        "max": 300,
+        "step": 1,
+        "tolerance": {
+          "type": "relative",
+          "value": 0.3
+        },
+        "unit": "games"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "gaming.coop",
+      "themes": [
+        "gaming"
+      ],
+      "format": "tiles",
+      "prompt": "In a co-op game, {target} is the one who…",
+      "answers": [
+        "Carries the whole team",
+        "Dies first, every time",
+        "Wanders off to loot",
+        "Reads every item description"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "gaming.allnighter",
+      "themes": [
+        "gaming"
+      ],
+      "format": "tiles",
+      "prompt": "Which kind of game makes {target} pull an all-nighter?",
+      "answers": [
+        "Strategy: \"one more turn\"",
+        "An MMO raid",
+        "A cozy farming game",
+        "A competitive shooter"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "gaming.difficulty",
+      "themes": [
+        "gaming"
+      ],
+      "format": "tiles",
+      "prompt": "{target} starts a new game. Which difficulty?",
+      "answers": [
+        "Story mode",
+        "Normal",
+        "Hard",
+        "Hardest, no HUD, no regrets"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "gaming.controllers",
+      "themes": [
+        "gaming"
+      ],
+      "format": "number",
+      "prompt": "How many controllers has {target} broken (or 'lost') in their life?",
+      "number": {
+        "min": 0,
+        "max": 20,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        },
+        "unit": "controllers"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "gaming.pro",
+      "themes": [
+        "gaming"
+      ],
+      "format": "tiles",
+      "prompt": "If {target} went pro, it would be at…",
+      "answers": [
+        "Speedrunning",
+        "Chess",
+        "Fighting games",
+        "Mario Kart"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    }
+  ]
+}

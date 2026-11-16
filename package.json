@@ -1,0 +1,23 @@
+{
+  "name": "party-game-monorepo",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.28.0",
+  "scripts": {
+    "dev": "pnpm -r --parallel --filter @party-game/server --filter @party-game/web dev",
+    "dev:server": "pnpm --filter @party-game/server dev",
+    "dev:web": "pnpm --filter @party-game/web dev",
+    "build": "pnpm -r build",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "pnpm -r typecheck",
+    "lint:content": "vitest run packages/content",
+    "e2e": "pnpm --filter @party-game/e2e test",
+    "db:migrate": "pnpm --filter @party-game/server db:migrate"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "typescript": "^7.0.2",
+    "vitest": "^5.1.0"
+  }
+}

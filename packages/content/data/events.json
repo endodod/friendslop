@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "events": [
+    { "id": "swap", "name": "Body Swap", "description": "Swap places with a random player.", "icon": "swap", "effect": "swapRandom", "negative": true },
+    { "id": "moonwalk", "name": "Moonwalk", "description": "Everyone moves back 3 spaces.", "icon": "back", "effect": "allMoveBack", "params": { "steps": 3 }, "negative": true },
+    { "id": "heist", "name": "Heist", "description": "Steal 5 coins from the leader.", "icon": "leader-steal", "effect": "stealFromLeader", "params": { "amount": 5 }, "negative": true },
+    { "id": "charity", "name": "Charity", "description": "Last place gets 3 coins.", "icon": "charity", "effect": "giveLastPlace", "params": { "amount": 3 } },
+    { "id": "coin-rain", "name": "Coin Rain", "description": "Everyone gets 2 coins.", "icon": "coin-rain", "effect": "everyoneCoins", "params": { "amount": 2 } },
+    { "id": "drain", "name": "Down the Drain", "description": "Lose 5 coins.", "icon": "drain", "effect": "loseCoins", "params": { "amount": 5 }, "negative": true },
+    { "id": "star-flies", "name": "Flighty Star", "description": "The star moves somewhere else.", "icon": "star-fly", "effect": "moveStar", "weight": 0.7 },
+    { "id": "teleport", "name": "Teleporter", "description": "Get teleported to a random space.", "icon": "teleport", "effect": "teleportRandom", "weight": 0.8 },
+    { "id": "share", "name": "Share Everything", "description": "All coins are split evenly between players.", "icon": "share", "effect": "shareWealth", "weight": 0.4 }
+  ]
+}

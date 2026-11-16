@@ -1,0 +1,219 @@
+{
+  "id": "core-food",
+  "name": "Food",
+  "language": "en",
+  "version": 1,
+  "questions": [
+    {
+      "id": "food.one-cuisine",
+      "themes": [
+        "food"
+      ],
+      "format": "tiles",
+      "prompt": {
+        "en": "{target} can only eat ONE cuisine for the rest of their life. Which one do they pick?",
+        "de": "{target} darf für den Rest des Lebens nur EINE Küche essen. Welche wählt {target}?"
+      },
+      "answers": [
+        "Italian",
+        "Japanese",
+        "Mexican",
+        "Indian"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "food.pizza-slices",
+      "themes": [
+        "food"
+      ],
+      "format": "number",
+      "prompt": {
+        "en": "How many slices of pizza can {target} eat in one sitting before regretting it?",
+        "de": "Wie viele Stücke Pizza schafft {target} am Stück, bevor es weh tut?"
+      },
+      "number": {
+        "min": 1,
+        "max": 16,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        },
+        "unit": "slices"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "food.last-meal",
+      "themes": [
+        "food"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s last meal on death row?",
+      "answers": [
+        "Mom's cooking",
+        "A huge steak",
+        "A sushi platter",
+        "A fast food feast"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "food.fridge-crime",
+      "themes": [
+        "food"
+      ],
+      "format": "tiles",
+      "prompt": "What's definitely in {target}'s fridge right now that shouldn't be?",
+      "answers": [
+        "Expired milk",
+        "Week-old leftovers",
+        "Only condiments",
+        "A mystery tupperware"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "food.cooking",
+      "themes": [
+        "food"
+      ],
+      "format": "scale",
+      "prompt": "Rate {target}'s cooking skills, 1–10.",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "food.3am",
+      "themes": [
+        "food"
+      ],
+      "format": "tiles",
+      "prompt": "It's 3 AM. What is {target} eating?",
+      "answers": [
+        "Cereal straight from the box",
+        "Cold pizza",
+        "Instant noodles",
+        "Nothing, asleep like an adult"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "food.spice",
+      "themes": [
+        "food"
+      ],
+      "format": "scale",
+      "prompt": "How much spice can {target} actually handle, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "food.coffee",
+      "themes": [
+        "food"
+      ],
+      "format": "number",
+      "prompt": "How many coffees or energy drinks does {target} need on a bad day?",
+      "number": {
+        "min": 0,
+        "max": 12,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        },
+        "unit": "cups"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "food.restaurant",
+      "themes": [
+        "food"
+      ],
+      "format": "tiles",
+      "prompt": "At their favorite restaurant, {target}…",
+      "answers": [
+        "Orders the exact same thing every time",
+        "Tries something new every time",
+        "Lets the waiter decide",
+        "Orders for the whole table"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "food.crime",
+      "themes": [
+        "food"
+      ],
+      "format": "tiles",
+      "prompt": "Which food crime is {target} most likely guilty of?",
+      "answers": [
+        "Ketchup on pasta",
+        "Milk before cereal",
+        "Well-done steak",
+        "Pizza with a knife and fork"
+      ],
+      "tags": [
+        "classic"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    }
+  ]
+}
