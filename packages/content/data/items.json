@@ -6,7 +6,7 @@
       "name": "Double Dice",
       "description": "Roll two dice this turn.",
       "icon": "double-dice",
-      "price": 5,
+      "price": 8,
       "useTiming": "turnStart",
       "effect": "doubleDice"
     },
@@ -15,26 +15,29 @@
       "name": "Custom Dice",
       "description": "Choose your roll: 1 to 6.",
       "icon": "custom-dice",
-      "price": 6,
+      "price": 10,
       "useTiming": "turnStart",
       "effect": "customDice"
     },
     {
       "id": "steal",
       "name": "Steal",
-      "description": "Take 5 coins from a player of your choice.",
+      "description": "Take 10 coins from a player of your choice.",
       "icon": "steal",
-      "price": 7,
+      "price": 9,
       "useTiming": "turnStart",
       "effect": "steal",
-      "needsTarget": true
+      "needsTarget": true,
+      "params": {
+        "amount": 10
+      }
     },
     {
       "id": "pick-target",
       "name": "Pick the Target",
       "description": "The next question round is about a player you choose.",
       "icon": "pick-target",
-      "price": 4,
+      "price": 6,
       "useTiming": "turnStart",
       "effect": "pickTarget",
       "needsTarget": true
@@ -44,7 +47,7 @@
       "name": "Shield",
       "description": "Automatically blocks the next steal or negative event.",
       "icon": "shield",
-      "price": 5,
+      "price": 8,
       "useTiming": "passive",
       "effect": "shield"
     },
@@ -53,7 +56,7 @@
       "name": "Peek",
       "description": "During a question: see how many picked each answer so far (never the target's).",
       "icon": "peek",
-      "price": 4,
+      "price": 6,
       "useTiming": "onQuestion",
       "effect": "peek"
     },
@@ -62,7 +65,7 @@
       "name": "Wide Tolerance",
       "description": "During a number question: your answer gets double tolerance.",
       "icon": "wide-tolerance",
-      "price": 3,
+      "price": 5,
       "useTiming": "onQuestion",
       "effect": "wideTolerance"
     },
@@ -71,7 +74,7 @@
       "name": "Star Warp",
       "description": "Teleport right in front of the star, then roll.",
       "icon": "star-fly",
-      "price": 12,
+      "price": 18,
       "useTiming": "turnStart",
       "effect": "warpToStar"
     },
@@ -80,7 +83,7 @@
       "name": "Sprint Shoes",
       "description": "+3 steps on this turn's roll.",
       "icon": "sprint",
-      "price": 4,
+      "price": 6,
       "useTiming": "turnStart",
       "effect": "sprint",
       "params": {
@@ -92,7 +95,7 @@
       "name": "Push Back",
       "description": "Push a player of your choice back 4 spaces.",
       "icon": "back",
-      "price": 6,
+      "price": 10,
       "useTiming": "turnStart",
       "effect": "pushBack",
       "params": {
@@ -105,7 +108,7 @@
       "name": "Swap Places",
       "description": "Swap places with a player of your choice.",
       "icon": "swap",
-      "price": 7,
+      "price": 12,
       "useTiming": "turnStart",
       "effect": "swapPlaces",
       "needsTarget": true
@@ -115,11 +118,78 @@
       "name": "Freeze",
       "description": "A player of your choice skips their next turn.",
       "icon": "ice",
-      "price": 9,
+      "price": 14,
       "useTiming": "turnStart",
       "effect": "freeze",
       "needsTarget": true,
       "weight": 0.7
+    },
+    {
+      "id": "triple-dice",
+      "name": "Triple Dice",
+      "description": "Roll three dice this turn.",
+      "icon": "triple-dice",
+      "price": 14,
+      "useTiming": "turnStart",
+      "effect": "doubleDice",
+      "params": {
+        "dice": 3
+      },
+      "weight": 0.7
+    },
+    {
+      "id": "coin-magnet",
+      "name": "Coin Magnet",
+      "description": "Take 3 coins from every other player.",
+      "icon": "magnet",
+      "price": 12,
+      "useTiming": "turnStart",
+      "effect": "coinMagnet",
+      "params": {
+        "amount": 3
+      }
+    },
+    {
+      "id": "star-thief",
+      "name": "Star Thief",
+      "description": "Steal a star from a player of your choice.",
+      "icon": "star-thief",
+      "price": 45,
+      "useTiming": "turnStart",
+      "effect": "stealStar",
+      "needsTarget": true,
+      "weight": 0.3
+    },
+    {
+      "id": "lucky-charm",
+      "name": "Lucky Charm",
+      "description": "During a question: double the coins you win from it.",
+      "icon": "charm",
+      "price": 8,
+      "useTiming": "onQuestion",
+      "effect": "luckyCharm"
+    },
+    {
+      "id": "star-coupon",
+      "name": "Star Coupon",
+      "description": "Your next star costs 10 coins less (used automatically).",
+      "icon": "coupon",
+      "price": 7,
+      "useTiming": "passive",
+      "effect": "starCoupon",
+      "params": {
+        "discount": 10
+      }
+    },
+    {
+      "id": "bank-heist",
+      "name": "Bank Heist",
+      "description": "Grab the whole Piggy Bank pot from anywhere.",
+      "icon": "bank",
+      "price": 10,
+      "useTiming": "turnStart",
+      "effect": "bankHeist",
+      "weight": 0.6
     }
   ]
 }

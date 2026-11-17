@@ -169,6 +169,17 @@ describe("scoring", () => {
     expect(r.perPlayer.a.match).toBe(true);
     expect(r.perPlayer.b.match).toBe(false);
   });
+  it("Lucky Charm doubles that player's coins only", () => {
+    const r = scoreQuestion({
+      question: tilesQ,
+      targetId: "t",
+      participants: ["t", "a", "b"],
+      answers: { t: { kind: "option", optionId: "a0" }, a: { kind: "option", optionId: "a0" }, b: { kind: "option", optionId: "a0" } },
+      boosts: { a: { double: true } },
+    });
+    expect(r.perPlayer.a.coins).toBe(6);
+    expect(r.perPlayer.b.coins).toBe(3);
+  });
   it("data questions: truth from data, ×2, target +3 when right about themselves", () => {
     const q: ResolvedQuestion = { ...tilesQ, isData: true, truth: { kind: "option", optionId: "a2" } };
     const r = scoreQuestion({

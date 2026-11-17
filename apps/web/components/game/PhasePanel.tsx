@@ -2,7 +2,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowRight, Dices, FastForward, ShoppingBag } from "lucide-react";
 import { useState } from "react";
-import { GAME_CONFIG, localize, type Board, type PublicGameState } from "@party-game/shared";
+import { GAME_CONFIG, localize, starPrice, type Board, type PublicGameState } from "@party-game/shared";
 import { clientContent } from "@party-game/content";
 import { useStore } from "@/lib/store";
 import { act } from "@/lib/useRoom";
@@ -447,7 +447,9 @@ function ShopPanel({ display }: { display?: boolean }) {
 function StarPanel({ display }: { display?: boolean }) {
   const { g, isActive, active, playerId } = useGameCtx();
   const coins = g.players[g.order[g.activeIndex]]?.coins ?? 0;
-  const cost = GAME_CONFIG.economy.starCost;
+  const priv = useStore((st) => st.priv);
+  const cost = isActive ? starPrice(clientContent, priv?.items ?? []) : GAME_CONFIG.economy.starCost;
+  const discounted = cost < GAME_CONFIG.economy.starCost;
   const afford = coins >= cost;
   void playerId;
   return (
@@ -463,7 +465,8 @@ function StarPanel({ display }: { display?: boolean }) {
         {g.star?.passing ? "Passing the star!" : "You found the star!"}
       </h2>
       <p className="text-center text-lg">
-        A star costs <CoinCount value={cost} size={18} />.{" "}
+        A star costs <CoinCount value={cost} size={18} />
+        {discounted && <span className="text-good"> (Star Coupon!)</span>}.{" "}
         {isActive ? (afford ? "Buy it?" : "You can't afford it…") : `${active?.name} has ${coins} coins.`}
       </p>
       <Timer endsAt={g.phaseEndsAt} totalMs={T.starPurchaseMs} silent={!isActive} />

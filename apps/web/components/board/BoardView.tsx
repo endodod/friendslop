@@ -151,6 +151,32 @@ export function BoardView({ board, game, players, follow, selectable = [], onSel
             );
           }),
         )}
+        {/* direction arrows: a chevron in the middle of every path, pointing the way you walk */}
+        {board.tiles.flatMap((t) =>
+          t.next.map((n) => {
+            const a = xy(t.id);
+            const b = xy(n);
+            const angle = (Math.atan2(b.y - a.y, b.x - a.x) * 180) / Math.PI;
+            const sel = selectable.includes(n);
+            const branch = t.next.length > 1;
+            return (
+              <g
+                key={`arrow-${t.id}-${n}`}
+                transform={`translate(${(a.x + b.x) / 2} ${(a.y + b.y) / 2}) rotate(${angle}) scale(${sel ? 1.5 : branch ? 1.2 : 1})`}
+                pointerEvents="none"
+              >
+                <path
+                  d="M -7 -10 L 6 0 L -7 10"
+                  fill="none"
+                  stroke={sel ? "#14112a" : branch ? "#ffc933" : "#8f87c4"}
+                  strokeWidth={5}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </g>
+            );
+          }),
+        )}
         {/* tiles */}
         {board.tiles.map((t) => {
           const type = game.tileTypes[t.id] ?? t.type;

@@ -50,7 +50,7 @@ export interface PrivateState {
   items: string[];
   /** Own answer in the current question round. */
   myAnswer: Answer | null;
-  boosts: { peek?: boolean; wide?: boolean };
+  boosts: { peek?: boolean; wide?: boolean; double?: boolean };
   /** Peek item: answer counts so far, excluding the target's pick. */
   peekCounts: Record<string, number> | null;
   minigame: unknown;

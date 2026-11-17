@@ -178,7 +178,10 @@ SVG with the board's `aspect` ratio (width / height).
 - `useTiming`: `turnStart` (before rolling), `onQuestion` (while answering, before locking in), `passive` (automatic).
 - `effect` must be one of the implemented effects: `doubleDice`, `customDice`, `steal`,
   `pickTarget`, `shield`, `peek`, `wideTolerance`, `warpToStar`, `sprint` (`params.bonus` extra steps),
-  `pushBack` (`params.steps`), `swapPlaces`, `freeze` (target skips their next turn).
+  `pushBack` (`params.steps`), `swapPlaces`, `freeze` (target skips their next turn), `coinMagnet`
+  (`params.amount` from every other player), `stealStar`, `luckyCharm` (onQuestion: double your coins),
+  `starCoupon` (passive: next star costs `params.discount` less), `bankHeist` (take the Piggy Bank pot).
+  `doubleDice` takes `params.dice` (3 = Triple Dice), `steal` takes `params.amount`.
 - `params` holds effect numbers; `weight` controls how often it shows up in shops and on Item tiles. New effects need code in
   `packages/shared/src/logic/items.ts` (turn start) or `engine/game.ts` (question time).
 

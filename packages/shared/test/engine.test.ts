@@ -266,8 +266,9 @@ describe("items", () => {
     const pid = h.active();
     const victim = h.g.order.find((p) => p !== pid)!;
     h.room.game!.players[pid].items.push("steal", "steal");
+    h.room.game!.players[victim].coins = 15;
     h.act({ type: "useItem", playerId: pid, itemId: "steal", targetId: victim });
-    expect(h.g.players[pid].coins).toBe(15);
+    expect(h.g.players[pid].coins).toBe(20);
     expect(h.g.players[victim].coins).toBe(5);
     h.room.game!.players[victim].items.push("shield");
     h.act({ type: "useItem", playerId: pid, itemId: "steal", targetId: victim });
@@ -311,6 +312,73 @@ describe("items", () => {
     h.room.game!.players[other].items.push("shield");
     h.act({ type: "useItem", playerId: pid, itemId: "swap-places", targetId: other });
     expect(h.g.players[pid].tileId).toBe("m10");
+  });
+
+  it("Triple Dice rolls three dice", () => {
+    const h = new Harness(2);
+    toTurnStart(h);
+    const pid = h.active();
+    h.room.game!.players[pid].items.push("triple-dice");
+    h.act({ type: "useItem", playerId: pid, itemId: "triple-dice" });
+    h.act({ type: "roll", playerId: pid });
+    expect(h.g.dice!.values).toHaveLength(3);
+  });
+
+  it("Coin Magnet takes 3 from every other player (Shield protects)", () => {
+    const h = new Harness(3);
+    toTurnStart(h);
+    const pid = h.active();
+    const [o1, o2] = h.g.order.filter((p) => p !== pid);
+    h.room.game!.players[o2].items.push("shield");
+    h.room.game!.players[pid].items.push("coin-magnet");
+    h.act({ type: "useItem", playerId: pid, itemId: "coin-magnet" });
+    expect(h.g.players[pid].coins).toBe(13);
+    expect(h.g.players[o1].coins).toBe(7);
+    expect(h.g.players[o2].coins).toBe(10);
+  });
+
+  it("Star Thief steals a star, and can win a star race", () => {
+    const h = new Harness(2);
+    h.room = { ...h.room, settings: { ...h.room.settings, starGoal: 3 } };
+    toTurnStart(h);
+    const pid = h.active();
+    const other = h.g.order.find((p) => p !== pid)!;
+    h.room.game!.players[pid].items.push("star-thief", "star-thief");
+    expect(() => h.act({ type: "useItem", playerId: pid, itemId: "star-thief", targetId: other })).toThrow(/star to steal/);
+    h.room.game!.players[other].stars = 2;
+    h.room.game!.players[pid].stars = 2;
+    h.act({ type: "useItem", playerId: pid, itemId: "star-thief", targetId: other });
+    expect(h.g.players[other].stars).toBe(1);
+    expect(h.g.players[pid].stars).toBe(3);
+    expect(h.g.phase).toBe("gameEnd");
+    expect(h.g.starGoalWinner).toBe(pid);
+  });
+
+  it("Star Coupon makes the next star 10 coins cheaper and is used up", () => {
+    const h = new Harness(2);
+    toTurnStart(h);
+    const pid = h.active();
+    h.room.game!.starTileId = "m1";
+    h.room.game!.players[pid].coins = 12;
+    h.room.game!.players[pid].items.push("star-coupon");
+    rollExactly(h, 1);
+    h.timeout();
+    h.act({ type: "starBuy", playerId: pid, buy: true });
+    expect(h.g.players[pid].stars).toBe(1);
+    expect(h.g.players[pid].coins).toBe(2);
+    expect(h.g.players[pid].items).not.toContain("star-coupon");
+  });
+
+  it("Bank Heist grabs the Piggy Bank pot; not usable when empty", () => {
+    const h = new Harness(2);
+    toTurnStart(h);
+    const pid = h.active();
+    h.room.game!.players[pid].items.push("bank-heist");
+    expect(() => h.act({ type: "useItem", playerId: pid, itemId: "bank-heist" })).toThrow(/empty/);
+    h.room.game!.bank = 9;
+    h.act({ type: "useItem", playerId: pid, itemId: "bank-heist" });
+    expect(h.g.players[pid].coins).toBe(19);
+    expect(h.g.bank).toBe(0);
   });
 
   it("Freeze makes the chosen player skip their next turn", () => {

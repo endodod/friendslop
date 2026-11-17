@@ -18,6 +18,24 @@ export function BoardPreview({ board, className = "" }: { board: Board; classNam
           return <line key={`${t.id}-${n}`} x1={a.x} y1={a.y} x2={b.x} y2={b.y} stroke="#3a3462" strokeWidth={2} />;
         }),
       )}
+      {board.tiles.flatMap((t) =>
+        t.next.map((n) => {
+          const a = pos.get(t.id)!;
+          const b = pos.get(n)!;
+          const angle = (Math.atan2(b.y - a.y, b.x - a.x) * 180) / Math.PI;
+          return (
+            <path
+              key={`arr-${t.id}-${n}`}
+              d="M -1.6 -2 L 1.4 0 L -1.6 2"
+              fill="none"
+              stroke={t.next.length > 1 ? "#ffc933" : "#8f87c4"}
+              strokeWidth={0.9}
+              strokeLinecap="round"
+              transform={`translate(${(a.x + b.x) / 2} ${(a.y + b.y) / 2}) rotate(${angle})`}
+            />
+          );
+        }),
+      )}
       {board.tiles.map((t) => {
         const p = pos.get(t.id)!;
         const def = clientContent.tiles.find((d) => d.id === t.type);

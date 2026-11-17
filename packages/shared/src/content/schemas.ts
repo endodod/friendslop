@@ -173,6 +173,11 @@ export const ITEM_EFFECTS = [
   "freeze",
   "swapPlaces",
   "sprint",
+  "coinMagnet",
+  "stealStar",
+  "luckyCharm",
+  "starCoupon",
+  "bankHeist",
 ] as const;
 export const ItemSchema = z.object({
   id,

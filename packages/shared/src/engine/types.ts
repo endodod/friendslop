@@ -142,8 +142,8 @@ export interface QuestionRound {
   answeredAt: Record<PlayerId, number>;
   /** Current selection of players who haven't locked in yet (secret). Used if time runs out. */
   drafts?: Record<PlayerId, Answer>;
-  /** Item boosts active for this round. */
-  boosts: Record<PlayerId, { peek?: boolean; wide?: boolean }>;
+  /** Item boosts active for this round (double: Lucky Charm doubles that player's coins). */
+  boosts: Record<PlayerId, { peek?: boolean; wide?: boolean; double?: boolean }>;
   result: QuestionResult | null;
   /** Reveal order: guessers first, target last. */
   revealOrder: PlayerId[];
@@ -297,7 +297,7 @@ export interface GameState {
   dice: { values: number[]; total: number; kind: "normal" | "double" | "custom"; bonus?: number } | null;
   /** Extra steps added to this turn's roll (Sprint Shoes). */
   diceBonus?: number;
-  pendingDice: { kind: "double" } | { kind: "custom" } | null;
+  pendingDice: { kind: "double"; count?: number } | { kind: "custom" } | null;
   movement: { remaining: number; path: string[]; next: "junction" | "starPass" | "shopPass" | "landed"; chosen?: string } | null;
   junction: { tileId: string; options: string[] } | null;
   /** itemId: item won on an Item tile (null = bag was full, got coins instead). */

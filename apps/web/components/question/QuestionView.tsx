@@ -223,10 +223,11 @@ function Answering({
               ))}
             </div>
           )}
-          {(priv?.boosts.wide || priv?.boosts.peek) && (
+          {(priv?.boosts.wide || priv?.boosts.peek || priv?.boosts.double) && (
             <p className="text-sm text-good">
               <Sparkles size={14} className="inline" /> {priv.boosts.wide ? "Wide Tolerance active. " : ""}
-              {priv.boosts.peek ? "Peek active: numbers show picks so far." : ""}
+              {priv.boosts.peek ? "Peek active: numbers show picks so far. " : ""}
+              {priv.boosts.double ? "Lucky Charm: your coins from this question are doubled." : ""}
             </p>
           )}
           <button className="btn-primary min-h-14 text-2xl" disabled={!draft || sending} onClick={lockIn} data-testid="lock-in">

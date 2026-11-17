@@ -5,7 +5,7 @@ import { localize } from "../i18n";
 import { getBoard, getTile, nextTiles, pickStarTile, tileDef, computeTileTypes } from "../logic/board";
 import { changeCoins, changeStars, placementCoins, standings, transferCoins } from "../logic/economy";
 import { applyEvent, drawEvent } from "../logic/events";
-import { applyTurnStartItem, getItem, log, shopStock, tryShield } from "../logic/items";
+import { applyTurnStartItem, availableItems, getItem, log, shopStock, tryShield } from "../logic/items";
 import {
   bonusRecipients,
   generateDataQuestion,
@@ -363,7 +363,7 @@ function onTimeout(d: Draft) {
       return leaveShop(d);
     case "starPurchase": {
       const p = g.players[activeId(g)];
-      return resolveStar(d, p.coins >= GAME_CONFIG.economy.starCost);
+      return resolveStar(d, p.coins >= starPriceFor(d, p.id));
     }
     case "duel": {
       const others = g.order.filter((p) => p !== g.duel!.challengerId);
@@ -433,7 +433,7 @@ function doRoll(d: Draft, value?: number) {
     values = [Math.min(6, Math.max(1, value ?? randInt(rng, 1, 6)))];
   } else if (g.pendingDice?.kind === "double") {
     kind = "double";
-    values = [randInt(rng, 1, GAME_CONFIG.dice.sides), randInt(rng, 1, GAME_CONFIG.dice.sides)];
+    values = Array.from({ length: g.pendingDice.count ?? 2 }, () => randInt(rng, 1, GAME_CONFIG.dice.sides));
   } else {
     values = [randInt(rng, 1, GAME_CONFIG.dice.sides)];
   }
@@ -504,7 +504,7 @@ function afterMovement(d: Draft) {
     return goto(d, "starPurchase", T.starPurchaseMs);
   }
   if (mv.next === "shopPass") {
-    g.shop = { stock: shopStock(s.ctx.content, s), bought: [], passing: true };
+    g.shop = { stock: shopStock(s.ctx.content, s, g), bought: [], passing: true };
     return goto(d, "shop", T.shopMs);
   }
   return land(d);
@@ -561,7 +561,7 @@ function land(d: Draft) {
     case "item": {
       // Free random item; a full bag gets coins instead.
       if (p.items.length < GAME_CONFIG.economy.maxItems) {
-        const item = weightedPick(s.ctx.rng, s.ctx.content.items, (i) => i.weight)!;
+        const item = weightedPick(s.ctx.rng, availableItems(s.ctx.content, g), (i) => i.weight)!;
         p.items.push(item.id);
         g.tileResult.itemId = item.id;
         emit(s, { type: "itemGained", playerId: pid, itemId: item.id });
@@ -627,7 +627,7 @@ function land(d: Draft) {
       return goto(d, "event", T.eventMs);
     }
     case "shop":
-      g.shop = { stock: shopStock(s.ctx.content, s), bought: [] };
+      g.shop = { stock: shopStock(s.ctx.content, s, g), bought: [] };
       return goto(d, "shop", T.shopMs);
     case "duel": {
       if (!s.ctx.minigames.duel) return goto(d, "tileEffect", 900);
@@ -646,8 +646,10 @@ function resolveStar(d: Draft, buy: boolean) {
   const { g, s } = d;
   const pid = activeId(g);
   const p = g.players[pid];
-  const cost = GAME_CONFIG.economy.starCost;
+  const coupon = couponFor(d, pid);
+  const cost = starPriceFor(d, pid);
   if (buy && p.coins >= cost) {
+    if (coupon) p.items.splice(p.items.indexOf(coupon), 1);
     changeCoins(g, s, pid, -cost, "star");
     changeStars(g, s, pid, 1, "bought");
     p.stats.starsBought++;
@@ -655,19 +657,39 @@ function resolveStar(d: Draft, buy: boolean) {
     emit(s, { type: "sfx", id: "star" });
     g.starTileId = pickStarTile(getBoard(s.ctx.content, g.boardId), s.ctx.content, g, s.ctx.rng);
     emit(s, { type: "starMoved", tileId: g.starTileId });
-    // Star race: reaching the goal ends the game on the spot.
-    const goal = d.room.settings.starGoal ?? 0;
-    if (goal > 0 && p.stars >= goal) {
-      g.starGoalWinner = pid;
-      g.star = null;
-      log(g, s, `${playerName(d, pid)} reached ${goal} stars and wins!`, pid);
-      return goto(d, "gameEnd", T.gameEndMs);
-    }
+    if (checkStarGoal(d, pid)) return;
   }
   const passing = g.star?.passing;
   g.star = null;
   if (passing && g.movement && g.movement.remaining > 0) return advanceMovement(d);
   return turnEnd(d);
+}
+
+/** Star race: reaching the goal ends the game on the spot. */
+function checkStarGoal(d: Draft, pid: PlayerId): boolean {
+  const { g, s } = d;
+  const goal = d.room.settings.starGoal ?? 0;
+  if (goal <= 0 || g.players[pid].stars < goal || g.starGoalWinner) return false;
+  g.starGoalWinner = pid;
+  g.star = null;
+  log(g, s, `${playerName(d, pid)} reached ${goal} stars and wins!`, pid);
+  goto(d, "gameEnd", T.gameEndMs);
+  return true;
+}
+
+/** Star Coupon held by the player (used automatically when buying a star). */
+function couponFor(d: Draft, pid: PlayerId): string | undefined {
+  const ids = d.s.ctx.content.items.filter((i) => i.effect === "starCoupon").map((i) => i.id);
+  return d.g.players[pid].items.find((i) => ids.includes(i));
+}
+
+export function starPrice(content: Pick<ContentBundle, "items">, items: string[]): number {
+  const coupon = content.items.find((i) => i.effect === "starCoupon" && items.includes(i.id));
+  return Math.max(0, GAME_CONFIG.economy.starCost - (coupon?.params.discount ?? 0));
+}
+
+function starPriceFor(d: Draft, pid: PlayerId): number {
+  return starPrice(d.s.ctx.content, d.g.players[pid].items);
 }
 
 function shopBuy(d: Draft, pid: PlayerId, itemId: string) {
@@ -696,6 +718,10 @@ function useItem(d: Draft, pid: PlayerId, itemId: string, targetId?: PlayerId) {
     requirePhase(d, "turnStart");
     requireActive(d, pid);
     applyTurnStartItem(g, s, pid, item, targetId);
+    if (checkStarGoal(d, pid)) {
+      p.items.splice(p.items.indexOf(itemId), 1);
+      return;
+    }
   } else {
     // onQuestion: during the answering stage of a round you're guessing in, before locking in.
     const q = g.question;
@@ -707,6 +733,9 @@ function useItem(d: Draft, pid: PlayerId, itemId: string, targetId?: PlayerId) {
     if (item.effect === "peek") {
       if (!getFormat(q.question.format).discrete) fail("INVALID_INPUT", "Peek only works on multiple-choice questions.");
       boost.peek = true;
+    } else if (item.effect === "luckyCharm") {
+      if (!q.payCoins) fail("INVALID_INPUT", "No coins in this question to double.");
+      boost.double = true;
     } else if (item.effect === "wideTolerance") {
       if (!getFormat(q.question.format).usesTolerance) fail("INVALID_INPUT", "Only works on number questions.");
       boost.wide = true;

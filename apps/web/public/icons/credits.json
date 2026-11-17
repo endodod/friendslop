@@ -565,5 +565,40 @@
   "author": "delapouite",
   "name": "running-shoe",
   "license": "CC BY 3.0"
+ },
+ {
+  "id": "magnet",
+  "source": "https://game-icons.net/1x1/lorc/magnet.html",
+  "author": "lorc",
+  "name": "magnet",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "star-thief",
+  "source": "https://game-icons.net/1x1/delapouite/robber-mask.html",
+  "author": "delapouite",
+  "name": "robber-mask",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "charm",
+  "source": "https://game-icons.net/1x1/delapouite/horseshoe.html",
+  "author": "delapouite",
+  "name": "horseshoe",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "coupon",
+  "source": "https://game-icons.net/1x1/delapouite/ticket.html",
+  "author": "delapouite",
+  "name": "ticket",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "triple-dice",
+  "source": "https://game-icons.net/1x1/delapouite/dice-fire.html",
+  "author": "delapouite",
+  "name": "dice-fire",
+  "license": "CC BY 3.0"
  }
 ]

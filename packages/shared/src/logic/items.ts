@@ -5,7 +5,7 @@ import { fail } from "../engine/errors";
 import type { GameState, PlayerId } from "../engine/types";
 import { localize } from "../i18n";
 import { shuffle, weightedPick } from "../rng";
-import { transferCoins } from "./economy";
+import { changeCoins, changeStars, transferCoins } from "./economy";
 import { getBoard, prevTiles, walkBack } from "./board";
 
 export function getItem(content: ContentBundle, id: string): Item {
@@ -14,10 +14,16 @@ export function getItem(content: ContentBundle, id: string): Item {
   return it;
 }
 
-export function shopStock(content: ContentBundle, step: Step): string[] {
-  const pool = shuffle(step.ctx.rng, content.items);
+/** Items that do nothing on this map (Bank Heist without a Piggy Bank) aren't sold or handed out. */
+export function availableItems(content: ContentBundle, g: Pick<GameState, "tileTypes">): Item[] {
+  const hasBank = Object.values(g.tileTypes).includes("bank");
+  return content.items.filter((i) => i.effect !== "bankHeist" || hasBank);
+}
+
+export function shopStock(content: ContentBundle, step: Step, g?: Pick<GameState, "tileTypes">): string[] {
+  const pool = shuffle(step.ctx.rng, g ? availableItems(content, g) : content.items);
   const out: string[] = [];
-  while (out.length < Math.min(GAME_CONFIG.economy.shopStockSize, content.items.length)) {
+  while (out.length < Math.min(GAME_CONFIG.economy.shopStockSize, pool.length)) {
     const it = weightedPick(step.ctx.rng, pool.filter((i) => !out.includes(i.id)), (i) => i.weight)!;
     out.push(it.id);
   }
@@ -54,7 +60,7 @@ export function applyTurnStartItem(g: GameState, s: Step, playerId: PlayerId, it
     case "doubleDice":
     case "customDice":
       if (g.pendingDice) fail("INVALID_INPUT", "You already changed your dice this turn.");
-      g.pendingDice = { kind: item.effect === "doubleDice" ? "double" : "custom" };
+      g.pendingDice = item.effect === "doubleDice" ? { kind: "double", count: item.params.dice ?? 2 } : { kind: "custom" };
       break;
     case "steal": {
       if (!targetId || targetId === playerId || !g.players[targetId]) fail("INVALID_INPUT", "Pick another player.");
@@ -62,7 +68,7 @@ export function applyTurnStartItem(g: GameState, s: Step, playerId: PlayerId, it
         log(g, s, `A shield blocked the steal!`, targetId);
         break;
       }
-      const taken = transferCoins(g, s, targetId, playerId, GAME_CONFIG.items.stealCoins, "steal");
+      const taken = transferCoins(g, s, targetId, playerId, item.params.amount ?? GAME_CONFIG.items.stealCoins, "steal");
       p.stats.steals += taken > 0 ? 1 : 0;
       g.players[targetId].stats.stolenFrom += taken > 0 ? 1 : 0;
       emit(s, { type: "sfx", id: "steal" });
@@ -76,6 +82,41 @@ export function applyTurnStartItem(g: GameState, s: Step, playerId: PlayerId, it
       p.tileId = before[Math.floor(s.ctx.rng() * before.length)];
       emit(s, { type: "tokenTeleported", playerId, tileId: p.tileId });
       emit(s, { type: "sfx", id: "star" });
+      break;
+    }
+    case "coinMagnet": {
+      // Pull coins from everyone else (Shields block it for their owner).
+      let total = 0;
+      for (const other of Object.keys(g.players).filter((x) => x !== playerId)) {
+        if (tryShield(g, s, other)) continue;
+        total += transferCoins(g, s, other, playerId, item.params.amount ?? 3, "steal");
+      }
+      emit(s, { type: "sfx", id: "steal" });
+      log(g, s, `Coin Magnet pulled ${total} coins!`, playerId);
+      break;
+    }
+    case "stealStar": {
+      if (!targetId || targetId === playerId || !g.players[targetId]) fail("INVALID_INPUT", "Pick another player.");
+      if (g.players[targetId].stars < 1) fail("INVALID_INPUT", "They don't have a star to steal.");
+      if (tryShield(g, s, targetId)) {
+        log(g, s, "A shield saved their star!", targetId);
+        break;
+      }
+      changeStars(g, s, targetId, -1, "stolen");
+      changeStars(g, s, playerId, 1, "stolen");
+      p.stats.steals++;
+      g.players[targetId].stats.stolenFrom++;
+      emit(s, { type: "sfx", id: "star" });
+      break;
+    }
+    case "bankHeist": {
+      if (!Object.values(g.tileTypes).includes("bank")) fail("INVALID_INPUT", "There's no Piggy Bank on this map.");
+      if (g.bank <= 0) fail("INVALID_INPUT", "The Piggy Bank is empty right now.");
+      const pot = g.bank;
+      g.bank = 0;
+      changeCoins(g, s, playerId, pot, "tile:bank");
+      emit(s, { type: "sfx", id: "fanfare" });
+      log(g, s, `Bank Heist! ${pot} coins grabbed from the Piggy Bank.`, playerId);
       break;
     }
     case "sprint": {

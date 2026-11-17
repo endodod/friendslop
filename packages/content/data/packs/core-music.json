@@ -179,16 +179,16 @@
         "music"
       ],
       "format": "number",
-      "prompt": "How many minutes of music did {target} stream last year (in thousands)?",
+      "prompt": "How many hours of music did {target} stream last year?",
       "number": {
         "min": 0,
-        "max": 150,
-        "step": 1,
+        "max": 4000,
+        "step": 10,
+        "unit": "hours",
         "tolerance": {
           "type": "relative",
           "value": 0.3
-        },
-        "unit": "k min"
+        }
       },
       "usage": [
         "tile",

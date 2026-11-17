@@ -187,7 +187,7 @@ export function scoreQuestion(args: {
   targetId: PlayerId;
   participants: PlayerId[];
   answers: Record<PlayerId, Answer>;
-  boosts?: Record<PlayerId, { wide?: boolean }>;
+  boosts?: Record<PlayerId, { wide?: boolean; double?: boolean }>;
   multiplier?: number;
   payCoins?: boolean;
 }): QuestionResult {
@@ -223,7 +223,8 @@ export function scoreQuestion(args: {
       coins += cfg.guesserMatchCoins;
       if (r.perfect && q.format === "number") coins += cfg.perfectBonusCoins;
     }
-    perPlayer[pid] = { answer: ans, isTarget: false, ...r, close, coins: pay ? coins * mult : 0 };
+    const charm = args.boosts?.[pid]?.double ? 2 : 1;
+    perPlayer[pid] = { answer: ans, isTarget: false, ...r, close, coins: pay ? coins * mult * charm : 0 };
   }
 
   const targetAnswer = answers[targetId] ?? null;

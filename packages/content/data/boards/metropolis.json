@@ -19,7 +19,7 @@
   },
   {
    "id": "o1",
-   "type": "blue",
+   "type": "duel",
    "x": 0.05,
    "y": 0.3575,
    "next": [
@@ -28,7 +28,7 @@
   },
   {
    "id": "o2",
-   "type": "item",
+   "type": "blue",
    "x": 0.05,
    "y": 0.215,
    "next": [
@@ -37,7 +37,7 @@
   },
   {
    "id": "o3",
-   "type": "red",
+   "type": "shop",
    "x": 0.0547,
    "y": 0.08,
    "next": [
@@ -55,7 +55,7 @@
   },
   {
    "id": "o5",
-   "type": "question",
+   "type": "lucky",
    "x": 0.2328,
    "y": 0.08,
    "next": [
@@ -65,7 +65,7 @@
   },
   {
    "id": "o6",
-   "type": "bank",
+   "type": "blue",
    "x": 0.3219,
    "y": 0.08,
    "next": [
@@ -74,7 +74,7 @@
   },
   {
    "id": "o7",
-   "type": "shop",
+   "type": "red",
    "x": 0.4109,
    "y": 0.08,
    "next": [
@@ -92,7 +92,7 @@
   },
   {
    "id": "o9",
-   "type": "question",
+   "type": "event",
    "x": 0.5891,
    "y": 0.08,
    "next": [
@@ -101,7 +101,7 @@
   },
   {
    "id": "o10",
-   "type": "blue",
+   "type": "lucky",
    "x": 0.6781,
    "y": 0.08,
    "next": [
@@ -110,7 +110,7 @@
   },
   {
    "id": "o11",
-   "type": "blue",
+   "type": "thief",
    "x": 0.7672,
    "y": 0.08,
    "next": [
@@ -120,7 +120,7 @@
   },
   {
    "id": "o12",
-   "type": "shop",
+   "type": "event",
    "x": 0.8563,
    "y": 0.08,
    "next": [
@@ -129,7 +129,7 @@
   },
   {
    "id": "o13",
-   "type": "duel",
+   "type": "mind-reader",
    "x": 0.9453,
    "y": 0.08,
    "next": [
@@ -138,7 +138,7 @@
   },
   {
    "id": "o14",
-   "type": "item",
+   "type": "lucky",
    "x": 0.95,
    "y": 0.215,
    "next": [
@@ -147,7 +147,7 @@
   },
   {
    "id": "o15",
-   "type": "question",
+   "type": "blue",
    "x": 0.95,
    "y": 0.3575,
    "next": [
@@ -157,7 +157,7 @@
   },
   {
    "id": "o16",
-   "type": "red",
+   "type": "event",
    "x": 0.95,
    "y": 0.5,
    "next": [
@@ -166,7 +166,7 @@
   },
   {
    "id": "o17",
-   "type": "question",
+   "type": "blue",
    "x": 0.95,
    "y": 0.6425,
    "next": [
@@ -175,7 +175,7 @@
   },
   {
    "id": "o18",
-   "type": "shop",
+   "type": "blue",
    "x": 0.95,
    "y": 0.785,
    "next": [
@@ -184,7 +184,7 @@
   },
   {
    "id": "o19",
-   "type": "blue",
+   "type": "thief",
    "x": 0.9453,
    "y": 0.92,
    "next": [
@@ -193,7 +193,7 @@
   },
   {
    "id": "o20",
-   "type": "blue",
+   "type": "duel",
    "x": 0.8562,
    "y": 0.92,
    "next": [
@@ -202,7 +202,7 @@
   },
   {
    "id": "o21",
-   "type": "blue",
+   "type": "question",
    "x": 0.7672,
    "y": 0.92,
    "next": [
@@ -211,7 +211,7 @@
   },
   {
    "id": "o22",
-   "type": "red",
+   "type": "item",
    "x": 0.6781,
    "y": 0.92,
    "next": [
@@ -220,7 +220,7 @@
   },
   {
    "id": "o23",
-   "type": "mind-reader",
+   "type": "red",
    "x": 0.5891,
    "y": 0.92,
    "next": [
@@ -229,7 +229,7 @@
   },
   {
    "id": "o24",
-   "type": "bank",
+   "type": "event",
    "x": 0.5,
    "y": 0.92,
    "next": [
@@ -238,7 +238,7 @@
   },
   {
    "id": "o25",
-   "type": "event",
+   "type": "shop",
    "x": 0.4109,
    "y": 0.92,
    "next": [
@@ -247,7 +247,7 @@
   },
   {
    "id": "o26",
-   "type": "question",
+   "type": "red",
    "x": 0.3219,
    "y": 0.92,
    "next": [
@@ -256,7 +256,7 @@
   },
   {
    "id": "o27",
-   "type": "question",
+   "type": "blue",
    "x": 0.2328,
    "y": 0.92,
    "next": [
@@ -265,7 +265,7 @@
   },
   {
    "id": "o28",
-   "type": "event",
+   "type": "question",
    "x": 0.1437,
    "y": 0.92,
    "next": [
@@ -274,7 +274,7 @@
   },
   {
    "id": "o29",
-   "type": "thief",
+   "type": "question",
    "x": 0.0547,
    "y": 0.92,
    "next": [
@@ -283,7 +283,7 @@
   },
   {
    "id": "o30",
-   "type": "red",
+   "type": "question",
    "x": 0.05,
    "y": 0.785,
    "next": [
@@ -301,7 +301,7 @@
   },
   {
    "id": "hub",
-   "type": "thief",
+   "type": "red",
    "x": 0.5,
    "y": 0.5,
    "next": [
@@ -311,7 +311,7 @@
   },
   {
    "id": "a0",
-   "type": "question",
+   "type": "blue",
    "x": 0.2598,
    "y": 0.1785,
    "next": [
@@ -329,7 +329,7 @@
   },
   {
    "id": "a2",
-   "type": "duel",
+   "type": "shop",
    "x": 0.3314,
    "y": 0.3471,
    "next": [
@@ -338,7 +338,7 @@
   },
   {
    "id": "a3",
-   "type": "shop",
+   "type": "mind-reader",
    "x": 0.3806,
    "y": 0.4094,
    "next": [
@@ -347,7 +347,7 @@
   },
   {
    "id": "a4",
-   "type": "lucky",
+   "type": "duel",
    "x": 0.4379,
    "y": 0.4585,
    "next": [
@@ -356,7 +356,7 @@
   },
   {
    "id": "b0",
-   "type": "event",
+   "type": "red",
    "x": 0.7343,
    "y": 0.1975,
    "next": [
@@ -365,7 +365,7 @@
   },
   {
    "id": "b1",
-   "type": "duel",
+   "type": "shop",
    "x": 0.6936,
    "y": 0.3023,
    "next": [
@@ -374,7 +374,7 @@
   },
   {
    "id": "b2",
-   "type": "lucky",
+   "type": "question",
    "x": 0.6402,
    "y": 0.3863,
    "next": [
@@ -383,7 +383,7 @@
   },
   {
    "id": "b3",
-   "type": "question",
+   "type": "shop",
    "x": 0.574,
    "y": 0.4495,
    "next": [
@@ -392,7 +392,7 @@
   },
   {
    "id": "c0",
-   "type": "event",
+   "type": "item",
    "x": 0.5445,
    "y": 0.605,
    "next": [
@@ -401,7 +401,7 @@
   },
   {
    "id": "c1",
-   "type": "item",
+   "type": "bank",
    "x": 0.5891,
    "y": 0.71,
    "next": [
@@ -410,7 +410,7 @@
   },
   {
    "id": "c2",
-   "type": "blue",
+   "type": "shop",
    "x": 0.6336,
    "y": 0.815,
    "next": [
@@ -419,7 +419,7 @@
   },
   {
    "id": "d0",
-   "type": "lucky",
+   "type": "question",
    "x": 0.4332,
    "y": 0.605,
    "next": [
@@ -428,7 +428,7 @@
   },
   {
    "id": "d1",
-   "type": "blue",
+   "type": "question",
    "x": 0.3664,
    "y": 0.71,
    "next": [
@@ -437,7 +437,7 @@
   },
   {
    "id": "d2",
-   "type": "mind-reader",
+   "type": "bank",
    "x": 0.2996,
    "y": 0.815,
    "next": [
@@ -446,7 +446,7 @@
   },
   {
    "id": "e0",
-   "type": "red",
+   "type": "question",
    "x": 0.8634,
    "y": 0.4525,
    "next": [
@@ -455,7 +455,7 @@
   },
   {
    "id": "e1",
-   "type": "blue",
+   "type": "item",
    "x": 0.8634,
    "y": 0.5475,
    "next": [

@@ -104,7 +104,7 @@ export const GAME_CONFIG = {
 
   duel: { stealCoins: 5, answerMs: 15000 },
 
-  items: { stealCoins: 5 },
+  items: { stealCoins: 10 },
 
   /** Bonus stars shown per game (randomly chosen from content). */
   bonusStars: { count: { min: 2, max: 3 } },
