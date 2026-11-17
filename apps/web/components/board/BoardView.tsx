@@ -151,19 +151,22 @@ export function BoardView({ board, game, players, follow, selectable = [], onSel
             );
           }),
         )}
-        {/* direction arrows on paths leaving a junction (and the ones you can pick right now) */}
+        {/* direction arrows only at intersections: right next to the junction tile, one per way out */}
         {board.tiles.flatMap((t) =>
           t.next.map((n) => {
+            if (t.next.length < 2) return null;
             const sel = selectable.includes(n);
-            const branch = t.next.length > 1;
-            if (!branch && !sel) return null;
             const a = xy(t.id);
             const b = xy(n);
+            const len = Math.hypot(b.x - a.x, b.y - a.y) || 1;
+            const d = TILE_R + 22; // just outside the junction tile (and its dashed ring)
+            const x = a.x + ((b.x - a.x) / len) * d;
+            const y = a.y + ((b.y - a.y) / len) * d;
             const angle = (Math.atan2(b.y - a.y, b.x - a.x) * 180) / Math.PI;
             return (
               <g
                 key={`arrow-${t.id}-${n}`}
-                transform={`translate(${(a.x + b.x) / 2} ${(a.y + b.y) / 2}) rotate(${angle}) scale(${sel ? 1.5 : branch ? 1.2 : 1})`}
+                transform={`translate(${x} ${y}) rotate(${angle}) scale(${sel ? 1.5 : 1.2})`}
                 pointerEvents="none"
               >
                 <path

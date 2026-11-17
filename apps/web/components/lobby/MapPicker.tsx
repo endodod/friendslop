@@ -13,7 +13,6 @@ export function BoardPreview({ board, className = "" }: { board: Board; classNam
     <svg viewBox={`0 0 ${W} ${H}`} className={className} aria-hidden>
       {board.tiles.flatMap((t) =>
         t.next.map((n) => {
-          if (t.next.length < 2) return null;
           const a = pos.get(t.id)!;
           const b = pos.get(n)!;
           return <line key={`${t.id}-${n}`} x1={a.x} y1={a.y} x2={b.x} y2={b.y} stroke="#3a3462" strokeWidth={2} />;
@@ -21,8 +20,13 @@ export function BoardPreview({ board, className = "" }: { board: Board; classNam
       )}
       {board.tiles.flatMap((t) =>
         t.next.map((n) => {
+          // arrows only where a path splits, right next to the junction
+          if (t.next.length < 2) return null;
           const a = pos.get(t.id)!;
           const b = pos.get(n)!;
+          const len = Math.hypot(b.x - a.x, b.y - a.y) || 1;
+          const ax = a.x + ((b.x - a.x) / len) * 7.5;
+          const ay = a.y + ((b.y - a.y) / len) * 7.5;
           const angle = (Math.atan2(b.y - a.y, b.x - a.x) * 180) / Math.PI;
           return (
             <path
@@ -32,7 +36,7 @@ export function BoardPreview({ board, className = "" }: { board: Board; classNam
               stroke="#ffc933"
               strokeWidth={0.9}
               strokeLinecap="round"
-              transform={`translate(${(a.x + b.x) / 2} ${(a.y + b.y) / 2}) rotate(${angle})`}
+              transform={`translate(${ax} ${ay}) rotate(${angle})`}
             />
           );
         }),
