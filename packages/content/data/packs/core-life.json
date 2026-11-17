@@ -222,6 +222,116 @@
         "tile",
         "questionOnlyMinigame"
       ]
+    },
+    {
+      "id": "life.sunday",
+      "themes": [
+        "life"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s perfect Sunday?",
+      "answers": [
+        "Bed until noon",
+        "Brunch with friends",
+        "Gaming marathon",
+        "Productive cleaning spree"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "life.shower-time",
+      "themes": [
+        "life"
+      ],
+      "format": "number",
+      "prompt": "How long does {target}'s shower take?",
+      "number": {
+        "min": 1,
+        "max": 60,
+        "step": 1,
+        "tolerance": {
+          "type": "relative",
+          "value": 0.3
+        },
+        "unit": "min"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "life.loses",
+      "themes": [
+        "life"
+      ],
+      "format": "tiles",
+      "prompt": "What does {target} lose the most?",
+      "answers": [
+        "Keys",
+        "Phone",
+        "Wallet",
+        "Track of time"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "life.queue",
+      "themes": [
+        "life"
+      ],
+      "format": "scale",
+      "prompt": "How patient is {target} in a slow queue, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "calm like a monk",
+        "max": "already asking for the manager"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "life.alarms",
+      "themes": [
+        "life"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} sets 3 alarms to wake up. Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 20,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "alarms"
+      },
+      "reference": 3,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
     }
   ]
 }

@@ -1,0 +1,256 @@
+{
+  "id": "core-nightlife",
+  "name": "Party & Nightlife",
+  "language": "en",
+  "version": 1,
+  "questions": [
+    {
+      "id": "party.at",
+      "themes": [
+        "party"
+      ],
+      "format": "tiles",
+      "prompt": "{target} at a party is…",
+      "answers": [
+        "On the dance floor",
+        "In the kitchen, talking",
+        "Petting the host's dog",
+        "Leaving early without saying bye"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.hours",
+      "themes": [
+        "party"
+      ],
+      "format": "number",
+      "prompt": "How many hours can {target} last at a party?",
+      "number": {
+        "min": 1,
+        "max": 12,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        },
+        "unit": "hours"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.animal",
+      "themes": [
+        "party"
+      ],
+      "format": "scale",
+      "prompt": "How much of a party animal is {target}, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "asleep by 10",
+        "max": "last one standing"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.move",
+      "themes": [
+        "party"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s signature party move?",
+      "answers": [
+        "Takes over the aux",
+        "Starts a conga line",
+        "Deep talks on the balcony",
+        "Feeds everyone snacks"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.host",
+      "themes": [
+        "party"
+      ],
+      "format": "tiles",
+      "prompt": "{target} hosts a party. The theme?",
+      "answers": [
+        "Costume party",
+        "Board game night",
+        "Rave in the living room",
+        "Cozy movie night"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.table",
+      "themes": [
+        "party"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} says the chance they'd dance on a table is 3/10. Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "/10"
+      },
+      "reference": 3,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.sidekick",
+      "themes": [
+        "party"
+      ],
+      "format": "player",
+      "prompt": "Who would {target} want as their sidekick at a party?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "party.bring",
+      "themes": [
+        "party"
+      ],
+      "format": "tiles",
+      "prompt": "What does {target} bring to a party?",
+      "answers": [
+        "Snacks",
+        "Drinks",
+        "A speaker",
+        "Just themselves"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.after",
+      "themes": [
+        "party"
+      ],
+      "format": "tiles",
+      "prompt": "{target} the morning after a big party?",
+      "answers": [
+        "Up at 8 like nothing happened",
+        "Asleep until 3 PM",
+        "Breakfast with the crew",
+        "Regrets everything"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.bar-order",
+      "themes": [
+        "party"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s order at the bar?",
+      "answers": [
+        "Water, honestly",
+        "Something fruity with an umbrella",
+        "Whatever is cheapest",
+        "A round for everyone"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.battery",
+      "themes": [
+        "party"
+      ],
+      "format": "scale",
+      "prompt": "How fast does {target}'s social battery run out, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "never runs out",
+        "max": "empty after 20 minutes"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.photos",
+      "themes": [
+        "party"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} takes 30 photos on a night out. Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 300,
+        "step": 5,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "photos"
+      },
+      "reference": 30,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    }
+  ]
+}

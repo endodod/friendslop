@@ -75,7 +75,7 @@ export function Lobby({ code, onLeave }: { code: string; onLeave: () => Promise<
 
         <section className="card flex flex-col gap-3 p-5">
           <h2 className="font-display text-2xl">
-            Players <span className="text-muted">{players.length}/4</span>
+            Players <span className="text-muted">{players.length}/{GAME_CONFIG.players.max}</span>
           </h2>
           <ul className="flex flex-col gap-2">
             {players.map((p) => (
@@ -220,7 +220,15 @@ function SettingsPanel({ settings, editable, canData }: { settings: RoomSettings
         <MapPicker value={settings.boardId} editable={editable} onChange={(boardId) => set({ boardId })} />
       </div>
 
-      <Row label="Rounds">
+      <Row label="Win condition">
+        <Segmented
+          value={settings.starGoal ?? 0}
+          options={GAME_CONFIG.starGoals.options.map((n) => ({ value: n, label: n === 0 ? "Most stars" : `First to ${n} ★` }))}
+          disabled={!editable}
+          onChange={(starGoal) => set({ starGoal })}
+        />
+      </Row>
+      <Row label={settings.starGoal ? "Rounds (time limit)" : "Rounds"}>
         <Segmented
           value={settings.turnCount}
           options={GAME_CONFIG.turns.options.map((n) => ({ value: n, label: String(n) }))}

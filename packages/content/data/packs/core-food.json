@@ -222,6 +222,116 @@
         "minigameIntro",
         "questionOnlyMinigame"
       ]
+    },
+    {
+      "id": "food.buffet",
+      "themes": [
+        "food"
+      ],
+      "format": "tiles",
+      "prompt": "{target} at an all-you-can-eat buffet. First plate?",
+      "answers": [
+        "Only desserts",
+        "A mountain of fries",
+        "A salad, just for show",
+        "Five kinds of meat"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "food.cereal",
+      "themes": [
+        "food"
+      ],
+      "format": "number",
+      "prompt": "How many bowls of cereal could {target} eat in a row?",
+      "number": {
+        "min": 1,
+        "max": 15,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        },
+        "unit": "bowls"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "food.date-dinner",
+      "themes": [
+        "food"
+      ],
+      "format": "tiles",
+      "prompt": "{target} cooks for a first date. What ends up on the table?",
+      "answers": [
+        "Pasta with sauce from a jar",
+        "Something ambitious and burnt",
+        "Frozen pizza with a candle",
+        "Takeout on fancy plates"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "food.sushi",
+      "themes": [
+        "food"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} could eat 20 pieces of sushi in one go. Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 80,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "pieces"
+      },
+      "reference": 20,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "food.picky",
+      "themes": [
+        "food"
+      ],
+      "format": "scale",
+      "prompt": "How picky is {target} with food, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "eats literally anything",
+        "max": "orders plain pasta everywhere"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
     }
   ]
 }

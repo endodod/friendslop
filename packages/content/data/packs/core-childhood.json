@@ -186,6 +186,68 @@
         "tile",
         "questionOnlyMinigame"
       ]
+    },
+    {
+      "id": "child.punishment",
+      "themes": [
+        "childhood"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s typical punishment as a kid?",
+      "answers": [
+        "No TV or games",
+        "Grounded",
+        "A very long lecture",
+        "Never got caught"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "child.toy",
+      "themes": [
+        "childhood"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s favorite toy as a kid?",
+      "answers": [
+        "Lego",
+        "A stuffed animal",
+        "Toy cars",
+        "A stick from the garden"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "child.bedtime",
+      "themes": [
+        "childhood"
+      ],
+      "format": "higherLower",
+      "prompt": "At age 10, {target} had to be in bed by 20:00. Later or earlier (higher or lower)?",
+      "number": {
+        "min": 17,
+        "max": 24,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": ":00"
+      },
+      "reference": 20,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
     }
   ]
 }

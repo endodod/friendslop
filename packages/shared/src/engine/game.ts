@@ -46,6 +46,7 @@ export type GameAction =
   | { type: "starBuy"; playerId: PlayerId; buy: boolean }
   | { type: "duelPick"; playerId: PlayerId; opponentId: PlayerId }
   | { type: "answer"; playerId: PlayerId; answer: Answer }
+  | { type: "draft"; playerId: PlayerId; answer: Answer }
   | { type: "minigameInput"; playerId: PlayerId; input: unknown }
   | { type: "minigameSubmit"; playerId: PlayerId; submission: unknown }
   | { type: "ready"; playerId: PlayerId }
@@ -292,6 +293,15 @@ function handleAction(d: Draft, a: GameAction, isHost: boolean): void {
     }
     case "answer":
       return answerQuestion(d, a.playerId, a.answer);
+    case "draft": {
+      // Remember what a player has selected but not locked in; used when the timer runs out.
+      const q = g.question;
+      if (!q || q.stage !== "answering" || (g.phase !== "questionRound" && g.phase !== "minigameQuestion")) return;
+      if (!q.participants.includes(a.playerId) || q.answers[a.playerId]) return;
+      if (!validateAnswer(q.question, a.answer)) fail("INVALID_INPUT", "Invalid answer.");
+      (q.drafts ??= {})[a.playerId] = a.answer;
+      return;
+    }
     case "minigameInput":
     case "minigameSubmit": {
       requirePhase(d, "minigamePlaying");
@@ -645,6 +655,14 @@ function resolveStar(d: Draft, buy: boolean) {
     emit(s, { type: "sfx", id: "star" });
     g.starTileId = pickStarTile(getBoard(s.ctx.content, g.boardId), s.ctx.content, g, s.ctx.rng);
     emit(s, { type: "starMoved", tileId: g.starTileId });
+    // Star race: reaching the goal ends the game on the spot.
+    const goal = d.room.settings.starGoal ?? 0;
+    if (goal > 0 && p.stars >= goal) {
+      g.starGoalWinner = pid;
+      g.star = null;
+      log(g, s, `${playerName(d, pid)} reached ${goal} stars and wins!`, pid);
+      return goto(d, "gameEnd", T.gameEndMs);
+    }
   }
   const passing = g.star?.passing;
   g.star = null;
@@ -880,6 +898,14 @@ function advanceQuestionStage(d: Draft) {
 function enterReveal(d: Draft) {
   const { g, s } = d;
   const q = g.question!;
+  // Time's up: whatever someone had selected counts as their answer.
+  for (const [pid, draft] of Object.entries(q.drafts ?? {})) {
+    if (!q.answers[pid] && q.participants.includes(pid)) {
+      q.answers[pid] = draft;
+      q.answeredAt[pid] = s.ctx.now;
+    }
+  }
+  q.drafts = {};
   q.result = scoreQuestion({
     question: q.question,
     targetId: q.targetId,
@@ -956,7 +982,7 @@ export function eligibleMinigames(content: ContentBundle, registry: Record<strin
       m.weight > 0 &&
       m.id !== "duel" &&
       def.minPlayers <= players &&
-      (def.maxPlayers ?? 4) >= players
+      (def.maxPlayers ?? GAME_CONFIG.players.max) >= players
     );
   });
 }
@@ -1104,6 +1130,8 @@ export function computeBonusStars(g: GameState, content: ContentBundle, rng: () 
 
 function startBonusStars(d: Draft) {
   const { g, s } = d;
+  // A star race was won outright: no bonus stars that could change the result.
+  if (g.starGoalWinner) return finishGame(d);
   g.bonusStars = { awards: computeBonusStars(g, s.ctx.content, s.ctx.rng), revealed: 0 };
   goto(d, "bonusStars", 1500);
 }

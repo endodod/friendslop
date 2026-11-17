@@ -18,7 +18,7 @@ export const content = loadContent();
 
 export function makeRoom(n: number, now = 1_000_000): RoomState {
   let room = createRoom("TEST", now, content);
-  const names = ["Alex", "Sam", "Jo", "Kim"];
+  const names = ["Alex", "Sam", "Jo", "Kim", "Lee", "Max", "Nia", "Ola"];
   for (let i = 0; i < n; i++) room = addPlayer(room, { id: `p${i + 1}`, name: names[i], now });
   return { ...room, players: room.players.map((p) => ({ ...p, ready: true })) };
 }

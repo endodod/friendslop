@@ -46,6 +46,8 @@ function candidates(args: SelectArgs, ignoreHistory: boolean): Candidate[] {
       if (pack.id !== "custom" && !q.themes.some((t) => enabled.has(t))) continue;
       if (settings.familyFriendly && q.tags?.includes("spicy")) continue;
       if ((q.minPlayers ?? 2) > args.playerCount) continue;
+      // "Who would {target} call from jail?" needs at least two other players to choose from.
+      if (q.format === "player" && excludesTarget(q) && args.playerCount < 3) continue;
       if (args.formats && !args.formats.includes(q.format)) continue;
       if (args.tags && !args.tags.some((t) => q.tags?.includes(t))) continue;
       const lang = hasLanguage(q.prompt, settings.language, pack.language) ? settings.language : "en";
@@ -69,6 +71,13 @@ export function selectQuestion(args: SelectArgs): { question: Question; pack: Pa
   if (fresh.length > 0) pool = fresh;
   const chosen = weightedPick(args.rng, pool, (c) => c.q.weight ?? 1)!;
   return { question: chosen.q, pack: chosen.pack };
+}
+
+/** Player questions about the target ("Who would {target} call…") don't offer the target as an answer. */
+export function excludesTarget(q: Question): boolean {
+  if (q.format !== "player" || q.allowTargetChoice) return false;
+  const texts = typeof q.prompt === "string" ? [q.prompt] : Object.values(q.prompt);
+  return texts.some((t) => t.includes("{target}"));
 }
 
 export interface ResolveArgs {
@@ -131,7 +140,8 @@ export function resolveQuestion(q: Question, pack: Pack, args: ResolveArgs): Res
     base.reference = q.reference;
     if (q.number) base.number = { ...q.number, unit: q.number.unit ? loc(q.number.unit) : undefined };
   }
-  if (q.format === "player") base.playerChoices = [...args.participants];
+  if (q.format === "player")
+    base.playerChoices = excludesTarget(q) ? args.participants.filter((p) => p !== args.targetId) : [...args.participants];
   void pack;
   return base;
 }

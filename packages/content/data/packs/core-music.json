@@ -194,6 +194,116 @@
         "tile",
         "questionOnlyMinigame"
       ]
+    },
+    {
+      "id": "music.festival",
+      "themes": [
+        "music"
+      ],
+      "format": "tiles",
+      "prompt": "{target} at a music festival is…",
+      "answers": [
+        "Front row and sweaty",
+        "At the food trucks",
+        "Asleep in the tent",
+        "Lost the group in the first hour"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "music.repeat",
+      "themes": [
+        "music"
+      ],
+      "format": "number",
+      "prompt": "What's the most times in a row {target} has played the same song?",
+      "number": {
+        "min": 1,
+        "max": 100,
+        "step": 1,
+        "tolerance": {
+          "type": "relative",
+          "value": 0.3
+        },
+        "unit": "times"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "music.quit",
+      "themes": [
+        "music"
+      ],
+      "format": "tiles",
+      "prompt": "Which instrument did {target} (secretly) give up on?",
+      "answers": [
+        "Recorder",
+        "Piano",
+        "Guitar",
+        "Drums"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "music.recent",
+      "themes": [
+        "music"
+      ],
+      "format": "scale",
+      "prompt": "How embarrassing is {target}'s 'recently played' list, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "carefully curated",
+        "max": "would delete the account if it leaked"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "music.volume",
+      "themes": [
+        "music"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} listens to music at 60% volume. Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "%"
+      },
+      "reference": 60,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
     }
   ]
 }

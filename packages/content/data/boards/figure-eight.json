@@ -19,7 +19,7 @@
   },
   {
    "id": "l1",
-   "type": "red",
+   "type": "shop",
    "x": 0.0642,
    "y": 0.3568,
    "next": [
@@ -37,7 +37,7 @@
   },
   {
    "id": "l3",
-   "type": "lucky",
+   "type": "blue",
    "x": 0.2041,
    "y": 0.1783,
    "next": [
@@ -47,7 +47,7 @@
   },
   {
    "id": "l4",
-   "type": "thief",
+   "type": "item",
    "x": 0.2959,
    "y": 0.1783,
    "next": [
@@ -56,7 +56,7 @@
   },
   {
    "id": "l5",
-   "type": "question",
+   "type": "event",
    "x": 0.3786,
    "y": 0.242,
    "next": [
@@ -65,7 +65,7 @@
   },
   {
    "id": "l6",
-   "type": "shop",
+   "type": "thief",
    "x": 0.4358,
    "y": 0.3568,
    "next": [
@@ -74,7 +74,7 @@
   },
   {
    "id": "l7",
-   "type": "event",
+   "type": "question",
    "x": 0.4562,
    "y": 0.5,
    "next": [
@@ -84,7 +84,7 @@
   },
   {
    "id": "l8",
-   "type": "shop",
+   "type": "item",
    "x": 0.4358,
    "y": 0.6432,
    "next": [
@@ -93,7 +93,7 @@
   },
   {
    "id": "l9",
-   "type": "event",
+   "type": "red",
    "x": 0.3786,
    "y": 0.758,
    "next": [
@@ -111,7 +111,7 @@
   },
   {
    "id": "l11",
-   "type": "blue",
+   "type": "question",
    "x": 0.2041,
    "y": 0.8217,
    "next": [
@@ -120,7 +120,7 @@
   },
   {
    "id": "l12",
-   "type": "item",
+   "type": "question",
    "x": 0.1214,
    "y": 0.758,
    "next": [
@@ -129,7 +129,7 @@
   },
   {
    "id": "l13",
-   "type": "blue",
+   "type": "red",
    "x": 0.0642,
    "y": 0.6432,
    "next": [
@@ -138,7 +138,7 @@
   },
   {
    "id": "r0",
-   "type": "question",
+   "type": "red",
    "x": 0.5437,
    "y": 0.5,
    "next": [
@@ -147,7 +147,7 @@
   },
   {
    "id": "r1",
-   "type": "mind-reader",
+   "type": "event",
    "x": 0.5642,
    "y": 0.3568,
    "next": [
@@ -174,7 +174,7 @@
   },
   {
    "id": "r4",
-   "type": "blue",
+   "type": "mind-reader",
    "x": 0.7959,
    "y": 0.1783,
    "next": [
@@ -183,7 +183,7 @@
   },
   {
    "id": "r5",
-   "type": "duel",
+   "type": "lucky",
    "x": 0.8786,
    "y": 0.242,
    "next": [
@@ -201,7 +201,7 @@
   },
   {
    "id": "r7",
-   "type": "question",
+   "type": "duel",
    "x": 0.9562,
    "y": 0.5,
    "next": [
@@ -210,7 +210,7 @@
   },
   {
    "id": "r8",
-   "type": "blue",
+   "type": "bank",
    "x": 0.9358,
    "y": 0.6432,
    "next": [
@@ -228,7 +228,7 @@
   },
   {
    "id": "r10",
-   "type": "red",
+   "type": "blue",
    "x": 0.7959,
    "y": 0.8217,
    "next": [
@@ -237,7 +237,7 @@
   },
   {
    "id": "r11",
-   "type": "bank",
+   "type": "shop",
    "x": 0.7041,
    "y": 0.8217,
    "next": [
@@ -246,7 +246,7 @@
   },
   {
    "id": "r12",
-   "type": "item",
+   "type": "blue",
    "x": 0.6214,
    "y": 0.758,
    "next": [
@@ -264,7 +264,7 @@
   },
   {
    "id": "c0",
-   "type": "red",
+   "type": "question",
    "x": 0.2041,
    "y": 0.3391,
    "next": [
@@ -282,7 +282,7 @@
   },
   {
    "id": "c2",
-   "type": "question",
+   "type": "blue",
    "x": 0.2041,
    "y": 0.6609,
    "next": [

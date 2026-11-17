@@ -190,6 +190,104 @@
         "minigameIntro",
         "questionOnlyMinigame"
       ]
+    },
+    {
+      "id": "gaming.legendary",
+      "themes": [
+        "gaming"
+      ],
+      "format": "tiles",
+      "prompt": "{target} finds a legendary item. They…",
+      "answers": [
+        "Equip it immediately",
+        "Save it for the 'right moment' forever",
+        "Sell it for gold",
+        "Screenshot it for the group chat"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "gaming.week",
+      "themes": [
+        "gaming"
+      ],
+      "format": "number",
+      "prompt": "How many hours does {target} game in an average week?",
+      "number": {
+        "min": 0,
+        "max": 80,
+        "step": 1,
+        "tolerance": {
+          "type": "relative",
+          "value": 0.3
+        },
+        "unit": "hours"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "gaming.puzzle",
+      "themes": [
+        "gaming"
+      ],
+      "format": "tiles",
+      "prompt": "{target} is stuck on a puzzle for 10 minutes. What happens?",
+      "answers": [
+        "Looks up a guide",
+        "Keeps trying for 3 more hours",
+        "Rage quits",
+        "Hands the controller to someone else"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "gaming.boardgames",
+      "themes": [
+        "gaming"
+      ],
+      "format": "scale",
+      "prompt": "How sore of a loser is {target} at board games, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "laughs it off",
+        "max": "flips the table"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "gaming.carry",
+      "themes": [
+        "gaming"
+      ],
+      "format": "player",
+      "prompt": "Who here does {target} trust most to carry them in a game?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
     }
   ]
 }

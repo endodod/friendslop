@@ -1,6 +1,6 @@
 # PartyGame
 
-A browser-based party board game for 2–4 friends. Every question is about one player (the
+A browser-based party board game for 2–8 friends. Every question is about one player (the
 **target**): everyone answers, the target included, and you score by landing on the same answer
 as the target. Questions pop up on board tiles and before mini-games, where matching the target
 earns a bonus.

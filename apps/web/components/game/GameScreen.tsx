@@ -71,6 +71,7 @@ function FocusContent({ display }: { display: boolean }) {
 }
 
 function TopBar({ compact }: { compact?: boolean }) {
+  const pub = useStore((s) => s.pub!);
   const g = useStore((s) => s.pub!.game!);
   const playerId = useStore((s) => s.playerId);
   const isHost = useIsHost();
@@ -82,6 +83,9 @@ function TopBar({ compact }: { compact?: boolean }) {
       <span className="rounded-xl bg-panel-2 px-3 py-1 font-display">
         {g.mode === "questionDebug" ? "Questions" : g.mode === "minigameDebug" ? "Mini-games" : `Round ${g.round}/${g.turnCount}`}
       </span>
+      {g.mode === "board" && (pub.settings.starGoal ?? 0) > 0 && (
+        <span className="rounded-xl bg-[#ffe066]/15 px-2 py-1 font-display text-sm text-[#ffe066]">First to {pub.settings.starGoal} ★</span>
+      )}
       {!compact && g.mode === "board" && active && !FOCUS_PHASES.has(g.phase) && (
         <span className="truncate font-display text-muted">{active.name}&apos;s turn</span>
       )}

@@ -10,6 +10,13 @@ export function MostLikelyToClient(p: MinigameClientProps<MltPublic, { myVote: s
   const r = p.pub.round;
   const [draft, setDraft] = useState<Answer | null>(null);
   useEffect(() => setDraft(null), [p.pub.index]);
+  // Time's almost up and you picked someone but didn't vote: that pick counts.
+  useEffect(() => {
+    const r = p.pub.round;
+    if (!r || r.stage !== "vote" || !p.isParticipant || p.priv?.myVote || !draft) return;
+    const t = setTimeout(() => p.input({ answer: draft }), Math.max(0, r.stageEndsAt - p.now() - 700));
+    return () => clearTimeout(t);
+  }, [p, draft]);
   if (!r) return <p className="text-center text-muted">Counting votes…</p>;
   const counts: Record<string, string[]> = {};
   for (const [voter, choice] of Object.entries(r.votes ?? {})) counts[choice] = [...(counts[choice] ?? []), voter];

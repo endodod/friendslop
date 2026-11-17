@@ -5,7 +5,8 @@ import { useEffect, useRef, useState } from "react";
 import { GAME_CONFIG, localize, type Answer, type PublicQuestionRound } from "@party-game/shared";
 import { clientContent } from "@party-game/content";
 import { useStore } from "@/lib/store";
-import { useNow } from "@/lib/time";
+import { serverNow, useNow } from "@/lib/time";
+import { send } from "@/lib/socket";
 import { act } from "@/lib/useRoom";
 import { play } from "@/lib/sfx";
 import { Avatar, CoinCount, Icon, PlayerName, ThemeBadge, Timer, usePlayers } from "../ui";
@@ -128,12 +129,35 @@ function Answering({
 }) {
   const players = usePlayers();
   const priv = useStore((s) => s.priv);
-  const [draft, setDraft] = useState<Answer | null>(null);
+  const [draft, setDraftState] = useState<Answer | null>(null);
   const [sending, setSending] = useState(false);
   const q = round.question;
   const Input = FORMAT_INPUTS[q.format];
+
+  // Not locked in when time runs out? Your current selection still counts:
+  // board rounds send it to the server as a hidden draft; mini-game rounds lock it in just before the end.
+  const draftTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const latest = useRef<Answer | null>(null);
+  const setDraft = (a: Answer) => {
+    setDraftState(a);
+    latest.current = a;
+    if (onSubmit || !participant) return;
+    if (draftTimer.current) clearTimeout(draftTimer.current);
+    draftTimer.current = setTimeout(() => void send("question:draft", { answer: a }), 150);
+  };
+  useEffect(() => {
+    if (!onSubmit || !participant || myAnswer) return;
+    const ms = round.stageEndsAt - serverNow() - 700;
+    const t = setTimeout(() => {
+      if (latest.current) void onSubmit(latest.current);
+    }, Math.max(0, ms));
+    return () => clearTimeout(t);
+  }, [onSubmit, participant, myAnswer, round.stageEndsAt]);
   const target = players[round.targetId];
-  useEffect(() => setDraft(null), [round.uid]);
+  useEffect(() => {
+    setDraftState(null);
+    latest.current = null;
+  }, [round.uid]);
 
   const items = (priv?.items ?? [])
     .map((id) => clientContent.items.find((i) => i.id === id))

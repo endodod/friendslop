@@ -161,6 +161,87 @@
         "tile",
         "minigameIntro"
       ]
+    },
+    {
+      "id": "friends.vacation-role",
+      "themes": [
+        "friends"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s role on a group vacation?",
+      "answers": [
+        "Wakes everyone up way too early",
+        "Loses the apartment keys",
+        "Pays for everything, never asks back",
+        "Plans nothing, complains about everything"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "friends.secrets",
+      "themes": [
+        "friends"
+      ],
+      "format": "scale",
+      "prompt": "How good is {target} at keeping secrets, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "tells everyone by lunch",
+        "max": "takes it to the grave"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "friends.argue",
+      "themes": [
+        "friends"
+      ],
+      "format": "player",
+      "prompt": "Who does {target} argue with the most in this group?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "friends.messages",
+      "themes": [
+        "friends"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} sends 50 messages a day in the group chat. Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 500,
+        "step": 10,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "messages"
+      },
+      "reference": 50,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
     }
   ]
 }

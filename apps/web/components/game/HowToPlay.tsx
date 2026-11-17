@@ -13,10 +13,19 @@ const Q = GAME_CONFIG.question;
 
 /** The goal of the board game + how to get there, in 4 steps. */
 export function BoardRules({ compact }: { compact?: boolean }) {
+  const settings = useStore((s) => s.pub?.settings);
+  const goal = settings?.starGoal ?? 0;
+  const star = <Icon id="star" size={18} className="mx-0.5 align-[-3px] text-[#ffe066]" />;
   return (
     <div className="flex flex-col gap-3">
       <Goal>
-        Collect the most <Icon id="star" size={18} className="mx-0.5 align-[-3px] text-[#ffe066]" /> stars. Coins break ties.
+        {goal > 0 ? (
+          <>
+            First to {goal} {star} stars wins! (Otherwise: most stars after {settings?.turnCount} rounds.)
+          </>
+        ) : (
+          <>Collect the most {star} stars. Coins break ties.</>
+        )}
       </Goal>
       <Steps
         steps={[

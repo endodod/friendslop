@@ -108,6 +108,7 @@ export function registerSocketHandlers(io: Server<any, ServerToClientEvents, any
     on("star:buy", (p) => rooms.action(current(), socket.data, { type: "starBuy", playerId: me(), buy: p.buy }));
     on("duel:pick", (p) => rooms.action(current(), socket.data, { type: "duelPick", playerId: me(), opponentId: p.opponentId }));
     on("question:answer", (p) => rooms.action(current(), socket.data, { type: "answer", playerId: me(), answer: p.answer }));
+    on("question:draft", (p) => rooms.action(current(), socket.data, { type: "draft", playerId: me(), answer: p.answer }));
     on("minigame:input", (p) =>
       rooms.action(current(), socket.data, { type: "minigameInput", playerId: me(), input: p.input }),
     );

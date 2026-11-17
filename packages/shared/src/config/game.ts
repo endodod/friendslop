@@ -3,9 +3,12 @@
  * Change values here, not in logic.
  */
 export const GAME_CONFIG = {
-  players: { min: 2, max: 4 },
+  players: { min: 2, max: 8 },
 
   turns: { options: [10, 12, 15, 20] as const, default: 12 },
+
+  /** Win condition: 0 = most stars after the last round; N = first to N stars wins (rounds = time limit). */
+  starGoals: { options: [0, 3, 5] as const, default: 0 },
 
   economy: {
     startCoins: 10,
@@ -88,6 +91,10 @@ export const GAME_CONFIG = {
       2: [10, 2],
       3: [10, 5, 0],
       4: [10, 5, 2, 0],
+      5: [10, 6, 3, 1, 0],
+      6: [10, 6, 4, 2, 1, 0],
+      7: [10, 7, 5, 3, 2, 1, 0],
+      8: [10, 7, 5, 3, 2, 1, 0, 0],
     } as Record<number, number[]>,
     /** Realtime mini-games tick at this rate on the server. */
     tickHz: 15,

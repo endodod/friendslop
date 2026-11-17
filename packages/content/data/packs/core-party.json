@@ -1,187 +1,394 @@
 {
   "id": "core-party",
-  "name": "Party & Nightlife",
+  "name": "Group Classics",
   "language": "en",
   "version": 1,
   "questions": [
     {
-      "id": "party.at",
+      "id": "party.mlt-famous",
       "themes": [
-        "party"
-      ],
-      "format": "tiles",
-      "prompt": "{target} at a party is…",
-      "answers": [
-        "On the dance floor",
-        "In the kitchen, talking",
-        "Petting the host's dog",
-        "Leaving early without saying bye"
-      ],
-      "usage": [
-        "tile",
-        "minigameIntro",
-        "questionOnlyMinigame"
-      ]
-    },
-    {
-      "id": "party.hours",
-      "themes": [
-        "party"
-      ],
-      "format": "number",
-      "prompt": "How many hours can {target} last at a party?",
-      "number": {
-        "min": 1,
-        "max": 12,
-        "step": 1,
-        "tolerance": {
-          "type": "absolute",
-          "value": 1
-        },
-        "unit": "hours"
-      },
-      "usage": [
-        "tile",
-        "questionOnlyMinigame"
-      ]
-    },
-    {
-      "id": "party.animal",
-      "themes": [
-        "party"
-      ],
-      "format": "scale",
-      "prompt": "How much of a party animal is {target}, 1–10?",
-      "number": {
-        "min": 1,
-        "max": 10,
-        "step": 1,
-        "tolerance": {
-          "type": "absolute",
-          "value": 1
-        }
-      },
-      "scaleLabels": {
-        "min": "asleep by 10",
-        "max": "last one standing"
-      },
-      "usage": [
-        "tile",
-        "minigameIntro",
-        "questionOnlyMinigame"
-      ]
-    },
-    {
-      "id": "party.move",
-      "themes": [
-        "party"
-      ],
-      "format": "tiles",
-      "prompt": "{target}'s signature party move?",
-      "answers": [
-        "Takes over the aux",
-        "Starts a conga line",
-        "Deep talks on the balcony",
-        "Feeds everyone snacks"
-      ],
-      "usage": [
-        "tile",
-        "minigameIntro",
-        "questionOnlyMinigame"
-      ]
-    },
-    {
-      "id": "party.host",
-      "themes": [
-        "party"
-      ],
-      "format": "tiles",
-      "prompt": "{target} hosts a party. The theme?",
-      "answers": [
-        "Costume party",
-        "Board game night",
-        "Rave in the living room",
-        "Cozy movie night"
-      ],
-      "usage": [
-        "tile",
-        "minigameIntro",
-        "questionOnlyMinigame"
-      ]
-    },
-    {
-      "id": "party.table",
-      "themes": [
-        "party"
-      ],
-      "format": "higherLower",
-      "prompt": "{target} says the chance they'd dance on a table is 3/10. Higher or lower?",
-      "number": {
-        "min": 0,
-        "max": 10,
-        "step": 1,
-        "tolerance": {
-          "type": "absolute",
-          "value": 0
-        },
-        "unit": "/10"
-      },
-      "reference": 3,
-      "usage": [
-        "tile",
-        "minigameIntro",
-        "questionOnlyMinigame"
-      ]
-    },
-    {
-      "id": "party.sidekick",
-      "themes": [
-        "party"
+        "life"
       ],
       "format": "player",
-      "prompt": "Who would {target} want as their sidekick at a party?",
+      "prompt": "Who's most likely to become famous by accident?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.mlt-birthday",
+      "themes": [
+        "life"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to forget their own birthday?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.mlt-cult",
+      "themes": [
+        "life"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to accidentally start a cult?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.mlt-lost",
+      "themes": [
+        "life"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to get lost in their own city?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.mlt-zombie",
+      "themes": [
+        "life"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to survive a zombie apocalypse?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.mlt-commercial",
+      "themes": [
+        "life"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to cry at a commercial?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.mlt-goose",
+      "themes": [
+        "life"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to fight a goose and lose?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.mlt-millionaire",
+      "themes": [
+        "life"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to secretly be a millionaire?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.mlt-k",
+      "themes": [
+        "life"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to reply \"k\" to a long message?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.mlt-hotdog",
+      "themes": [
+        "life"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to win a hot dog eating contest?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.mlt-villain",
+      "themes": [
+        "life"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to become a movie villain?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.mlt-ikea",
+      "themes": [
+        "life"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to have leftover screws after building IKEA furniture?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.tattoo",
+      "themes": [
+        "life"
+      ],
+      "format": "player",
+      "prompt": "Who would {target} trust to pick their next tattoo?",
       "usage": [
         "tile",
         "minigameIntro"
       ]
     },
     {
-      "id": "party.bring",
+      "id": "party.worst-cook",
       "themes": [
-        "party"
+        "life"
       ],
-      "format": "tiles",
-      "prompt": "What does {target} bring to a party?",
-      "answers": [
-        "Snacks",
-        "Drinks",
-        "A speaker",
-        "Just themselves"
+      "format": "player",
+      "prompt": "Whose cooking would {target} trust the least?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "party.driver",
+      "themes": [
+        "life"
+      ],
+      "format": "player",
+      "prompt": "Who does {target} think is the worst driver here?",
+      "tags": [
+        "spicy"
       ],
       "usage": [
         "tile",
-        "minigameIntro",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "party.rank-food",
+      "themes": [
+        "life"
+      ],
+      "format": "ranking",
+      "prompt": "Rank these the way {target} would, best first:",
+      "answers": [
+        "Pizza",
+        "Burgers",
+        "Sushi",
+        "Tacos"
+      ],
+      "usage": [
+        "tile",
         "questionOnlyMinigame"
       ]
     },
     {
-      "id": "party.after",
+      "id": "party.rank-fears",
       "themes": [
-        "party"
+        "life"
       ],
-      "format": "tiles",
-      "prompt": "{target} the morning after a big party?",
+      "format": "ranking",
+      "prompt": "How would {target} rank these, scariest first?",
       "answers": [
-        "Up at 8 like nothing happened",
-        "Asleep until 3 PM",
-        "Breakfast with the crew",
-        "Regrets everything"
+        "Spiders",
+        "Public speaking",
+        "Deep water",
+        "Phone calls"
       ],
       "usage": [
         "tile",
-        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.rank-chores",
+      "themes": [
+        "life"
+      ],
+      "format": "ranking",
+      "prompt": "What would {target} rather do? Rank them, favorite first:",
+      "answers": [
+        "Clean the bathroom",
+        "Do taxes",
+        "Go to the dentist",
+        "Build IKEA furniture"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.rank-seasons",
+      "themes": [
+        "life"
+      ],
+      "format": "ranking",
+      "prompt": "Rank the seasons the way {target} would, favorite first:",
+      "answers": [
+        "Spring",
+        "Summer",
+        "Autumn",
+        "Winter"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.rank-friday",
+      "themes": [
+        "life"
+      ],
+      "format": "ranking",
+      "prompt": "{target}'s ranking of Friday night plans, best first:",
+      "answers": [
+        "Party",
+        "Gaming",
+        "Series marathon",
+        "Sleep"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.mlt-cats",
+      "themes": [
+        "life"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to end up with five cats?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.mlt-viral",
+      "themes": [
+        "life"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to go viral for something embarrassing?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.mlt-wedding",
+      "themes": [
+        "life"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to oversleep on their own wedding day?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.mlt-ticket",
+      "themes": [
+        "life"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to talk their way out of a speeding ticket?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.mlt-museum",
+      "themes": [
+        "life"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to get kicked out of a museum?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.rank-powers",
+      "themes": [
+        "life"
+      ],
+      "format": "ranking",
+      "prompt": "Rank these superpowers the way {target} would, best first:",
+      "answers": [
+        "Flying",
+        "Invisibility",
+        "Time travel",
+        "Mind reading"
+      ],
+      "usage": [
+        "tile",
         "questionOnlyMinigame"
       ]
     }
-  ]
+  ],
+  "description": "\"Most likely to\" prompts, rankings and who-would-you-pick questions."
 }

@@ -182,6 +182,66 @@
         "minigameIntro",
         "questionOnlyMinigame"
       ]
+    },
+    {
+      "id": "travel.lost-city",
+      "themes": [
+        "travel"
+      ],
+      "format": "tiles",
+      "prompt": "{target} is lost in a foreign city. They…",
+      "answers": [
+        "Ask a local",
+        "Follow Google Maps blindly",
+        "Wander and call it an adventure",
+        "Panic quietly"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "travel.food",
+      "themes": [
+        "travel"
+      ],
+      "format": "tiles",
+      "prompt": "On vacation, {target} mostly eats…",
+      "answers": [
+        "Only local food",
+        "The same as at home",
+        "Whatever is closest",
+        "Ice cream, three times a day"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "travel.suitcase",
+      "themes": [
+        "travel"
+      ],
+      "format": "number",
+      "prompt": "How many kilos does {target}'s suitcase weigh for a one-week trip?",
+      "number": {
+        "min": 2,
+        "max": 40,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 3
+        },
+        "unit": "kg"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
     }
   ]
 }

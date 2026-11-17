@@ -25,6 +25,7 @@ export const RoomSettingsPatchSchema = z
     themes: z.array(z.string().max(64)).max(50),
     tileFrequency: z.record(z.string().max(64), z.enum(["off", "few", "normal", "many"])),
     packs: z.array(z.string().max(64)).max(100),
+    starGoal: z.number().int().min(0).max(10),
     dataQuestions: z.boolean(),
     familyFriendly: z.boolean(),
     language: LanguageSchema,
@@ -71,6 +72,8 @@ export const ClientEvents = {
   "star:buy": z.object({ buy: z.boolean() }),
   "duel:pick": z.object({ opponentId: PlayerIdSchema }),
   "question:answer": z.object({ answer: AnswerSchema }),
+  /** Current (not locked in) selection. Counts if the timer runs out. */
+  "question:draft": z.object({ answer: AnswerSchema }),
   "minigame:input": z.object({ input: z.unknown() }),
   "minigame:submit": z.object({ submission: z.unknown() }),
   "custom:add": z.object({ question: CustomQuestionDraftSchema }),

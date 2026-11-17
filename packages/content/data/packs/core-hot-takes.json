@@ -224,6 +224,113 @@
         "minigameIntro",
         "questionOnlyMinigame"
       ]
+    },
+    {
+      "id": "hot.food-opinion",
+      "themes": [
+        "hot-takes"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s most controversial food opinion?",
+      "answers": [
+        "Pizza is overrated",
+        "Breakfast is the worst meal",
+        "Coriander tastes like soap",
+        "Ketchup goes on everything"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "hot.cats",
+      "themes": [
+        "hot-takes"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} rates cats a 6/10. Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "/10"
+      },
+      "reference": 6,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "hot.worst-season",
+      "themes": [
+        "hot-takes"
+      ],
+      "format": "tiles",
+      "prompt": "The worst season, according to {target}?",
+      "answers": [
+        "Summer",
+        "Autumn",
+        "Winter",
+        "Spring"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "hot.socials",
+      "themes": [
+        "hot-takes"
+      ],
+      "format": "scale",
+      "prompt": "'Everyone should delete social media.' How much does {target} agree, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "absolutely not",
+        "max": "delete it all tonight"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "hot.voice-messages",
+      "themes": [
+        "hot-takes"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s opinion on voice messages?",
+      "answers": [
+        "Love them",
+        "Only if they're short",
+        "Never listens to them",
+        "Plays them at 2× speed"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
     }
   ]
 }

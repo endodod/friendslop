@@ -181,6 +181,73 @@
         "tile",
         "questionOnlyMinigame"
       ]
+    },
+    {
+      "id": "work.signoff",
+      "themes": [
+        "work"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s email sign-off?",
+      "answers": [
+        "Best regards",
+        "Cheers",
+        "Thx",
+        "No sign-off, just vibes"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "work.zone-out",
+      "themes": [
+        "work"
+      ],
+      "format": "number",
+      "prompt": "How many minutes into a meeting or class does {target} zone out?",
+      "number": {
+        "min": 1,
+        "max": 60,
+        "step": 1,
+        "tolerance": {
+          "type": "relative",
+          "value": 0.3
+        },
+        "unit": "min"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "work.quit",
+      "themes": [
+        "work"
+      ],
+      "format": "scale",
+      "prompt": "How likely is {target} to quit dramatically one day, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "loyal forever",
+        "max": "the speech is already written"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
     }
   ]
 }

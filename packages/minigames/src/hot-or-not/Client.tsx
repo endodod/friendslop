@@ -10,6 +10,13 @@ export function HotOrNotClient(p: MinigameClientProps<HotOrNotPublic, { myGuess:
   const r = p.pub.round;
   const [draft, setDraft] = useState<Answer | null>(null);
   useEffect(() => setDraft(null), [p.pub.index]);
+  // Target forgot to lock in: their current number counts.
+  useEffect(() => {
+    const r = p.pub.round;
+    if (!r || r.stage !== "target" || p.me !== r.targetId || p.priv?.myTruth != null || !draft) return;
+    const t = setTimeout(() => p.input({ answer: draft }), Math.max(0, r.stageEndsAt - p.now() - 700));
+    return () => clearTimeout(t);
+  }, [p, draft]);
   if (!r) return <p className="text-center text-muted">Wrapping up…</p>;
   const target = p.players[r.targetId];
   const isTarget = p.me === r.targetId;

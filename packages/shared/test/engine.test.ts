@@ -93,6 +93,38 @@ describe("turn flow & movement", () => {
     expect(h.g.players[pid].tileId).toBe("m3");
   });
 
+  it("star race: reaching the star goal ends the game right away, no bonus stars", () => {
+    const h = new Harness(3);
+    h.room = { ...h.room, settings: { ...h.room.settings, starGoal: 3 } };
+    toTurnStart(h);
+    const pid = h.active();
+    h.room.game!.starTileId = "m1";
+    h.room.game!.players[pid].stars = 2;
+    h.room.game!.players[pid].coins = 30;
+    rollExactly(h, 1);
+    h.timeout();
+    h.act({ type: "starBuy", playerId: pid, buy: true });
+    expect(h.g.phase).toBe("gameEnd");
+    expect(h.g.starGoalWinner).toBe(pid);
+    h.timeout();
+    expect(h.g.phase).toBe("podium");
+    expect(h.g.bonusStars).toBeNull();
+    expect(h.g.finalRanking![0]).toBe(pid);
+  });
+
+  it("without a star goal the game keeps going", () => {
+    const h = new Harness(2);
+    toTurnStart(h);
+    const pid = h.active();
+    h.room.game!.starTileId = "m1";
+    h.room.game!.players[pid].stars = 4;
+    h.room.game!.players[pid].coins = 30;
+    rollExactly(h, 1);
+    h.timeout();
+    h.act({ type: "starBuy", playerId: pid, buy: true });
+    expect(h.g.phase).toBe("turnEnd");
+  });
+
   it("landing on the star without enough coins: nothing bought", () => {
     const h = new Harness(2);
     toTurnStart(h);
@@ -531,7 +563,7 @@ describe("events", () => {
 });
 
 describe("full games", () => {
-  for (const n of [2, 3, 4]) {
+  for (const n of [2, 3, 4, 6, 8]) {
     it(`${n} players: a whole game on timeouts reaches the podium`, () => {
       const h = new Harness(n, { seed: 100 + n });
       h.room.game!.turnCount = 3;

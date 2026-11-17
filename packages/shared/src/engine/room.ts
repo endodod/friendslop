@@ -20,6 +20,7 @@ export function defaultSettings(content: ContentBundle): RoomSettings {
     turnCount: GAME_CONFIG.turns.default,
     themes: content.themes.map((t) => t.id),
     tileFrequency: {},
+    starGoal: GAME_CONFIG.starGoals.default,
     packs: [...selectablePacks(content).map((p) => p.id), CUSTOM_PACK_ID],
     dataQuestions: true,
     familyFriendly: false,
@@ -61,7 +62,7 @@ export function addPlayer(
   args: { id: string; name: string; color?: string; now: number },
 ): RoomState {
   if (room.stage !== "lobby") fail("GAME_IN_PROGRESS", "This game has already started.");
-  if (room.players.length >= GAME_CONFIG.players.max) fail("ROOM_FULL", "This room is full (4 players max).");
+  if (room.players.length >= GAME_CONFIG.players.max) fail("ROOM_FULL", `This room is full (${GAME_CONFIG.players.max} players max).`);
   const name = sanitizeName(args.name);
   if (!name) fail("NAME_INVALID", "Please enter a name.");
   if (room.players.some((p) => p.name.toLowerCase() === name.toLowerCase())) fail("NAME_TAKEN", "That name is taken.");
@@ -127,6 +128,7 @@ export function updateSettings(room: RoomState, patch: Partial<RoomSettings>, co
   s.themes = [...new Set(s.themes)].filter((t) => known.has(t));
   if (s.themes.length === 0) fail("INVALID_INPUT", "Pick at least one theme.");
   if (!content.boards.some((b) => b.id === s.boardId)) fail("INVALID_INPUT", "Unknown board.");
+  if (!(GAME_CONFIG.starGoals.options as readonly number[]).includes(s.starGoal ?? 0)) fail("INVALID_INPUT", "Invalid win condition.");
   const packIds = new Set([...selectablePacks(content).map((p) => p.id), CUSTOM_PACK_ID]);
   s.packs = [...new Set(s.packs)].filter((p) => packIds.has(p));
   if (s.packs.length === 0) fail("INVALID_INPUT", "Pick at least one question pack.");

@@ -185,6 +185,73 @@
         "tile",
         "minigameIntro"
       ]
+    },
+    {
+      "id": "net.comment",
+      "themes": [
+        "internet"
+      ],
+      "format": "tiles",
+      "prompt": "{target} leaves a comment online. What kind?",
+      "answers": [
+        "A long angry essay",
+        "Just 'first!'",
+        "A wholesome compliment",
+        "They never comment"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "net.camera-roll",
+      "themes": [
+        "internet"
+      ],
+      "format": "number",
+      "prompt": "How many photos are in {target}'s camera roll?",
+      "number": {
+        "min": 0,
+        "max": 50000,
+        "step": 10,
+        "tolerance": {
+          "type": "relative",
+          "value": 0.4
+        },
+        "unit": "photos"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "net.online",
+      "themes": [
+        "internet"
+      ],
+      "format": "scale",
+      "prompt": "How chronically online is {target}, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "touches grass daily",
+        "max": "speaks only in memes"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
     }
   ]
 }

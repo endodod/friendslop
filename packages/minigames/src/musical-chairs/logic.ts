@@ -30,7 +30,13 @@ export interface ChairsPublic {
 
 function newRound(s: ChairsState, now: number, rng: () => number): ChairsState {
   const n = s.alive.length - 1;
-  const chairs = Array.from({ length: n }, () => ({ x: 10 + rng() * 75, y: 10 + rng() * 70 }));
+  // Spots on a 3×3 grid (with a little jitter) so up to 7 chairs never overlap.
+  const spots = Array.from({ length: 9 }, (_, i) => ({ x: 8 + (i % 3) * 36 + rng() * 6, y: 8 + Math.floor(i / 3) * 33 + rng() * 6 }));
+  for (let i = spots.length - 1; i > 0; i--) {
+    const j = Math.floor(rng() * (i + 1));
+    [spots[i], spots[j]] = [spots[j], spots[i]];
+  }
+  const chairs = spots.slice(0, n);
   const stopAt = now + 2500 + rng() * 4500;
   return { ...s, round: s.round + 1, stage: "music", stopAt, stageEndsAt: stopAt, chairs, seated: {} };
 }
@@ -45,7 +51,7 @@ export const musicalChairs: MiniGameDefinition<ChairsState, { chair: number }> =
   kind: "sharedRealtime",
   durationSec: 60,
   minPlayers: 2,
-  inputSchema: z.object({ chair: z.number().int().min(0).max(4) }),
+  inputSchema: z.object({ chair: z.number().int().min(0).max(7) }),
   init: ({ players, bonuses, now, rng }) =>
     newRound({ players, bonuses, alive: [...players], out: [], round: 0, stage: "music", stopAt: 0, stageEndsAt: 0, chairs: [], seated: {} }, now, rng),
   onInput: (s, pid, { chair }, { now }) => {

@@ -186,6 +186,75 @@
         "minigameIntro",
         "questionOnlyMinigame"
       ]
+    },
+    {
+      "id": "love.wedding-song",
+      "themes": [
+        "dating"
+      ],
+      "format": "tiles",
+      "prompt": "Which song plays at {target}'s wedding?",
+      "answers": [
+        "A cheesy love ballad",
+        "A meme song",
+        "A video game theme",
+        "Something nobody can dance to"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "love.jealous",
+      "themes": [
+        "dating"
+      ],
+      "format": "scale",
+      "prompt": "How jealous does {target} get, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "doesn't care at all",
+        "max": "checks every like"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "love.dates-needed",
+      "themes": [
+        "dating"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} needs 3 dates to know if it's going anywhere. Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 20,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "dates"
+      },
+      "reference": 3,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
     }
   ]
 }

@@ -400,27 +400,36 @@ function ShopPanel({ display }: { display?: boolean }) {
           You have <CoinCount value={me?.coins ?? 0} size={16} /> · {priv?.items.length ?? 0}/{GAME_CONFIG.economy.maxItems} items
         </p>
       )}
-      <ul className="grid gap-2 sm:grid-cols-2">
+      <ul className="flex flex-col gap-1.5">
         {stock.map((it) => {
           const bought = g.shop?.bought.includes(it.id);
           const afford = (me?.coins ?? 0) >= it.price;
           return (
-            <li key={it.id} className="flex items-center gap-3 rounded-2xl bg-bg-2 p-3">
-              <Icon id={it.icon} size={36} className="text-accent" />
+            <li key={it.id} className="flex items-center gap-3 rounded-2xl bg-bg-2 px-3 py-2">
+              <Icon id={it.icon} size={30} className="shrink-0 text-accent" />
               <div className="min-w-0 flex-1">
-                <p className="font-display text-lg">{localize(it.name)}</p>
-                <p className="text-sm text-muted">{localize(it.description)}</p>
+                <p className="flex items-baseline gap-2 font-display leading-tight">
+                  <span className="truncate">{localize(it.name)}</span>
+                  {!canAct && <CoinCount value={it.price} size={14} className="shrink-0 text-sm text-muted" />}
+                </p>
+                <p className="line-clamp-2 text-xs leading-snug text-muted">{localize(it.description)}</p>
               </div>
-              {canAct ? (
+              {canAct && (
                 <button
-                  className="btn-primary min-h-11 px-3 text-base"
+                  className="btn-primary min-h-11 w-[4.5rem] shrink-0 px-2 text-base"
                   disabled={!afford || full || bought}
+                  aria-label={`Buy ${localize(it.name)} for ${it.price} coins`}
                   onClick={() => act("shop:buy", { itemId: it.id })}
                 >
-                  {bought ? "Bought" : <CoinCount value={it.price} size={16} />}
+                  {bought ? (
+                    "✓"
+                  ) : (
+                    <span className="inline-flex items-center gap-1">
+                      <Icon id="coin" size={16} className="text-[#241a00]/80" />
+                      {it.price}
+                    </span>
+                  )}
                 </button>
-              ) : (
-                <CoinCount value={it.price} size={16} />
               )}
             </li>
           );

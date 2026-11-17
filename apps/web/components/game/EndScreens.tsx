@@ -5,11 +5,16 @@ import { useRouter } from "next/navigation";
 import { localize, standings, type PlayerStats, type PublicGameState } from "@party-game/shared";
 import { clientContent } from "@party-game/content";
 import { act } from "@/lib/useRoom";
+import { useStore } from "@/lib/store";
 import { Avatar, CoinCount, Icon, PlayerName, StarCount, useIsHost, usePlayers } from "../ui";
 import { Confetti } from "../fx";
 import { SkipButton } from "./PhasePanel";
 
 export function GameEndBanner() {
+  const g = useStore((s) => s.pub?.game);
+  const goal = useStore((s) => s.pub?.settings.starGoal ?? 0);
+  const players = usePlayers();
+  const winner = g?.starGoalWinner ? players[g.starGoalWinner] : null;
   return (
     <div className="flex flex-col items-center gap-4 py-10 text-center">
       <motion.h2
@@ -18,9 +23,16 @@ export function GameEndBanner() {
         transition={{ type: "spring", stiffness: 120 }}
         className="font-display text-6xl text-accent"
       >
-        Game over!
+        {winner ? "Star race over!" : "Game over!"}
       </motion.h2>
-      <p className="font-display text-2xl">But wait… bonus stars!</p>
+      {winner ? (
+        <p className="flex items-center gap-2 font-display text-2xl">
+          <Avatar player={winner} size={40} ring /> <PlayerName player={winner} /> reached {goal}{" "}
+          <Icon id="star" size={26} className="text-[#ffe066]" />!
+        </p>
+      ) : (
+        <p className="font-display text-2xl">But wait… bonus stars!</p>
+      )}
       <SkipButton />
     </div>
   );

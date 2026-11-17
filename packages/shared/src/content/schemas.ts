@@ -66,7 +66,9 @@ export const QuestionSchema = z
     truthSource: z.object({ provider: DataProviderIdSchema, generator: z.string().min(1) }).optional(),
     tags: z.array(z.string()).optional(),
     weight: z.number().positive().optional(),
-    minPlayers: z.number().int().min(2).max(4).optional(),
+    minPlayers: z.number().int().min(2).max(8).optional(),
+    /** player format: may the target be picked? Default: no when the prompt mentions {target}. */
+    allowTargetChoice: z.boolean().optional(),
     usage: z.array(QuestionUsageSchema).min(1),
   })
   .superRefine((q, ctx) => {
@@ -139,6 +141,8 @@ export const BoardSchema = z
     name: LocalizedStringSchema,
     description: LocalizedStringSchema.optional(),
     startTileId: z.string(),
+    /** Shown on the map card in the lobby, e.g. { min: 4, max: 8 }. */
+    recommendedPlayers: z.object({ min: z.number().int().min(2).max(8), max: z.number().int().min(2).max(8) }).optional(),
     /** Aspect ratio of the board (width / height) for rendering. */
     aspect: z.number().positive().default(1.6),
     tiles: z.array(BoardTileSchema).min(8),

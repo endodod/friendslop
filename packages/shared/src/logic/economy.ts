@@ -42,6 +42,6 @@ export function standings(g: GameState): { playerId: PlayerId; rank: number }[] 
 
 /** Placement → coins table, scaled by participant count. Ties share the better placement. */
 export function placementCoins(table: Record<number, number[]>, participants: number, rank: number): number {
-  const row = table[participants] ?? table[4];
+  const row = table[participants] ?? table[Math.max(...Object.keys(table).map(Number))];
   return row[Math.min(rank - 1, row.length - 1)] ?? 0;
 }

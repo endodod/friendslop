@@ -166,7 +166,7 @@ describe("mini-game flow in a real game", () => {
     expect(h.g.minigame!.bonuses.sort()).toEqual([...q.participants].sort());
   });
 
-  for (const n of [2, 3, 4]) {
+  for (const n of [2, 3, 4, 6, 8]) {
     it(`${n} players: full game with all mini-games, timeouts only`, () => {
       const h = new Harness(n, { minigames: MINIGAMES, seed: 300 + n });
       h.room.game!.turnCount = 6;

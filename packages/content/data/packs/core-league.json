@@ -249,6 +249,67 @@
         "minigameIntro",
         "questionOnlyMinigame"
       ]
+    },
+    {
+      "id": "lol.new-champ",
+      "themes": [
+        "league"
+      ],
+      "format": "tiles",
+      "prompt": "{target} wants to try a new champion. Where?",
+      "answers": [
+        "Normal game",
+        "Straight into ranked",
+        "Practice tool first",
+        "ARAM"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "lol.level",
+      "themes": [
+        "league"
+      ],
+      "format": "higherLower",
+      "prompt": "{target}'s account level is 300. Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 2000,
+        "step": 10,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        }
+      },
+      "reference": 300,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "lol.0-10",
+      "themes": [
+        "league"
+      ],
+      "format": "tiles",
+      "prompt": "{target} is 0/10. What now?",
+      "answers": [
+        "Keep trying, it's fine",
+        "Mute all and farm",
+        "Build full tank out of spite",
+        "Spam emotes"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
     }
   ]
 }

@@ -31,7 +31,7 @@ export function MapPicker({ value, editable, onChange }: { value: string; editab
   const boards = useBoards();
   if (!boards) return <p className="text-muted">Loading maps…</p>;
   return (
-    <div className="grid grid-cols-2 gap-2 lg:grid-cols-4" role="radiogroup" aria-label="Map">
+    <div className="grid grid-cols-2 gap-2 lg:grid-cols-3" role="radiogroup" aria-label="Map">
       {boards.map((b) => {
         const on = b.id === value;
         const junctions = b.tiles.filter((t) => t.next.length > 1).length;
@@ -56,6 +56,11 @@ export function MapPicker({ value, editable, onChange }: { value: string; editab
             <span className="text-xs text-muted">
               {b.tiles.length} tiles · {junctions} {junctions === 1 ? "junction" : "junctions"}
             </span>
+            {b.recommendedPlayers && (
+              <span className="self-start rounded-full bg-accent/20 px-2 text-xs font-semibold text-accent">
+                {b.recommendedPlayers.min}–{b.recommendedPlayers.max} players
+              </span>
+            )}
             {b.description && <span className="text-xs leading-snug text-muted">{localize(b.description)}</span>}
           </button>
         );

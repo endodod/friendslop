@@ -51,7 +51,8 @@ that folder is loaded, so a new pack is just a new file.
 | `reference` | higherLower | The value players compare against. Must be inside `number.min..max`. |
 | `tags` | no | `spicy` (hidden by the family-friendly filter), `classic`, `quick`, `deep`, `mostLikely` |
 | `weight` | no | Selection weight, default 1. |
-| `minPlayers` | no | Only used with at least this many players. |
+| `minPlayers` | no | Only used with at least this many players (2–8). |
+| `allowTargetChoice` | no | `player` format: allow picking the target. Off by default when the prompt mentions `{target}`. |
 | `usage` | yes | Where it may appear: `tile` (board question tiles), `minigameIntro` (before mini-games, keep it quick), `questionOnlyMinigame` (Hot or Not / Duel use number questions, Most Likely To uses `mostLikely` player questions, Ranking uses ranking questions). |
 
 Placeholders in prompts and answers:
@@ -164,7 +165,8 @@ SVG with the board's `aspect` ratio (width / height).
 - The lint check requires every tile to be reachable from the start and to lead back to it, at
   least 3 star-eligible tiles, and only known tile types.
 - Every board in the folder shows up in the lobby's map picker (with a preview). The first board is the default.
-- Shipped maps: Friendship Loop (classic), Figure Eight, The Ladder, Quick Loop.
+- Shipped maps: Friendship Loop (classic), Figure Eight, The Ladder, Quick Loop, Metropolis (4–8 players).
+- Optional `recommendedPlayers: { "min": 4, "max": 8 }` is shown on the map card.
 - Players can tune how often each tile type appears (lobby → Tile mix: Off / Few / Normal / Many).
   "Normal" is the board as designed; extra tiles are taken from blue tiles, and at least
   `GAME_CONFIG.tiles.minFillerTiles` blue tiles always stay for the star.

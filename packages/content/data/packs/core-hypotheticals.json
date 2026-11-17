@@ -189,6 +189,102 @@
         "tile",
         "minigameIntro"
       ]
+    },
+    {
+      "id": "hypo.animal-talk",
+      "themes": [
+        "hypotheticals"
+      ],
+      "format": "tiles",
+      "prompt": "{target} can talk to one animal species. Which one?",
+      "answers": [
+        "Cats",
+        "Dogs",
+        "Crows",
+        "Dolphins"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "hypo.invisible",
+      "themes": [
+        "hypotheticals"
+      ],
+      "format": "tiles",
+      "prompt": "{target} is invisible for a day. First thing they do?",
+      "answers": [
+        "Sneak into a concert",
+        "Prank their friends",
+        "Eat free food",
+        "Nap somewhere nobody finds them"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "hypo.no-phone",
+      "themes": [
+        "hypotheticals"
+      ],
+      "format": "number",
+      "prompt": "How many days would {target} go without their phone for 1000 €?",
+      "number": {
+        "min": 0,
+        "max": 365,
+        "step": 1,
+        "tolerance": {
+          "type": "relative",
+          "value": 0.3
+        },
+        "unit": "days"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "hypo.swap-lives",
+      "themes": [
+        "hypotheticals"
+      ],
+      "format": "player",
+      "prompt": "Who here would {target} swap lives with for a week?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "hypo.fame",
+      "themes": [
+        "hypotheticals"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} rates how much they'd like to be famous a 4/10. Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "/10"
+      },
+      "reference": 4,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
     }
   ]
 }

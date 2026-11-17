@@ -223,7 +223,7 @@ export function BoardView({ board, game, players, follow, selectable = [], onSel
           if (!p || !tile) return null;
           const group = byTile.get(tile) ?? [pid];
           const idx = group.indexOf(pid);
-          const spread = group.length > 1 ? 30 : 0;
+          const spread = group.length > 4 ? 42 : group.length > 1 ? 30 : 0;
           const angle = (idx / group.length) * Math.PI * 2 - Math.PI / 2;
           const base = xy(tile);
           const x = base.x + Math.cos(angle) * spread;

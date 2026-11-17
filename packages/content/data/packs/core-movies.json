@@ -194,6 +194,116 @@
         "tile",
         "questionOnlyMinigame"
       ]
+    },
+    {
+      "id": "movies.villain",
+      "themes": [
+        "movies"
+      ],
+      "format": "tiles",
+      "prompt": "{target} would be which kind of movie villain?",
+      "answers": [
+        "Mastermind with a 12-step plan",
+        "Henchman who goes down first",
+        "Misunderstood villain with a sad backstory",
+        "Final boss who monologues too long"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "movies.watchlist",
+      "themes": [
+        "movies"
+      ],
+      "format": "number",
+      "prompt": "How many movies and shows are on {target}'s 'to watch' list?",
+      "number": {
+        "min": 0,
+        "max": 300,
+        "step": 1,
+        "tolerance": {
+          "type": "relative",
+          "value": 0.4
+        },
+        "unit": "titles"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "movies.ending",
+      "themes": [
+        "movies"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s favorite kind of movie ending?",
+      "answers": [
+        "Happy ending",
+        "A huge plot twist",
+        "Everyone dies",
+        "Open ending to argue about"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "movies.fav-rewatch",
+      "themes": [
+        "movies"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} has seen their favorite movie 10 times. Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "times"
+      },
+      "reference": 10,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "movies.jumpscare",
+      "themes": [
+        "movies"
+      ],
+      "format": "scale",
+      "prompt": "How badly do jump scares get {target}, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "laughs at them",
+        "max": "screams and throws the popcorn"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
     }
   ]
 }

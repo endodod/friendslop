@@ -13,6 +13,8 @@ export interface RoomSettings {
   themes: string[];
   /** Tile mix: tile type id → how often it appears (missing = normal). */
   tileFrequency: Record<string, TileFrequency>;
+  /** 0 = most stars after the last round; otherwise the first player to reach this many stars wins. */
+  starGoal: number;
   /** Enabled question pack ids. */
   packs: string[];
   dataQuestions: boolean;
@@ -138,6 +140,8 @@ export interface QuestionRound {
   stageEndsAt: number;
   answers: Record<PlayerId, Answer>;
   answeredAt: Record<PlayerId, number>;
+  /** Current selection of players who haven't locked in yet (secret). Used if time runs out. */
+  drafts?: Record<PlayerId, Answer>;
   /** Item boosts active for this round. */
   boosts: Record<PlayerId, { peek?: boolean; wide?: boolean }>;
   result: QuestionResult | null;
@@ -316,6 +320,8 @@ export interface GameState {
   bonusStars: { awards: BonusStarAward[]; revealed: number } | null;
   finalRanking: PlayerId[] | null;
   log: GameLogEntry[];
+  /** Star race: who reached the star goal (ends the game immediately). */
+  starGoalWinner?: PlayerId | null;
   /** Players who tapped "Got it!" on the current tutorial screen (game start, mini-game intro). */
   ready: PlayerId[];
   /** minigameDebug mode: play this mini-game first. */

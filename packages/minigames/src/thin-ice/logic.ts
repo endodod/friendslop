@@ -3,7 +3,8 @@ import { type MiniGameDefinition, type Placement, type PlayerId } from "@party-g
 
 export const SIZE = 6;
 export const TURN_MS = 7000;
-const START = [0, SIZE * SIZE - 1, SIZE - 1, SIZE * (SIZE - 1)];
+// Corners first, then edge middles (up to 8 players).
+const START = [0, SIZE * SIZE - 1, SIZE - 1, SIZE * (SIZE - 1), 3, SIZE * SIZE - 4, 3 * SIZE, 3 * SIZE - 1];
 
 export interface ThinIceState {
   players: PlayerId[];
