@@ -87,7 +87,8 @@ export interface ResolvedQuestion {
   tags?: string[];
 }
 
-export type QuestionContext = "tile" | "dataTile" | "minigameIntro" | "debug" | "minigame";
+/** mindReader: only the landing player guesses, double coins. */
+export type QuestionContext = "tile" | "dataTile" | "mindReader" | "minigameIntro" | "debug" | "minigame";
 export type QuestionStage = "intro" | "answering" | "reveal" | "results";
 
 export interface PlayerQuestionResult {
@@ -271,13 +272,15 @@ export interface GameState {
   /** Tile type overrides (question pacing) — tileId → tile type id */
   tileTypes: Record<string, string>;
   starTileId: string;
+  /** Piggy Bank pot (coins dropped by players walking past). */
+  bank: number;
 
   dice: { values: number[]; total: number; kind: "normal" | "double" | "custom" } | null;
   pendingDice: { kind: "double" } | { kind: "custom" } | null;
   movement: { remaining: number; path: string[]; next: "junction" | "starPass" | "shopPass" | "landed"; chosen?: string } | null;
   junction: { tileId: string; options: string[] } | null;
   /** itemId: item won on an Item tile (null = bag was full, got coins instead). */
-  tileResult: { tileId: string; type: string; coinsDelta?: number; itemId?: string | null } | null;
+  tileResult: { tileId: string; type: string; coinsDelta?: number; itemId?: string | null; roll?: number; text?: string } | null;
   question: QuestionRound | null;
   /** `passing`: stopped at a Shop while walking past it; movement continues afterwards. */
   shop: { stock: string[]; bought: string[]; passing?: boolean } | null;

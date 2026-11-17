@@ -74,7 +74,7 @@
   },
   {
    "id": "m7",
-   "type": "blue",
+   "type": "lucky",
    "x": 0.6094,
    "y": 0.13,
    "next": [
@@ -119,7 +119,7 @@
   },
   {
    "id": "m12",
-   "type": "blue",
+   "type": "bank",
    "x": 0.925,
    "y": 0.5,
    "next": [
@@ -137,7 +137,7 @@
   },
   {
    "id": "m14",
-   "type": "data",
+   "type": "mind-reader",
    "x": 0.925,
    "y": 0.85,
    "next": [
@@ -192,7 +192,7 @@
   },
   {
    "id": "m20",
-   "type": "blue",
+   "type": "thief",
    "x": 0.2812,
    "y": 0.87,
    "next": [
@@ -273,7 +273,7 @@
   },
   {
    "id": "b2",
-   "type": "data",
+   "type": "lucky",
    "x": 0.3205,
    "y": 0.5305,
    "next": [

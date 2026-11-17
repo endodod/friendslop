@@ -325,6 +325,13 @@ function TileEffectPanel() {
           <p className="font-semibold">{def ? fmtName(def.description) : ""}</p>
         </div>
       </motion.div>
+      {r?.roll !== undefined && (
+        <div className="flex items-center justify-center gap-3">
+          <RollingDie value={r.roll} rolling={false} size={70} />
+          <span className="font-display text-2xl">× 2</span>
+        </div>
+      )}
+      {r?.text && <p className="text-center font-display text-2xl">{r.text}</p>}
       {r?.itemId && <GainedItem itemId={r.itemId} />}
       {r?.itemId === null && <p className="text-center text-muted">Bag full (3 items), coins instead!</p>}
       {r?.coinsDelta !== undefined && (

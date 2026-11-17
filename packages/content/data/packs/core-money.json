@@ -1,0 +1,189 @@
+{
+  "id": "core-money",
+  "name": "Money",
+  "language": "en",
+  "version": 1,
+  "questions": [
+    {
+      "id": "money.500",
+      "themes": [
+        "money"
+      ],
+      "format": "tiles",
+      "prompt": "{target} gets 500 € out of nowhere. What happens?",
+      "answers": [
+        "Saves all of it",
+        "Spends it by tonight",
+        "Invests in something weird",
+        "Buys everyone dinner"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "money.concert",
+      "themes": [
+        "money"
+      ],
+      "format": "number",
+      "prompt": "How much would {target} pay for a ticket to see their favorite artist?",
+      "number": {
+        "min": 0,
+        "max": 500,
+        "step": 5,
+        "tolerance": {
+          "type": "relative",
+          "value": 0.3
+        },
+        "unit": "€"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "money.skill",
+      "themes": [
+        "money"
+      ],
+      "format": "scale",
+      "prompt": "How good is {target} with money, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "broke by the 5th",
+        "max": "a spreadsheet for every cent"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "money.weakness",
+      "themes": [
+        "money"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s biggest money weakness?",
+      "answers": [
+        "Food delivery",
+        "Games and in-app purchases",
+        "Clothes",
+        "Random gadgets"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "money.pizza",
+      "themes": [
+        "money"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} would pay 20 € for a really good pizza. Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "€"
+      },
+      "reference": 20,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "money.cash",
+      "themes": [
+        "money"
+      ],
+      "format": "number",
+      "prompt": "How much cash is in {target}'s wallet right now?",
+      "number": {
+        "min": 0,
+        "max": 200,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 5
+        },
+        "unit": "€"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "money.found",
+      "themes": [
+        "money"
+      ],
+      "format": "tiles",
+      "prompt": "{target} finds 50 € on the street. They…",
+      "answers": [
+        "Keep it",
+        "Look for the owner",
+        "Give it to charity",
+        "Buy snacks for everyone"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "money.lend",
+      "themes": [
+        "money"
+      ],
+      "format": "player",
+      "prompt": "Who would {target} lend money to without asking for it back?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "money.1000",
+      "themes": [
+        "money"
+      ],
+      "format": "ranking",
+      "prompt": "{target} gets 1000 €. Rank what they'd spend it on, most likely first:",
+      "answers": [
+        "Travel",
+        "Tech",
+        "Savings",
+        "Food"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    }
+  ]
+}

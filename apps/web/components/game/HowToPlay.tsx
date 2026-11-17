@@ -71,7 +71,10 @@ export function Steps({ steps }: { steps: React.ReactNode[] }) {
 }
 
 export function TileLegend() {
-  const tiles = clientContent.tiles.filter((t) => t.id !== "start");
+  // Only tile types that are on this game's board.
+  const used = useStore((s) => s.pub?.game?.tileTypes);
+  const onBoard = used ? new Set(Object.values(used)) : null;
+  const tiles = clientContent.tiles.filter((t) => t.id !== "start" && (onBoard ? onBoard.has(t.id) : t.id !== "data"));
   return (
     <section className="flex flex-col gap-2">
       <h3 className="font-display text-lg text-muted">Tiles</h3>

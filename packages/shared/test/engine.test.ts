@@ -353,6 +353,98 @@ describe("spending coins", () => {
   });
 });
 
+describe("special tiles", () => {
+  it("Lucky: win twice the die roll", () => {
+    const h = new Harness(2);
+    toTurnStart(h);
+    const pid = h.active();
+    h.room.game!.starTileId = "m20";
+    h.room.game!.players[pid].tileId = "m6";
+    rollExactly(h, 1); // m7 = Lucky
+    h.timeout();
+    const r = h.g.tileResult!;
+    expect(r.type).toBe("lucky");
+    expect(r.roll).toBeGreaterThanOrEqual(1);
+    expect(r.coinsDelta).toBe(r.roll! * 2);
+  });
+
+  it("Piggy Bank: walking past pays in, landing takes the pot", () => {
+    const h = new Harness(2);
+    toTurnStart(h);
+    const pid = h.active();
+    h.room.game!.starTileId = "m20";
+    h.room.game!.players[pid].tileId = "m11";
+    rollExactly(h, 2); // past m12 (bank) → m13
+    expect(h.g.bank).toBe(2);
+    expect(h.g.players[pid].coins).toBe(8);
+    h.advanceTo("turnStart");
+    const other = h.active();
+    h.room.game!.players[other].tileId = "m11";
+    const before = h.g.players[other].coins;
+    rollExactly(h, 1); // lands on m12
+    h.timeout();
+    expect(h.g.tileResult!.coinsDelta).toBe(2);
+    expect(h.g.players[other].coins).toBe(before + 2);
+    expect(h.g.bank).toBe(0);
+  });
+
+  it("Thief: steals from a random other player; a Shield blocks it", () => {
+    const h = new Harness(2);
+    toTurnStart(h);
+    const pid = h.active();
+    const victim = h.g.order.find((p) => p !== pid)!;
+    h.room.game!.starTileId = "m10";
+    h.room.game!.players[pid].tileId = "m19";
+    rollExactly(h, 1); // m20 = Thief
+    h.timeout();
+    expect(h.g.players[pid].coins).toBe(14);
+    expect(h.g.players[victim].coins).toBe(6);
+
+    const h2 = new Harness(2);
+    toTurnStart(h2);
+    const p2 = h2.active();
+    const v2 = h2.g.order.find((p) => p !== p2)!;
+    h2.room.game!.starTileId = "m10";
+    h2.room.game!.players[p2].tileId = "m19";
+    h2.room.game!.players[v2].items.push("shield");
+    rollExactly(h2, 1);
+    h2.timeout();
+    expect(h2.g.players[v2].coins).toBe(10);
+    expect(h2.g.players[v2].items).toEqual([]);
+  });
+
+  it("Mind Reader: only the lander guesses about someone else, double coins", () => {
+    const h = new Harness(3);
+    toTurnStart(h);
+    const pid = h.active();
+    h.room.game!.starTileId = "m20";
+    h.room.game!.players[pid].tileId = "m13";
+    rollExactly(h, 1); // m14 = Mind Reader
+    h.timeout();
+    const q = h.g.question!;
+    expect(q.context).toBe("mindReader");
+    expect(q.targetId).not.toBe(pid);
+    expect(q.participants.sort()).toEqual([pid, q.targetId].sort());
+    expect(q.multiplier).toBe(2);
+    expect(q.question.format).not.toBe("player");
+    h.timeout(); // answering
+    const outsider = h.g.order.find((p) => p !== pid && p !== q.targetId)!;
+    const qq = h.g.question!.question;
+    const ans =
+      qq.format === "tiles" ? { kind: "option" as const, optionId: qq.options![0].id }
+      : qq.format === "higherLower" ? { kind: "hl" as const, dir: "higher" as const }
+      : qq.format === "ranking" ? { kind: "order" as const, optionIds: qq.options!.map((o) => o.id) }
+      : { kind: "number" as const, value: qq.number!.min };
+    expect(() => h.act({ type: "answer", playerId: outsider, answer: ans })).toThrow();
+    const before = h.g.players[pid].coins;
+    h.act({ type: "answer", playerId: q.targetId, answer: ans });
+    h.act({ type: "answer", playerId: pid, answer: ans });
+    h.timeout(); // reveal → results
+    const extra = qq.format === "number" ? 2 : qq.format === "scale" ? 2 : 0;
+    expect(h.g.players[pid].coins).toBe(before + (3 + extra) * 2);
+  });
+});
+
 describe("tutorial screens", () => {
   it("game start ends once everyone tapped Got it", () => {
     const h = new Harness(3);

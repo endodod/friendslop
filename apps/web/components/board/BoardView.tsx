@@ -181,6 +181,14 @@ export function BoardView({ board, game, players, follow, selectable = [], onSel
               <circle r={TILE_R} fill={def?.color ?? "#888"} filter="url(#tileShadow)" />
               <circle r={TILE_R - 5} fill="none" stroke="#ffffff40" strokeWidth={3} />
               <image href={`/icons/${def?.icon ?? "question"}.svg`} x={-20} y={-20} width={40} height={40} opacity={0.82} />
+              {def?.effect === "bank" && (
+                <g transform="translate(0 50)">
+                  <rect x={-30} y={-14} width={60} height={28} rx={14} fill="#14112a" stroke="#f9a8d4" strokeWidth={3} />
+                  <text textAnchor="middle" dominantBaseline="central" fontFamily="Lilita One" fontSize={20} fill="#ffc933">
+                    {game.bank}
+                  </text>
+                </g>
+              )}
             </g>
           );
         })}

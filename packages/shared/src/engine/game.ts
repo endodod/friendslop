@@ -5,7 +5,7 @@ import { localize } from "../i18n";
 import { getBoard, getTile, nextTiles, pickStarTile, tileDef, computeTileTypes } from "../logic/board";
 import { changeCoins, changeStars, placementCoins, standings, transferCoins } from "../logic/economy";
 import { applyEvent, drawEvent } from "../logic/events";
-import { applyTurnStartItem, getItem, log, shopStock } from "../logic/items";
+import { applyTurnStartItem, getItem, log, shopStock, tryShield } from "../logic/items";
 import {
   bonusRecipients,
   generateDataQuestion,
@@ -137,6 +137,7 @@ export function createGame(room: RoomState, ctx: EngineContext, mode: GameMode):
     ),
     boardId: board.id,
     tileTypes,
+    bank: 0,
     starTileId: "",
     dice: null,
     pendingDice: null,
@@ -445,6 +446,9 @@ function advanceMovement(d: Draft) {
     mv.remaining--;
     path.push(to);
     p.stats.stepsMoved++;
+    // Walking past the Piggy Bank: drop coins into the pot.
+    const passDef = mv.remaining > 0 && to !== g.starTileId ? tileDef(s.ctx.content, g.tileTypes[to] ?? "blue") : null;
+    if (passDef?.effect === "bank") g.bank += -changeCoins(g, s, pid, -(passDef.params.passCost ?? 2), "bank");
     if (to === g.starTileId && mv.remaining > 0) {
       stop = "starPass";
       break;
@@ -545,6 +549,46 @@ function land(d: Draft) {
         g.tileResult.coinsDelta = changeCoins(g, s, pid, def.params.fallbackCoins ?? 3, "tile:item");
       }
       return goto(d, "tileEffect", T.tileEffectMs + 800);
+    }
+    case "lucky": {
+      const roll = randInt(s.ctx.rng, 1, GAME_CONFIG.dice.sides);
+      g.tileResult.roll = roll;
+      g.tileResult.coinsDelta = changeCoins(g, s, pid, roll * (def.params.multiplier ?? 2), "tile:lucky");
+      p.stats.blueTiles++;
+      emit(s, { type: "diceRolled", playerId: pid, values: [roll] });
+      return goto(d, "tileEffect", T.tileEffectMs + 1200);
+    }
+    case "bank": {
+      const pot = g.bank;
+      g.bank = 0;
+      g.tileResult.coinsDelta = changeCoins(g, s, pid, pot, "tile:bank");
+      g.tileResult.text = pot > 0 ? `${playerName(d, pid)} cracked the Piggy Bank: ${pot} coins!` : "The Piggy Bank is empty… for now.";
+      if (pot > 0) emit(s, { type: "sfx", id: "fanfare" });
+      log(g, s, g.tileResult.text, pid);
+      return goto(d, "tileEffect", T.tileEffectMs + 800);
+    }
+    case "thief": {
+      const others = g.order.filter((x) => x !== pid);
+      const victim = pick(s.ctx.rng, others);
+      if (tryShield(g, s, victim)) {
+        g.tileResult.text = `${playerName(d, victim)}'s shield stopped the thief!`;
+      } else {
+        const taken = transferCoins(g, s, victim, pid, def.params.amount ?? 4, "steal");
+        if (taken > 0) {
+          p.stats.steals++;
+          g.players[victim].stats.stolenFrom++;
+        }
+        g.tileResult.text = `${playerName(d, pid)} stole ${taken} coins from ${playerName(d, victim)}!`;
+        emit(s, { type: "sfx", id: "steal" });
+      }
+      log(g, s, g.tileResult.text, pid);
+      return goto(d, "tileEffect", T.tileEffectMs + 800);
+    }
+    case "mindReader": {
+      // Only the landing player guesses, about someone else, for double coins.
+      const others = g.order.filter((x) => x !== pid);
+      const target = leastTargeted(s.ctx.rng, others, g.history.targetCounts);
+      return startQuestionRound(d, "mindReader", target, { participants: [pid, target], multiplier: def.params.multiplier ?? 2 });
     }
     case "question":
       return startQuestionRound(d, "tile", pid);
@@ -724,10 +768,15 @@ function questionServices(d: Draft): MinigameServices {
   };
 }
 
-function startQuestionRound(d: Draft, context: QuestionContext, targetId: PlayerId) {
+function startQuestionRound(
+  d: Draft,
+  context: QuestionContext,
+  targetId: PlayerId,
+  opts: { participants?: PlayerId[]; multiplier?: number } = {},
+) {
   const { g, s } = d;
   // Pick the Target item overrides the next round's target.
-  if (g.targetOverride && context !== "debug") {
+  if (g.targetOverride && context !== "debug" && context !== "mindReader") {
     targetId = g.targetOverride.targetId;
     g.targetOverride = null;
   }
@@ -735,8 +784,11 @@ function startQuestionRound(d: Draft, context: QuestionContext, targetId: Player
   const usage = context === "minigameIntro" ? "minigameIntro" : "tile";
   const wantsData = context === "dataTile";
   let question: ResolvedQuestion | null = null;
-  if (wantsData) question = services.pickQuestion({ targetId, usage, allowData: true });
-  else question = services.pickQuestion({ targetId, usage });
+  const participants = opts.participants ?? [...g.order];
+  // With only two people answering, "pick a player" questions make no sense.
+  const formats = participants.length < g.order.length || participants.length < 3 ? ["tiles", "number", "scale", "higherLower", "ranking"] : undefined;
+  if (wantsData) question = services.pickQuestion({ targetId, usage, allowData: true, participants, formats });
+  else question = services.pickQuestion({ targetId, usage, participants, formats });
   if (!question) {
     // No content available at all: skip gracefully.
     log(g, s, "No questions available for the enabled themes.");
@@ -744,7 +796,6 @@ function startQuestionRound(d: Draft, context: QuestionContext, targetId: Player
   }
   services.noteTargeted(targetId);
   g.players[targetId].stats.timesTarget++;
-  const participants = [...g.order];
   const round: QuestionRound = {
     uid: uid(s.ctx.rng),
     context: context === "dataTile" && !question.isData ? "tile" : context,
@@ -759,7 +810,7 @@ function startQuestionRound(d: Draft, context: QuestionContext, targetId: Player
     boosts: {},
     result: null,
     revealOrder: [...shuffle(s.ctx.rng, participants.filter((p) => p !== targetId)), targetId],
-    multiplier: question.isData ? Q.dataMultiplier : 1,
+    multiplier: question.isData ? Q.dataMultiplier : (opts.multiplier ?? 1),
     payCoins: context !== "minigameIntro",
   };
   g.question = round;
@@ -863,6 +914,7 @@ function questionDone(d: Draft) {
   switch (q.context) {
     case "tile":
     case "dataTile":
+    case "mindReader":
       return turnEnd(d);
     case "debug":
       return startQuestionRound(d, "debug", pickDebugTarget(d));

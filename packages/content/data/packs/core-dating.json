@@ -1,0 +1,191 @@
+{
+  "id": "core-dating",
+  "name": "Love & Dating",
+  "language": "en",
+  "version": 1,
+  "questions": [
+    {
+      "id": "love.firstdate",
+      "themes": [
+        "dating"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s go-to first date?",
+      "answers": [
+        "Dinner",
+        "Movie night",
+        "Something active",
+        "Coffee, keep it short"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "love.romantic",
+      "themes": [
+        "dating"
+      ],
+      "format": "scale",
+      "prompt": "How romantic is {target}, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "replies 'k'",
+        "max": "writes poems"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "love.redflag",
+      "themes": [
+        "dating"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s biggest dating red flag?",
+      "answers": [
+        "Bad music taste",
+        "Rude to waiters",
+        "Doesn't like pets",
+        "Replies 'lol' to everything"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "love.textback",
+      "themes": [
+        "dating"
+      ],
+      "format": "number",
+      "prompt": "How many minutes does {target} wait before texting a crush back?",
+      "number": {
+        "min": 0,
+        "max": 240,
+        "step": 5,
+        "tolerance": {
+          "type": "relative",
+          "value": 0.3
+        },
+        "unit": "min"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "love.confess",
+      "themes": [
+        "dating"
+      ],
+      "format": "tiles",
+      "prompt": "How would {target} confess their feelings?",
+      "answers": [
+        "Straight up tell them",
+        "A very long text",
+        "Through a friend",
+        "They never would"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "love.firstsight",
+      "themes": [
+        "dating"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} rates 'love at first sight' a 4/10. Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "/10"
+      },
+      "reference": 4,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "love.blinddate",
+      "themes": [
+        "dating"
+      ],
+      "format": "player",
+      "prompt": "Who would {target} trust to set them up on a blind date?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "love.turnoff",
+      "themes": [
+        "dating"
+      ],
+      "format": "tiles",
+      "prompt": "What makes {target} lose interest instantly?",
+      "answers": [
+        "Bad breath",
+        "Talking about their ex",
+        "Always on the phone",
+        "Bad jokes"
+      ],
+      "tags": [
+        "spicy"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "love.language",
+      "themes": [
+        "dating"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s love language?",
+      "answers": [
+        "Gifts",
+        "Quality time",
+        "Compliments",
+        "Hugs",
+        "Doing things for them"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    }
+  ]
+}

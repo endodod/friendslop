@@ -1,0 +1,191 @@
+{
+  "id": "core-childhood",
+  "name": "Childhood",
+  "language": "en",
+  "version": 1,
+  "questions": [
+    {
+      "id": "child.kid",
+      "themes": [
+        "childhood"
+      ],
+      "format": "tiles",
+      "prompt": "What was {target} like as a kid?",
+      "answers": [
+        "Teacher's pet",
+        "Class clown",
+        "The quiet one in the corner",
+        "Little troublemaker"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "child.dreamjob",
+      "themes": [
+        "childhood"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s childhood dream job?",
+      "answers": [
+        "Astronaut",
+        "Vet",
+        "YouTuber or pro gamer",
+        "Superhero"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "child.santa",
+      "themes": [
+        "childhood"
+      ],
+      "format": "number",
+      "prompt": "How old was {target} when they stopped believing in Santa?",
+      "number": {
+        "min": 3,
+        "max": 15,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        },
+        "unit": "years"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "child.cartoon",
+      "themes": [
+        "childhood"
+      ],
+      "format": "tiles",
+      "prompt": "Which cartoon raised {target}?",
+      "answers": [
+        "SpongeBob",
+        "Pokémon",
+        "Tom & Jerry",
+        "Disney Channel shows"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "child.trouble",
+      "themes": [
+        "childhood"
+      ],
+      "format": "scale",
+      "prompt": "How much trouble did {target} get into as a kid, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "a little angel",
+        "max": "the principal knew them by name"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "child.birthday",
+      "themes": [
+        "childhood"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s favorite part of a kid's birthday party?",
+      "answers": [
+        "The cake",
+        "The presents",
+        "The games",
+        "Going home"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "child.collect",
+      "themes": [
+        "childhood"
+      ],
+      "format": "tiles",
+      "prompt": "What did {target} collect as a kid?",
+      "answers": [
+        "Trading cards",
+        "Stickers",
+        "Rocks",
+        "Nothing, they broke everything"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "child.injuries",
+      "themes": [
+        "childhood"
+      ],
+      "format": "number",
+      "prompt": "How many times did {target} break a bone or get stitches as a kid?",
+      "number": {
+        "min": 0,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        },
+        "unit": "times"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "child.subjects",
+      "themes": [
+        "childhood"
+      ],
+      "format": "ranking",
+      "prompt": "Rank {target}'s favorite school subjects as a kid, favorite first:",
+      "answers": [
+        "Sports",
+        "Art",
+        "Math",
+        "Lunch break"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    }
+  ]
+}

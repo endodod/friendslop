@@ -467,5 +467,82 @@
   "author": "delapouite",
   "name": "speaker",
   "license": "CC BY 3.0"
+ },
+ {
+  "id": "lucky",
+  "source": "https://game-icons.net/1x1/lorc/clover.html",
+  "author": "lorc",
+  "name": "clover",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "bank",
+  "source": "https://game-icons.net/1x1/delapouite/piggy-bank.html",
+  "author": "delapouite",
+  "name": "piggy-bank",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "mind",
+  "source": "https://game-icons.net/1x1/lorc/psychic-waves.html",
+  "author": "lorc",
+  "name": "psychic-waves",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "friends",
+  "source": "https://game-icons.net/1x1/delapouite/three-friends.html",
+  "author": "delapouite",
+  "name": "three-friends",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "childhood",
+  "source": "https://game-icons.net/1x1/delapouite/baby-bottle.html",
+  "author": "delapouite",
+  "name": "baby-bottle",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "internet",
+  "source": "https://game-icons.net/1x1/delapouite/smartphone.html",
+  "author": "delapouite",
+  "name": "smartphone",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "money",
+  "source": "https://game-icons.net/1x1/delapouite/money-stack.html",
+  "author": "delapouite",
+  "name": "money-stack",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "travel",
+  "source": "https://game-icons.net/1x1/delapouite/commercial-airplane.html",
+  "author": "delapouite",
+  "name": "commercial-airplane",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "dating",
+  "source": "https://game-icons.net/1x1/delapouite/love-letter.html",
+  "author": "delapouite",
+  "name": "love-letter",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "work",
+  "source": "https://game-icons.net/1x1/delapouite/graduate-cap.html",
+  "author": "delapouite",
+  "name": "graduate-cap",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "party",
+  "source": "https://game-icons.net/1x1/delapouite/party-popper.html",
+  "author": "delapouite",
+  "name": "party-popper",
+  "license": "CC BY 3.0"
  }
 ]

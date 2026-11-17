@@ -51,6 +51,11 @@ export function QuestionView({ round, display, onSubmit, myAnswerOverride, rewar
     <div className="flex w-full flex-col gap-4" data-testid="question-view">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <ThemeBadge theme={theme} />
+        {round.context === "mindReader" && (
+          <span className="inline-flex items-center gap-1 rounded-full bg-[#818cf8] px-3 py-1 font-display text-sm text-[#14112a]">
+            <Icon id="mind" size={16} /> Mind Reader · ×{round.multiplier} coins
+          </span>
+        )}
         {q.isData && (
           <span className="inline-flex items-center gap-1 rounded-full bg-[#2fd6d0] px-3 py-1 font-display text-sm text-[#14112a]">
             <Icon id="data" size={16} /> Real data · ×{round.multiplier} rewards
@@ -204,6 +209,11 @@ function Answering({
             <Lock size={20} /> Lock in
           </button>
         </div>
+      )}
+      {!participant && !display && (
+        <p className="rounded-2xl bg-bg-2 p-3 text-center text-muted">
+          Only {round.participants.filter((p) => p !== round.targetId).map((p) => players[p]?.name).join(" & ")} guesses this one. Watch!
+        </p>
       )}
       {participant && !display && myAnswer && (
         <motion.div initial={{ scale: 0.9 }} animate={{ scale: 1 }} className="card flex flex-col items-center gap-2 p-4 text-center">

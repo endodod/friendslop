@@ -1,0 +1,166 @@
+{
+  "id": "core-friends",
+  "name": "Friend Group",
+  "language": "en",
+  "version": 1,
+  "questions": [
+    {
+      "id": "friends.phone",
+      "themes": [
+        "friends"
+      ],
+      "format": "player",
+      "prompt": "Who in this group would {target} trust with their unlocked phone?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "friends.3am",
+      "themes": [
+        "friends"
+      ],
+      "format": "player",
+      "prompt": "Who would {target} call at 3 AM in an emergency?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "friends.groupchat",
+      "themes": [
+        "friends"
+      ],
+      "format": "tiles",
+      "prompt": "What's {target}'s role in the group chat?",
+      "answers": [
+        "Sends 40 memes a day",
+        "Only reacts with emojis",
+        "Organizes everything",
+        "Reads everything, replies never"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "friends.late",
+      "themes": [
+        "friends"
+      ],
+      "format": "scale",
+      "prompt": "How likely is {target} to be late to the next hangout, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "always early",
+        "max": "45 minutes late, guaranteed"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "friends.heist",
+      "themes": [
+        "friends"
+      ],
+      "format": "player",
+      "prompt": "Who would {target} pick as their partner for a heist?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "friends.trip",
+      "themes": [
+        "friends"
+      ],
+      "format": "tiles",
+      "prompt": "{target} plans the group trip. What happens?",
+      "answers": [
+        "Perfect spreadsheet itinerary",
+        "Nobody knows where we're sleeping",
+        "We end up at the beach anyway",
+        "The trip never happens"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "friends.years",
+      "themes": [
+        "friends"
+      ],
+      "format": "number",
+      "prompt": "How many years has {target} known {player:random}?",
+      "number": {
+        "min": 0,
+        "max": 30,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        },
+        "unit": "years"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "friends.rating",
+      "themes": [
+        "friends"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} rates this friend group a 7/10. Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "/10"
+      },
+      "reference": 7,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "friends.funniest",
+      "themes": [
+        "friends"
+      ],
+      "format": "player",
+      "prompt": "Who does {target} think is the funniest person here?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    }
+  ]
+}

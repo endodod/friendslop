@@ -84,6 +84,51 @@
       "params": {
         "fallbackCoins": 3
       }
+    },
+    {
+      "id": "lucky",
+      "name": "Lucky",
+      "description": "Roll a die: win twice the roll in coins.",
+      "icon": "lucky",
+      "color": "#a3e635",
+      "effect": "lucky",
+      "params": {
+        "multiplier": 2
+      },
+      "starEligible": true
+    },
+    {
+      "id": "bank",
+      "name": "Piggy Bank",
+      "description": "Walk past: drop 2 coins in. Land here: take the whole pot!",
+      "icon": "bank",
+      "color": "#f9a8d4",
+      "effect": "bank",
+      "params": {
+        "passCost": 2
+      }
+    },
+    {
+      "id": "mind-reader",
+      "name": "Mind Reader",
+      "description": "Only you guess what a random player answers. Double coins!",
+      "icon": "mind",
+      "color": "#818cf8",
+      "effect": "mindReader",
+      "params": {
+        "multiplier": 2
+      }
+    },
+    {
+      "id": "thief",
+      "name": "Thief",
+      "description": "Steal 4 coins from a random player.",
+      "icon": "steal",
+      "color": "#64748b",
+      "effect": "thief",
+      "params": {
+        "amount": 4
+      }
     }
   ]
 }

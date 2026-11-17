@@ -126,6 +126,9 @@ attribution, shown on `/credits`). The lint test fails if a referenced icon file
 
 Effects: `none`, `coins` (`params.amount`, negative to lose), `question`, `data`, `event`, `shop`, `duel`,
 `item` (free random item, weighted by item `weight`; `params.fallbackCoins` when the bag is full).
+`lucky` (roll a die, win roll × `params.multiplier` coins), `bank` (walking past pays `params.passCost`
+into a shared pot, landing takes the pot), `thief` (steal `params.amount` from a random player; Shield blocks),
+`mindReader` (only the lander guesses about a random other player, coins × `params.multiplier`).
 `starEligible` tiles can host the star. `pacingGroup: "question"` tiles are thinned out on low
 question pacing; `"filler"` tiles are turned into question tiles on high pacing.
 
