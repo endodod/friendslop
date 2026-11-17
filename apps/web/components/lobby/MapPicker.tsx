@@ -13,6 +13,7 @@ export function BoardPreview({ board, className = "" }: { board: Board; classNam
     <svg viewBox={`0 0 ${W} ${H}`} className={className} aria-hidden>
       {board.tiles.flatMap((t) =>
         t.next.map((n) => {
+          if (t.next.length < 2) return null;
           const a = pos.get(t.id)!;
           const b = pos.get(n)!;
           return <line key={`${t.id}-${n}`} x1={a.x} y1={a.y} x2={b.x} y2={b.y} stroke="#3a3462" strokeWidth={2} />;
@@ -28,7 +29,7 @@ export function BoardPreview({ board, className = "" }: { board: Board; classNam
               key={`arr-${t.id}-${n}`}
               d="M -1.6 -2 L 1.4 0 L -1.6 2"
               fill="none"
-              stroke={t.next.length > 1 ? "#ffc933" : "#8f87c4"}
+              stroke="#ffc933"
               strokeWidth={0.9}
               strokeLinecap="round"
               transform={`translate(${(a.x + b.x) / 2} ${(a.y + b.y) / 2}) rotate(${angle})`}

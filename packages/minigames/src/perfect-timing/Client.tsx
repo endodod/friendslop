@@ -2,10 +2,13 @@
 import { useEffect, useRef, useState } from "react";
 import type { SoloPrivate, SoloPublic } from "@party-game/shared";
 import type { MinigameClientProps } from "../kit/types";
-import { SoloStatus, SubmittedNotice } from "../kit/hooks";
+import { KeyHint, SoloStatus, SubmittedNotice, useKey } from "../kit/hooks";
 import { GOAL_MS, VISIBLE_MS } from "./logic";
 
 export function PerfectTimingClient(p: MinigameClientProps<SoloPublic, SoloPrivate>) {
+  const keyAction = useRef<(() => void) | null>(null);
+  keyAction.current = null;
+  useKey(() => keyAction.current?.());
   const [startedAt, setStartedAt] = useState<number | null>(null);
   const [result, setResult] = useState<number | null>(null);
   const [, force] = useState(0);
@@ -25,6 +28,12 @@ export function PerfectTimingClient(p: MinigameClientProps<SoloPublic, SoloPriva
       </div>
     );
   }
+  keyAction.current = () => {
+    if (startedAt === null) return setStartedAt(performance.now());
+    const e = performance.now() - startedAt;
+    setResult(e);
+    p.submit({ elapsedMs: e });
+  };
   const el = startedAt === null ? 0 : performance.now() - startedAt;
   const visible = el < (p.bonus ? VISIBLE_MS : 1000);
   return (
@@ -32,6 +41,7 @@ export function PerfectTimingClient(p: MinigameClientProps<SoloPublic, SoloPriva
       <p className="font-display text-xl text-muted">Stop at exactly {GOAL_MS / 1000}.00 s</p>
       <p className="font-display text-7xl tabular-nums">{startedAt === null ? "0.00" : visible ? (el / 1000).toFixed(2) : "?.??"}</p>
       {p.bonus && <p className="text-accent">Bonus: the timer stays visible for 3 s</p>}
+      <KeyHint text="Start and stop: tap or press" />
       {startedAt === null ? (
         <button className="btn-primary min-h-20 w-full text-3xl" onClick={() => setStartedAt(performance.now())}>Start</button>
       ) : (

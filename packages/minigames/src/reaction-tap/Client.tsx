@@ -1,13 +1,16 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import type { MinigameClientProps } from "../kit/types";
-import { SoloStatus, SubmittedNotice } from "../kit/hooks";
+import { KeyHint, SoloStatus, SubmittedNotice, useKey } from "../kit/hooks";
 import type { SoloPrivate, SoloPublic } from "@party-game/shared";
 import { FALSE_START_PENALTY_MS, MAX_REACTION_MS, ROUNDS, greenDelays } from "./logic";
 
 type Stage = "ready" | "waiting" | "green" | "result" | "done";
 
 export function ReactionTapClient(p: MinigameClientProps<SoloPublic, SoloPrivate>) {
+  const keyAction = useRef<(() => void) | null>(null);
+  keyAction.current = null;
+  useKey(() => keyAction.current?.());
   const [round, setRound] = useState(0);
   const [stage, setStage] = useState<Stage>("ready");
   const [times, setTimes] = useState<number[]>([]);
@@ -68,6 +71,7 @@ export function ReactionTapClient(p: MinigameClientProps<SoloPublic, SoloPrivate
     );
   }
 
+  keyAction.current = tap;
   const bg = stage === "green" ? "#2fd27a" : stage === "waiting" ? "#ff4d5e" : "#2a2549";
   return (
     <button
@@ -84,6 +88,7 @@ export function ReactionTapClient(p: MinigameClientProps<SoloPublic, SoloPrivate
       </span>
       {msg && <span className="text-3xl">{msg}</span>}
       {p.bonus && <span className="rounded-full bg-black/30 px-3 py-1 text-sm">Bonus: one false start forgiven</span>}
+      <KeyHint text="or tap / press" />
     </button>
   );
 }

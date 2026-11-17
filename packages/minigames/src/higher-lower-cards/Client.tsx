@@ -1,12 +1,19 @@
 "use client";
 import { AnimatePresence, motion } from "framer-motion";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import type { SoloPrivate, SoloPublic } from "@party-game/shared";
 import type { MinigameClientProps } from "../kit/types";
+import { KeyHint, useKey } from "../kit/hooks";
 import { SoloDone, useDeadlineSubmit } from "../kit/SoloShell";
 import { CARD_LABEL, deck, streak } from "./logic";
 
 export function HigherLowerCardsClient(p: MinigameClientProps<SoloPublic, SoloPrivate>) {
+  const keyAction = useRef<(() => void) | null>(null);
+  keyAction.current = null;
+  useKey(() => keyAction.current?.());
+  const arrowAction = useRef<((g: "h" | "l") => void) | null>(null);
+  arrowAction.current = null;
+  useKey((e) => arrowAction.current?.(e.code === "ArrowUp" ? "h" : "l"), { keys: ["ArrowUp", "ArrowDown"] });
   const cards = useMemo(() => deck(p.seed ?? 1), [p.seed]);
   const [guesses, setGuesses] = useState<("h" | "l" | "s")[]>([]);
   const [done, setDone] = useState(false);
@@ -25,6 +32,7 @@ export function HigherLowerCardsClient(p: MinigameClientProps<SoloPublic, SoloPr
       setTimeout(() => p.submit({ guesses: next }), 0);
     }
   };
+  arrowAction.current = guess;
   return (
     <div className="flex flex-col items-center gap-5">
       <p className="font-display text-xl">Streak: {streak(cards, guesses, p.bonus)}</p>
@@ -47,6 +55,7 @@ export function HigherLowerCardsClient(p: MinigameClientProps<SoloPublic, SoloPr
         <button className="btn-secondary" onClick={() => guess("s")}>Skip (bonus)</button>
       )}
       <p className="text-sm text-muted">Same value counts as correct.</p>
+      <KeyHint label="↑ higher · ↓ lower" text="" />
     </div>
   );
 }

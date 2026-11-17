@@ -2,10 +2,13 @@
 import { useEffect, useRef, useState } from "react";
 import type { SoloPrivate, SoloPublic } from "@party-game/shared";
 import type { MinigameClientProps } from "../kit/types";
-import { SoloStatus, SubmittedNotice } from "../kit/hooks";
+import { KeyHint, SoloStatus, SubmittedNotice, useKey } from "../kit/hooks";
 import { ROUNDS, accuracy, barPos, rounds, zoneWidth } from "./logic";
 
 export function StopTheBarClient(p: MinigameClientProps<SoloPublic, SoloPrivate>) {
+  const keyAction = useRef<(() => void) | null>(null);
+  keyAction.current = null;
+  useKey(() => keyAction.current?.());
   const rs = rounds(p.seed ?? 1);
   const [stops, setStops] = useState<number[]>([]);
   const [frozen, setFrozen] = useState<number | null>(null);
@@ -48,6 +51,7 @@ export function StopTheBarClient(p: MinigameClientProps<SoloPublic, SoloPrivate>
       if (next.length >= ROUNDS) p.submit({ stops: next });
     }, 900);
   };
+  keyAction.current = stop;
   return (
     <button onPointerDown={stop} className="flex w-full touch-none select-none flex-col gap-4 rounded-3xl bg-bg-2 p-5" data-testid="bar-field">
       <span className="font-display text-xl">
@@ -59,7 +63,7 @@ export function StopTheBarClient(p: MinigameClientProps<SoloPublic, SoloPrivate>
         <span className="absolute inset-y-0 w-0.5 bg-white/70" style={{ left: `${r.center}%` }} />
         <span className="absolute inset-y-1 w-2 rounded bg-accent shadow-[0_0_12px_#ffc933]" style={{ left: `calc(${pos}% - 4px)` }} />
       </div>
-      <span className="text-muted">Tap anywhere to stop {p.bonus && "· Bonus: wider zone"}</span>
+      <span className="text-muted">Tap anywhere to stop <KeyHint /> {p.bonus && "· Bonus: wider zone"}</span>
     </button>
   );
 }

@@ -1,7 +1,7 @@
 "use client";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowRight, Dices, FastForward, ShoppingBag } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { GAME_CONFIG, localize, starPrice, type Board, type PublicGameState } from "@party-game/shared";
 import { clientContent } from "@party-game/content";
 import { useStore } from "@/lib/store";
@@ -131,6 +131,21 @@ function TurnStartPanel({ display }: { display?: boolean }) {
   const priv = useStore((s) => s.priv);
   const [customValue, setCustomValue] = useState(6);
   const [targeting, setTargeting] = useState<string | null>(null);
+  // Desktop: Space rolls the dice on your turn.
+  const canRoll = isActive && !display && !targeting;
+  const rollRef = useRef(() => {});
+  rollRef.current = () => act("turn:roll", g.pendingDice?.kind === "custom" ? { value: customValue } : {});
+  useEffect(() => {
+    if (!canRoll) return;
+    const down = (e: KeyboardEvent) => {
+      const el = e.target as HTMLElement | null;
+      if (e.code !== "Space" || e.repeat || (el && ["INPUT", "TEXTAREA", "BUTTON"].includes(el.tagName))) return;
+      e.preventDefault();
+      rollRef.current();
+    };
+    window.addEventListener("keydown", down);
+    return () => window.removeEventListener("keydown", down);
+  }, [canRoll]);
 
   if (!isActive || display) {
     return (
@@ -229,6 +244,9 @@ function TurnStartPanel({ display }: { display?: boolean }) {
       >
         <Dices size={30} /> Roll!
       </motion.button>
+      <p className="hidden text-center text-sm text-muted [@media(pointer:fine)]:block">
+        or press <kbd className="rounded-md border border-line bg-bg-2 px-1.5 py-0.5 text-xs text-ink">Space</kbd>
+      </p>
     </Panel>
   );
 }

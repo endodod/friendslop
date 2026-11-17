@@ -229,6 +229,74 @@ function shouldAutoplay(room: RoomState, g: GameState, now: number): boolean {
   return now - since >= T.disconnectedAutoplayMs;
 }
 
+/**
+ * Host removes a (disconnected) player during a game. The game continues without them:
+ * their turn is skipped, questions and mini-games drop them. With fewer than 2 players left the game ends.
+ */
+export function removePlayerFromGame(room: RoomState, playerId: PlayerId, ctx: EngineContext): EngineResult {
+  return withDraft(room, ctx, (d) => {
+    const { g, s } = d;
+    const idx = g.order.indexOf(playerId);
+    if (idx < 0) fail("UNKNOWN_PLAYER", "That player isn't in this game.");
+    const wasActive = idx === g.activeIndex;
+    const name = playerName(d, playerId);
+    d.room.players = d.room.players.filter((p) => p.id !== playerId);
+    if (d.room.hostId === playerId) d.room.hostId = d.room.players[0]?.id ?? null;
+    g.order.splice(idx, 1);
+    delete g.players[playerId];
+    g.ready = g.ready.filter((p) => p !== playerId);
+    if (g.targetOverride && (g.targetOverride.targetId === playerId || g.targetOverride.by === playerId)) g.targetOverride = null;
+    if (idx < g.activeIndex) g.activeIndex--;
+    log(g, s, `${name} was removed from the game.`);
+
+    if (g.order.length < 2) {
+      g.question = null;
+      g.minigame = null;
+      return finishGame(d);
+    }
+
+    // Question rounds
+    const q = g.question;
+    if (q && q.participants.includes(playerId)) {
+      if (q.targetId === playerId) {
+        // The question was about them: drop it.
+        g.question = null;
+        if (g.phase === "minigameQuestion") return goto(d, "minigameCountdown", M.countdownMs);
+        if (g.phase === "questionRound" && !wasActive) return turnEnd(d);
+      } else {
+        q.participants = q.participants.filter((p) => p !== playerId);
+        q.revealOrder = q.revealOrder.filter((p) => p !== playerId);
+        delete q.answers[playerId];
+        delete q.drafts?.[playerId];
+        if (q.result) delete q.result.perPlayer[playerId];
+        if (q.stage === "answering") maybeEndAnswering(d);
+      }
+    }
+    // Mini-games: they stay in the mini-game's own state but get no placement or coins.
+    if (g.minigame) {
+      g.minigame.participants = g.minigame.participants.filter((p) => p !== playerId);
+      g.minigame.bonuses = g.minigame.bonuses.filter((p) => p !== playerId);
+      if (g.minigame.origin === "duel" && g.phase !== "minigameResults" && g.duel && [g.duel.challengerId, g.duel.opponentId].includes(playerId)) {
+        g.minigame = null;
+        g.duel = null;
+        return turnEnd(d);
+      }
+      if (g.minigame.participants.length === 0) {
+        g.minigame = null;
+        return afterMinigameResults(d);
+      }
+    }
+    if (g.phase === "duel" && g.duel?.challengerId === playerId) return turnEnd(d);
+    // It was their turn: move on to whoever is next.
+    if (wasActive && !["roundEnd", "minigameIntro", "minigameQuestion", "minigameCountdown", "minigamePlaying", "minigameResults", "gameEnd", "bonusStars", "podium"].includes(g.phase)) {
+      g.activeIndex--;
+      g.question = null;
+      return goto(d, "turnEnd", T.turnEndMs);
+    }
+    if (g.activeIndex >= g.order.length) g.activeIndex = 0;
+  });
+}
+
 /** Re-evaluate after a connection change (e.g. everyone left answered → reveal early). */
 export function onConnectionChange(room: RoomState, ctx: EngineContext): EngineResult | null {
   const g = room.game;
@@ -1089,7 +1157,7 @@ function finishMinigame(d: Draft) {
   const { g, s } = d;
   const mg = g.minigame!;
   const def = minigameDef(d, mg.id);
-  const placements = def.results(mg.state);
+  const placements = def.results(mg.state).filter((p) => g.players[p.playerId]);
   mg.placements = placements;
   let payout: Record<PlayerId, number>;
   if (def.transfers) {

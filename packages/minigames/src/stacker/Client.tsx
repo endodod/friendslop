@@ -2,13 +2,16 @@
 import { useEffect, useRef, useState } from "react";
 import type { SoloPrivate, SoloPublic } from "@party-game/shared";
 import type { MinigameClientProps } from "../kit/types";
-import { SoloStatus, SubmittedNotice } from "../kit/hooks";
+import { KeyHint, SoloStatus, SubmittedNotice, useKey } from "../kit/hooks";
 import { FIELD, MAX_LEVELS, MIN_DROP_MS, simulate, sliderX, startWidth, type StackLevel } from "./logic";
 
 const ROW = 7; // % of height per level
 const COLORS = ["#3d8bff", "#ff4d5e", "#2fd27a", "#ffc933", "#b26bff", "#ff8a3d", "#ff6bc6", "#2fd6d0"];
 
 export function StackerClient(p: MinigameClientProps<SoloPublic, SoloPrivate>) {
+  const keyAction = useRef<(() => void) | null>(null);
+  keyAction.current = null;
+  useKey(() => keyAction.current?.());
   const seed = p.seed ?? 1;
   const [drops, setDrops] = useState<number[]>([]);
   const [done, setDone] = useState(false);
@@ -62,6 +65,7 @@ export function StackerClient(p: MinigameClientProps<SoloPublic, SoloPrivate>) {
     );
   }
 
+  keyAction.current = drop;
   const movingX = sliderX(performance.now() - levelStart.current, top.w, level, seed);
   const scroll = Math.max(0, level - 9) * ROW;
   return (
@@ -97,7 +101,7 @@ export function StackerClient(p: MinigameClientProps<SoloPublic, SoloPrivate>) {
           outline: "3px solid white",
         }}
       />
-      <span className="absolute bottom-2 left-1/2 -translate-x-1/2 text-sm text-muted">Tap anywhere to drop</span>
+      <span className="absolute bottom-2 left-1/2 -translate-x-1/2 text-sm text-muted">Tap anywhere to drop <KeyHint /></span>
       <span className="sr-only">Start width {startWidth(p.bonus)}</span>
     </button>
   );

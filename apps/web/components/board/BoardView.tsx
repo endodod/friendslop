@@ -151,14 +151,15 @@ export function BoardView({ board, game, players, follow, selectable = [], onSel
             );
           }),
         )}
-        {/* direction arrows: a chevron in the middle of every path, pointing the way you walk */}
+        {/* direction arrows on paths leaving a junction (and the ones you can pick right now) */}
         {board.tiles.flatMap((t) =>
           t.next.map((n) => {
+            const sel = selectable.includes(n);
+            const branch = t.next.length > 1;
+            if (!branch && !sel) return null;
             const a = xy(t.id);
             const b = xy(n);
             const angle = (Math.atan2(b.y - a.y, b.x - a.x) * 180) / Math.PI;
-            const sel = selectable.includes(n);
-            const branch = t.next.length > 1;
             return (
               <g
                 key={`arrow-${t.id}-${n}`}
@@ -168,7 +169,7 @@ export function BoardView({ board, game, players, follow, selectable = [], onSel
                 <path
                   d="M -7 -10 L 6 0 L -7 10"
                   fill="none"
-                  stroke={sel ? "#14112a" : branch ? "#ffc933" : "#8f87c4"}
+                  stroke={sel ? "#14112a" : "#ffc933"}
                   strokeWidth={5}
                   strokeLinecap="round"
                   strokeLinejoin="round"

@@ -1,12 +1,16 @@
 "use client";
 import { Minus, Plus } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { SoloPrivate, SoloPublic } from "@party-game/shared";
 import type { MinigameClientProps } from "../kit/types";
+import { KeyHint, useKey } from "../kit/hooks";
 import { SoloDone, useDeadlineSubmit } from "../kit/SoloShell";
 import { BONUS_FLASH_MS, FLASH_MS, KINDS, ROUNDS, rounds } from "./logic";
 
 export function CountItClient(p: MinigameClientProps<SoloPublic, SoloPrivate>) {
+  const keyAction = useRef<(() => void) | null>(null);
+  keyAction.current = null;
+  useKey(() => keyAction.current?.());
   const rs = useMemo(() => rounds(p.seed ?? 1), [p.seed]);
   const [counts, setCounts] = useState<number[]>([]);
   const [stage, setStage] = useState<"ready" | "flash" | "answer">("ready");
@@ -20,6 +24,7 @@ export function CountItClient(p: MinigameClientProps<SoloPublic, SoloPrivate>) {
     return () => clearTimeout(t);
   }, [stage, p.bonus]);
   if (!p.isParticipant || p.priv?.submitted || counts.length >= ROUNDS || done) return <SoloDone p={p} />;
+  if (stage === "ready") keyAction.current = () => setStage("flash");
   return (
     <div className="flex flex-col gap-4">
       <p className="text-center font-display text-xl">
@@ -34,7 +39,7 @@ export function CountItClient(p: MinigameClientProps<SoloPublic, SoloPrivate>) {
           ))}
         {stage === "ready" && (
           <button className="absolute inset-0 font-display text-3xl" onClick={() => setStage("flash")}>
-            Tap when ready{p.bonus ? " (bonus: longer flash)" : ""}
+            Tap when ready{p.bonus ? " (bonus: longer flash)" : ""} <KeyHint />
           </button>
         )}
         {stage === "answer" && <p className="absolute inset-0 flex items-center justify-center font-display text-3xl text-muted">How many?</p>}

@@ -116,3 +116,41 @@ export function SoloStatus({
     </ul>
   );
 }
+
+/** True when the user is typing in a field (then Space must type, not trigger the game). */
+function typing(e: KeyboardEvent) {
+  const el = e.target as HTMLElement | null;
+  return !!el && (el.tagName === "INPUT" || el.tagName === "TEXTAREA" || el.isContentEditable);
+}
+
+/**
+ * Keyboard shortcut for desktop players (Space by default). Ignores auto-repeat and typing in fields.
+ * The handler is read from a ref, so it always sees fresh state.
+ */
+export function useKey(handler: (e: KeyboardEvent) => void, opts: { keys?: string[]; enabled?: boolean } = {}) {
+  const ref = useRef(handler);
+  ref.current = handler;
+  const keys = (opts.keys ?? ["Space"]).join(",");
+  const enabled = opts.enabled ?? true;
+  useEffect(() => {
+    if (!enabled) return;
+    const list = keys.split(",");
+    const down = (e: KeyboardEvent) => {
+      if (e.repeat || typing(e) || !list.includes(e.code)) return;
+      e.preventDefault();
+      ref.current(e);
+    };
+    window.addEventListener("keydown", down);
+    return () => window.removeEventListener("keydown", down);
+  }, [keys, enabled]);
+}
+
+/** Small "or press Space" hint, only on devices with a fine pointer (mouse). */
+export function KeyHint({ label = "Space", text = "or press" }: { label?: string; text?: string }) {
+  return (
+    <span className="hidden text-sm text-muted [@media(pointer:fine)]:inline">
+      {text}{" "}
+      <kbd className="rounded-md border border-line bg-bg-2 px-1.5 py-0.5 font-sans text-xs text-ink">{label}</kbd>
+    </span>
+  );
+}

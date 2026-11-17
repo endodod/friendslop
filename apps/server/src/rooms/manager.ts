@@ -17,6 +17,7 @@ import {
   onConnectionChange,
   randomSeed,
   removePlayer,
+  removePlayerFromGame,
   setPlayerProfile,
   startGame,
   tickGame,
@@ -196,8 +197,16 @@ export class RoomManager {
 
   kick(rec: LiveRoom, actor: SocketData, playerId: string) {
     assertHost(rec.room, { playerId: actor.playerId ?? undefined, isDisplay: actor.role === "display" });
-    if (rec.room.stage !== "lobby") fail("GAME_IN_PROGRESS", "You can only kick players in the lobby.");
-    rec.room = removePlayer(rec.room, playerId);
+    if (actor.playerId === playerId) fail("INVALID_INPUT", "You can't kick yourself.");
+    const target = rec.room.players.find((p) => p.id === playerId);
+    if (!target) fail("UNKNOWN_PLAYER", "That player isn't in the room.");
+    if (rec.room.game) {
+      // Mid-game only players who dropped out can be removed; the game goes on without them.
+      if (target.connected) fail("INVALID_INPUT", "During a game you can only remove disconnected players.");
+      this.apply(rec, removePlayerFromGame(rec.room, playerId, this.ctx(rec)));
+    } else {
+      rec.room = removePlayer(rec.room, playerId);
+    }
     delete rec.playerData[playerId];
     for (const [token, seat] of rec.seats) if (seat.playerId === playerId) rec.seats.delete(token);
     for (const [, s] of this.io.of("/").sockets) {

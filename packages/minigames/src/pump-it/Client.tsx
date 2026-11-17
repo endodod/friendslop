@@ -1,15 +1,30 @@
 "use client";
+import { useRef } from "react";
 import { motion } from "framer-motion";
 import type { MinigameClientProps } from "../kit/types";
+import { KeyHint, useKey } from "../kit/hooks";
 import { BALLOONS, type PumpPrivate, type PumpPublic } from "./logic";
 
 const COLORS = ["#ff4d5e", "#3d8bff", "#2fd27a"];
 
 export function PumpItClient(p: MinigameClientProps<PumpPublic, PumpPrivate>) {
+  const keyAction = useRef<(() => void) | null>(null);
+  keyAction.current = null;
+  useKey(() => keyAction.current?.());
+  const stopAction = useRef<(() => void) | null>(null);
+  stopAction.current = null;
+  useKey(() => stopAction.current?.(), { keys: ["Enter", "NumpadEnter"] });
   const mine = p.me ? p.pub.runs[p.me] : undefined;
   const others = p.participants.filter((x) => x !== p.me || !p.isParticipant);
   const cur = mine && mine.current < BALLOONS ? mine.balloons[mine.current] : null;
   const size = cur ? 60 + cur.pumps * 7 : 0;
+  if (p.isParticipant && mine && !mine.done && cur) {
+    keyAction.current = () => {
+      p.input({ action: "pump" });
+      p.ui.play("pop", { volume: 0.25, rate: 1.6 + cur.pumps * 0.03 });
+    };
+    if (cur.pumps > 0) stopAction.current = () => p.input({ action: "stop" });
+  }
 
   return (
     <div className="flex flex-col gap-4">
@@ -49,6 +64,7 @@ export function PumpItClient(p: MinigameClientProps<PumpPublic, PumpPrivate>) {
               Stop
             </button>
           </div>
+          <KeyHint label="Space = pump · Enter = stop" text="" />
         </div>
       )}
       {p.isParticipant && mine?.done && (

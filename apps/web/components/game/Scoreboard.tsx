@@ -1,13 +1,17 @@
 "use client";
 import { motion } from "framer-motion";
-import { WifiOff } from "lucide-react";
+import { UserX, WifiOff } from "lucide-react";
+import { useStore } from "@/lib/store";
+import { act } from "@/lib/useRoom";
 import { colorHex, standings, type PublicGameState } from "@party-game/shared";
-import { Avatar, CoinCount, Icon, StarCount, usePlayers } from "../ui";
+import { Avatar, CoinCount, Icon, StarCount, useIsHost, usePlayers } from "../ui";
 import { CoinDelta } from "../fx";
 
 /** Player chips: stars, coins, items held. Ordered by current standing. */
 export function Scoreboard({ game, compact, highlight }: { game: PublicGameState; compact?: boolean; highlight?: string | null }) {
   const players = usePlayers();
+  const isHost = useIsHost();
+  const me = useStore((s) => s.playerId);
   const ranking = standings(game as never);
   const activeId = game.order[game.activeIndex];
   return (
@@ -47,6 +51,18 @@ export function Scoreboard({ game, compact, highlight }: { game: PublicGameState
                 )}
               </span>
             </div>
+            {isHost && !p.connected && playerId !== me && game.phase !== "podium" && (
+              <button
+                className="btn-ghost min-h-11 min-w-11 shrink-0 px-1 text-bad"
+                aria-label={`Remove ${p.name} from the game`}
+                title="Disconnected: remove from the game"
+                onClick={() => {
+                  if (confirm(`Remove ${p.name} from the game? They can't come back to this game.`)) act("room:kick", { playerId });
+                }}
+              >
+                <UserX size={18} />
+              </button>
+            )}
             <CoinDelta playerId={playerId} />
           </motion.li>
         );
