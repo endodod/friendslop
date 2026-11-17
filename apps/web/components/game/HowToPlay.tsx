@@ -27,7 +27,7 @@ export function BoardRules({ compact }: { compact?: boolean }) {
           </>,
           <>
             <b>Spend coins:</b> a star costs <CoinCount value={E.starCost} size={14} /> when you reach or pass it. Items are sold
-            at green Shop tiles (also when you walk past one).
+            at green Shop tiles (also when you walk past one). Pink Item tiles give you one for free.
           </>,
           <>After everyone moved: a mini-game. Winners get the most coins.</>,
         ]}

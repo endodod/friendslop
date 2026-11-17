@@ -276,7 +276,8 @@ export interface GameState {
   pendingDice: { kind: "double" } | { kind: "custom" } | null;
   movement: { remaining: number; path: string[]; next: "junction" | "starPass" | "shopPass" | "landed"; chosen?: string } | null;
   junction: { tileId: string; options: string[] } | null;
-  tileResult: { tileId: string; type: string; coinsDelta?: number } | null;
+  /** itemId: item won on an Item tile (null = bag was full, got coins instead). */
+  tileResult: { tileId: string; type: string; coinsDelta?: number; itemId?: string | null } | null;
   question: QuestionRound | null;
   /** `passing`: stopped at a Shop while walking past it; movement continues afterwards. */
   shop: { stock: string[]; bought: string[]; passing?: boolean } | null;
@@ -315,6 +316,7 @@ export type GameEvent =
   | { type: "matchRevealed"; playerIds: PlayerId[]; perfectIds: PlayerId[] }
   | { type: "itemUsed"; playerId: PlayerId; itemId: string; targetId?: PlayerId }
   | { type: "itemBought"; playerId: PlayerId; itemId: string }
+  | { type: "itemGained"; playerId: PlayerId; itemId: string }
   | { type: "shieldBlocked"; playerId: PlayerId }
   | { type: "eventDrawn"; cardId: string }
   | { type: "starMoved"; tileId: string }

@@ -1,13 +1,89 @@
 {
   "version": 1,
   "tiles": [
-    { "id": "start", "name": "Start", "description": "Where it all begins.", "icon": "start", "color": "#e8e8f0", "effect": "none" },
-    { "id": "blue", "name": "Blue", "description": "+3 coins", "icon": "coin", "color": "#3d8bff", "effect": "coins", "params": { "amount": 3 }, "starEligible": true, "pacingGroup": "filler" },
-    { "id": "red", "name": "Red", "description": "−3 coins", "icon": "skull", "color": "#ff4d5e", "effect": "coins", "params": { "amount": -3 } },
-    { "id": "question", "name": "Question", "description": "A question round about you.", "icon": "question", "color": "#ffc933", "effect": "question", "pacingGroup": "question" },
-    { "id": "data", "name": "Data", "description": "A question from your real data. Double rewards!", "icon": "data", "color": "#2fd6d0", "effect": "data" },
-    { "id": "event", "name": "Event", "description": "Draw an event card.", "icon": "event", "color": "#b26bff", "effect": "event" },
-    { "id": "shop", "name": "Shop", "description": "Buy items.", "icon": "shop", "color": "#2fd27a", "effect": "shop" },
-    { "id": "duel", "name": "Duel", "description": "Challenge someone to a 1v1 question duel.", "icon": "duel", "color": "#ff8a3d", "effect": "duel" }
+    {
+      "id": "start",
+      "name": "Start",
+      "description": "Where it all begins.",
+      "icon": "start",
+      "color": "#e8e8f0",
+      "effect": "none"
+    },
+    {
+      "id": "blue",
+      "name": "Blue",
+      "description": "+3 coins",
+      "icon": "coin",
+      "color": "#3d8bff",
+      "effect": "coins",
+      "params": {
+        "amount": 3
+      },
+      "starEligible": true,
+      "pacingGroup": "filler"
+    },
+    {
+      "id": "red",
+      "name": "Red",
+      "description": "−3 coins",
+      "icon": "skull",
+      "color": "#ff4d5e",
+      "effect": "coins",
+      "params": {
+        "amount": -3
+      }
+    },
+    {
+      "id": "question",
+      "name": "Question",
+      "description": "A question round about you.",
+      "icon": "question",
+      "color": "#ffc933",
+      "effect": "question",
+      "pacingGroup": "question"
+    },
+    {
+      "id": "data",
+      "name": "Data",
+      "description": "A question from your real data. Double rewards!",
+      "icon": "data",
+      "color": "#2fd6d0",
+      "effect": "data"
+    },
+    {
+      "id": "event",
+      "name": "Event",
+      "description": "Draw an event card.",
+      "icon": "event",
+      "color": "#b26bff",
+      "effect": "event"
+    },
+    {
+      "id": "shop",
+      "name": "Shop",
+      "description": "Buy items.",
+      "icon": "shop",
+      "color": "#2fd27a",
+      "effect": "shop"
+    },
+    {
+      "id": "duel",
+      "name": "Duel",
+      "description": "Challenge someone to a 1v1 question duel.",
+      "icon": "duel",
+      "color": "#ff8a3d",
+      "effect": "duel"
+    },
+    {
+      "id": "item",
+      "name": "Item",
+      "description": "Land here for a free random item (bag full: +3 coins).",
+      "icon": "backpack",
+      "color": "#ff6bc6",
+      "effect": "item",
+      "params": {
+        "fallbackCoins": 3
+      }
+    }
   ]
 }

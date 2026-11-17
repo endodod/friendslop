@@ -531,6 +531,21 @@ function land(d: Draft) {
       emit(s, { type: "sfx", id: amount > 0 ? "coin" : "bad" });
       return goto(d, "tileEffect", T.tileEffectMs);
     }
+    case "item": {
+      // Free random item; a full bag gets coins instead.
+      if (p.items.length < GAME_CONFIG.economy.maxItems) {
+        const item = weightedPick(s.ctx.rng, s.ctx.content.items, (i) => i.weight)!;
+        p.items.push(item.id);
+        g.tileResult.itemId = item.id;
+        emit(s, { type: "itemGained", playerId: pid, itemId: item.id });
+        emit(s, { type: "sfx", id: "buy" });
+        log(g, s, `${playerName(d, pid)} found a ${localize(item.name)}!`, pid);
+      } else {
+        g.tileResult.itemId = null;
+        g.tileResult.coinsDelta = changeCoins(g, s, pid, def.params.fallbackCoins ?? 3, "tile:item");
+      }
+      return goto(d, "tileEffect", T.tileEffectMs + 800);
+    }
     case "question":
       return startQuestionRound(d, "tile", pid);
     case "data":

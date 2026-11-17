@@ -124,7 +124,8 @@ attribution, shown on `/credits`). The lint test fails if a referenced icon file
 
 `tiles.json` defines tile *types*: `{ id, name, description, icon, color, effect, params, starEligible, pacingGroup }`.
 
-Effects: `none`, `coins` (`params.amount`, negative to lose), `question`, `data`, `event`, `shop`, `duel`.
+Effects: `none`, `coins` (`params.amount`, negative to lose), `question`, `data`, `event`, `shop`, `duel`,
+`item` (free random item, weighted by item `weight`; `params.fallbackCoins` when the bag is full).
 `starEligible` tiles can host the star. `pacingGroup: "question"` tiles are thinned out on low
 question pacing; `"filler"` tiles are turned into question tiles on high pacing.
 

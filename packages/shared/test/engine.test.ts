@@ -316,6 +316,31 @@ describe("spending coins", () => {
     expect(h.g.players[pid].tileId).toBe("m3");
   });
 
+  it("Item tile gives a free random item; a full bag gives coins instead", () => {
+    const h = new Harness(2);
+    toTurnStart(h);
+    const pid = h.active();
+    h.room.game!.starTileId = "m20";
+    rollExactly(h, 3); // m0 → m3 (Item tile)
+    h.timeout();
+    expect(h.g.phase).toBe("tileEffect");
+    expect(h.g.tileResult!.type).toBe("item");
+    expect(h.g.players[pid].items).toHaveLength(1);
+    expect(h.g.players[pid].items[0]).toBe(h.g.tileResult!.itemId);
+
+    const h2 = new Harness(2);
+    toTurnStart(h2);
+    const p2 = h2.active();
+    h2.room.game!.starTileId = "m20";
+    rollExactly(h2, 3); // custom dice used up → bag back to 0, so fill it now
+    h2.room.game!.players[p2].items = ["shield", "peek", "steal"];
+    const coins = h2.g.players[p2].coins;
+    h2.timeout();
+    expect(h2.g.tileResult!.itemId).toBeNull();
+    expect(h2.g.players[p2].items).toHaveLength(3);
+    expect(h2.g.players[p2].coins).toBe(coins + 3);
+  });
+
   it("Star Warp puts you right in front of the star", () => {
     const h = new Harness(2);
     toTurnStart(h);

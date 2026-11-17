@@ -69,3 +69,4 @@ Defaults picked where the build prompt left room, or where the environment force
 - **Scale questions (1–10)** label both ends (`scaleLabels`) and pay by distance: exact 5, one off 3 (match), two off 1 ("close", not a match), further 0. Wide Tolerance halves the distance.
 - **Spending coins:** walking past a Shop stops you to shop (only if you can afford an item and have room), like passing the star. New item: Star Warp (12 coins) teleports you right in front of the star. Your turn screen always shows your items or where to get them.
 - Fixed: the target's answer reveal could hang because the "?" card's exit animation inherited the drumroll's infinite repeat.
+- **More coin sinks:** a third Shop on the main loop stretch every player walks (m15), and two pink Item tiles (m3 near the start, a2 on the upper shortcut) that give a free random item when you land on them; with a full bag (3 items) you get 3 coins instead.

@@ -151,7 +151,7 @@ function TurnStartPanel({ display }: { display?: boolean }) {
       {items.length === 0 && (
         <p className="flex items-center gap-2 rounded-2xl bg-bg-2 p-3 text-sm text-muted">
           <Icon id="shop" size={20} className="shrink-0 text-good" />
-          No items yet. Buy them at green Shop tiles (you can also stop when walking past one).
+          No items yet. Buy them at green Shop tiles (also when walking past one) or land on a pink Item tile for a free one.
         </p>
       )}
       {items.length > 0 && (
@@ -325,6 +325,8 @@ function TileEffectPanel() {
           <p className="font-semibold">{def ? fmtName(def.description) : ""}</p>
         </div>
       </motion.div>
+      {r?.itemId && <GainedItem itemId={r.itemId} />}
+      {r?.itemId === null && <p className="text-center text-muted">Bag full (3 items), coins instead!</p>}
       {r?.coinsDelta !== undefined && (
         <p className="text-center font-display text-3xl">
           <PlayerName player={active} />{" "}
@@ -336,6 +338,28 @@ function TileEffectPanel() {
       )}
       <SkipButton />
     </Panel>
+  );
+}
+
+function GainedItem({ itemId }: { itemId: string }) {
+  const { active } = useGameCtx();
+  const it = clientContent.items.find((i) => i.id === itemId);
+  if (!it) return null;
+  return (
+    <motion.div
+      initial={{ scale: 0, rotate: -30 }}
+      animate={{ scale: 1, rotate: 0 }}
+      transition={{ delay: 0.4, type: "spring", stiffness: 220, damping: 12 }}
+      className="flex items-center gap-4 rounded-3xl bg-bg-2 p-4"
+    >
+      <Icon id={it.icon} size={56} className="shrink-0 text-accent" />
+      <div>
+        <p className="font-display text-2xl">
+          <PlayerName player={active} /> got {localize(it.name)}!
+        </p>
+        <p className="text-muted">{localize(it.description)}</p>
+      </div>
+    </motion.div>
   );
 }
 

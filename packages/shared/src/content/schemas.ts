@@ -105,7 +105,7 @@ export type Pack = z.infer<typeof PackSchema>;
 // ---------------------------------------------------------------------------
 // Tiles & boards
 // ---------------------------------------------------------------------------
-export const TILE_EFFECTS = ["none", "coins", "question", "data", "event", "shop", "duel"] as const;
+export const TILE_EFFECTS = ["none", "coins", "question", "data", "event", "shop", "duel", "item"] as const;
 export const TileDefSchema = z.object({
   id,
   name: LocalizedStringSchema,
