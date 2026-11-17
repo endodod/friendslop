@@ -249,6 +249,7 @@ function RollingPanel() {
       <p className="text-center font-display text-2xl">
         <PlayerName player={active} /> {rolling ? "rolled" : "moves"}{" "}
         <span className="text-accent">{tumbling ? "…" : g.dice?.total}</span>
+        {!tumbling && g.dice?.bonus ? <span className="text-lg text-muted"> (incl. +{g.dice.bonus} Sprint Shoes)</span> : null}
         {g.movement && !rolling && g.movement.remaining > 0 ? ` · ${g.movement.remaining} left` : ""}
       </p>
     </Panel>
@@ -309,6 +310,16 @@ function JunctionPanel({ board, display }: { board: Board | null; display?: bool
 function TileEffectPanel() {
   const { g, active } = useGameCtx();
   const r = g.tileResult;
+  if (r?.type === "frozen")
+    return (
+      <Panel testId="tile-effect">
+        <motion.div initial={{ scale: 0.5 }} animate={{ scale: 1 }} className="flex items-center gap-4 rounded-3xl bg-[#bfe9ff] p-4 text-[#14112a]">
+          <Icon id="ice" size={56} />
+          <p className="font-display text-2xl">{r.text}</p>
+        </motion.div>
+        <SkipButton />
+      </Panel>
+    );
   const def = clientContent.tiles.find((d) => d.id === r?.type);
   return (
     <Panel testId="tile-effect">

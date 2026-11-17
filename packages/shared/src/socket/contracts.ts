@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { LanguageSchema } from "../i18n";
+import { CustomQuestionDraftSchema } from "../logic/custom";
 import type { GameEvent } from "../engine/types";
 import type { PrivateState, PublicRoomState } from "../engine/projection";
 
@@ -22,7 +23,8 @@ export const RoomSettingsPatchSchema = z
   .object({
     turnCount: z.number().int(),
     themes: z.array(z.string().max(64)).max(50),
-    pacing: z.enum(["low", "normal", "high"]),
+    tileFrequency: z.record(z.string().max(64), z.enum(["off", "few", "normal", "many"])),
+    packs: z.array(z.string().max(64)).max(100),
     dataQuestions: z.boolean(),
     familyFriendly: z.boolean(),
     language: LanguageSchema,
@@ -71,6 +73,8 @@ export const ClientEvents = {
   "question:answer": z.object({ answer: AnswerSchema }),
   "minigame:input": z.object({ input: z.unknown() }),
   "minigame:submit": z.object({ submission: z.unknown() }),
+  "custom:add": z.object({ question: CustomQuestionDraftSchema }),
+  "custom:remove": z.object({ id: z.string().max(64) }),
   "account:linkSteam": z.object({ profile: z.string().min(2).max(200) }),
   "account:unlink": z.object({ provider: z.enum(["steam", "lastfm", "spotify"]) }),
 } as const;

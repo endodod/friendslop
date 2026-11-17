@@ -117,7 +117,7 @@ export const TileDefSchema = z.object({
   params: z.record(z.string(), z.number()).default({}),
   /** Can the star be placed on this tile type? */
   starEligible: z.boolean().default(false),
-  /** Question tiles are thinned out / added by the pacing setting. */
+  /** "filler": the tile type that other types are converted from/to by the tile mix setting (blue). */
   pacingGroup: z.enum(["question", "filler"]).optional(),
 });
 export type TileDef = z.infer<typeof TileDefSchema>;
@@ -165,6 +165,10 @@ export const ITEM_EFFECTS = [
   "peek",
   "wideTolerance",
   "warpToStar",
+  "pushBack",
+  "freeze",
+  "swapPlaces",
+  "sprint",
 ] as const;
 export const ItemSchema = z.object({
   id,
@@ -174,6 +178,8 @@ export const ItemSchema = z.object({
   price: z.number().int().nonnegative(),
   useTiming: z.enum(["turnStart", "onQuestion", "passive"]),
   effect: z.enum(ITEM_EFFECTS),
+  /** Effect strength, e.g. { steps: 4 } for Push Back, { bonus: 3 } for Sprint Shoes. */
+  params: z.record(z.string(), z.number()).default({}),
   /** Does using this item require choosing another player? */
   needsTarget: z.boolean().default(false),
   weight: z.number().positive().default(1),

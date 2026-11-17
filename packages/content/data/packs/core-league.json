@@ -1,0 +1,254 @@
+{
+  "id": "core-league",
+  "name": "League of Legends",
+  "language": "en",
+  "version": 1,
+  "description": "For groups that play League together.",
+  "questions": [
+    {
+      "id": "lol.role",
+      "themes": [
+        "league"
+      ],
+      "format": "tiles",
+      "prompt": "Which role does {target} play when they get their pick?",
+      "answers": [
+        "Top",
+        "Jungle",
+        "Mid",
+        "ADC",
+        "Support"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "lol.autofill",
+      "themes": [
+        "league"
+      ],
+      "format": "tiles",
+      "prompt": "{target} gets autofilled. Which role ruins their day the most?",
+      "answers": [
+        "Top",
+        "Jungle",
+        "Mid",
+        "ADC",
+        "Support"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "lol.style",
+      "themes": [
+        "league"
+      ],
+      "format": "tiles",
+      "prompt": "What kind of champion does {target} main?",
+      "answers": [
+        "Assassin who one-shots",
+        "Tank who never dies",
+        "Enchanter who babysits",
+        "Whatever is broken this patch"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "lol.tilt",
+      "themes": [
+        "league"
+      ],
+      "format": "scale",
+      "prompt": "How tilted does {target} get after losing lane, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "mental of steel",
+        "max": "types essays in all chat"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "lol.games",
+      "themes": [
+        "league"
+      ],
+      "format": "number",
+      "prompt": "How many games of League does {target} play on a bad day before giving up?",
+      "number": {
+        "min": 1,
+        "max": 20,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        },
+        "unit": "games"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "lol.ff",
+      "themes": [
+        "league"
+      ],
+      "format": "tiles",
+      "prompt": "It's 15 minutes in and {target}'s team is behind. They…",
+      "answers": [
+        "Type /ff immediately",
+        "Say 'we scale'",
+        "Blame the jungler",
+        "Go AFK in base"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "lol.ping",
+      "themes": [
+        "league"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s favorite ping?",
+      "answers": [
+        "Question mark spam",
+        "On my way",
+        "Danger",
+        "They never ping"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "lol.wards",
+      "themes": [
+        "league"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} places 10 wards per game. Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 60,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "wards"
+      },
+      "reference": 10,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "lol.blame",
+      "themes": [
+        "league"
+      ],
+      "format": "tiles",
+      "prompt": "{target} loses a game. Whose fault is it?",
+      "answers": [
+        "The jungler",
+        "The ADC",
+        "Their own fault (rare)",
+        "Riot's matchmaking"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "lol.duo",
+      "themes": [
+        "league"
+      ],
+      "format": "player",
+      "prompt": "Who here would {target} pick as their duo partner?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "lol.flame",
+      "themes": [
+        "league"
+      ],
+      "format": "scale",
+      "prompt": "How much does {target} flame in all chat, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "only says 'gg wp'",
+        "max": "chat-restricted for life"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "lol.quit",
+      "themes": [
+        "league"
+      ],
+      "format": "tiles",
+      "prompt": "What would finally make {target} uninstall League?",
+      "answers": [
+        "A 10-game losing streak",
+        "Their main getting nerfed",
+        "Nothing, it's forever",
+        "They uninstall weekly anyway"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    }
+  ]
+}

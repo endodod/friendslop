@@ -195,6 +195,32 @@
         "en": "Dance floors, kitchens and the morning after.",
         "de": "Tanzflächen, Küchen und der Morgen danach."
       }
+    },
+    {
+      "id": "league",
+      "name": {
+        "en": "League of Legends",
+        "de": "League of Legends"
+      },
+      "icon": "league",
+      "color": "#c8aa6e",
+      "description": {
+        "en": "Mains, tilt, flame and 'jungle diff'.",
+        "de": "Mains, Tilt, Flame und 'jungle diff'."
+      }
+    },
+    {
+      "id": "custom",
+      "name": {
+        "en": "Custom",
+        "de": "Eigene"
+      },
+      "icon": "custom",
+      "color": "#f4f1ff",
+      "description": {
+        "en": "Questions written by your group.",
+        "de": "Fragen von eurer Gruppe."
+      }
     }
   ]
 }

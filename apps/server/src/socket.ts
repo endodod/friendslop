@@ -115,6 +115,9 @@ export function registerSocketHandlers(io: Server<any, ServerToClientEvents, any
       rooms.action(current(), socket.data, { type: "minigameSubmit", playerId: me(), submission: p.submission }),
     );
 
+    on("custom:add", (p) => rooms.addCustom(current(), me(), p.question));
+    on("custom:remove", (p) => rooms.removeCustom(current(), socket.data, p.id));
+
     on("account:linkSteam", async (p) => {
       const rec = current();
       const pid = me();

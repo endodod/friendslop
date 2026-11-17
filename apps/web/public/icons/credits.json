@@ -544,5 +544,26 @@
   "author": "delapouite",
   "name": "party-popper",
   "license": "CC BY 3.0"
+ },
+ {
+  "id": "league",
+  "source": "https://game-icons.net/1x1/lorc/crystal-growth.html",
+  "author": "lorc",
+  "name": "crystal-growth",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "custom",
+  "source": "https://game-icons.net/1x1/delapouite/pencil.html",
+  "author": "delapouite",
+  "name": "pencil",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "sprint",
+  "source": "https://game-icons.net/1x1/delapouite/running-shoe.html",
+  "author": "delapouite",
+  "name": "running-shoe",
+  "license": "CC BY 3.0"
  }
 ]

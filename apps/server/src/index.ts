@@ -1,6 +1,6 @@
 import { createServer } from "node:http";
 import { Server } from "socket.io";
-import { BRANDING, DATA_GENERATORS, GAME_CONFIG } from "@party-game/shared";
+import { BRANDING, DATA_GENERATORS, GAME_CONFIG, selectablePacks } from "@party-game/shared";
 import { loadContent } from "@party-game/content/node";
 import { MINIGAMES } from "@party-game/minigames/server";
 import { env } from "./config";
@@ -23,6 +23,22 @@ async function main() {
       res.end(JSON.stringify({ ok: true, name: BRANDING.name }));
       return;
     }
+    const json = (status: number, body: unknown) => {
+      res.writeHead(status, { "content-type": "application/json", "access-control-allow-origin": "*", "cache-control": "public, max-age=300" });
+      res.end(JSON.stringify(body));
+    };
+    if (req.url === "/content/boards") return json(200, content.boards);
+    if (req.url === "/content/packs")
+      return json(
+        200,
+        selectablePacks(content).map((p) => ({
+          id: p.id,
+          name: p.name,
+          description: p.description,
+          questionCount: p.questions.filter((q) => !q.truthSource).length,
+          themes: [...new Set(p.questions.flatMap((q) => q.themes))],
+        })),
+      );
     const board = req.url?.match(/^\/content\/boards\/([a-z0-9._-]+)$/);
     if (board) {
       const b = content.boards.find((x) => x.id === board[1]);

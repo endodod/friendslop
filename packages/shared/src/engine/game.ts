@@ -15,6 +15,7 @@ import {
   selectQuestion,
 } from "../logic/questions";
 import type { MinigameServices, MiniGameDefinition } from "../minigame/types";
+import { withCustomPack } from "../logic/custom";
 import { pick, randInt, shuffle, weightedPick, createRng } from "../rng";
 import { emit, uid, type EngineContext, type Step } from "./context";
 import { fail } from "./errors";
@@ -105,7 +106,7 @@ function minigameDef(d: Draft, id: string): MiniGameDefinition {
 export function createGame(room: RoomState, ctx: EngineContext, mode: GameMode): GameState {
   const content = ctx.content;
   const board = getBoard(content, room.settings.boardId);
-  const tileTypes = computeTileTypes(board, content, room.settings.pacing, ctx.rng);
+  const tileTypes = computeTileTypes(board, content, room.settings.tileFrequency ?? {}, ctx.rng);
   const order = shuffle(
     ctx.rng,
     room.players.map((p) => p.id),
@@ -398,6 +399,16 @@ function turnStart(d: Draft) {
   g.star = null;
   g.duel = null;
   g.question = null;
+  g.diceBonus = 0;
+  const p = g.players[activeId(g)];
+  if (p.effects.frozen) {
+    // Freeze item: this turn is skipped.
+    p.effects.frozen = false;
+    g.tileResult = { tileId: p.tileId, type: "frozen", text: `${playerName(d, p.id)} is frozen solid and skips this turn!` };
+    emit(d.s, { type: "sfx", id: "bad" });
+    log(g, d.s, g.tileResult.text!, p.id);
+    return goto(d, "tileEffect", T.tileEffectMs + 800);
+  }
   goto(d, "turnStart", T.turnStartMs);
 }
 
@@ -416,8 +427,10 @@ function doRoll(d: Draft, value?: number) {
   } else {
     values = [randInt(rng, 1, GAME_CONFIG.dice.sides)];
   }
-  g.dice = { values, total: values.reduce((a, b) => a + b, 0), kind };
+  const bonus = g.diceBonus ?? 0;
+  g.dice = { values, total: values.reduce((a, b) => a + b, 0) + bonus, kind, bonus: bonus || undefined };
   g.pendingDice = null;
+  g.diceBonus = 0;
   emit(s, { type: "diceRolled", playerId: pid, values });
   goto(d, "rolling", T.rollingMs);
 }
@@ -736,7 +749,7 @@ function questionServices(d: Draft): MinigameServices {
         }
       }
       const sel = selectQuestion({
-        content: s.ctx.content,
+        content: withCustomPack(s.ctx.content, room),
         settings: room.settings,
         history: g.history,
         rng: s.ctx.rng,

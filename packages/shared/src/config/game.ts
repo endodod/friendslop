@@ -12,10 +12,21 @@ export const GAME_CONFIG = {
     startStars: 0,
     starCost: 20,
     maxItems: 3,
-    shopStockSize: 4,
+    shopStockSize: 5,
   },
 
   dice: { sides: 6 },
+
+  /** Tile mix setting: how often each tile type appears compared to the board's design. */
+  tiles: {
+    frequency: { off: 0, few: 0.5, normal: 1, many: 1.6 } as Record<string, number>,
+    /** Extra tiles for a type the board doesn't have at all, on "many". */
+    addWhenAbsent: 2,
+    /** Never turn the board's last filler (blue) tiles into something else: the star needs room. */
+    minFillerTiles: 4,
+    /** Tile types players can't tune (start/filler) or that do nothing without account linking. */
+    notTunable: ["start", "blue", "data"] as string[],
+  },
 
   /** Phase timers in milliseconds. Every phase that waits for input has one. */
   timers: {
@@ -62,8 +73,7 @@ export const GAME_CONFIG = {
     rankingMatchShare: 0.5,
     /** Wide Tolerance item multiplies tolerance by this. */
     wideToleranceMultiplier: 2,
-    /** Pacing: how many question tiles are turned on, by setting. */
-    pacing: { low: 0.5, normal: 1, high: 1.5 },
+
   },
 
   minigame: {

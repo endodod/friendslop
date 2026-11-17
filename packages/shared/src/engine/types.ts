@@ -6,12 +6,15 @@ export type PlayerId = string;
 // ---------------------------------------------------------------------------
 // Room / lobby
 // ---------------------------------------------------------------------------
-export type QuestionPacing = "low" | "normal" | "high";
+export type TileFrequency = "off" | "few" | "normal" | "many";
 
 export interface RoomSettings {
   turnCount: number;
   themes: string[];
-  pacing: QuestionPacing;
+  /** Tile mix: tile type id → how often it appears (missing = normal). */
+  tileFrequency: Record<string, TileFrequency>;
+  /** Enabled question pack ids. */
+  packs: string[];
   dataQuestions: boolean;
   familyFriendly: boolean;
   language: Language;
@@ -40,6 +43,14 @@ export interface RoomPlayer {
 
 export type RoomStage = "lobby" | "game";
 
+/** A question written by a player in the lobby (the room's "Custom" pack). */
+export interface CustomQuestion {
+  id: string;
+  authorId: PlayerId;
+  authorName: string;
+  question: import("../content/schemas").Question;
+}
+
 export interface RoomState {
   code: string;
   createdAt: number;
@@ -48,6 +59,8 @@ export interface RoomState {
   settings: RoomSettings;
   players: RoomPlayer[];
   displays: number;
+  /** Questions written by players for this room. */
+  customQuestions: CustomQuestion[];
   stage: RoomStage;
   game: GameState | null;
 }
@@ -214,7 +227,8 @@ export interface GamePlayer {
   stars: number;
   tileId: string;
   items: string[];
-  effects: { shield: boolean };
+  /** frozen: skips their next turn (Freeze item). */
+  effects: { shield: boolean; frozen?: boolean };
   stats: PlayerStats;
 }
 
@@ -269,13 +283,16 @@ export interface GameState {
   activeIndex: number;
   players: Record<PlayerId, GamePlayer>;
   boardId: string;
-  /** Tile type overrides (question pacing) — tileId → tile type id */
+  /** Tile types for this game after applying the tile mix setting — tileId → tile type id */
   tileTypes: Record<string, string>;
   starTileId: string;
   /** Piggy Bank pot (coins dropped by players walking past). */
   bank: number;
 
-  dice: { values: number[]; total: number; kind: "normal" | "double" | "custom" } | null;
+  /** bonus: extra steps from Sprint Shoes. */
+  dice: { values: number[]; total: number; kind: "normal" | "double" | "custom"; bonus?: number } | null;
+  /** Extra steps added to this turn's roll (Sprint Shoes). */
+  diceBonus?: number;
   pendingDice: { kind: "double" } | { kind: "custom" } | null;
   movement: { remaining: number; path: string[]; next: "junction" | "starPass" | "shopPass" | "landed"; chosen?: string } | null;
   junction: { tileId: string; options: string[] } | null;

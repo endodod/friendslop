@@ -34,6 +34,11 @@ export function Scoreboard({ game, compact, highlight }: { game: PublicGameState
               <span className="flex items-center gap-3 text-sm">
                 <StarCount value={gp.stars} size={16} />
                 <CoinCount value={gp.coins} size={16} />
+                {gp.effects.frozen && (
+                  <span className="inline-flex items-center gap-0.5 text-[#7fd3ff]" title="Frozen: skips next turn">
+                    <Icon id="ice" size={14} /> frozen
+                  </span>
+                )}
                 {gp.itemCount > 0 && (
                   <span className="inline-flex items-center gap-0.5 text-muted" title={`${gp.itemCount} items`}>
                     <Icon id="backpack" size={14} />

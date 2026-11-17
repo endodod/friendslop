@@ -20,7 +20,7 @@ export interface QuestionHistory {
 
 export interface SelectArgs {
   content: ContentBundle;
-  settings: Pick<RoomSettings, "themes" | "familyFriendly" | "language">;
+  settings: Pick<RoomSettings, "themes" | "familyFriendly" | "language"> & { packs?: string[] };
   history: QuestionHistory;
   rng: Rng;
   usage: QuestionUsage;
@@ -39,10 +39,11 @@ function candidates(args: SelectArgs, ignoreHistory: boolean): Candidate[] {
   const enabled = new Set(settings.themes);
   const out: Candidate[] = [];
   for (const pack of content.packs) {
+    if (settings.packs && !settings.packs.includes(pack.id)) continue;
     for (const q of pack.questions) {
       if (q.truthSource) continue; // data questions come from generators
       if (!q.usage.includes(args.usage)) continue;
-      if (!q.themes.some((t) => enabled.has(t))) continue;
+      if (pack.id !== "custom" && !q.themes.some((t) => enabled.has(t))) continue;
       if (settings.familyFriendly && q.tags?.includes("spicy")) continue;
       if ((q.minPlayers ?? 2) > args.playerCount) continue;
       if (args.formats && !args.formats.includes(q.format)) continue;

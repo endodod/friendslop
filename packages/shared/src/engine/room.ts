@@ -2,6 +2,7 @@ import { GAME_CONFIG, PLAYER_COLORS } from "../config/game";
 import type { ContentBundle } from "../content/schemas";
 import type { Rng } from "../rng";
 import { fail } from "./errors";
+import { CUSTOM_PACK_ID } from "../logic/custom";
 import type { RoomPlayer, RoomSettings, RoomState } from "./types";
 
 export function generateRoomCode(rng: Rng, taken: (code: string) => boolean = () => false): string {
@@ -18,12 +19,18 @@ export function defaultSettings(content: ContentBundle): RoomSettings {
   return {
     turnCount: GAME_CONFIG.turns.default,
     themes: content.themes.map((t) => t.id),
-    pacing: "normal",
+    tileFrequency: {},
+    packs: [...selectablePacks(content).map((p) => p.id), CUSTOM_PACK_ID],
     dataQuestions: true,
     familyFriendly: false,
     language: "en",
     boardId: content.boards[0]?.id ?? "classic",
   };
+}
+
+/** Packs players can toggle: ones with regular questions (data-only packs need account linking). */
+export function selectablePacks(content: ContentBundle) {
+  return content.packs.filter((p) => p.questions.some((q) => !q.truthSource));
 }
 
 export function createRoom(code: string, now: number, content: ContentBundle): RoomState {
@@ -34,6 +41,7 @@ export function createRoom(code: string, now: number, content: ContentBundle): R
     settings: defaultSettings(content),
     players: [],
     displays: 0,
+    customQuestions: [],
     stage: "lobby",
     game: null,
   };
@@ -119,6 +127,16 @@ export function updateSettings(room: RoomState, patch: Partial<RoomSettings>, co
   s.themes = [...new Set(s.themes)].filter((t) => known.has(t));
   if (s.themes.length === 0) fail("INVALID_INPUT", "Pick at least one theme.");
   if (!content.boards.some((b) => b.id === s.boardId)) fail("INVALID_INPUT", "Unknown board.");
+  const packIds = new Set([...selectablePacks(content).map((p) => p.id), CUSTOM_PACK_ID]);
+  s.packs = [...new Set(s.packs)].filter((p) => packIds.has(p));
+  if (s.packs.length === 0) fail("INVALID_INPUT", "Pick at least one question pack.");
+  const tileIds = new Set(content.tiles.map((t) => t.id));
+  const freqs = new Set(Object.keys(GAME_CONFIG.tiles.frequency));
+  s.tileFrequency = Object.fromEntries(
+    Object.entries(s.tileFrequency ?? {}).filter(
+      ([k, v]) => tileIds.has(k) && freqs.has(v) && !GAME_CONFIG.tiles.notTunable.includes(k),
+    ),
+  ) as RoomSettings["tileFrequency"];
   return { ...room, settings: s, players: room.players.map((p) => ({ ...p, ready: false })) };
 }
 

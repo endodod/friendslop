@@ -19,7 +19,7 @@ describe("content lint", () => {
   });
 
   it("has enough questions per theme", () => {
-    for (const theme of content.themes) {
+    for (const theme of content.themes.filter((t) => t.id !== "custom")) {
       const n = content.packs.flatMap((p) => p.questions).filter((q) => q.themes.includes(theme.id) && !q.truthSource).length;
       expect(n, `theme ${theme.id}`).toBeGreaterThanOrEqual(8);
     }

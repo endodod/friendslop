@@ -103,6 +103,19 @@ generated at runtime from a player's linked data instead of the target's answer.
 is not implemented yet; the Steam pack (`data-steam.json`) declares the questions and Data tiles
 fall back to normal questions. Generators are registered in `packages/shared/src/data/generators.ts`.
 
+## Custom questions (in the lobby)
+
+Players can write their own questions in the lobby (multiple choice, 1–10 scale, number, pick a
+player). They're validated with the same schema as shipped content, live in the room's **Custom**
+pack (toggle it like any other pack), are picked twice as often as regular questions, and are saved
+in the browser so they can be re-added in the next room with one tap. They are not written to the
+content folder.
+
+## Question packs in the lobby
+
+Every pack file shows up as a toggle in the lobby (with its question count). Themes are a second
+filter on top of packs. Packs that only contain data questions are hidden until account linking exists.
+
 ## Themes
 
 `themes.json`: `{ "id", "name", "icon", "color", "description" }`. Add a theme, then tag questions
@@ -150,7 +163,11 @@ SVG with the board's `aspect` ratio (width / height).
 - `next` lists where a token can go; two or more entries make a junction (the player chooses).
 - The lint check requires every tile to be reachable from the start and to lead back to it, at
   least 3 star-eligible tiles, and only known tile types.
-- `boardId` in room settings selects the board (the first board is the default).
+- Every board in the folder shows up in the lobby's map picker (with a preview). The first board is the default.
+- Shipped maps: Friendship Loop (classic), Figure Eight, The Ladder, Quick Loop.
+- Players can tune how often each tile type appears (lobby → Tile mix: Off / Few / Normal / Many).
+  "Normal" is the board as designed; extra tiles are taken from blue tiles, and at least
+  `GAME_CONFIG.tiles.minFillerTiles` blue tiles always stay for the star.
 
 ## Items
 
@@ -158,7 +175,9 @@ SVG with the board's `aspect` ratio (width / height).
 
 - `useTiming`: `turnStart` (before rolling), `onQuestion` (while answering, before locking in), `passive` (automatic).
 - `effect` must be one of the implemented effects: `doubleDice`, `customDice`, `steal`,
-  `pickTarget`, `shield`, `peek`, `wideTolerance`, `warpToStar`. New effects need code in
+  `pickTarget`, `shield`, `peek`, `wideTolerance`, `warpToStar`, `sprint` (`params.bonus` extra steps),
+  `pushBack` (`params.steps`), `swapPlaces`, `freeze` (target skips their next turn).
+- `params` holds effect numbers; `weight` controls how often it shows up in shops and on Item tiles. New effects need code in
   `packages/shared/src/logic/items.ts` (turn start) or `engine/game.ts` (question time).
 
 ## Event cards

@@ -244,6 +244,63 @@ describe("items", () => {
     expect(h.events.some((e) => e.type === "shieldBlocked")).toBe(true);
   });
 
+  it("Sprint Shoes add 3 steps to the roll", () => {
+    const h = new Harness(2);
+    toTurnStart(h);
+    const pid = h.active();
+    h.room.game!.players[pid].items.push("sprint-shoes");
+    h.act({ type: "useItem", playerId: pid, itemId: "sprint-shoes" });
+    h.act({ type: "roll", playerId: pid });
+    expect(h.g.dice!.total).toBe(h.g.dice!.values[0] + 3);
+    expect(h.g.dice!.bonus).toBe(3);
+  });
+
+  it("Push Back moves the chosen player back 4 spaces", () => {
+    const h = new Harness(2);
+    toTurnStart(h);
+    const pid = h.active();
+    const other = h.g.order.find((p) => p !== pid)!;
+    h.room.game!.players[other].tileId = "m10";
+    h.room.game!.players[pid].items.push("push-back");
+    h.act({ type: "useItem", playerId: pid, itemId: "push-back", targetId: other });
+    expect(h.g.players[other].tileId).toBe("m6");
+  });
+
+  it("Swap Places swaps positions; a Shield blocks it", () => {
+    const h = new Harness(2);
+    toTurnStart(h);
+    const pid = h.active();
+    const other = h.g.order.find((p) => p !== pid)!;
+    h.room.game!.players[other].tileId = "m10";
+    h.room.game!.players[pid].items.push("swap-places", "swap-places");
+    h.act({ type: "useItem", playerId: pid, itemId: "swap-places", targetId: other });
+    expect(h.g.players[pid].tileId).toBe("m10");
+    expect(h.g.players[other].tileId).toBe("m0");
+    h.room.game!.players[other].items.push("shield");
+    h.act({ type: "useItem", playerId: pid, itemId: "swap-places", targetId: other });
+    expect(h.g.players[pid].tileId).toBe("m10");
+  });
+
+  it("Freeze makes the chosen player skip their next turn", () => {
+    const h = new Harness(2);
+    toTurnStart(h);
+    const pid = h.active();
+    const other = h.g.order.find((p) => p !== pid)!;
+    h.room.game!.players[pid].items.push("freeze");
+    h.act({ type: "useItem", playerId: pid, itemId: "freeze", targetId: other });
+    expect(h.g.players[other].effects.frozen).toBe(true);
+    h.act({ type: "roll", playerId: pid });
+    // play out the rest of this turn until the frozen player's turn comes
+    let guard = 0;
+    while (!(h.g.order[h.g.activeIndex] === other && h.g.phase !== "turnEnd") && guard++ < 50) h.timeout();
+    expect(h.g.phase).toBe("tileEffect");
+    expect(h.g.tileResult!.type).toBe("frozen");
+    expect(h.g.players[other].effects.frozen).toBe(false);
+    h.timeout(); // tileEffect → turnEnd (no roll happened)
+    expect(h.g.phase).toBe("turnEnd");
+    expect(h.g.dice).toBeNull();
+  });
+
   it("Pick the Target makes the next question about the chosen player", () => {
     const h = new Harness(3);
     toTurnStart(h);

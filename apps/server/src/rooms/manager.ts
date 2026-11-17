@@ -4,6 +4,9 @@ import {
   GAME_CONFIG,
   GameError,
   addPlayer,
+  addCustomQuestion,
+  removeCustomQuestion,
+  type CustomQuestionDraft,
   applyGameAction,
   assertHost,
   canStart,
@@ -218,6 +221,19 @@ export class RoomManager {
 
   setProfile(rec: LiveRoom, playerId: string, patch: { name?: string; color?: string }) {
     rec.room = setPlayerProfile(rec.room, playerId, patch);
+    this.broadcast(rec, []);
+  }
+
+  addCustom(rec: LiveRoom, playerId: string, draft: CustomQuestionDraft) {
+    const author = rec.room.players.find((p) => p.id === playerId);
+    if (!author) fail("UNKNOWN_PLAYER", "Only players can add questions.");
+    rec.room = addCustomQuestion(rec.room, { id: author.id, name: author.name }, draft, `custom.${randomBytes(5).toString("hex")}`);
+    this.broadcast(rec, []);
+  }
+
+  removeCustom(rec: LiveRoom, actor: SocketData, id: string) {
+    const isHost = actor.role === "display" || (!!actor.playerId && rec.room.hostId === actor.playerId);
+    rec.room = removeCustomQuestion(rec.room, { playerId: actor.playerId ?? undefined, isHost }, id);
     this.broadcast(rec, []);
   }
 

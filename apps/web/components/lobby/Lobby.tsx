@@ -11,6 +11,10 @@ import { ColorPicker } from "../ColorPicker";
 import { useStore } from "@/lib/store";
 import { act } from "@/lib/useRoom";
 import { MINIGAME_CLIENTS } from "@party-game/minigames/client";
+import { MapPicker } from "./MapPicker";
+import { PackPicker } from "./PackPicker";
+import { TileMix } from "./TileMix";
+import { CustomQuestions } from "./CustomQuestions";
 
 export function Lobby({ code, onLeave }: { code: string; onLeave: () => Promise<void> }) {
   const pub = useStore((s) => s.pub)!;
@@ -145,6 +149,8 @@ export function Lobby({ code, onLeave }: { code: string; onLeave: () => Promise<
         </section>
       )}
 
+      <CustomQuestions />
+
       <SettingsPanel settings={pub.settings} editable={isHost} canData={dataQuestionsAvailable(pub as never)} />
 
       {isHost && (
@@ -201,13 +207,20 @@ export function Lobby({ code, onLeave }: { code: string; onLeave: () => Promise<
 
 function SettingsPanel({ settings, editable, canData }: { settings: RoomSettings; editable: boolean; canData: boolean }) {
   const set = (patch: Partial<RoomSettings>) => act("room:settings", patch);
-  const themes = clientContent.themes;
+  const customCount = useStore((s) => s.pub?.customQuestions?.length ?? 0);
+  const themes = clientContent.themes.filter((t) => t.id !== "custom");
   return (
-    <section className="card flex flex-col gap-4 p-5">
+    <section className="card flex flex-col gap-5 p-5">
       <h2 className="flex items-center gap-2 font-display text-2xl">
         <Settings2 size={22} /> Settings {!editable && <span className="text-sm text-muted">(host decides)</span>}
       </h2>
-      <Row label="Turns">
+
+      <div className="flex flex-col gap-2">
+        <span className="font-display text-lg">Map</span>
+        <MapPicker value={settings.boardId} editable={editable} onChange={(boardId) => set({ boardId })} />
+      </div>
+
+      <Row label="Rounds">
         <Segmented
           value={settings.turnCount}
           options={GAME_CONFIG.turns.options.map((n) => ({ value: n, label: String(n) }))}
@@ -215,21 +228,15 @@ function SettingsPanel({ settings, editable, canData }: { settings: RoomSettings
           onChange={(turnCount) => set({ turnCount })}
         />
       </Row>
-      <Row label="Question tiles">
-        <Segmented
-          value={settings.pacing}
-          options={[
-            { value: "low", label: "Few" },
-            { value: "normal", label: "Normal" },
-            { value: "high", label: "Lots" },
-          ]}
-          disabled={!editable}
-          onChange={(pacing) => set({ pacing })}
-        />
-      </Row>
+
       <div className="flex flex-col gap-2">
-        <span className="font-display text-lg">Themes</span>
-        <div className="flex flex-wrap gap-2">
+        <span className="font-display text-lg">Question packs</span>
+        <PackPicker value={settings.packs} editable={editable} customCount={customCount} onChange={(packs) => set({ packs })} />
+      </div>
+
+      <details className="rounded-2xl bg-bg-2 p-3">
+        <summary className="cursor-pointer font-display text-lg">Themes (filter inside the packs)</summary>
+        <div className="mt-3 flex flex-wrap gap-2">
           {themes.map((t) => {
             const on = settings.themes.includes(t.id);
             return (
@@ -237,16 +244,9 @@ function SettingsPanel({ settings, editable, canData }: { settings: RoomSettings
                 key={t.id}
                 disabled={!editable}
                 aria-pressed={on}
-                onClick={() =>
-                  set({ themes: on ? settings.themes.filter((x) => x !== t.id) : [...settings.themes, t.id] })
-                }
+                onClick={() => set({ themes: on ? settings.themes.filter((x) => x !== t.id) : [...settings.themes, t.id] })}
                 className="flex min-h-11 items-center gap-2 rounded-full border-2 px-3 font-display transition-all disabled:cursor-default"
-                style={{
-                  borderColor: t.color,
-                  background: on ? t.color : "transparent",
-                  color: on ? "#14112a" : t.color,
-                  opacity: on ? 1 : 0.65,
-                }}
+                style={{ borderColor: t.color, background: on ? t.color : "transparent", color: on ? "#14112a" : t.color, opacity: on ? 1 : 0.65 }}
               >
                 <Icon id={t.icon} size={18} />
                 {localize(t.name)}
@@ -254,7 +254,20 @@ function SettingsPanel({ settings, editable, canData }: { settings: RoomSettings
             );
           })}
         </div>
-      </div>
+      </details>
+
+      <details className="rounded-2xl bg-bg-2 p-3">
+        <summary className="cursor-pointer font-display text-lg">
+          Tile mix{" "}
+          <span className="text-sm text-muted">
+            {Object.keys(settings.tileFrequency ?? {}).length ? `(${Object.keys(settings.tileFrequency).length} changed)` : "(as designed)"}
+          </span>
+        </summary>
+        <div className="mt-3">
+          <TileMix value={settings.tileFrequency ?? {}} editable={editable} onChange={(tileFrequency) => set({ tileFrequency })} />
+        </div>
+      </details>
+
       <Toggle
         label="Family-friendly (no spicy questions)"
         value={settings.familyFriendly}

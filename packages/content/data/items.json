@@ -74,6 +74,52 @@
       "price": 12,
       "useTiming": "turnStart",
       "effect": "warpToStar"
+    },
+    {
+      "id": "sprint-shoes",
+      "name": "Sprint Shoes",
+      "description": "+3 steps on this turn's roll.",
+      "icon": "sprint",
+      "price": 4,
+      "useTiming": "turnStart",
+      "effect": "sprint",
+      "params": {
+        "bonus": 3
+      }
+    },
+    {
+      "id": "push-back",
+      "name": "Push Back",
+      "description": "Push a player of your choice back 4 spaces.",
+      "icon": "back",
+      "price": 6,
+      "useTiming": "turnStart",
+      "effect": "pushBack",
+      "params": {
+        "steps": 4
+      },
+      "needsTarget": true
+    },
+    {
+      "id": "swap-places",
+      "name": "Swap Places",
+      "description": "Swap places with a player of your choice.",
+      "icon": "swap",
+      "price": 7,
+      "useTiming": "turnStart",
+      "effect": "swapPlaces",
+      "needsTarget": true
+    },
+    {
+      "id": "freeze",
+      "name": "Freeze",
+      "description": "A player of your choice skips their next turn.",
+      "icon": "ice",
+      "price": 9,
+      "useTiming": "turnStart",
+      "effect": "freeze",
+      "needsTarget": true,
+      "weight": 0.7
     }
   ]
 }

@@ -25,3 +25,38 @@ export function useBoard(id: string | undefined): Board | null {
   }, [id]);
   return board;
 }
+
+function useServerJson<T>(path: string): T | null {
+  const [data, setData] = useState<T | null>(null);
+  useEffect(() => {
+    let cancelled = false;
+    fetch(`${serverUrl()}${path}`)
+      .then((r) => r.json())
+      .then((d: T) => !cancelled && setData(d))
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, [path]);
+  return data;
+}
+
+/** All maps (with geometry for previews). */
+export function useBoards(): Board[] | null {
+  const boards = useServerJson<Board[]>("/content/boards");
+  useEffect(() => boards?.forEach((b) => cache.set(b.id, b)), [boards]);
+  return boards;
+}
+
+export interface PackInfo {
+  id: string;
+  name: string;
+  description?: string;
+  questionCount: number;
+  themes: string[];
+}
+
+/** Question packs players can toggle. */
+export function usePacks(): PackInfo[] | null {
+  return useServerJson<PackInfo[]>("/content/packs");
+}

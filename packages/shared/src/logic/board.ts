@@ -1,7 +1,7 @@
 import { GAME_CONFIG } from "../config/game";
 import type { Board, BoardTile, ContentBundle, TileDef } from "../content/schemas";
 import { pick, shuffle, type Rng } from "../rng";
-import type { GameState, QuestionPacing } from "../engine/types";
+import type { GameState, TileFrequency } from "../engine/types";
 
 export function getBoard(content: ContentBundle, id: string): Board {
   const b = content.boards.find((x) => x.id === id) ?? content.boards[0];
@@ -43,27 +43,47 @@ export function walkBack(board: Board, from: string, steps: number, rng: Rng): s
 }
 
 /**
- * Question pacing: tiles in pacing group "question" are question tiles at normal pacing.
- * Low pacing turns some into filler (blue); high pacing turns some filler into question tiles.
+ * Tile mix: per tile type, "off" turns all of them into filler (blue), "few" about half,
+ * "many" turns extra filler tiles into that type. The board's design is "normal".
  */
 export function computeTileTypes(
   board: Board,
   content: ContentBundle,
-  pacing: QuestionPacing,
+  frequency: Record<string, TileFrequency>,
   rng: Rng,
 ): Record<string, string> {
+  const cfg = GAME_CONFIG.tiles;
   const types: Record<string, string> = Object.fromEntries(board.tiles.map((t) => [t.id, t.type]));
-  const group = (t: BoardTile) => content.tiles.find((d) => d.id === t.type)?.pacingGroup;
-  const questionTiles = board.tiles.filter((t) => group(t) === "question" && t.type === "question");
-  const fillers = board.tiles.filter((t) => group(t) === "filler");
-  const factor = GAME_CONFIG.question.pacing[pacing];
   const filler = content.tiles.find((d) => d.pacingGroup === "filler")?.id ?? "blue";
-  if (factor < 1) {
-    const remove = Math.round(questionTiles.length * (1 - factor));
-    for (const t of shuffle(rng, questionTiles).slice(0, remove)) types[t.id] = filler;
-  } else if (factor > 1) {
-    const add = Math.round(questionTiles.length * (factor - 1));
-    for (const t of shuffle(rng, fillers).slice(0, add)) types[t.id] = "question";
+  const tunable = Object.entries(frequency).filter(([type]) => !cfg.notTunable.includes(type) && type !== filler);
+  const ofType = (type: string) => board.tiles.filter((t) => types[t.id] === type && t.id !== board.startTileId);
+  const original = Object.fromEntries(tunable.map(([type]) => [type, ofType(type).length]));
+
+  // 1. Fewer / none
+  for (const [type, f] of tunable) {
+    const factor = cfg.frequency[f] ?? 1;
+    if (factor >= 1) continue;
+    const tiles = ofType(type);
+    const remove = Math.round(tiles.length * (1 - factor));
+    for (const t of shuffle(rng, tiles).slice(0, remove)) types[t.id] = filler;
+  }
+  // 2. More: take filler tiles, round-robin between the "many" types, keeping some filler for the star.
+  const wants = tunable
+    .filter(([, f]) => (cfg.frequency[f] ?? 1) > 1)
+    .map(([type, f]) => ({
+      type,
+      left: original[type] ? Math.max(1, Math.round(original[type] * ((cfg.frequency[f] ?? 1) - 1))) : cfg.addWhenAbsent,
+    }));
+  const pool = shuffle(rng, ofType(filler));
+  let budget = Math.max(0, pool.length - cfg.minFillerTiles);
+  while (budget > 0 && wants.some((w) => w.left > 0)) {
+    for (const w of wants) {
+      if (budget <= 0 || w.left <= 0) continue;
+      const t = pool.shift()!;
+      types[t.id] = w.type;
+      w.left--;
+      budget--;
+    }
   }
   return types;
 }

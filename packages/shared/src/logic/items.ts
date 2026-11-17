@@ -6,7 +6,7 @@ import type { GameState, PlayerId } from "../engine/types";
 import { localize } from "../i18n";
 import { shuffle, weightedPick } from "../rng";
 import { transferCoins } from "./economy";
-import { getBoard, prevTiles } from "./board";
+import { getBoard, prevTiles, walkBack } from "./board";
 
 export function getItem(content: ContentBundle, id: string): Item {
   const it = content.items.find((i) => i.id === id);
@@ -76,6 +76,40 @@ export function applyTurnStartItem(g: GameState, s: Step, playerId: PlayerId, it
       p.tileId = before[Math.floor(s.ctx.rng() * before.length)];
       emit(s, { type: "tokenTeleported", playerId, tileId: p.tileId });
       emit(s, { type: "sfx", id: "star" });
+      break;
+    }
+    case "sprint": {
+      if (g.diceBonus) fail("INVALID_INPUT", "You're already sprinting this turn.");
+      g.diceBonus = item.params.bonus ?? 3;
+      break;
+    }
+    case "pushBack":
+    case "freeze":
+    case "swapPlaces": {
+      if (!targetId || targetId === playerId || !g.players[targetId]) fail("INVALID_INPUT", "Pick another player.");
+      const victim = g.players[targetId];
+      if (tryShield(g, s, targetId)) {
+        log(g, s, "A shield blocked it!", targetId);
+        break;
+      }
+      const board = getBoard(s.ctx.content, g.boardId);
+      if (item.effect === "pushBack") {
+        const path = walkBack(board, victim.tileId, item.params.steps ?? 4, s.ctx.rng);
+        if (path.length) {
+          victim.tileId = path[path.length - 1];
+          emit(s, { type: "tokenMoved", playerId: targetId, path });
+        }
+        emit(s, { type: "sfx", id: "bad" });
+      } else if (item.effect === "freeze") {
+        if (victim.effects.frozen) fail("INVALID_INPUT", "They're already frozen.");
+        victim.effects.frozen = true;
+        emit(s, { type: "sfx", id: "shield" });
+      } else {
+        [p.tileId, victim.tileId] = [victim.tileId, p.tileId];
+        emit(s, { type: "tokenTeleported", playerId, tileId: p.tileId });
+        emit(s, { type: "tokenTeleported", playerId: targetId, tileId: victim.tileId });
+        emit(s, { type: "sfx", id: "whoosh" });
+      }
       break;
     }
     case "pickTarget":
