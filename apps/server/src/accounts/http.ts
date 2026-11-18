@@ -10,7 +10,6 @@ import {
   type CustomQuestionDraft,
   type SavedQuestion,
 } from "@party-game/shared";
-import { env } from "../config";
 import { db } from "../persistence/db";
 import type { User } from "../generated/prisma/client";
 import {
@@ -40,15 +39,16 @@ class HttpError extends Error {
   }
 }
 
-function corsHeaders(req: IncomingMessage): Record<string, string> {
-  const origin = req.headers.origin;
-  const allowed = !env.webOrigins.length ? "*" : origin && env.webOrigins.includes(origin) ? origin : env.webOrigins[0];
+/**
+ * Any origin may call the API: auth is a bearer token from the caller's own storage, never a cookie,
+ * so a foreign site can't act as a user. (WEB_ORIGINS still limits the Socket.IO game connection.)
+ */
+function corsHeaders(_req: IncomingMessage): Record<string, string> {
   return {
-    "access-control-allow-origin": allowed,
+    "access-control-allow-origin": "*",
     "access-control-allow-headers": "authorization, content-type",
     "access-control-allow-methods": "GET, POST, PUT, DELETE, OPTIONS",
     "access-control-max-age": "600",
-    vary: "origin",
   };
 }
 
