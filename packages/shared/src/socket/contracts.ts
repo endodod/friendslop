@@ -38,6 +38,7 @@ export const ClientEvents = {
     role: z.enum(["player", "display"]),
     name: z.string().max(40).optional(),
     color: z.string().max(16).optional(),
+    avatar: z.string().max(16).nullable().optional(),
     profileToken: z.string().max(64).optional(),
   }),
   "room:join": z.object({
@@ -45,13 +46,14 @@ export const ClientEvents = {
     role: z.enum(["player", "display"]),
     name: z.string().max(40).optional(),
     color: z.string().max(16).optional(),
+    avatar: z.string().max(16).nullable().optional(),
     /** Seat token from localStorage for reconnecting. */
     token: z.string().max(128).optional(),
     profileToken: z.string().max(64).optional(),
   }),
   "room:leave": z.object({}),
   "room:settings": RoomSettingsPatchSchema,
-  "room:profile": z.object({ name: z.string().max(40).optional(), color: z.string().max(16).optional() }),
+  "room:profile": z.object({ name: z.string().max(40).optional(), color: z.string().max(16).optional(), avatar: z.string().max(16).nullable().optional() }),
   "room:kick": z.object({ playerId: PlayerIdSchema }),
   "player:ready": z.object({ ready: z.boolean() }),
   "game:start": z.object({

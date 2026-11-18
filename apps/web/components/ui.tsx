@@ -31,9 +31,11 @@ export interface PlayerLike {
   id: PlayerId;
   name: string;
   color: string;
+  /** Optional emoji icon shown instead of initials. */
+  avatar?: string | null;
 }
 
-/** Avatar = initials in a colored circle. Meaning never by color alone: initials always shown. */
+/** Avatar = the player's icon (or initials) in a colored circle. Meaning never by color alone. */
 export function Avatar({
   player,
   size = 40,
@@ -57,12 +59,13 @@ export function Avatar({
         width: size,
         height: size,
         background: hex,
-        fontSize: size * 0.42,
+        fontSize: player.avatar ? size * 0.56 : size * 0.42,
+        lineHeight: 1,
         opacity: dim ? 0.4 : 1,
         boxShadow: ring ? `0 0 0 3px #0d0b1a, 0 0 0 6px ${hex}` : `inset 0 -${size * 0.08}px 0 #0003`,
       }}
     >
-      {initials(player.name)}
+      {player.avatar || initials(player.name)}
     </span>
   );
 }

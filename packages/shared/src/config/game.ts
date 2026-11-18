@@ -135,6 +135,14 @@ export const PLAYER_COLORS = [
   { id: "teal", hex: "#2fd6d0", name: "Teal" },
 ] as const;
 
+/** Little icons a player can pick instead of showing their initials (stored as the emoji itself). */
+export const PLAYER_AVATARS = [
+  "🐶", "🐱", "🦊", "🐸", "🐼", "🐵", "🦄", "🐙", "🐧", "🦖", "🐝", "🦉",
+  "👻", "👽", "🤖", "🎃", "💀", "🤠", "🍕", "🌵", "🍄", "🔥", "⭐",
+] as const;
+
+export const isPlayerAvatar = (a: string): boolean => (PLAYER_AVATARS as readonly string[]).includes(a);
+
 export type PlayerColorId = (typeof PLAYER_COLORS)[number]["id"];
 
 export function colorHex(id: string): string {

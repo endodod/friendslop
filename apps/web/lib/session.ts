@@ -63,6 +63,12 @@ export function savedColor(): string | undefined {
 export function saveColor(c: string) {
   safeSet(`${P}:color`, c);
 }
+export function savedAvatar(): string | null {
+  return safeGet(`${P}:avatar`) || null;
+}
+export function saveAvatar(a: string | null) {
+  safeSet(`${P}:avatar`, a ?? "");
+}
 export function getMuted(): boolean {
   return safeGet(`${P}:muted`) === "1";
 }

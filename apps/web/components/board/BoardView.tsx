@@ -277,11 +277,11 @@ export function BoardView({ board, game, players, follow, selectable = [], onSel
                 <text
                   textAnchor="middle"
                   dominantBaseline="central"
-                  fontFamily="Lilita One"
-                  fontSize={24}
+                  fontFamily={p.avatar ? undefined : "Lilita One"}
+                  fontSize={p.avatar ? 30 : 24}
                   fill="#14112a"
                 >
-                  {initials(p.name)}
+                  {p.avatar || initials(p.name)}
                 </text>
               </motion.g>
             </motion.g>

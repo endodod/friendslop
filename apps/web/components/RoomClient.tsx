@@ -3,13 +3,14 @@ import { MotionConfig } from "framer-motion";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { PLAYER_COLORS } from "@party-game/shared";
+import { AvatarPicker } from "./AvatarPicker";
 import { ColorPicker } from "./ColorPicker";
 import { Lobby } from "./lobby/Lobby";
 import { GameScreen } from "./game/GameScreen";
 import { ConnectionBadge, Toasts } from "./ui";
 import { useRoom } from "@/lib/useRoom";
 import { useStore } from "@/lib/store";
-import { saveColor, saveName, savedColor, savedName } from "@/lib/session";
+import { saveAvatar, saveColor, saveName, savedAvatar, savedColor, savedName } from "@/lib/session";
 import { SfxBridge } from "./SfxBridge";
 import { ServerStatus } from "./ServerStatus";
 
@@ -53,14 +54,16 @@ function Center({ children }: { children: React.ReactNode }) {
   return <main className="flex min-h-dvh flex-col items-center justify-center gap-4 p-6 text-center">{children}</main>;
 }
 
-function JoinForm({ code, error, onJoin }: { code: string; error: string | null; onJoin: (n: string, c?: string) => Promise<boolean> }) {
+function JoinForm({ code, error, onJoin }: { code: string; error: string | null; onJoin: (n: string, c?: string, a?: string | null) => Promise<boolean> }) {
   const [name, setName] = useState("");
   const [color, setColor] = useState<string>(PLAYER_COLORS[0].id);
+  const [avatar, setAvatar] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const pub = useStore((s) => s.pub);
   useEffect(() => {
     setName((n) => n || savedName());
     setColor(savedColor() ?? PLAYER_COLORS[0].id);
+    setAvatar(savedAvatar());
   }, []);
   const taken = pub?.players.map((p) => p.color) ?? [];
   return (
@@ -75,7 +78,8 @@ function JoinForm({ code, error, onJoin }: { code: string; error: string | null;
           setBusy(true);
           saveName(name.trim());
           saveColor(color);
-          await onJoin(name.trim(), color);
+          saveAvatar(avatar);
+          await onJoin(name.trim(), color, avatar);
           setBusy(false);
         }}
       >
@@ -86,6 +90,10 @@ function JoinForm({ code, error, onJoin }: { code: string; error: string | null;
         <div className="flex flex-col gap-2">
           <span className="font-display text-lg">Your color</span>
           <ColorPicker value={color} taken={taken} onChange={setColor} />
+        </div>
+        <div className="flex flex-col gap-2">
+          <span className="font-display text-lg">Your icon</span>
+          <AvatarPicker value={avatar} color={color} name={name} onChange={setAvatar} />
         </div>
         <button className="btn-primary" disabled={busy || !name.trim()}>
           Join

@@ -7,7 +7,9 @@ import { useEffect, useState } from "react";
 import { GAME_CONFIG, dataQuestionsAvailable, localize, type RoomSettings } from "@party-game/shared";
 import { clientContent } from "@party-game/content";
 import { Avatar, Icon, MuteButton, useIsHost, useMe } from "../ui";
+import { AvatarPicker } from "../AvatarPicker";
 import { ColorPicker } from "../ColorPicker";
+import { saveAvatar, saveColor } from "@/lib/session";
 import { useStore } from "@/lib/store";
 import { act } from "@/lib/useRoom";
 import { MINIGAME_CLIENTS } from "@party-game/minigames/client";
@@ -144,7 +146,19 @@ export function Lobby({ code, onLeave }: { code: string; onLeave: () => Promise<
           <ColorPicker
             value={meRoom.color}
             taken={players.map((p) => p.color)}
-            onChange={(color) => act("room:profile", { color })}
+            onChange={(color) => {
+              saveColor(color);
+              act("room:profile", { color });
+            }}
+          />
+          <AvatarPicker
+            value={meRoom.avatar}
+            color={meRoom.color}
+            name={meRoom.name}
+            onChange={(avatar) => {
+              saveAvatar(avatar);
+              act("room:profile", { avatar });
+            }}
           />
         </section>
       )}

@@ -3,8 +3,8 @@
  * Everything user-facing reads its name from here.
  */
 export const BRANDING = {
-  name: "PartyGame",
-  slug: "party-game",
+  name: "Friendslop",
+  slug: "friendslop",
   tagline: "How well do you really know your friends?",
   /** Prefix for localStorage keys. */
   storagePrefix: "party-game",

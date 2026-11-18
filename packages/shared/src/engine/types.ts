@@ -35,6 +35,8 @@ export interface RoomPlayer {
   id: PlayerId;
   name: string;
   color: string;
+  /** Optional icon (emoji from PLAYER_AVATARS) shown instead of initials. */
+  avatar?: string | null;
   ready: boolean;
   connected: boolean;
   joinedAt: number;

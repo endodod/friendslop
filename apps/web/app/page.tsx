@@ -5,16 +5,18 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { BRANDING, PLAYER_COLORS, type JoinResult } from "@party-game/shared";
+import { AvatarPicker } from "@/components/AvatarPicker";
 import { ColorPicker } from "@/components/ColorPicker";
 import { Icon, Toasts } from "@/components/ui";
 import { ServerStatus } from "@/components/ServerStatus";
 import { getSocket, send } from "@/lib/socket";
-import { profileToken, saveColor, saveName, saveSeat, savedColor, savedName } from "@/lib/session";
+import { profileToken, saveAvatar, saveColor, saveName, saveSeat, savedAvatar, savedColor, savedName } from "@/lib/session";
 
 export default function Landing() {
   const router = useRouter();
   const [name, setName] = useState("");
   const [color, setColor] = useState<string>(PLAYER_COLORS[0].id);
+  const [avatar, setAvatar] = useState<string | null>(null);
   const [code, setCode] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -22,6 +24,7 @@ export default function Landing() {
   useEffect(() => {
     setName((n) => n || savedName());
     setColor(savedColor() ?? PLAYER_COLORS[Math.floor(Math.random() * 4)].id);
+    setAvatar(savedAvatar());
     getSocket();
   }, []);
 
@@ -31,7 +34,8 @@ export default function Landing() {
     setError(null);
     saveName(name.trim());
     saveColor(color);
-    const res = await send("room:create", { role, name: role === "player" ? name.trim() : undefined, color, profileToken: profileToken() });
+    saveAvatar(avatar);
+    const res = await send("room:create", { role, name: role === "player" ? name.trim() : undefined, color, avatar, profileToken: profileToken() });
     setBusy(false);
     if (!res.ok) return setError(res.message);
     const r = res as unknown as JoinResult;
@@ -46,6 +50,7 @@ export default function Landing() {
     if (name.trim()) {
       saveName(name.trim());
       saveColor(color);
+      saveAvatar(avatar);
     }
     router.push(`/r/${c}`);
   }
@@ -81,6 +86,10 @@ export default function Landing() {
         <div className="flex flex-col gap-2">
           <span className="font-display text-lg">Your color</span>
           <ColorPicker value={color} onChange={setColor} />
+        </div>
+        <div className="flex flex-col gap-2">
+          <span className="font-display text-lg">Your icon</span>
+          <AvatarPicker value={avatar} color={color} name={name} onChange={setAvatar} />
         </div>
       </section>
 

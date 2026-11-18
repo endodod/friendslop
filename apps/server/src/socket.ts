@@ -72,7 +72,7 @@ export function registerSocketHandlers(io: Server<any, ServerToClientEvents, any
       if (p.role === "player" && !p.name?.trim()) fail("NAME_INVALID", "Please enter a name.");
       const rec = rooms.createRoom();
       const profileId = await profileFor(p.profileToken, p.name);
-      const seat = rooms.join(socket, rec, { role: p.role, name: p.name, color: p.color, profileId });
+      const seat = rooms.join(socket, rec, { role: p.role, name: p.name, color: p.color, avatar: p.avatar, profileId });
       rooms.resend(rec, socket);
       return { code: rec.room.code, role: seat.role, playerId: seat.playerId ?? undefined, token: seat.token };
     });
@@ -80,7 +80,7 @@ export function registerSocketHandlers(io: Server<any, ServerToClientEvents, any
     on("room:join", async (p) => {
       const rec = rooms.get(p.code);
       const profileId = p.token ? null : await profileFor(p.profileToken, p.name);
-      const seat = rooms.join(socket, rec, { role: p.role, name: p.name, color: p.color, token: p.token, profileId });
+      const seat = rooms.join(socket, rec, { role: p.role, name: p.name, color: p.color, avatar: p.avatar, token: p.token, profileId });
       rooms.resend(rec, socket);
       return { code: rec.room.code, role: seat.role, playerId: seat.playerId ?? undefined, token: seat.token };
     });

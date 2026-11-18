@@ -1,4 +1,4 @@
-import { GAME_CONFIG, PLAYER_COLORS } from "../config/game";
+import { GAME_CONFIG, PLAYER_COLORS, isPlayerAvatar } from "../config/game";
 import type { ContentBundle } from "../content/schemas";
 import type { Rng } from "../rng";
 import { fail } from "./errors";
@@ -58,7 +58,7 @@ export function freeColor(room: RoomState): string {
 
 export function addPlayer(
   room: RoomState,
-  args: { id: string; name: string; color?: string; now: number },
+  args: { id: string; name: string; color?: string; avatar?: string | null; now: number },
 ): RoomState {
   if (room.stage !== "lobby") fail("GAME_IN_PROGRESS", "This game has already started.");
   if (room.players.length >= GAME_CONFIG.players.max) fail("ROOM_FULL", `This room is full (${GAME_CONFIG.players.max} players max).`);
@@ -71,6 +71,7 @@ export function addPlayer(
     id: args.id,
     name,
     color,
+    avatar: args.avatar && isPlayerAvatar(args.avatar) ? args.avatar : null,
     ready: false,
     connected: true,
     joinedAt: args.now,
@@ -88,7 +89,7 @@ export function updatePlayer(room: RoomState, playerId: string, patch: Partial<R
 export function setPlayerProfile(
   room: RoomState,
   playerId: string,
-  patch: { name?: string; color?: string },
+  patch: { name?: string; color?: string; avatar?: string | null },
 ): RoomState {
   if (room.stage !== "lobby") fail("GAME_IN_PROGRESS", "Can't change that during a game.");
   const out: Partial<RoomPlayer> = {};
@@ -103,6 +104,10 @@ export function setPlayerProfile(
     if (!PLAYER_COLORS.some((c) => c.id === patch.color)) fail("INVALID_INPUT", "Unknown color.");
     if (room.players.some((p) => p.id !== playerId && p.color === patch.color)) fail("COLOR_TAKEN", "That color is taken.");
     out.color = patch.color;
+  }
+  if (patch.avatar !== undefined) {
+    if (patch.avatar !== null && !isPlayerAvatar(patch.avatar)) fail("INVALID_INPUT", "Unknown icon.");
+    out.avatar = patch.avatar;
   }
   return updatePlayer(room, playerId, { ...out, ready: false });
 }

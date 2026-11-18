@@ -127,7 +127,7 @@ export class RoomManager {
   join(
     socket: IoSocket,
     rec: LiveRoom,
-    args: { role: "player" | "display"; name?: string; color?: string; token?: string; profileId?: string | null },
+    args: { role: "player" | "display"; name?: string; color?: string; avatar?: string | null; token?: string; profileId?: string | null },
   ): Seat {
     const room = rec.room;
     let seat = args.token ? rec.seats.get(args.token) : undefined;
@@ -149,7 +149,7 @@ export class RoomManager {
       rec.room = { ...room, displays: room.displays + 1 };
     } else {
       const id = "p_" + randomBytes(6).toString("base64url");
-      rec.room = addPlayer(room, { id, name: args.name ?? "", color: args.color, now: Date.now() });
+      rec.room = addPlayer(room, { id, name: args.name ?? "", color: args.color, avatar: args.avatar, now: Date.now() });
       seat = { token: this.newToken(), role: "player", playerId: id, profileId: args.profileId ?? null };
       rec.seats.set(seat.token, seat);
     }
@@ -231,7 +231,7 @@ export class RoomManager {
     this.broadcast(rec, []);
   }
 
-  setProfile(rec: LiveRoom, playerId: string, patch: { name?: string; color?: string }) {
+  setProfile(rec: LiveRoom, playerId: string, patch: { name?: string; color?: string; avatar?: string | null }) {
     rec.room = setPlayerProfile(rec.room, playerId, patch);
     this.broadcast(rec, []);
   }
