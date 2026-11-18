@@ -1224,13 +1224,20 @@ function afterMinigameResults(d: Draft): void {
 export function computeBonusStars(g: GameState, content: ContentBundle, rng: () => number): BonusStarAward[] {
   const { min, max } = GAME_CONFIG.bonusStars.count;
   const count = Math.min(content.bonusStars.length, min + Math.floor(rng() * (max - min + 1)));
-  const chosen = shuffle(rng, content.bonusStars).slice(0, count);
+  const always = content.bonusStars.filter((b) => b.always);
+  const others = shuffle(rng, content.bonusStars.filter((b) => !b.always));
+  const chosen = [...always, ...others].slice(0, Math.max(count, always.length));
   return chosen.map((b) => {
-    const eligible = Object.values(g.players).filter((p) => !b.requiresTargetAtLeastOnce || p.stats.timesTarget > 0);
+    const eligible = Object.values(g.players).filter(
+      (p) => (!b.requiresTargetAtLeastOnce || p.stats.timesTarget > 0) && (!b.per || p.stats[b.per] >= (b.minPer ?? 1)),
+    );
     if (!eligible.length) return { bonusStarId: b.id, playerIds: [], value: 0 };
-    const vals = eligible.map((p) => p.stats[b.stat]);
+    // Rates are compared rounded, so 2/3 and 4/6 tie.
+    const valueOf = (p: (typeof eligible)[number]) =>
+      b.per ? Math.round((p.stats[b.stat] / p.stats[b.per]) * 1000) / 1000 : p.stats[b.stat];
+    const vals = eligible.map(valueOf);
     const best = b.mode === "max" ? Math.max(...vals) : Math.min(...vals);
-    const winners = eligible.filter((p) => p.stats[b.stat] === best).map((p) => p.id);
+    const winners = eligible.filter((p) => valueOf(p) === best).map((p) => p.id);
     // A "max" award for 0 is meaningless; nobody gets it.
     if (b.mode === "max" && best === 0) return { bonusStarId: b.id, playerIds: [], value: 0 };
     return { bonusStarId: b.id, playerIds: winners, value: best };

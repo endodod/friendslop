@@ -1,11 +1,16 @@
 {
   "version": 1,
   "bonusStars": [
-    { "id": "mind-reader", "name": "Mind Reader", "description": "Most total matches with targets.", "icon": "mind-reader", "stat": "matchesMade", "mode": "max" },
-    { "id": "open-book", "name": "Open Book", "description": "Most times others matched you as target.", "icon": "open-book", "stat": "matchedAsTarget", "mode": "max", "requiresTargetAtLeastOnce": true },
-    { "id": "enigma", "name": "Enigma", "description": "Fewest times others matched you.", "icon": "enigma", "stat": "matchedAsTarget", "mode": "min", "requiresTargetAtLeastOnce": true },
-    { "id": "minigame-master", "name": "Mini-game Master", "description": "Most mini-game wins.", "icon": "trophy", "stat": "minigameWins", "mode": "max" },
-    { "id": "sniper", "name": "Sniper", "description": "Most perfect number matches.", "icon": "perfect", "stat": "perfectMatches", "mode": "max" },
-    { "id": "wanderer", "name": "Wanderer", "description": "Moved the most spaces.", "icon": "footprints", "stat": "stepsMoved", "mode": "max" }
+    {"id": "sharpshooter", "name": "Sharpshooter", "description": "Best question match rate (at least 3 guesses).", "icon": "mind", "stat": "matchesMade", "per": "guesses", "minPer": 3, "mode": "max", "always": true},
+    {"id": "mind-reader", "name": "Mind Reader", "description": "Most total matches with targets.", "icon": "mind-reader", "stat": "matchesMade", "mode": "max"},
+    {"id": "open-book", "name": "Open Book", "description": "Most times others matched you as target.", "icon": "open-book", "stat": "matchedAsTarget", "mode": "max", "requiresTargetAtLeastOnce": true},
+    {"id": "enigma", "name": "Enigma", "description": "Fewest times others matched you.", "icon": "enigma", "stat": "matchedAsTarget", "mode": "min", "requiresTargetAtLeastOnce": true},
+    {"id": "minigame-master", "name": "Mini-game Master", "description": "Most mini-game wins.", "icon": "trophy", "stat": "minigameWins", "mode": "max"},
+    {"id": "sniper", "name": "Sniper", "description": "Most perfect number matches.", "icon": "perfect", "stat": "perfectMatches", "mode": "max"},
+    {"id": "wanderer", "name": "Wanderer", "description": "Moved the most spaces.", "icon": "footprints", "stat": "stepsMoved", "mode": "max"},
+    {"id": "minigame-ace", "name": "Mini-game Ace", "description": "Best mini-game win rate (at least 2 played).", "icon": "trophy", "stat": "minigameWins", "per": "minigamesPlayed", "minPer": 2, "mode": "max"},
+    {"id": "tycoon", "name": "Tycoon", "description": "Earned the most coins.", "icon": "coins", "stat": "coinsEarned", "mode": "max"},
+    {"id": "gadgeteer", "name": "Gadgeteer", "description": "Used the most items.", "icon": "backpack", "stat": "itemsUsed", "mode": "max"},
+    {"id": "crowd-reader", "name": "Crowd Pleaser", "description": "Most often read correctly as the target, per time asked.", "icon": "friends", "stat": "matchedAsTarget", "per": "timesTarget", "minPer": 2, "mode": "max"}
   ]
 }

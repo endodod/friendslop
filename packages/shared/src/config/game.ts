@@ -106,8 +106,8 @@ export const GAME_CONFIG = {
 
   items: { stealCoins: 10 },
 
-  /** Bonus stars shown per game (randomly chosen from content). */
-  bonusStars: { count: { min: 2, max: 3 } },
+  /** Bonus stars per game: the `always` ones plus random others up to this count. */
+  bonusStars: { count: { min: 3, max: 4 } },
 
   rateLimit: { eventsPerSecond: 30 },
 

@@ -2,7 +2,8 @@
 import { motion } from "framer-motion";
 import { Home, RotateCcw } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { localize, standings, type PlayerStats, type PublicGameState } from "@party-game/shared";
+import { useState } from "react";
+import { ACHIEVEMENTS, computeAchievements, localize, standings, type PlayerStats, type PublicGameState } from "@party-game/shared";
 import { clientContent } from "@party-game/content";
 import { act } from "@/lib/useRoom";
 import { useStore } from "@/lib/store";
@@ -72,12 +73,15 @@ export function BonusStarsView({ game }: { game: PublicGameState }) {
                   {a.playerIds.length === 0 ? (
                     <span className="text-muted">Nobody!</span>
                   ) : (
-                    a.playerIds.map((pid) => (
-                      <span key={pid} className="flex items-center gap-1">
-                        <Avatar player={players[pid]} size={40} ring />
-                        <StarCount value={1} />
-                      </span>
-                    ))
+                    <>
+                      {a.playerIds.map((pid) => (
+                        <span key={pid} className="flex items-center gap-1">
+                          <Avatar player={players[pid]} size={40} ring />
+                          <StarCount value={1} />
+                        </span>
+                      ))}
+                      <span className="w-full text-right text-sm text-muted">{awardValue(a.bonusStarId, a.value)}</span>
+                    </>
                   )}
                 </motion.div>
               ) : (
@@ -91,6 +95,14 @@ export function BonusStarsView({ game }: { game: PublicGameState }) {
   );
 }
 
+/** "75%" for rate awards, the plain number otherwise. */
+function awardValue(id: string, value: number): string {
+  const def = clientContent.bonusStars.find((b) => b.id === id);
+  return def?.per ? `${Math.round(value * 100)}%` : String(value);
+}
+
+const pct = (a: number, b: number) => (b > 0 ? Math.round((a / b) * 100) : null);
+
 /** Pick the most entertaining stat for a player. */
 function funniestStat(s: PlayerStats): string {
   const cands: [number, string][] = [
@@ -99,12 +111,180 @@ function funniestStat(s: PlayerStats): string {
     [s.stolenFrom * 4, `Got robbed ${s.stolenFrom}×`],
     [s.steals * 4, `Stole ${s.steals}×`],
     [s.perfectMatches * 4, `${s.perfectMatches} perfect guesses`],
-    [s.coinsLost, `Lost ${s.coinsLost} coins along the way`],
+    [s.coinsLost / 4, `Spent or lost ${s.coinsLost} coins`],
     [s.timesTarget > 0 && s.matchedAsTarget === 0 ? 10 : 0, "Nobody could read them. Ever."],
     [s.stepsMoved / 4, `Walked ${s.stepsMoved} spaces`],
   ];
   cands.sort((a, b) => b[0] - a[0]);
   return cands[0][0] > 0 ? cands[0][1] : "Played it cool";
+}
+
+function Section({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <section className="flex flex-col gap-3">
+      <h3 className="font-display text-2xl">{title}</h3>
+      {children}
+    </section>
+  );
+}
+
+/** Group records: who was best at what. */
+function Highlights({ game }: { game: PublicGameState }) {
+  const players = usePlayers();
+  const ids = Object.keys(game.players);
+  const st = (id: string) => game.players[id].stats;
+  const best = (score: (id: string) => number | null, higher = true) => {
+    const vals = ids.map((id) => [id, score(id)] as const).filter((x): x is readonly [string, number] => x[1] !== null);
+    if (!vals.length) return null;
+    const top = higher ? Math.max(...vals.map((v) => v[1])) : Math.min(...vals.map((v) => v[1]));
+    if (higher && top <= 0) return null;
+    return { ids: vals.filter((v) => v[1] === top).map((v) => v[0]), value: top };
+  };
+  const rows = [
+    { icon: "mind", label: "Best mind reader", r: best((id) => (st(id).guesses >= 1 ? st(id).matchesMade / st(id).guesses : null)), fmt: (v: number) => `${Math.round(v * 100)}% matched` },
+    { icon: "open-book", label: "Easiest to read", r: best((id) => (st(id).timesTarget >= 1 ? st(id).matchedAsTarget / st(id).timesTarget : null)), fmt: (v: number) => `${v.toFixed(1)} matches per question` },
+    { icon: "enigma", label: "Hardest to read", r: best((id) => (st(id).timesTarget >= 1 ? st(id).matchedAsTarget / st(id).timesTarget : null), false), fmt: (v: number) => `${v.toFixed(1)} matches per question` },
+    { icon: "trophy", label: "Mini-game king", r: best((id) => st(id).minigameWins), fmt: (v: number) => `${v} wins` },
+    { icon: "coins", label: "Top earner", r: best((id) => st(id).coinsEarned), fmt: (v: number) => `${v} coins earned` },
+    { icon: "steal", label: "Biggest thief", r: best((id) => st(id).steals), fmt: (v: number) => `${v} steals` },
+    { icon: "footprints", label: "Furthest walked", r: best((id) => st(id).stepsMoved), fmt: (v: number) => `${v} spaces` },
+  ].filter((x) => x.r);
+  if (!rows.length) return null;
+  return (
+    <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+      {rows.map((row, i) => (
+        <motion.div
+          key={row.label}
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.6 + i * 0.08 }}
+          className="flex items-center gap-3 rounded-2xl bg-bg-2 p-3"
+        >
+          <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-accent/15 text-accent">
+            <Icon id={row.icon} size={26} />
+          </span>
+          <div className="min-w-0 flex-1 leading-tight">
+            <p className="font-display">{row.label}</p>
+            <p className="text-sm text-muted">{row.fmt(row.r!.value)}</p>
+          </div>
+          <span className="flex -space-x-2">
+            {row.r!.ids.map((id) => (
+              <Avatar key={id} player={players[id]} size={34} />
+            ))}
+          </span>
+        </motion.div>
+      ))}
+    </div>
+  );
+}
+
+function Stat({ label, value, sub, bar }: { label: string; value: React.ReactNode; sub?: string; bar?: number | null }) {
+  return (
+    <div className="flex flex-col gap-1 rounded-xl bg-bg-2 px-3 py-2">
+      <span className="text-xs text-muted">{label}</span>
+      <span className="font-display text-xl leading-none">
+        {value}
+        {sub && <span className="ml-1 text-sm text-muted">{sub}</span>}
+      </span>
+      {bar !== undefined && bar !== null && (
+        <span className="h-1.5 overflow-hidden rounded-full bg-black/40">
+          <span className="block h-full rounded-full bg-accent" style={{ width: `${bar}%` }} />
+        </span>
+      )}
+    </div>
+  );
+}
+
+function PlayerCard({ game, playerId, rank, achievements, awards }: { game: PublicGameState; playerId: string; rank: number; achievements: string[]; awards: string[] }) {
+  const players = usePlayers();
+  const p = players[playerId];
+  const gp = game.players[playerId];
+  const s = gp.stats;
+  const qRate = pct(s.matchesMade, s.guesses);
+  const mgRate = pct(s.minigameWins, s.minigamesPlayed);
+  const readRate = pct(s.matchedAsTarget, s.timesTarget * Math.max(1, Object.keys(game.players).length - 1));
+  return (
+    <div className="card flex flex-col gap-3 p-4">
+      <div className="flex items-center gap-2">
+        <span className="w-9 font-display text-2xl text-muted">#{rank}</span>
+        <Avatar player={p} size={40} ring={rank === 1} />
+        <PlayerName player={p} className="min-w-0 flex-1 truncate text-xl" />
+        <StarCount value={gp.stars} />
+        <CoinCount value={gp.coins} size={16} />
+      </div>
+      <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+        <Stat label="Question match rate" value={qRate === null ? "–" : `${qRate}%`} sub={`${s.matchesMade}/${s.guesses}`} bar={qRate} />
+        <Stat label="Perfect guesses" value={s.perfectMatches} />
+        <Stat label="Read by others" value={readRate === null ? "–" : `${readRate}%`} sub={`${s.matchedAsTarget} matches`} bar={readRate} />
+        <Stat label="Mini-games won" value={`${s.minigameWins}/${s.minigamesPlayed}`} bar={mgRate} />
+        <Stat label="Coins earned / spent" value={s.coinsEarned} sub={s.coinsLost ? `−${s.coinsLost}` : undefined} />
+        <Stat label="Stars bought" value={s.starsBought} sub={awards.length ? `+${awards.length} bonus` : undefined} />
+        <Stat label="Steals" value={s.steals} sub={s.stolenFrom ? `robbed ${s.stolenFrom}×` : undefined} />
+        <Stat label="Items used" value={s.itemsUsed} />
+        <Stat label="Spaces walked" value={s.stepsMoved} />
+      </div>
+      {awards.length > 0 && (
+        <div className="flex flex-wrap gap-1.5">
+          {awards.map((id) => {
+            const def = clientContent.bonusStars.find((b) => b.id === id);
+            return (
+              <span key={id} className="inline-flex items-center gap-1 rounded-full bg-[#ffe066]/15 px-2 py-1 font-display text-sm text-[#ffe066] ring-1 ring-[#ffe066]/60">
+                <Icon id="star" size={14} /> {def ? localize(def.name) : id}
+              </span>
+            );
+          })}
+        </div>
+      )}
+      {achievements.length > 0 ? (
+        <ul className="flex flex-wrap gap-1.5" aria-label={`${p?.name}'s achievements`}>
+          {achievements.map((id) => {
+            const a = ACHIEVEMENTS.find((x) => x.id === id)!;
+            return (
+              <li
+                key={id}
+                title={a.description}
+                className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 font-display text-sm"
+                style={{ background: `${a.color}22`, color: a.color, boxShadow: `inset 0 0 0 1.5px ${a.color}88` }}
+              >
+                <Icon id={a.icon} size={15} /> {a.name}
+              </li>
+            );
+          })}
+        </ul>
+      ) : (
+        <p className="text-sm text-muted">No achievements this time.</p>
+      )}
+      <p className="rounded-xl bg-bg-2 px-3 py-2 font-display text-accent">{funniestStat(s)}</p>
+    </div>
+  );
+}
+
+/** Every achievement with who earned it (unearned ones dimmed). */
+function AchievementBoard({ earned }: { earned: Record<string, string[]> }) {
+  const players = usePlayers();
+  return (
+    <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+      {ACHIEVEMENTS.map((a) => {
+        const who = Object.entries(earned).filter(([, ids]) => ids.includes(a.id)).map(([pid]) => pid);
+        return (
+          <li key={a.id} className={`flex items-center gap-3 rounded-2xl bg-bg-2 p-2.5 ${who.length ? "" : "opacity-40"}`}>
+            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl" style={{ background: `${a.color}22`, color: a.color }}>
+              <Icon id={a.icon} size={22} />
+            </span>
+            <span className="min-w-0 flex-1 leading-tight">
+              <span className="block font-display">{a.name}</span>
+              <span className="block text-xs text-muted">{a.description}</span>
+            </span>
+            <span className="flex -space-x-2">
+              {who.map((pid) => (
+                <Avatar key={pid} player={players[pid]} size={28} />
+              ))}
+            </span>
+          </li>
+        );
+      })}
+    </ul>
+  );
 }
 
 export function Podium({ game }: { game: PublicGameState }) {
@@ -116,13 +296,19 @@ export function Podium({ game }: { game: PublicGameState }) {
   const heights = [180, 130, 100];
   const order = [1, 0, 2].filter((i) => top[i]);
   const winner = players[ranking[0]?.playerId];
+  const achievements = computeAchievements(game as never);
+  const awardsOf = (pid: string) => (game.bonusStars?.awards ?? []).filter((a) => a.playerIds.includes(pid)).map((a) => a.bonusStarId);
+  const [tab, setTab] = useState<"players" | "achievements">("players");
 
   return (
-    <div className="flex flex-col gap-6" data-testid="podium">
+    <div className="flex flex-col gap-8" data-testid="podium">
       <Confetti fireKey="podium" count={90} />
-      <h2 className="text-center font-display text-5xl">
-        <PlayerName player={winner} /> wins!
-      </h2>
+      <div className="text-center">
+        <p className="font-display text-xl text-muted">Game finished</p>
+        <h2 className="font-display text-5xl">
+          <PlayerName player={winner} /> wins!
+        </h2>
+      </div>
       <div className="flex items-end justify-center gap-3">
         {order.map((i) => {
           const r = top[i];
@@ -140,8 +326,12 @@ export function Podium({ game }: { game: PublicGameState }) {
               <Avatar player={p} size={i === 0 ? 76 : 60} ring={i === 0} />
               <span className="font-display text-lg">{p?.name}</span>
               <div
-                className="flex w-full flex-col items-center justify-start gap-1 rounded-t-2xl bg-panel-2 pt-3"
-                style={{ height: heights[i] }}
+                className="flex w-full flex-col items-center justify-start gap-1 rounded-t-2xl pt-3"
+                style={{
+                  height: heights[i],
+                  background: i === 0 ? "linear-gradient(180deg, #ffc93355, #2a2549)" : "linear-gradient(180deg, #3a3462, #2a2549)",
+                  boxShadow: i === 0 ? "inset 0 0 0 2px #ffc93388" : undefined,
+                }}
               >
                 <span className="font-display text-4xl text-accent">{r.rank}</span>
                 <StarCount value={gp.stars} />
@@ -152,34 +342,65 @@ export function Podium({ game }: { game: PublicGameState }) {
         })}
       </div>
 
-      <div className="grid gap-3 sm:grid-cols-2">
-        {ranking.map(({ playerId, rank }) => {
-          const p = players[playerId];
-          const s = game.players[playerId].stats;
-          return (
-            <div key={playerId} className="card flex flex-col gap-2 p-4">
-              <div className="flex items-center gap-2">
-                <span className="font-display text-xl text-muted">#{rank}</span>
-                <Avatar player={p} size={32} />
-                <PlayerName player={p} className="text-xl" />
-              </div>
-              <dl className="grid grid-cols-2 gap-x-3 gap-y-1 text-sm">
-                <dt className="text-muted">Matches</dt>
-                <dd className="font-semibold">{s.matchesMade}/{s.guesses}</dd>
-                <dt className="text-muted">Read by others</dt>
-                <dd className="font-semibold">{s.matchedAsTarget}</dd>
-                <dt className="text-muted">Coins earned</dt>
-                <dd className="font-semibold">{s.coinsEarned}</dd>
-                <dt className="text-muted">Mini-game wins</dt>
-                <dd className="font-semibold">{s.minigameWins}</dd>
-                <dt className="text-muted">Steals</dt>
-                <dd className="font-semibold">{s.steals}</dd>
-              </dl>
-              <p className="rounded-xl bg-bg-2 px-3 py-2 font-display text-accent">{funniestStat(s)}</p>
-            </div>
-          );
-        })}
-      </div>
+      {game.bonusStars && game.bonusStars.awards.length > 0 && (
+        <Section title="Star awards">
+          <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+            {game.bonusStars.awards.map((a) => {
+              const def = clientContent.bonusStars.find((b) => b.id === a.bonusStarId);
+              return (
+                <li key={a.bonusStarId} className="flex items-center gap-3 rounded-2xl bg-bg-2 p-3">
+                  <Icon id={def?.icon ?? "star"} size={34} className="shrink-0 text-[#ffe066]" />
+                  <span className="min-w-0 flex-1 leading-tight">
+                    <span className="block font-display">{def ? localize(def.name) : a.bonusStarId}</span>
+                    <span className="block text-xs text-muted">{def ? localize(def.description) : ""}</span>
+                  </span>
+                  {a.playerIds.length ? (
+                    <span className="flex flex-col items-end gap-1">
+                      <span className="flex -space-x-2">
+                        {a.playerIds.map((pid) => (
+                          <Avatar key={pid} player={players[pid]} size={32} ring />
+                        ))}
+                      </span>
+                      <span className="text-xs text-muted">{awardValue(a.bonusStarId, a.value)} · +1 ★</span>
+                    </span>
+                  ) : (
+                    <span className="text-sm text-muted">Nobody</span>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+        </Section>
+      )}
+
+      <Section title="Highlights">
+        <Highlights game={game} />
+      </Section>
+
+      <section className="flex flex-col gap-3">
+        <div className="flex gap-2" role="tablist">
+          {(["players", "achievements"] as const).map((t) => (
+            <button
+              key={t}
+              role="tab"
+              aria-selected={tab === t}
+              onClick={() => setTab(t)}
+              className={`rounded-full px-4 py-1.5 font-display ${tab === t ? "bg-accent text-[#241a00]" : "bg-bg-2 text-muted"}`}
+            >
+              {t === "players" ? "Player stats" : "Achievements"}
+            </button>
+          ))}
+        </div>
+        {tab === "players" ? (
+          <div className="grid gap-3 lg:grid-cols-2">
+            {ranking.map(({ playerId, rank }) => (
+              <PlayerCard key={playerId} game={game} playerId={playerId} rank={rank} achievements={achievements[playerId] ?? []} awards={awardsOf(playerId)} />
+            ))}
+          </div>
+        ) : (
+          <AchievementBoard earned={achievements} />
+        )}
+      </section>
 
       <div className="flex flex-col gap-2 sm:flex-row sm:justify-center">
         {isHost && (

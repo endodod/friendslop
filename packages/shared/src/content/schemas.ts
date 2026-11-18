@@ -230,6 +230,12 @@ export const BONUS_STAT_KEYS = [
   "redTiles",
   "stepsMoved",
   "itemsUsed",
+  "guesses",
+  "timesTarget",
+  "minigamesPlayed",
+  "steals",
+  "starsBought",
+  "blueTiles",
 ] as const;
 export const BonusStarSchema = z.object({
   id,
@@ -240,6 +246,12 @@ export const BonusStarSchema = z.object({
   mode: z.enum(["max", "min"]),
   /** Only count players who were the target at least once (for target-based stats). */
   requiresTargetAtLeastOnce: z.boolean().default(false),
+  /** Rate award: compare `stat / per` instead of the raw stat (e.g. matches per guess). */
+  per: z.enum(BONUS_STAT_KEYS).optional(),
+  /** Rate award: players need at least this much of `per` to qualify. */
+  minPer: z.number().int().min(1).default(1),
+  /** Handed out in every game (the rest are drawn at random). */
+  always: z.boolean().default(false),
 });
 export type BonusStar = z.infer<typeof BonusStarSchema>;
 export const BonusStarsFileSchema = z.object({
