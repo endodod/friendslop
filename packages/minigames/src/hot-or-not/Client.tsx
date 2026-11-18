@@ -4,6 +4,7 @@ import { ArrowDown, ArrowUp, Lock } from "lucide-react";
 import { useEffect, useState } from "react";
 import type { Answer } from "@party-game/shared";
 import type { MinigameClientProps } from "../kit/types";
+import { Arena, ChunkyButton, Pill, RoundDots, ScoreStrip } from "../kit/visual";
 import { GUESS_MS, TARGET_MS, type HotOrNotPublic } from "./logic";
 
 export function HotOrNotClient(p: MinigameClientProps<HotOrNotPublic, { myGuess: "higher" | "lower" | null; myTruth: number | null }>) {
@@ -25,18 +26,22 @@ export function HotOrNotClient(p: MinigameClientProps<HotOrNotPublic, { myGuess:
 
   return (
     <div className="flex flex-col gap-4">
-      <p className="text-center text-muted">
-        Round {p.pub.index + 1}/{p.pub.total}
-      </p>
-      <div className="flex items-start gap-3">
+      <div className="flex justify-center">
+        <RoundDots total={p.pub.total} done={p.pub.index} />
+      </div>
+      <Arena tone="#ff8a3d" className="flex items-start gap-3 p-4" pattern="none">
         <p.ui.Avatar player={target} size={48} ring />
         <h2 className="font-display text-2xl leading-tight">{r.question.prompt}</h2>
-      </div>
+      </Arena>
       {r.question.number && (r.question.number.minLabel || r.question.number.maxLabel) && (
         <p.ui.ScaleEnds min={r.question.number.min} max={r.question.number.max} minLabel={r.question.number.minLabel} maxLabel={r.question.number.maxLabel} />
       )}
 
-      {r.stage === "intro" && <p className="text-center font-display text-3xl">About {target?.name}…</p>}
+      {r.stage === "intro" && (
+        <motion.p initial={{ scale: 0.6, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="text-center font-display text-3xl">
+          About {target?.name}…
+        </motion.p>
+      )}
 
       {r.stage === "target" &&
         (isTarget ? (
@@ -46,9 +51,9 @@ export function HotOrNotClient(p: MinigameClientProps<HotOrNotPublic, { myGuess:
             {p.priv?.myTruth == null ? (
               <>
                 <p.ui.AnswerInput question={r.question} value={draft} onChange={setDraft} />
-                <button className="btn-primary min-h-14 text-2xl" disabled={!draft} onClick={() => draft && p.input({ answer: draft })}>
+                <ChunkyButton color="#ffc933" className="flex min-h-14 items-center justify-center gap-2 text-2xl" disabled={!draft} onClick={() => draft && p.input({ answer: draft })}>
                   <Lock size={20} /> Lock in
-                </button>
+                </ChunkyButton>
               </>
             ) : (
               <p className="text-center font-display text-2xl">Locked: {p.priv.myTruth}</p>
@@ -57,17 +62,25 @@ export function HotOrNotClient(p: MinigameClientProps<HotOrNotPublic, { myGuess:
         ) : (
           <div className="flex flex-col gap-2">
             <p.ui.Timer endsAt={r.stageEndsAt} totalMs={TARGET_MS} />
-            <p className="text-center font-display text-xl text-muted">{target?.name} is answering secretly…</p>
+            <p className="flex items-center justify-center gap-2 text-center font-display text-xl text-muted">
+              <motion.span animate={{ rotate: [0, -10, 10, 0] }} transition={{ repeat: Infinity, duration: 1.2 }}>🤫</motion.span>
+              {target?.name} is answering secretly…
+            </p>
           </div>
         ))}
 
       {(r.stage === "guess" || r.stage === "reveal") && (
         <div className="flex flex-col items-center gap-3">
           <p className="font-display text-lg text-muted">Is the real answer higher or lower than</p>
-          <motion.p initial={{ scale: 2 }} animate={{ scale: 1 }} className="font-display text-7xl text-accent">
-            {r.reference}
-            {unit && <span className="ml-2 text-2xl text-muted">{unit}</span>}
-          </motion.p>
+          <motion.div
+            initial={{ scale: 2, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            className="rounded-[28px] px-8 py-3"
+            style={{ background: "radial-gradient(circle at 50% 30%, #ffc93344, #ffc93311)", boxShadow: "inset 0 0 0 2px #ffc933aa, 0 0 40px #ffc93333" }}
+          >
+            <span className="font-display text-7xl text-accent">{r.reference}</span>
+            {unit && <span className="ml-2 font-display text-2xl text-muted">{unit}</span>}
+          </motion.div>
           {r.stage === "guess" && (
             <>
               <div className="w-full">
@@ -75,32 +88,43 @@ export function HotOrNotClient(p: MinigameClientProps<HotOrNotPublic, { myGuess:
               </div>
               {canGuess && !p.priv?.myGuess && (
                 <div className="grid w-full grid-cols-2 gap-3">
-                  <button className="btn min-h-24 flex-col bg-good text-2xl text-[#06210f]" onClick={() => p.input({ dir: "higher" })}>
+                  <ChunkyButton color="#2fd27a" textColor="#06210f" className="flex min-h-24 flex-col items-center justify-center text-2xl" onClick={() => p.input({ dir: "higher" })}>
                     <ArrowUp size={34} /> Higher
-                  </button>
-                  <button className="btn min-h-24 flex-col bg-bad text-2xl text-white" onClick={() => p.input({ dir: "lower" })}>
+                  </ChunkyButton>
+                  <ChunkyButton color="#ff4d5e" textColor="#fff" className="flex min-h-24 flex-col items-center justify-center text-2xl" onClick={() => p.input({ dir: "lower" })}>
                     <ArrowDown size={34} /> Lower
-                  </button>
+                  </ChunkyButton>
                 </div>
               )}
-              {p.priv?.myGuess && <p className="font-display text-2xl">You said {p.priv.myGuess}!</p>}
+              {p.priv?.myGuess && (
+                <Pill tone={p.priv.myGuess === "higher" ? "#2fd27a" : "#ff4d5e"}>
+                  You said {p.priv.myGuess} {p.priv.myGuess === "higher" ? "↑" : "↓"}
+                </Pill>
+              )}
               {isTarget && !r.question.isData && <p className="text-muted">You know the answer. Watch them sweat.</p>}
             </>
           )}
           {r.stage === "reveal" && (
-            <motion.div initial={{ rotateX: 90 }} animate={{ rotateX: 0 }} className="flex flex-col items-center gap-2">
+            <motion.div initial={{ rotateX: 90 }} animate={{ rotateX: 0 }} className="flex w-full flex-col items-center gap-2">
               <p className="font-display text-xl">{r.question.isData ? "The real answer:" : `${target?.name} said:`}</p>
-              <p className="font-display text-6xl">
+              <p className="flex items-center gap-3 font-display text-6xl">
+                {r.truth! > r.reference! ? <ArrowUp size={40} className="text-good" /> : r.truth! < r.reference! ? <ArrowDown size={40} className="text-bad" /> : null}
                 {r.truth}
-                {unit && <span className="ml-2 text-2xl text-muted">{unit}</span>}
+                {unit && <span className="text-2xl text-muted">{unit}</span>}
               </p>
               <div className="flex flex-wrap justify-center gap-2">
-                {Object.entries(r.guesses ?? {}).map(([pid, dir]) => {
+                {Object.entries(r.guesses ?? {}).map(([pid, dir], i) => {
                   const ok = (dir === "higher") === (r.truth! > r.reference!);
                   return (
-                    <span key={pid} className={`flex items-center gap-1 rounded-full px-2 py-1 ${ok ? "bg-good/30" : "bg-bad/30"}`}>
+                    <motion.span
+                      key={pid}
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ delay: 0.3 + i * 0.15 }}
+                      className={`flex items-center gap-1 rounded-full px-2 py-1 font-display ${ok ? "bg-good/30 ring-1 ring-good" : "bg-bad/30 ring-1 ring-bad"}`}
+                    >
                       <p.ui.Avatar player={p.players[pid]} size={26} /> {dir === "higher" ? "↑" : "↓"} {ok ? "✓" : "✗"}
-                    </span>
+                    </motion.span>
                   );
                 })}
               </div>
@@ -109,14 +133,7 @@ export function HotOrNotClient(p: MinigameClientProps<HotOrNotPublic, { myGuess:
         </div>
       )}
 
-      <ul className="flex flex-wrap justify-center gap-3">
-        {p.participants.map((pid) => (
-          <li key={pid} className="flex items-center gap-1 font-display">
-            <p.ui.Avatar player={p.players[pid]} size={28} />
-            {p.pub.points[pid] ?? 0}
-          </li>
-        ))}
-      </ul>
+      <ScoreStrip participants={p.participants} points={p.pub.points} renderAvatar={(pid) => <p.ui.Avatar player={p.players[pid]} size={28} />} />
     </div>
   );
 }

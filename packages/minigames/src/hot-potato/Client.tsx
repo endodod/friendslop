@@ -53,7 +53,7 @@ export function HotPotatoClient(p: MinigameClientProps<Pub>) {
         {!p.pub.boom && holderIdx >= 0 && (
           <motion.span
             className="absolute -translate-x-1/2 -translate-y-1/2"
-            animate={{ left: `${50 + (bombPos.x - 50) * 0.55}%`, top: `${50 + (bombPos.y - 50) * 0.55}%` }}
+            animate={{ left: `${50 + (bombPos.x - 50) * 0.38}%`, top: `${50 + (bombPos.y - 50) * 0.38}%` }}
             transition={{ type: "spring", stiffness: 160, damping: 14 }}
           >
             <motion.span
@@ -61,7 +61,12 @@ export function HotPotatoClient(p: MinigameClientProps<Pub>) {
               animate={{ rotate: [-12, 12, -12], scale: [1, 1.08, 1] }}
               transition={{ repeat: Infinity, duration: 0.35 }}
             >
-              <p.ui.Icon id="bomb" size={56} className="text-[#2a2838] drop-shadow-[0_0_12px_#ff4d5e]" />
+              <span
+                className="flex h-16 w-16 items-center justify-center rounded-full"
+                style={{ background: "radial-gradient(circle at 35% 30%, #ff9a6b, #ff4d5e 55%, #8f1323)", boxShadow: "0 0 26px #ff4d5e, inset 0 -4px 0 #0004" }}
+              >
+                <p.ui.Icon id="bomb" size={40} className="text-[#14112a]" />
+              </span>
               <motion.span
                 aria-hidden
                 className="absolute right-0 top-0 h-3 w-3 rounded-full bg-accent"

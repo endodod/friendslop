@@ -232,3 +232,53 @@ export function PlayerChip({
     </li>
   );
 }
+
+/** Points row for question-based games, with the latest gain popping in. */
+export function ScoreStrip({
+  participants,
+  points,
+  lastGain,
+  renderAvatar,
+}: {
+  participants: string[];
+  points: Record<string, number>;
+  lastGain?: Record<string, number>;
+  renderAvatar: (pid: string) => ReactNode;
+}) {
+  const best = Math.max(0, ...participants.map((p) => points[p] ?? 0));
+  return (
+    <ul className="flex flex-wrap justify-center gap-2">
+      {participants.map((pid) => {
+        const pts = points[pid] ?? 0;
+        const gain = lastGain?.[pid] ?? 0;
+        const lead = best > 0 && pts === best;
+        return (
+          <li
+            key={pid}
+            className="relative flex items-center gap-1.5 rounded-full py-1 pl-1 pr-3 font-display text-lg tabular-nums"
+            style={{
+              background: lead ? "linear-gradient(90deg, #ffc93333, #ffc93311)" : "#ffffff0d",
+              boxShadow: lead ? "inset 0 0 0 1.5px #ffc933aa" : "inset 0 0 0 1px #ffffff14",
+            }}
+          >
+            {renderAvatar(pid)}
+            {pts}
+            <AnimatePresence>
+              {gain > 0 && (
+                <motion.span
+                  key={`${pid}-${pts}`}
+                  initial={{ y: 6, opacity: 0, scale: 0.6 }}
+                  animate={{ y: 0, opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="text-sm text-good"
+                >
+                  +{gain}
+                </motion.span>
+              )}
+            </AnimatePresence>
+          </li>
+        );
+      })}
+    </ul>
+  );
+}
