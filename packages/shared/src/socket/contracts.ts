@@ -23,6 +23,7 @@ export const RoomSettingsPatchSchema = z
   .object({
     turnCount: z.number().int(),
     tileFrequency: z.record(z.string().max(64), z.enum(["off", "few", "normal", "many"])),
+    minigameMix: z.record(z.string().max(64), z.enum(["off", "few", "normal", "many"])),
     packs: z.array(z.string().max(64)).max(100),
     starGoal: z.number().int().min(0).max(10),
     dataQuestions: z.boolean(),

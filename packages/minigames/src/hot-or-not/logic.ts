@@ -50,22 +50,21 @@ export interface HotOrNotPublic {
   points: Record<PlayerId, number>;
 }
 
-function makeReference(truth: number, q: ResolvedQuestion, rng: () => number): number {
-  const { min, max, step } = q.number!;
-  const span = max - min;
-  const off = Math.max(step, Math.round(((0.12 + rng() * 0.3) * span) / step) * step);
-  let ref = rng() < 0.5 ? truth + off : truth - off;
-  if (ref > max || ref < min) ref = truth + (ref > max ? -off : off);
-  ref = Math.min(max, Math.max(min, ref));
-  if (ref === truth) ref = truth + (truth + step <= max ? step : -step);
-  return +ref.toFixed(4);
+/**
+ * The number to beat: 2–9 on the 1–10 scale, never the real answer, and independent of it
+ * (it used to sit a fixed distance from the answer, which gave the answer away).
+ */
+export function makeReference(truth: number, rng: () => number): number {
+  const choices = [2, 3, 4, 5, 6, 7, 8, 9].filter((n) => n !== truth);
+  return choices[Math.floor(rng() * choices.length)];
 }
 
 function startRound(s: HotOrNotState, now: number, services: MinigameServices): HotOrNotState {
   if (s.index >= s.targets.length) return { ...s, round: null, done: true };
   const targetId = s.targets[s.index];
-  const question = services.pickQuestion({ targetId, usage: "questionOnlyMinigame", formats: ["number", "scale"], allowData: true });
-  if (!question || !question.number) return { ...s, index: s.index + 1, round: null, done: s.index + 1 >= s.targets.length };
+  // Only 1–10 scale questions: they read well as "higher or lower than 6?".
+  const question = services.pickQuestion({ targetId, usage: "questionOnlyMinigame", formats: ["scale"] });
+  if (!question || !question.number || question.number.min !== 1 || question.number.max !== 10) return { ...s, index: s.index + 1, round: null, done: s.index + 1 >= s.targets.length };
   services.noteTargeted(targetId);
   return {
     ...s,
@@ -98,7 +97,7 @@ export const hotOrNot: MiniGameDefinition<HotOrNotState, { answer: Answer } | { 
     if ("answer" in input && r.stage === "target" && pid === r.targetId && !r.question.isData) {
       const a = input.answer;
       if (a.kind !== "number" || !services.validateAnswer(r.question, a)) return s;
-      return { ...s, round: { ...r, truth: a.value, stage: "guess", reference: makeReference(a.value, r.question, rng), stageEndsAt: now + GUESS_MS } };
+      return { ...s, round: { ...r, truth: a.value, stage: "guess", reference: makeReference(a.value, rng), stageEndsAt: now + GUESS_MS } };
     }
     if ("dir" in input && r.stage === "guess" && !r.guesses[pid] && (pid !== r.targetId || r.question.isData)) {
       return { ...s, round: { ...r, guesses: { ...r.guesses, [pid]: input.dir } } };
@@ -112,7 +111,7 @@ export const hotOrNot: MiniGameDefinition<HotOrNotState, { answer: Answer } | { 
     const guessers = s.players.filter((p) => p !== r.targetId || r.question.isData);
     if (r.stage === "intro" && now >= r.stageEndsAt) {
       if (r.question.isData && r.truth !== null)
-        return { ...s, round: { ...r, stage: "guess", reference: makeReference(r.truth, r.question, rng), stageEndsAt: now + GUESS_MS } };
+        return { ...s, round: { ...r, stage: "guess", reference: makeReference(r.truth, rng), stageEndsAt: now + GUESS_MS } };
       return { ...s, round: { ...r, stage: "target", stageEndsAt: now + TARGET_MS } };
     }
     if (r.stage === "target" && now >= r.stageEndsAt) {

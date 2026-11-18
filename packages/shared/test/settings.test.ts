@@ -4,6 +4,7 @@ import {
   buildCustomQuestion,
   computeTileTypes,
   createRng,
+  pickRoundMinigame,
   getBoard,
   removeCustomQuestion,
   selectQuestion,
@@ -122,4 +123,26 @@ describe("maps", () => {
       expect(h.g.boardId).toBe(board.id);
     });
   }
+});
+
+describe("mini-game mix", () => {
+  const pool = ["a", "b", "c", "d"].map((id) => ({ id, weight: 1 }));
+  it("never picks games set to off and repeats 'many' games within a cycle", () => {
+    const rng = createRng(4);
+    const history = { minigamesPlayed: [] as string[] };
+    const seen: string[] = [];
+    for (let i = 0; i < 400; i++) seen.push(pickRoundMinigame(pool, { a: "off", b: "many", c: "few" }, history, rng)!.id);
+    expect(seen).not.toContain("a");
+    const n = (id: string) => seen.filter((x) => x === id).length;
+    expect(n("b")).toBeGreaterThan(n("d"));
+    expect(n("d")).toBeGreaterThan(n("c") * 0.9);
+    for (let i = 1; i < seen.length; i++) expect(seen[i]).not.toBe(seen[i - 1]);
+  });
+  it("settings drop unknown games and refuse turning everything off", () => {
+    const room = makeRoom(2);
+    const next = updateSettings(room, { minigameMix: { "red-light": "many", nope: "off", stacker: "normal" } as never }, content);
+    expect(next.settings.minigameMix).toEqual({ "red-light": "many" });
+    const allOff = Object.fromEntries(content.minigames.filter((m) => m.enabled && m.id !== "duel").map((m) => [m.id, "off"]));
+    expect(() => updateSettings(room, { minigameMix: allOff as never }, content)).toThrow(/at least one/);
+  });
 });

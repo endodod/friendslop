@@ -230,6 +230,7 @@ export function BoardView({ board, game, players, follow, selectable = [], onSel
             animate={{ scale: 1, rotate: 0 }}
             transition={{ type: "spring", stiffness: 120, damping: 10 }}
             style={{ x: star.x, y: star.y }}
+            pointerEvents="none"
           >
             <motion.circle
               r={TILE_R * 2.2}
@@ -266,6 +267,7 @@ export function BoardView({ board, game, players, follow, selectable = [], onSel
               initial={false}
               animate={{ x, y }}
               transition={reduced ? { duration: 0 } : { type: "spring", stiffness: 380, damping: 26 }}
+              pointerEvents="none"
             >
               <motion.g
                 animate={hopping === pid && !reduced ? { y: [0, -28, 0] } : { y: 0 }}

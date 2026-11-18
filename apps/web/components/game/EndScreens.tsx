@@ -293,7 +293,7 @@ export function Podium({ game }: { game: PublicGameState }) {
   const router = useRouter();
   const ranking = standings(game as never);
   const top = ranking.slice(0, 3);
-  const heights = [180, 130, 100];
+  const heights = [190, 152, 126];
   const order = [1, 0, 2].filter((i) => top[i]);
   const winner = players[ranking[0]?.playerId];
   const achievements = computeAchievements(game as never);

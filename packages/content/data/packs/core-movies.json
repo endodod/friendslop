@@ -76,7 +76,7 @@
       "format": "number",
       "prompt": "How many episodes can {target} binge in a single day?",
       "number": {
-        "min": 1,
+        "min": 0,
         "max": 30,
         "step": 1,
         "tolerance": {

@@ -31,7 +31,7 @@
       "format": "number",
       "prompt": "How many hours would {target} need to beat Dark Souls blind?",
       "number": {
-        "min": 5,
+        "min": 0,
         "max": 200,
         "step": 5,
         "tolerance": {

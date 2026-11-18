@@ -83,6 +83,9 @@ function isConnected(room: RoomState, pid: PlayerId): boolean {
   return room.players.find((p) => p.id === pid)?.connected ?? false;
 }
 
+/** Skips within this long after a phase starts are ignored. */
+const SKIP_GRACE_MS = 1200;
+
 function goto(d: Draft, phase: Phase, durationMs: number | null) {
   const { g, s } = d;
   g.phase = phase;
@@ -396,6 +399,9 @@ function handleAction(d: Draft, a: GameAction, isHost: boolean): void {
     }
     case "continue": {
       if (!isHost) fail("NOT_HOST", "Only the host can skip.");
+      // A second tap on the Skip button (it sits in the same spot on consecutive screens) must not
+      // skip the next screen right away.
+      if (d.s.ctx.now - g.phaseStartedAt < SKIP_GRACE_MS) return;
       const skippable: Phase[] = ["gameStart", "tileEffect", "event", "roundEnd", "minigameIntro", "minigameResults", "gameEnd", "turnEnd"];
       if (skippable.includes(g.phase)) return onTimeout(d);
       if ((g.phase === "questionRound" || g.phase === "minigameQuestion") && g.question?.stage !== "answering")
@@ -1096,6 +1102,35 @@ export function eligibleMinigames(content: ContentBundle, registry: Record<strin
   });
 }
 
+/**
+ * Next round mini-game. Within a cycle each game comes up at most `perCycle` times (Many: twice),
+ * weighted by content weight × mix weight; "off" games never come up. When the cycle is used up a
+ * new one starts (never repeating the very last game). Mutates `history.minigamesPlayed`.
+ */
+export function pickRoundMinigame<M extends { id: string; weight: number }>(
+  eligible: M[],
+  mix: Record<string, string>,
+  history: { minigamesPlayed: string[] },
+  rng: () => number,
+): M | null {
+  const MIX = GAME_CONFIG.minigameMix;
+  const level = (id: string) => mix[id] ?? "normal";
+  const pool = eligible.filter((m) => (MIX.weight[level(m.id)] ?? 1) > 0);
+  if (!pool.length) return null;
+  const count = (id: string) => history.minigamesPlayed.filter((x) => x === id).length;
+  // Never the same game twice in a row while there's a choice.
+  const last = history.minigamesPlayed[history.minigamesPlayed.length - 1];
+  let fresh = pool.filter((m) => count(m.id) < (MIX.perCycle[level(m.id)] ?? 1) && m.id !== last);
+  if (!fresh.length) {
+    // Cycle used up: start a new one.
+    history.minigamesPlayed = [];
+    fresh = pool.length > 1 ? pool.filter((m) => m.id !== last) : pool;
+  }
+  const meta = weightedPick(rng, fresh, (m) => m.weight * (MIX.weight[level(m.id)] ?? 1))!;
+  history.minigamesPlayed.push(meta.id);
+  return meta;
+}
+
 function startRoundMinigame(d: Draft): void {
   const { g, s } = d;
   if (g.debugMinigameId) {
@@ -1103,18 +1138,9 @@ function startRoundMinigame(d: Draft): void {
     g.debugMinigameId = null;
     return setupMinigame(d, id, "round", [...g.order]);
   }
-  const pool = eligibleMinigames(s.ctx.content, s.ctx.minigames, g.order.length);
-  if (!pool.length) return afterMinigameResults(d);
-  let fresh = pool.filter((m) => !g.history.minigamesPlayed.includes(m.id));
-  if (!fresh.length) {
-    // Everything played: start a new cycle (but don't repeat the very last one).
-    const last = g.history.minigamesPlayed[g.history.minigamesPlayed.length - 1];
-    g.history.minigamesPlayed = [];
-    fresh = pool.length > 1 ? pool.filter((m) => m.id !== last) : pool;
-  }
-  const meta = weightedPick(s.ctx.rng, fresh, (m) => m.weight)!;
-  g.history.minigamesPlayed.push(meta.id);
-  setupMinigame(d, meta.id, "round", [...g.order]);
+  const pick = pickRoundMinigame(eligibleMinigames(s.ctx.content, s.ctx.minigames, g.order.length), d.room.settings.minigameMix ?? {}, g.history, s.ctx.rng);
+  if (!pick) return afterMinigameResults(d);
+  setupMinigame(d, pick.id, "round", [...g.order]);
 }
 
 function setupMinigame(d: Draft, id: string, origin: "round" | "duel", participants: PlayerId[]): void {

@@ -41,3 +41,15 @@ describe("pause", () => {
     expect(setPaused(h.room, false, "p1", 20)).toBe(h.room);
   });
 });
+
+describe("skip", () => {
+  it("ignores a skip right after a screen appears, then allows it", () => {
+    const h = new Harness(2);
+    const phase = h.g.phase;
+    h.act({ type: "continue" }, true);
+    expect(h.g.phase).toBe(phase);
+    h.now += 1500;
+    h.act({ type: "continue" }, true);
+    expect(h.g.phase).not.toBe(phase);
+  });
+});

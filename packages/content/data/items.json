@@ -74,7 +74,7 @@
       "name": "Star Warp",
       "description": "Teleport right in front of the star, then roll.",
       "icon": "star-fly",
-      "price": 18,
+      "price": 35,
       "useTiming": "turnStart",
       "effect": "warpToStar"
     },
@@ -154,7 +154,7 @@
       "name": "Star Thief",
       "description": "Steal a star from a player of your choice.",
       "icon": "star-thief",
-      "price": 45,
+      "price": 50,
       "useTiming": "turnStart",
       "effect": "stealStar",
       "needsTarget": true,

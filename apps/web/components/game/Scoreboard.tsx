@@ -47,7 +47,7 @@ export function Scoreboard({ game, compact, highlight }: { game: PublicGameState
                 {p.name}
                 <ChevronDown size={14} className={`shrink-0 text-muted transition-transform ${openId === playerId ? "rotate-180" : ""}`} />
               </span>
-              <span className="flex items-center gap-3 text-sm">
+              <span className="flex flex-wrap items-center gap-x-3 text-sm">
                 <StarCount value={gp.stars} size={16} />
                 <CoinCount value={gp.coins} size={16} />
                 {gp.effects.frozen && (
@@ -55,16 +55,19 @@ export function Scoreboard({ game, compact, highlight }: { game: PublicGameState
                     <Icon id="ice" size={14} /> frozen
                   </span>
                 )}
-                {(gp.items ?? []).length > 0 && (
-                  <span className="inline-flex items-center gap-0.5 text-accent" title={`${gp.items.length} items`}>
-                    {gp.items.slice(0, 3).map((id, i) => {
-                      const it = clientContent.items.find((x) => x.id === id);
-                      return <Icon key={`${id}-${i}`} id={it?.icon ?? "backpack"} size={15} title={it ? localize(it.name) : id} />;
-                    })}
-                    {gp.items.length > 3 && <span className="text-xs text-muted">+{gp.items.length - 3}</span>}
-                  </span>
-                )}
               </span>
+              {(gp.items ?? []).length > 0 && (
+                <span className="mt-1 flex flex-wrap items-center gap-1" title={`${gp.items.length} items`}>
+                  {gp.items.map((id, i) => {
+                    const it = clientContent.items.find((x) => x.id === id);
+                    return (
+                      <span key={`${id}-${i}`} className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-accent/15 text-accent">
+                        <Icon id={it?.icon ?? "backpack"} size={16} title={it ? localize(it.name) : id} />
+                      </span>
+                    );
+                  })}
+                </span>
+              )}
             </button>
             {isHost && !p.connected && playerId !== me && game.phase !== "podium" && (
               <button

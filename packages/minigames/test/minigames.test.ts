@@ -94,7 +94,10 @@ describe("pump-it", () => {
     s = pumpIt.onInput!(s, "b", { action: "pump" }, ctx((t += 100)));
     s = pumpIt.onInput!(s, "b", { action: "pump" }, ctx((t += 100)));
     s = pumpIt.onInput!(s, "b", { action: "stop" }, ctx((t += 100)));
-    expect((pumpIt.publicState(s, t) as any).runs.b.total).toBe(2);
+    // Others' pumps stay secret while anyone is still playing; the player sees their own.
+    expect((pumpIt.publicState(s, t) as any).runs.b.total).toBeUndefined();
+    expect((pumpIt.publicState(s, t) as any).runs.b.balloons).toBeUndefined();
+    expect((pumpIt.privateState!(s, "b", t) as any).run.total).toBe(2);
     expect(JSON.stringify(pumpIt.publicState(s, t))).not.toContain("popAt");
   });
   it("ignores inhumanly fast pumping", () => {
@@ -185,4 +188,64 @@ describe("mini-game flow in a real game", () => {
       expect(played.size).toBeGreaterThanOrEqual(5);
     });
   }
+});
+
+describe("playtest fixes", () => {
+  it("hot or not: reference is 2-9, never the answer", async () => {
+    const { makeReference } = await import("../src/hot-or-not/logic");
+    const rng = createRng(3);
+    for (let truth = 1; truth <= 10; truth++)
+      for (let i = 0; i < 50; i++) {
+        const r = makeReference(truth, rng);
+        expect(r).toBeGreaterThanOrEqual(2);
+        expect(r).toBeLessThanOrEqual(9);
+        expect(r).not.toBe(truth);
+      }
+  });
+
+  it("minefield: every bonus player gets a different safe tile", async () => {
+    const { minefield } = await import("../src/minefield/logic");
+    for (let seed = 1; seed < 30; seed++) {
+      const s = minefield.init({ players: ["a", "b", "c", "d"], bonuses: ["a", "b", "c", "d"], seed, rng: createRng(seed), now: 0, services: {} as never });
+      const tiles = Object.values(s.safeHint);
+      expect(new Set(tiles).size).toBe(4);
+      expect(tiles).not.toContain(s.bomb);
+    }
+  });
+
+  it("hot potato: a bonus player survives their first explosion only", async () => {
+    const { hotPotato } = await import("../src/hot-potato/logic");
+    let s = hotPotato.init({ players: ["a", "b"], bonuses: ["a"], seed: 1, rng: createRng(1), now: 0, services: {} as never });
+    const ctx = (now: number) => ({ now, rng: createRng(2), services: {} as never });
+    s = { ...s, holder: "a" };
+    s = hotPotato.tick!(s, ctx(s.explodeAt));
+    expect(s.alive).toContain("a");
+    expect(s.revived).toEqual(["a"]);
+    s = hotPotato.tick!(s, ctx(s.boomUntil! + 1));
+    s = { ...s, holder: "a" };
+    s = hotPotato.tick!(s, ctx(s.explodeAt));
+    expect(s.alive).not.toContain("a");
+  });
+});
+
+describe("hot potato challenges", () => {
+  it("every challenge has 3 choices, a valid answer, and the answer stays secret", async () => {
+    const { hotPotato } = await import("../src/hot-potato/logic");
+    const kinds = new Set<string>();
+    for (let seed = 1; seed < 80; seed++) {
+      const s = hotPotato.init({ players: ["a", "b"], bonuses: [], seed, rng: createRng(seed), now: 0, services: {} as never });
+      const pr = s.prompt;
+      kinds.add(pr.kind);
+      expect(pr.choices).toHaveLength(3);
+      expect(pr.answer).toBeGreaterThanOrEqual(0);
+      expect(pr.answer).toBeLessThan(3);
+      if (pr.kind === "match") expect(pr.choices[pr.answer]).toBe(pr.icon);
+      if (pr.kind === "ink") expect(pr.choices[pr.answer]).toBe(pr.ink);
+      if (pr.kind === "count") expect(Number(pr.choices[pr.answer])).toBe(pr.dots.length);
+      if (pr.kind === "odd") expect(pr.choices.filter((c) => c === pr.choices[pr.answer])).toHaveLength(1);
+      expect(new Set(pr.choices).size).toBe(pr.kind === "odd" ? 2 : 3);
+      expect(JSON.stringify(hotPotato.publicState(s, 0))).not.toContain('"answer"');
+    }
+    expect(kinds.size).toBe(4);
+  });
 });

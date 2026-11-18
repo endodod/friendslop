@@ -142,7 +142,7 @@ export function MuteButton({ className = "" }: { className?: string }) {
   useEffect(() => setM(isMuted()), []);
   return (
     <button
-      className={`btn-ghost min-h-11 min-w-11 px-2 ${className}`}
+      className={`btn-ghost min-h-11 min-w-9 px-1 sm:min-w-11 sm:px-2 ${className}`}
       aria-label={muted ? "Unmute" : "Mute"}
       onClick={() => {
         setMuted(!muted);

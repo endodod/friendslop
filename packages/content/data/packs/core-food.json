@@ -37,7 +37,7 @@
         "de": "Wie viele Stücke Pizza schafft {target} am Stück, bevor es weh tut?"
       },
       "number": {
-        "min": 1,
+        "min": 0,
         "max": 16,
         "step": 1,
         "tolerance": {
@@ -250,7 +250,7 @@
       "format": "number",
       "prompt": "How many bowls of cereal could {target} eat in a row?",
       "number": {
-        "min": 1,
+        "min": 0,
         "max": 15,
         "step": 1,
         "tolerance": {

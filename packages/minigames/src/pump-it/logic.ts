@@ -23,16 +23,29 @@ export interface PumpState {
   runs: Record<PlayerId, PlayerRun>;
 }
 
+export interface PumpRunView {
+  balloons: Balloon[];
+  current: number;
+  total: number;
+  done: boolean;
+}
+/**
+ * Everyone's balloons pop at the same pump counts, so other players' pumps stay hidden until all
+ * are done (`runs` then has full details). While playing, others only show progress.
+ */
 export interface PumpPublic {
-  runs: Record<PlayerId, { balloons: Balloon[]; current: number; total: number; done: boolean }>;
+  revealed: boolean;
+  runs: Record<PlayerId, PumpRunView | { current: number; done: boolean }>;
 }
 export interface PumpPrivate {
   bonus: boolean;
   hint: { lo: number; hi: number } | null;
+  run: PumpRunView | null;
 }
 
 const total = (r: PlayerRun) => r.balloons.reduce((s, b) => s + (b.banked && !b.popped ? b.pumps : 0), 0);
 const done = (r: PlayerRun) => r.current >= BALLOONS;
+const view = (r: PlayerRun): PumpRunView => ({ balloons: r.balloons, current: r.current, total: total(r), done: done(r) });
 
 export const pumpIt: MiniGameDefinition<PumpState, { action: "pump" | "stop" }> = {
   id: "pump-it",
@@ -42,9 +55,10 @@ export const pumpIt: MiniGameDefinition<PumpState, { action: "pump" | "stop" }> 
   inputSchema: z.object({ action: z.enum(["pump", "stop"]) }),
   init: ({ players, bonuses, rng }) => {
     const popAt = Array.from({ length: BALLOONS }, () => 6 + Math.floor(rng() * 24));
+    // Bonus hint: a 15-pump window around the pop point (it used to be 7, which was too exact).
     const hints = popAt.map((p) => {
-      const lo = Math.max(1, p - 1 - Math.floor(rng() * 6));
-      return { lo, hi: lo + 7 };
+      const lo = Math.max(1, p - 1 - Math.floor(rng() * 13));
+      return { lo, hi: lo + 14 };
     });
     return {
       players,
@@ -98,14 +112,18 @@ export const pumpIt: MiniGameDefinition<PumpState, { action: "pump" | "stop" }> 
       true,
       (n) => `${n} pumps`,
     ),
-  publicState: (s): PumpPublic => ({
-    runs: Object.fromEntries(
-      Object.entries(s.runs).map(([pid, r]) => [pid, { balloons: r.balloons, current: r.current, total: total(r), done: done(r) }]),
-    ),
-  }),
+  publicState: (s): PumpPublic => {
+    const revealed = s.players.every((p) => done(s.runs[p]));
+    return {
+      revealed,
+      runs: Object.fromEntries(
+        Object.entries(s.runs).map(([pid, r]) => [pid, revealed ? view(r) : { current: r.current, done: done(r) }]),
+      ),
+    };
+  },
   privateState: (s, pid): PumpPrivate => {
     const r = s.runs[pid];
     const bonus = s.bonuses.includes(pid);
-    return { bonus, hint: bonus && r && !done(r) ? s.hints[r.current] : null };
+    return { bonus, hint: bonus && r && !done(r) ? s.hints[r.current] : null, run: r ? view(r) : null };
   },
 };

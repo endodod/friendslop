@@ -200,7 +200,7 @@ export function HelpButton({ minigameId }: { minigameId?: string | null }) {
   return (
     <>
       <button
-        className="btn-ghost min-h-11 min-w-11 px-2"
+        className="btn-ghost min-h-11 min-w-9 px-1 sm:min-w-11 sm:px-2"
         aria-label="How to play"
         onClick={() => {
           setTab(minigameId ? "game" : "board");
@@ -228,7 +228,7 @@ export function HelpButton({ minigameId }: { minigameId?: string | null }) {
             >
               <div className="flex items-center justify-between">
                 <h2 className="font-display text-3xl">How to play</h2>
-                <button className="btn-ghost min-h-11 min-w-11 px-2" aria-label="Close" onClick={() => setOpen(false)}>
+                <button className="btn-ghost min-h-11 min-w-9 px-1 sm:min-w-11 sm:px-2" aria-label="Close" onClick={() => setOpen(false)}>
                   <X />
                 </button>
               </div>
