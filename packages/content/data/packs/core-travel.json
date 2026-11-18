@@ -229,7 +229,7 @@
       "format": "number",
       "prompt": "How many kilos does {target}'s suitcase weigh for a one-week trip?",
       "number": {
-        "min": 2,
+        "min": 0,
         "max": 40,
         "step": 1,
         "tolerance": {

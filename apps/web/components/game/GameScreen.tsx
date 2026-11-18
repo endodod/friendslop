@@ -80,8 +80,8 @@ function TopBar({ compact }: { compact?: boolean }) {
   const me = playerId ? g.players[playerId] : null;
   const active = players[g.order[g.activeIndex]];
   return (
-    <header className="flex items-center gap-3 px-3 py-2">
-      <span className="rounded-xl bg-panel-2 px-3 py-1 font-display">
+    <header className="flex items-center gap-1 px-2 py-2 sm:gap-3 sm:px-3">
+      <span className="min-w-0 truncate whitespace-nowrap rounded-xl bg-panel-2 px-2 py-1 font-display sm:px-3">
         {g.mode === "questionDebug" ? "Questions" : g.mode === "minigameDebug" ? "Mini-games" : `Round ${g.round}/${g.turnCount}`}
       </span>
       {g.mode === "board" && (pub.settings.starGoal ?? 0) > 0 && (
@@ -92,7 +92,7 @@ function TopBar({ compact }: { compact?: boolean }) {
       )}
       <span className="flex-1" />
       {me && (
-        <span className="flex items-center gap-3 rounded-xl bg-panel-2 px-3 py-1">
+        <span className="flex items-center gap-2 rounded-xl bg-panel-2 px-2 py-1 sm:gap-3 sm:px-3">
           <StarCount value={me.stars} size={18} />
           <CoinCount value={me.coins} size={18} />
         </span>
@@ -101,7 +101,7 @@ function TopBar({ compact }: { compact?: boolean }) {
       <MuteButton />
       {isHost && g.phase !== "podium" && (
         <button
-          className="btn-ghost min-h-11 min-w-11 px-2"
+          className="btn-ghost min-h-11 min-w-9 px-1 sm:min-w-11 sm:px-2"
           aria-label={g.pause ? "Resume the game" : "Pause the game for everyone"}
           title={g.pause ? "Resume" : "Pause"}
           data-testid="pause-button"
@@ -112,7 +112,7 @@ function TopBar({ compact }: { compact?: boolean }) {
       )}
       {isHost && g.phase !== "podium" && (
         <button
-          className="btn-ghost min-h-11 min-w-11 px-2"
+          className="btn-ghost min-h-11 min-w-9 px-1 sm:min-w-11 sm:px-2"
           aria-label="End game and return to lobby"
           onClick={() => {
             if (confirm("End the game for everyone and go back to the lobby?")) act("game:abort", {});

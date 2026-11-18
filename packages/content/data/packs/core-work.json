@@ -209,7 +209,7 @@
       "format": "number",
       "prompt": "How many minutes into a meeting or class does {target} zone out?",
       "number": {
-        "min": 1,
+        "min": 0,
         "max": 60,
         "step": 1,
         "tolerance": {

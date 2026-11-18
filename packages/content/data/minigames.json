@@ -279,7 +279,7 @@
       ],
       "rules": "Answer a quick prompt to pass the bomb. The hidden fuse explodes on someone.",
       "controls": "Answer to pass it on.",
-      "bonus": "Immune for the first pass."
+      "bonus": "One revive: survive your first explosion."
     },
     {
       "id": "split-or-steal",

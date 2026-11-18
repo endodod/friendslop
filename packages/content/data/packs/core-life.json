@@ -60,7 +60,7 @@
       "format": "number",
       "prompt": "How many browser tabs does {target} have open right now?",
       "number": {
-        "min": 1,
+        "min": 0,
         "max": 200,
         "step": 1,
         "tolerance": {

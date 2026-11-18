@@ -13,8 +13,11 @@ export interface PotatoState {
   /** Secret fuse. */
   explodeAt: number;
   boomUntil: number | null;
-  immunityUsed: PlayerId[];
-  autoPassAt: number | null;
+  /** Who the last explosion hit, and whether their bonus revive saved them. */
+  boomPlayer: PlayerId | null;
+  boomRevive: boolean;
+  /** Bonus players who already used their one revive. */
+  revived: PlayerId[];
   lockedUntil: number;
 }
 
@@ -31,15 +34,7 @@ function makePrompt(rng: () => number): Prompt {
 }
 
 function giveTo(s: PotatoState, pid: PlayerId, now: number, rng: () => number): PotatoState {
-  const immune = s.bonuses.includes(pid) && !s.immunityUsed.includes(pid);
-  return {
-    ...s,
-    holder: pid,
-    prompt: makePrompt(rng),
-    immunityUsed: immune ? [...s.immunityUsed, pid] : s.immunityUsed,
-    autoPassAt: immune ? now + 700 : null,
-    lockedUntil: now,
-  };
+  return { ...s, holder: pid, prompt: makePrompt(rng), lockedUntil: now };
 }
 
 const nextAlive = (s: PotatoState) => s.alive[(s.alive.indexOf(s.holder) + 1) % s.alive.length];
@@ -52,7 +47,7 @@ export const hotPotato: MiniGameDefinition<PotatoState, { choice: number }> = {
   minPlayers: 2,
   inputSchema: z.object({ choice: z.number().int().min(-1000).max(1000) }),
   init: ({ players, bonuses, now, rng }) => {
-    const s: PotatoState = { players, bonuses, alive: [...players], out: [], holder: players[0], prompt: makePrompt(rng), explodeAt: fuse(now, rng), boomUntil: null, immunityUsed: [], autoPassAt: null, lockedUntil: now };
+    const s: PotatoState = { players, bonuses, alive: [...players], out: [], holder: players[0], prompt: makePrompt(rng), explodeAt: fuse(now, rng), boomUntil: null, boomPlayer: null, boomRevive: false, revived: [], lockedUntil: now };
     return giveTo(s, players[Math.floor(rng() * players.length)], now, rng);
   },
   onInput: (s, pid, { choice }, { now, rng }) => {
@@ -66,11 +61,14 @@ export const hotPotato: MiniGameDefinition<PotatoState, { choice: number }> = {
       return s;
     }
     if (now >= s.explodeAt) {
-      const idx = s.alive.indexOf(s.holder);
-      const alive = s.alive.filter((p) => p !== s.holder);
-      return { ...s, alive, out: [...s.out, s.holder], boomUntil: now + 2200, holder: alive[idx % Math.max(1, alive.length)] ?? s.holder };
+      const victim = s.holder;
+      // Bonus: the first explosion doesn't knock you out.
+      if (s.bonuses.includes(victim) && !s.revived.includes(victim))
+        return { ...s, revived: [...s.revived, victim], boomUntil: now + 2200, boomPlayer: victim, boomRevive: true };
+      const idx = s.alive.indexOf(victim);
+      const alive = s.alive.filter((p) => p !== victim);
+      return { ...s, alive, out: [...s.out, victim], boomUntil: now + 2200, boomPlayer: victim, boomRevive: false, holder: alive[idx % Math.max(1, alive.length)] ?? victim };
     }
-    if (s.autoPassAt && now >= s.autoPassAt) return giveTo(s, nextAlive(s), now, rng);
     return s;
   },
   isFinished: (s, now) => s.alive.length <= 1 && (!s.boomUntil || now >= s.boomUntil - 1000),
@@ -84,8 +82,10 @@ export const hotPotato: MiniGameDefinition<PotatoState, { choice: number }> = {
     out: s.out,
     holder: s.holder,
     prompt: s.boomUntil ? null : { text: s.prompt.text, choices: s.prompt.choices },
-    boom: s.boomUntil ? s.out[s.out.length - 1] : null,
+    boom: s.boomUntil ? s.boomPlayer : null,
+    revive: !!s.boomUntil && s.boomRevive,
     locked: now < s.lockedUntil,
-    immune: s.autoPassAt !== null,
+    /** Players who still have their bonus revive. */
+    extraLife: s.alive.filter((p) => s.bonuses.includes(p) && !s.revived.includes(p)),
   }),
 };

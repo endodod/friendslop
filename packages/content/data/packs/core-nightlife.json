@@ -31,7 +31,7 @@
       "format": "number",
       "prompt": "How many hours can {target} last at a party?",
       "number": {
-        "min": 1,
+        "min": 0,
         "max": 12,
         "step": 1,
         "tolerance": {

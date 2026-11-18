@@ -15,7 +15,7 @@ export function PumpItClient(p: MinigameClientProps<PumpPublic, PumpPrivate>) {
   const stopAction = useRef<(() => void) | null>(null);
   stopAction.current = null;
   useKey(() => stopAction.current?.(), { keys: ["Enter", "NumpadEnter"] });
-  const mine = p.me ? p.pub.runs[p.me] : undefined;
+  const mine = p.priv?.run ?? undefined;
   const others = p.participants.filter((x) => x !== p.me || !p.isParticipant);
   const cur = mine && mine.current < BALLOONS ? mine.balloons[mine.current] : null;
   const size = cur ? 60 + cur.pumps * 7 : 0;
@@ -121,6 +121,7 @@ export function PumpItClient(p: MinigameClientProps<PumpPublic, PumpPrivate>) {
       <ul className="grid grid-cols-2 gap-2">
         {others.map((pid) => {
           const r = p.pub.runs[pid];
+          const full = r && "balloons" in r ? r : null;
           return (
             <PlayerChip
               key={pid}
@@ -129,17 +130,21 @@ export function PumpItClient(p: MinigameClientProps<PumpPublic, PumpPrivate>) {
               value={
                 <span className="flex items-center gap-2">
                   <span className="flex gap-1">
-                    {r?.balloons.map((b, i) => (
-                      <span
-                        key={i}
-                        className="flex h-7 w-6 items-center justify-center rounded-[50%] text-xs font-bold text-white"
-                        style={{ background: b.popped ? "#444" : COLORS[i], opacity: i > (r.current ?? 0) ? 0.3 : 1 }}
-                      >
-                        {b.popped ? "✕" : b.banked ? b.pumps : i === r.current ? "…" : ""}
-                      </span>
-                    ))}
+                    {Array.from({ length: BALLOONS }, (_, i) => {
+                      const b = full?.balloons[i];
+                      const cur = r?.current ?? 0;
+                      return (
+                        <span
+                          key={i}
+                          className="flex h-7 w-6 items-center justify-center rounded-[50%] text-xs font-bold text-white"
+                          style={{ background: b?.popped ? "#444" : COLORS[i], opacity: i > cur ? 0.3 : 1 }}
+                        >
+                          {b ? (b.popped ? "✕" : b.banked ? b.pumps : "") : i < cur ? "✓" : i === cur ? "…" : ""}
+                        </span>
+                      );
+                    })}
                   </span>
-                  <span className="text-accent">{r?.total}</span>
+                  {full ? <span className="text-accent">{full.total}</span> : <span className="text-xs text-muted">{r?.done ? "done" : "secret"}</span>}
                 </span>
               }
             />

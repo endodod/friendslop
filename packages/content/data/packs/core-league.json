@@ -98,7 +98,7 @@
       "format": "number",
       "prompt": "How many games of League does {target} play on a bad day before giving up?",
       "number": {
-        "min": 1,
+        "min": 0,
         "max": 20,
         "step": 1,
         "tolerance": {

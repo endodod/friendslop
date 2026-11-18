@@ -22,12 +22,14 @@ export interface MinefieldState {
 
 function newGrid(s: MinefieldState, now: number, rng: () => number): MinefieldState {
   const bomb = Math.floor(rng() * TILES);
-  const safeHint: Record<PlayerId, number> = {};
-  for (const b of s.bonuses) {
-    let t = Math.floor(rng() * TILES);
-    while (t === bomb) t = (t + 1) % TILES;
-    safeHint[b] = t;
+  // Each bonus player gets their own safe tile (never the same as anyone else's).
+  const safe = Array.from({ length: TILES }, (_, i) => i).filter((i) => i !== bomb);
+  for (let i = safe.length - 1; i > 0; i--) {
+    const j = Math.floor(rng() * (i + 1));
+    [safe[i], safe[j]] = [safe[j], safe[i]];
   }
+  const safeHint: Record<PlayerId, number> = {};
+  s.bonuses.filter((b) => s.alive.includes(b)).forEach((b, i) => (safeHint[b] = safe[i % safe.length]));
   return { ...s, grid: s.grid + 1, bomb, safeHint, opened: [], boom: null, turnEndsAt: now + TURN_MS };
 }
 

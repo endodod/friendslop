@@ -46,7 +46,7 @@ export const GAME_CONFIG = {
     duelPickMs: 12000,
     turnEndMs: 900,
     roundEndMs: 2500,
-    gameEndMs: 3000,
+    gameEndMs: 4500,
     bonusStarRevealMs: 4000,
     /** How long a disconnected player's turn waits before auto-playing. */
     disconnectedAutoplayMs: 4000,

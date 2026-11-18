@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import type { MinigameClientProps } from "../kit/types";
 import { Arena, ChunkyButton } from "../kit/visual";
 
-interface Pub { alive: string[]; out: string[]; holder: string; prompt: { text: string; choices: number[] } | null; boom: string | null; locked: boolean; immune: boolean }
+interface Pub { alive: string[]; out: string[]; holder: string; prompt: { text: string; choices: number[] } | null; boom: string | null; revive: boolean; locked: boolean; extraLife: string[] }
 
 export function HotPotatoClient(p: MinigameClientProps<Pub>) {
   const mine = p.isParticipant && p.pub.holder === p.me && !p.pub.boom;
@@ -44,7 +44,14 @@ export function HotPotatoClient(p: MinigameClientProps<Pub>) {
               className={`absolute flex -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-0.5 ${alive ? "" : "opacity-40 grayscale"}`}
               style={{ left: `${pos.x}%`, top: `${pos.y}%` }}
             >
-              <p.ui.Avatar player={p.players[pid]} size={52} dim={!alive} ring={p.pub.holder === pid} />
+              <span className="relative">
+                <p.ui.Avatar player={p.players[pid]} size={52} dim={!alive} ring={p.pub.holder === pid} />
+                {(p.pub.extraLife ?? []).includes(pid) && (
+                  <span className="absolute -right-1 -top-1 text-lg drop-shadow" title="Bonus: one revive">
+                    ❤️
+                  </span>
+                )}
+              </span>
               <span className="max-w-20 truncate font-display text-sm">{p.players[pid]?.name}</span>
             </span>
           );
@@ -83,18 +90,20 @@ export function HotPotatoClient(p: MinigameClientProps<Pub>) {
             initial={{ scale: 0.3, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
           >
-            <span className="font-display text-6xl text-accent drop-shadow-[0_0_20px_#ff4d5e]">BOOM!</span>
+            <span className="font-display text-6xl text-accent drop-shadow-[0_0_20px_#ff4d5e]">{p.pub.revive ? "SAVED!" : "BOOM!"}</span>
           </motion.span>
         )}
       </Arena>
       {p.pub.boom ? (
-        <p className="font-display text-3xl text-bad">{p.players[p.pub.boom]?.name} is out!</p>
+        p.pub.revive ? (
+          <p className="font-display text-3xl text-good">{p.players[p.pub.boom]?.name} used their revive!</p>
+        ) : (
+          <p className="font-display text-3xl text-bad">{p.players[p.pub.boom]?.name} is out!</p>
+        )
       ) : mine ? (
         <div className="flex w-full flex-col items-center gap-3">
           <p className="font-display text-2xl text-bad">You have the bomb! Solve to pass it:</p>
-          {p.pub.immune ? (
-            <p className="font-display text-xl text-good">Immune! Passing automatically…</p>
-          ) : (
+          {(
             <>
               <p className="font-display text-6xl">{p.pub.prompt?.text}</p>
               <div className="grid w-full grid-cols-3 gap-2">

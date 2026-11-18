@@ -12,7 +12,7 @@
       "format": "number",
       "prompt": "How many apps are on {target}'s phone?",
       "number": {
-        "min": 10,
+        "min": 0,
         "max": 300,
         "step": 1,
         "tolerance": {
@@ -430,7 +430,7 @@
       "format": "number",
       "prompt": "How many selfies does {target} take to get one good one?",
       "number": {
-        "min": 1,
+        "min": 0,
         "max": 50,
         "step": 1,
         "tolerance": {

@@ -83,6 +83,9 @@ function isConnected(room: RoomState, pid: PlayerId): boolean {
   return room.players.find((p) => p.id === pid)?.connected ?? false;
 }
 
+/** Skips within this long after a phase starts are ignored. */
+const SKIP_GRACE_MS = 1200;
+
 function goto(d: Draft, phase: Phase, durationMs: number | null) {
   const { g, s } = d;
   g.phase = phase;
@@ -396,6 +399,9 @@ function handleAction(d: Draft, a: GameAction, isHost: boolean): void {
     }
     case "continue": {
       if (!isHost) fail("NOT_HOST", "Only the host can skip.");
+      // A second tap on the Skip button (it sits in the same spot on consecutive screens) must not
+      // skip the next screen right away.
+      if (d.s.ctx.now - g.phaseStartedAt < SKIP_GRACE_MS) return;
       const skippable: Phase[] = ["gameStart", "tileEffect", "event", "roundEnd", "minigameIntro", "minigameResults", "gameEnd", "turnEnd"];
       if (skippable.includes(g.phase)) return onTimeout(d);
       if ((g.phase === "questionRound" || g.phase === "minigameQuestion") && g.question?.stage !== "answering")
