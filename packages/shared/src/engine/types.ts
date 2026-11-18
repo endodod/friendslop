@@ -312,6 +312,10 @@ export interface GameState {
   minigame: MinigameRuntime | null;
   /** Pick the Target item. */
   targetOverride: { by: PlayerId; targetId: PlayerId } | null;
+  /** Host pause. While set, the game clock stands still (see engine/pause.ts). */
+  pause?: { since: number; by: PlayerId | null } | null;
+  /** Total real ms spent paused; game time = real time − this. */
+  clockOffsetMs?: number;
   history: {
     questionIds: string[];
     lastThemeId: string | null;

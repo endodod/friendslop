@@ -1,4 +1,5 @@
 "use client";
+import { gameNow } from "../kit/clock";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { SoloPrivate, SoloPublic } from "@party-game/shared";
 import type { MinigameClientProps } from "../kit/types";
@@ -14,9 +15,9 @@ export function ColorClashClient(p: MinigameClientProps<SoloPublic, SoloPrivate>
   const [left, setLeft] = useState(BASE_MS);
   const ref = useRef<number[]>([]);
   useEffect(() => {
-    const end = performance.now() + deadlineMs(p, BASE_MS + (p.bonus ? BONUS_MS : 0));
+    const end = gameNow() + deadlineMs(p, BASE_MS + (p.bonus ? BONUS_MS : 0));
     const id = setInterval(() => {
-      const l = end - performance.now();
+      const l = end - gameNow();
       setLeft(l);
       if (l <= 0) {
         clearInterval(id);

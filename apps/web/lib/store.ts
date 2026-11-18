@@ -43,8 +43,11 @@ export const useStore = create<Store>((set) => ({
   setPublic: (pub) =>
     set((s) => {
       // Smooth clock offset estimate (server time ≈ local time + offset).
+      // While paused the server clock stands still: keep the old offset (serverNow() freezes instead).
+      if (pub.game?.pause) return { pub };
       const sample = pub.serverNow - Date.now();
-      const offset = s.pub ? s.offset * 0.8 + sample * 0.2 : sample;
+      // Big jumps (resuming after a pause) snap instead of easing in.
+      const offset = s.pub && Math.abs(sample - s.offset) < 1500 ? s.offset * 0.8 + sample * 0.2 : sample;
       return { pub, offset };
     }),
   setPrivate: (priv) => set({ priv }),

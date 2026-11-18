@@ -3,7 +3,10 @@ import { useEffect, useState } from "react";
 import { useStore } from "./store";
 
 export function serverNow(): number {
-  return Date.now() + useStore.getState().offset;
+  const { pub, offset } = useStore.getState();
+  // Paused: the game clock stands still at the moment the host paused.
+  if (pub?.game?.pause) return pub.serverNow;
+  return Date.now() + offset;
 }
 
 /** Re-renders every `intervalMs` with the current (server-synced) time. */

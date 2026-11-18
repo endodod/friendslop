@@ -1,4 +1,5 @@
 "use client";
+import { gameNow } from "../kit/clock";
 import { useEffect, useRef, useState } from "react";
 import type { SoloPrivate, SoloPublic } from "@party-game/shared";
 import type { MinigameClientProps } from "../kit/types";
@@ -31,12 +32,12 @@ export function PerfectTimingClient(p: MinigameClientProps<SoloPublic, SoloPriva
     );
   }
   keyAction.current = () => {
-    if (startedAt === null) return setStartedAt(performance.now());
-    const e = performance.now() - startedAt;
+    if (startedAt === null) return setStartedAt(gameNow());
+    const e = gameNow() - startedAt;
     setResult(e);
     p.submit({ elapsedMs: e });
   };
-  const el = startedAt === null ? 0 : performance.now() - startedAt;
+  const el = startedAt === null ? 0 : gameNow() - startedAt;
   const visible = el < (p.bonus ? VISIBLE_MS : 1000);
   const angle = (el / GOAL_MS) * 360;
   return (
@@ -86,14 +87,14 @@ export function PerfectTimingClient(p: MinigameClientProps<SoloPublic, SoloPriva
       </Arena>
       <KeyHint text="Start and stop: tap or press" />
       {startedAt === null ? (
-        <ChunkyButton color="#ffc933" className="min-h-20 w-full text-3xl" onClick={() => setStartedAt(performance.now())}>Start</ChunkyButton>
+        <ChunkyButton color="#ffc933" className="min-h-20 w-full text-3xl" onClick={() => setStartedAt(gameNow())}>Start</ChunkyButton>
       ) : (
         <ChunkyButton
           color="#ff4d5e"
           textColor="#fff"
           className="min-h-20 w-full text-3xl"
           onClick={() => {
-            const e = performance.now() - startedAt;
+            const e = gameNow() - startedAt;
             setResult(e);
             p.submit({ elapsedMs: e });
           }}

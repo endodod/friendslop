@@ -11,6 +11,7 @@ export * from "./engine/context";
 export * from "./engine/room";
 export * from "./engine/game";
 export * from "./engine/projection";
+export * from "./engine/pause";
 export * from "./formats";
 export * from "./logic/questions";
 export * from "./logic/board";

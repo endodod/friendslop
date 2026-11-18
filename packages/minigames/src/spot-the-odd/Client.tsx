@@ -1,4 +1,5 @@
 "use client";
+import { gameNow } from "../kit/clock";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { SoloPrivate, SoloPublic } from "@party-game/shared";
 import type { MinigameClientProps } from "../kit/types";
@@ -16,9 +17,9 @@ export function SpotTheOddClient(p: MinigameClientProps<SoloPublic, SoloPrivate>
   const [left, setLeft] = useState(LIMIT);
   const ref = useRef<number[]>([]);
   useEffect(() => {
-    const end = performance.now() + deadlineMs(p, LIMIT);
+    const end = gameNow() + deadlineMs(p, LIMIT);
     const id = setInterval(() => {
-      const l = end - performance.now();
+      const l = end - gameNow();
       setLeft(l);
       if (l <= 0) {
         clearInterval(id);

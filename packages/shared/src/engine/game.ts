@@ -191,13 +191,15 @@ function withDraft(room: RoomState, ctx: EngineContext, fn: (d: Draft) => void):
 }
 
 export function applyGameAction(room: RoomState, action: GameAction, ctx: EngineContext, isHost = false): EngineResult {
+  // While paused nothing moves. Solo mini-game results still count (a phone may submit at its deadline).
+  if (room.game?.pause && action.type !== "minigameSubmit") fail("PAUSED", "The game is paused.");
   return withDraft(room, ctx, (d) => handleAction(d, action, isHost));
 }
 
 /** Called by the server loop (~15Hz). Handles timeouts, disconnect autoplay and realtime mini-games. */
 export function tickGame(room: RoomState, ctx: EngineContext): EngineResult | null {
   const g = room.game;
-  if (!g) return null;
+  if (!g || g.pause) return null;
   const now = ctx.now;
   const needsMinigameTick = g.phase === "minigamePlaying" && g.minigame && ctx.minigames[g.minigame.id]?.tick;
   const timedOut = g.phaseEndsAt !== null && now >= g.phaseEndsAt;

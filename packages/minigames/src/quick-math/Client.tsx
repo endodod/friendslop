@@ -1,4 +1,5 @@
 "use client";
+import { gameNow } from "../kit/clock";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { SoloPrivate, SoloPublic } from "@party-game/shared";
 import type { MinigameClientProps } from "../kit/types";
@@ -15,9 +16,9 @@ export function QuickMathClient(p: MinigameClientProps<SoloPublic, SoloPrivate>)
   const ans = useRef<number[]>([]);
   useEffect(() => {
     const limit = deadlineMs(p, BASE_MS + (p.bonus ? BONUS_MS : 0));
-    const end = performance.now() + limit;
+    const end = gameNow() + limit;
     const id = setInterval(() => {
-      const l = end - performance.now();
+      const l = end - gameNow();
       setLeft(l);
       if (l <= 0) {
         clearInterval(id);

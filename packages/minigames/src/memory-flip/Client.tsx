@@ -1,4 +1,5 @@
 "use client";
+import { gameNow } from "../kit/clock";
 import { motion } from "framer-motion";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { SoloPrivate, SoloPublic } from "@party-game/shared";
@@ -14,27 +15,28 @@ export function MemoryFlipClient(p: MinigameClientProps<SoloPublic, SoloPrivate>
   const [peek, setPeek] = useState(p.bonus);
   const [done, setDone] = useState(false);
   const flips = useRef<number[]>([]);
-  const start = useRef(performance.now());
+  const start = useRef(gameNow());
   const lock = useRef(false);
 
   useEffect(() => {
     if (!p.bonus) return;
     const t = setTimeout(() => {
       setPeek(false);
-      start.current = performance.now();
+      start.current = gameNow();
     }, PEEK_MS);
     return () => clearTimeout(t);
   }, [p.bonus]);
 
-  // Time runs out: submit what we have.
+  // Time runs out: submit what we have (polls the pause-aware clock).
   useEffect(() => {
-    const t = setTimeout(() => {
-      if (!done) {
-        setDone(true);
-        p.submit({ flips: flips.current.slice(0, flips.current.length - (flips.current.length % 2)), timeMs: performance.now() - start.current });
-      }
-    }, Math.max(0, p.endsAt - p.now() - 400));
-    return () => clearTimeout(t);
+    if (done) return;
+    const id = setInterval(() => {
+      if (p.endsAt - p.now() > 400) return;
+      clearInterval(id);
+      setDone(true);
+      p.submit({ flips: flips.current.slice(0, flips.current.length - (flips.current.length % 2)), timeMs: gameNow() - start.current });
+    }, 200);
+    return () => clearInterval(id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [done]);
 
@@ -53,7 +55,7 @@ export function MemoryFlipClient(p: MinigameClientProps<SoloPublic, SoloPrivate>
         p.ui.play("coin", { volume: 0.3 });
         if (m.size === cards.length) {
           setDone(true);
-          p.submit({ flips: flips.current, timeMs: performance.now() - start.current });
+          p.submit({ flips: flips.current, timeMs: gameNow() - start.current });
         }
       } else {
         lock.current = true;

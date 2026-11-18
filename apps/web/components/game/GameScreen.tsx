@@ -1,6 +1,7 @@
 "use client";
 import { AnimatePresence, motion } from "framer-motion";
-import { LogOut, Map as MapIcon, X } from "lucide-react";
+import { LogOut, Map as MapIcon, Pause, Play, X } from "lucide-react";
+import { setGamePaused } from "@party-game/minigames/client";
 import { useEffect, useState } from "react";
 import { useStore } from "@/lib/store";
 import { useBoard } from "@/lib/board";
@@ -101,6 +102,17 @@ function TopBar({ compact }: { compact?: boolean }) {
       {isHost && g.phase !== "podium" && (
         <button
           className="btn-ghost min-h-11 min-w-11 px-2"
+          aria-label={g.pause ? "Resume the game" : "Pause the game for everyone"}
+          title={g.pause ? "Resume" : "Pause"}
+          data-testid="pause-button"
+          onClick={() => act("game:pause", { paused: !g.pause })}
+        >
+          {g.pause ? <Play size={20} /> : <Pause size={20} />}
+        </button>
+      )}
+      {isHost && g.phase !== "podium" && (
+        <button
+          className="btn-ghost min-h-11 min-w-11 px-2"
           aria-label="End game and return to lobby"
           onClick={() => {
             if (confirm("End the game for everyone and go back to the lobby?")) act("game:abort", {});
@@ -113,7 +125,69 @@ function TopBar({ compact }: { compact?: boolean }) {
   );
 }
 
+/** Everyone sees this while the host has paused; the host can resume from it. */
+function PauseOverlay() {
+  const pause = useStore((s) => s.pub?.game?.pause ?? null);
+  const isHost = useIsHost();
+  const players = usePlayers();
+  // Solo mini-games keep their own clocks on each phone: freeze those too.
+  useEffect(() => setGamePaused(!!pause), [pause]);
+  useEffect(() => () => setGamePaused(false), []);
+  const by = pause?.by ? players[pause.by] : undefined;
+  return (
+    <AnimatePresence>
+      {pause && (
+        <motion.div
+          key="pause"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 z-[90] flex items-center justify-center bg-bg/80 p-6 backdrop-blur-md"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Game paused"
+          data-testid="pause-overlay"
+        >
+          <motion.div
+            initial={{ scale: 0.85, y: 20 }}
+            animate={{ scale: 1, y: 0 }}
+            className="card flex w-full max-w-sm flex-col items-center gap-4 p-8 text-center"
+          >
+            <motion.span
+              animate={{ opacity: [1, 0.4, 1] }}
+              transition={{ repeat: Infinity, duration: 1.6 }}
+              className="flex h-20 w-20 items-center justify-center rounded-full bg-accent/20 text-accent ring-2 ring-accent"
+            >
+              <Pause size={40} />
+            </motion.span>
+            <h2 className="font-display text-4xl">Paused</h2>
+            <p className="text-muted">
+              {by ? `${by.name} paused the game.` : "The host paused the game."} All timers are stopped.
+            </p>
+            {isHost ? (
+              <button className="btn-primary min-h-14 w-full text-2xl" data-testid="resume-button" onClick={() => act("game:pause", { paused: false })}>
+                <Play size={22} /> Resume
+              </button>
+            ) : (
+              <p className="font-display text-lg">Waiting for the host to resume…</p>
+            )}
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
+
 export function GameScreen() {
+  return (
+    <>
+      <GameScreenInner />
+      <PauseOverlay />
+    </>
+  );
+}
+
+function GameScreenInner() {
   const pub = useStore((s) => s.pub!);
   const role = useStore((s) => s.role);
   const playerId = useStore((s) => s.playerId);

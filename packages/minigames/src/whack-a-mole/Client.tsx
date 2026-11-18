@@ -1,4 +1,5 @@
 "use client";
+import { gameNow } from "../kit/clock";
 import { motion } from "framer-motion";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { SoloPrivate, SoloPublic } from "@party-game/shared";
@@ -11,14 +12,14 @@ export function WhackAMoleClient(p: MinigameClientProps<SoloPublic, SoloPrivate>
   const pops = useMemo(() => schedule(p.seed ?? 1), [p.seed]);
   const [hits, setHits] = useState<number[]>([]);
   const [done, setDone] = useState(false);
-  const start = useRef(performance.now());
+  const start = useRef(gameNow());
   const [t, setT] = useState(0);
   const hitsRef = useRef<number[]>([]);
   const up = p.bonus ? BONUS_UP_MS : UP_MS;
   useEffect(() => {
     const limit = Math.min(GAME_MS + up, Math.max(500, p.endsAt - p.now() - 500));
     const id = setInterval(() => {
-      const now = performance.now() - start.current;
+      const now = gameNow() - start.current;
       setT(now);
       if (now >= limit) {
         clearInterval(id);

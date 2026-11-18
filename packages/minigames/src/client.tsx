@@ -62,3 +62,4 @@ export const MINIGAME_CLIENTS: Record<string, ClientEntry> = {
 };
 
 export type { MinigameClientProps, MinigameUiKit, KitPlayer, ClientEntry } from "./kit/types";
+export { setGamePaused, gameNow, useGamePaused } from "./kit/clock";

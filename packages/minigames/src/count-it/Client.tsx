@@ -6,6 +6,7 @@ import type { MinigameClientProps } from "../kit/types";
 import { KeyHint, useKey } from "../kit/hooks";
 import { motion } from "framer-motion";
 import { SoloDone, useDeadlineSubmit } from "../kit/SoloShell";
+import { useGamePaused } from "../kit/clock";
 import { ChunkyButton, Hud, Pill, RoundDots } from "../kit/visual";
 import { BONUS_FLASH_MS, FLASH_MS, KINDS, ROUNDS, rounds } from "./logic";
 
@@ -20,6 +21,8 @@ export function CountItClient(p: MinigameClientProps<SoloPublic, SoloPrivate>) {
   const [done, setDone] = useState(false);
   useDeadlineSubmit(p, () => ({ counts: [...counts, ...Array(ROUNDS).fill(0)].slice(0, ROUNDS) }), done || counts.length >= ROUNDS, setDone);
   const r = rs[Math.min(counts.length, ROUNDS - 1)];
+  // A pause during the flash restarts that flash.
+  useGamePaused((paused) => paused && setStage((st) => (st === "flash" ? "ready" : st)));
   useEffect(() => {
     if (stage !== "flash") return;
     const t = setTimeout(() => setStage("answer"), p.bonus ? BONUS_FLASH_MS : FLASH_MS);

@@ -92,6 +92,7 @@ export function registerSocketHandlers(io: Server<any, ServerToClientEvents, any
     on("player:ready", (p) => rooms.setReady(current(), me(), p.ready));
     on("game:start", (p) => rooms.start(current(), socket.data, p.mode, p.minigameId));
     on("game:abort", () => rooms.abort(current(), socket.data));
+    on("game:pause", (p) => rooms.pause(current(), socket.data, p.paused));
     on("game:playAgain", () => rooms.playAgain(current(), socket.data));
     on("game:continue", () => rooms.action(current(), socket.data, { type: "continue" }));
     on("game:ready", () => rooms.action(current(), socket.data, { type: "ready", playerId: me() }));

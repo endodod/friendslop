@@ -1,4 +1,5 @@
 "use client";
+import { gameNow } from "../kit/clock";
 import { useRef, useState } from "react";
 import type { SoloPrivate, SoloPublic } from "@party-game/shared";
 import type { MinigameClientProps } from "../kit/types";
@@ -11,7 +12,7 @@ export function TypeRaceClient(p: MinigameClientProps<SoloPublic, SoloPrivate>) 
   const [typed, setTyped] = useState("");
   const [done, setDone] = useState(false);
   const start = useRef<number | null>(null);
-  const elapsed = () => (start.current === null ? 60000 : performance.now() - start.current);
+  const elapsed = () => (start.current === null ? 60000 : gameNow() - start.current);
   useDeadlineSubmit(p, () => ({ typed, timeMs: elapsed() }), done, setDone);
   if (!p.isParticipant || p.priv?.submitted || done) return <SoloDone p={p} />;
   const finish = () => {
@@ -63,12 +64,12 @@ export function TypeRaceClient(p: MinigameClientProps<SoloPublic, SoloPrivate>) 
         aria-label="Type here"
         placeholder="Start typing…"
         onChange={(e) => {
-          if (start.current === null) start.current = performance.now();
+          if (start.current === null) start.current = gameNow();
           const v = e.target.value.toLowerCase();
           setTyped(v);
           if (v === target) {
             setDone(true);
-            p.submit({ typed: v, timeMs: performance.now() - start.current });
+            p.submit({ typed: v, timeMs: gameNow() - start.current });
           }
         }}
       />

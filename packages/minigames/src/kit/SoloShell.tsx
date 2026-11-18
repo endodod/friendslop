@@ -26,14 +26,18 @@ export function useDeadlineSubmit(p: MinigameClientProps, payload: () => unknown
   ref.current = payload;
   const doneRef = useRef(done);
   doneRef.current = done;
+  const nowRef = useRef(p.now);
+  nowRef.current = p.now;
   useEffect(() => {
     if (!p.isParticipant) return;
-    const t = setTimeout(() => {
-      if (doneRef.current) return;
+    // Poll the (pause-aware) server clock instead of one long timeout, so a pause holds the deadline.
+    const id = setInterval(() => {
+      if (doneRef.current || p.endsAt - nowRef.current() > 600) return;
+      clearInterval(id);
       setDone(true);
       p.submit(ref.current());
-    }, Math.max(300, p.endsAt - p.now() - 600));
-    return () => clearTimeout(t);
+    }, 200);
+    return () => clearInterval(id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 }

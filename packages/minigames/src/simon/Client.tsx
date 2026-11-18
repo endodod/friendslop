@@ -5,6 +5,7 @@ import type { SoloPrivate, SoloPublic } from "@party-game/shared";
 import type { MinigameClientProps } from "../kit/types";
 import { KeyHint, useKey } from "../kit/hooks";
 import { SoloDone, useDeadlineSubmit } from "../kit/SoloShell";
+import { useGamePaused } from "../kit/clock";
 import { Arena, Hud, Pill } from "../kit/visual";
 import { MAX_LEN, PADS, sequence } from "./logic";
 
@@ -124,6 +125,13 @@ export function SimonClient(p: MinigameClientProps<SoloPublic, SoloPrivate>) {
   };
 
   useKey((e) => press(KEYS[e.code]), { keys: Object.keys(KEYS) });
+  // Pausing stops the sequence; resuming plays it again from the start.
+  useGamePaused((paused) => {
+    if (paused) {
+      clearTimers();
+      setLit(null);
+    } else if (phaseRef.current === "watch" || phaseRef.current === "levelUp") show(levelRef.current);
+  });
 
   if (!p.isParticipant || p.priv?.submitted || done) return <SoloDone p={p} />;
 

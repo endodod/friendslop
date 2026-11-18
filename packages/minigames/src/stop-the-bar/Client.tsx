@@ -1,4 +1,5 @@
 "use client";
+import { gameNow } from "../kit/clock";
 import { useEffect, useRef, useState } from "react";
 import type { SoloPrivate, SoloPublic } from "@party-game/shared";
 import type { MinigameClientProps } from "../kit/types";
@@ -13,7 +14,7 @@ export function StopTheBarClient(p: MinigameClientProps<SoloPublic, SoloPrivate>
   const rs = rounds(p.seed ?? 1);
   const [stops, setStops] = useState<number[]>([]);
   const [frozen, setFrozen] = useState<number | null>(null);
-  const start = useRef(performance.now());
+  const start = useRef(gameNow());
   const [, force] = useState(0);
   const done = stops.length >= ROUNDS;
   useEffect(() => {
@@ -34,12 +35,12 @@ export function StopTheBarClient(p: MinigameClientProps<SoloPublic, SoloPrivate>
     );
   }
   const r = rs[stops.length];
-  const t = frozen ?? performance.now() - start.current;
+  const t = frozen ?? gameNow() - start.current;
   const pos = barPos(t, r);
   const w = zoneWidth(p.bonus);
   const stop = () => {
     if (frozen !== null) return;
-    const el = performance.now() - start.current;
+    const el = gameNow() - start.current;
     if (el < 150) return;
     setFrozen(el);
     const acc = accuracy(barPos(el, r), r, p.bonus);
@@ -48,7 +49,7 @@ export function StopTheBarClient(p: MinigameClientProps<SoloPublic, SoloPrivate>
       const next = [...stops, el];
       setStops(next);
       setFrozen(null);
-      start.current = performance.now();
+      start.current = gameNow();
       if (next.length >= ROUNDS) p.submit({ stops: next });
     }, 900);
   };

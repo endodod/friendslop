@@ -1,4 +1,5 @@
 "use client";
+import { gameNow, useGamePaused } from "../kit/clock";
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import type { MinigameClientProps } from "../kit/types";
@@ -24,12 +25,22 @@ export function ReactionTapClient(p: MinigameClientProps<SoloPublic, SoloPrivate
   const forgiven = p.bonus && falseStarts === 0;
 
   useEffect(() => () => void (timer.current && clearTimeout(timer.current)), []);
+  // A pause cancels the round in progress (no penalty); tap again to restart it.
+  useGamePaused((paused) => {
+    if (!paused) return;
+    if (timer.current) clearTimeout(timer.current);
+    setStage((st) => {
+      if (st !== "waiting" && st !== "green") return st;
+      setMsg("Paused, tap to retry this round");
+      return "ready";
+    });
+  });
 
   const startRound = () => {
     setStage("waiting");
     setMsg("");
     timer.current = setTimeout(() => {
-      greenAt.current = performance.now();
+      greenAt.current = gameNow();
       setStage("green");
       p.ui.play("go", { volume: 0.4 });
       timer.current = setTimeout(() => record(MAX_REACTION_MS), MAX_REACTION_MS);
@@ -61,7 +72,7 @@ export function ReactionTapClient(p: MinigameClientProps<SoloPublic, SoloPrivate
       setStage("result");
       return;
     }
-    if (stage === "green") record(performance.now() - greenAt.current);
+    if (stage === "green") record(gameNow() - greenAt.current);
   };
 
   if (!p.isParticipant || p.priv?.submitted || stage === "done") {
@@ -139,10 +150,10 @@ export function ReactionTapClient(p: MinigameClientProps<SoloPublic, SoloPrivate
             key={msg + times.length}
             initial={{ y: 12, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            className={`relative rounded-2xl px-4 py-1 text-3xl ${msg.startsWith("False") ? "bg-black/40 text-white" : "bg-black/25"}`}
+            className={`relative rounded-2xl px-4 py-1 text-3xl ${msg.endsWith(" ms") ? "bg-black/25" : "bg-black/40 text-white"}`}
           >
             {msg}
-            {!msg.startsWith("False") && last !== undefined && <span className="ml-2 text-lg opacity-80">{rating(last)}</span>}
+            {msg.endsWith(" ms") && last !== undefined && <span className="ml-2 text-lg opacity-80">{rating(last)}</span>}
           </motion.span>
         )}
         {p.bonus && <span className="relative rounded-full bg-black/30 px-3 py-1 text-sm text-white">Bonus: one false start forgiven</span>}

@@ -15,7 +15,8 @@ export type GameErrorCode =
   | "INVENTORY_FULL"
   | "UNKNOWN_PLAYER"
   | "RATE_LIMITED"
-  | "PROVIDER_ERROR";
+  | "PROVIDER_ERROR"
+  | "PAUSED";
 
 export class GameError extends Error {
   constructor(

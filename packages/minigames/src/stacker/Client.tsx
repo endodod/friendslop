@@ -1,4 +1,5 @@
 "use client";
+import { gameNow } from "../kit/clock";
 import { useEffect, useRef, useState } from "react";
 import type { SoloPrivate, SoloPublic } from "@party-game/shared";
 import type { MinigameClientProps } from "../kit/types";
@@ -17,7 +18,7 @@ export function StackerClient(p: MinigameClientProps<SoloPublic, SoloPrivate>) {
   const seed = p.seed ?? 1;
   const [drops, setDrops] = useState<number[]>([]);
   const [done, setDone] = useState(false);
-  const levelStart = useRef(performance.now());
+  const levelStart = useRef(gameNow());
   const [, force] = useState(0);
   const sim = simulate(seed, p.bonus, drops);
   const levels: StackLevel[] = sim.levels;
@@ -42,12 +43,12 @@ export function StackerClient(p: MinigameClientProps<SoloPublic, SoloPrivate>) {
 
   const drop = () => {
     if (done) return;
-    const t = performance.now() - levelStart.current;
+    const t = gameNow() - levelStart.current;
     if (t < MIN_DROP_MS) return;
     const next = [...drops, t];
     const res = simulate(seed, p.bonus, next);
     setDrops(next);
-    levelStart.current = performance.now();
+    levelStart.current = gameNow();
     if (res.failedAt !== null) {
       p.ui.play("bad");
       p.ui.vibrate(120);
@@ -68,7 +69,7 @@ export function StackerClient(p: MinigameClientProps<SoloPublic, SoloPrivate>) {
   }
 
   keyAction.current = drop;
-  const movingX = sliderX(performance.now() - levelStart.current, top.w, level, seed);
+  const movingX = sliderX(gameNow() - levelStart.current, top.w, level, seed);
   const scroll = Math.max(0, level - 8) * ROW;
   const prev = levels[levels.length - 2];
   const perfect = prev && drops.length > 0 && top.w >= prev.w - 0.5;

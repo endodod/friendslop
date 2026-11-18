@@ -21,6 +21,8 @@ import {
   setPlayerProfile,
   startGame,
   tickGame,
+  gameClock,
+  setPaused,
   toPrivateState,
   toPublicState,
   updatePlayer,
@@ -89,7 +91,8 @@ export class RoomManager {
       generators: this.generators,
       playerData: rec.playerData,
       rng: rec.rng,
-      now: Date.now(),
+      // The game clock stands still while the host has paused the game.
+      now: gameClock(rec.room, Date.now()),
     };
   }
 
@@ -172,7 +175,7 @@ export class RoomManager {
     if (!rec) return;
     if (role === "display") rec.room = { ...rec.room, displays: Math.max(0, rec.room.displays - 1) };
     if (role === "player" && playerId && rec.room.players.some((p) => p.id === playerId)) {
-      rec.room = updatePlayer(rec.room, playerId, { connected: false, disconnectedAt: Date.now() });
+      rec.room = updatePlayer(rec.room, playerId, { connected: false, disconnectedAt: gameClock(rec.room, Date.now()) });
       this.apply(rec, onConnectionChange(rec.room, this.ctx(rec)));
     }
     rec.lastPrivate.delete(socket.id);
@@ -262,6 +265,13 @@ export class RoomManager {
     if (mode === "board") persistence.onGameStart(rec);
   }
 
+  pause(rec: LiveRoom, actor: SocketData, paused: boolean) {
+    assertHost(rec.room, { playerId: actor.playerId ?? undefined, isDisplay: actor.role === "display" });
+    rec.room = setPaused(rec.room, paused, actor.playerId ?? null, Date.now());
+    rec.lastActivity = Date.now();
+    this.broadcast(rec, []);
+  }
+
   abort(rec: LiveRoom, actor: SocketData) {
     assertHost(rec.room, { playerId: actor.playerId ?? undefined, isDisplay: actor.role === "display" });
     rec.room = { ...rec.room, stage: "lobby", game: null, players: rec.room.players.map((p) => ({ ...p, ready: false })) };
@@ -324,7 +334,7 @@ export class RoomManager {
   /** Send public state to everyone, private state per socket, and animation events. Skips unchanged. */
   broadcast(rec: LiveRoom, events: GameEvent[]) {
     const now = Date.now();
-    const pub = toPublicState(rec.room, this.minigames, now);
+    const pub = toPublicState(rec.room, this.minigames, gameClock(rec.room, now));
     const { serverNow: _sn, ...comparable } = pub;
     const pubKey = JSON.stringify(comparable);
     const code = rec.room.code;
@@ -338,7 +348,7 @@ export class RoomManager {
     for (const sid of sockets) {
       const s = this.io.of("/").sockets.get(sid) as IoSocket | undefined;
       if (!s) continue;
-      const priv = toPrivateState(rec.room, s.data.playerId ?? null, this.minigames, now);
+      const priv = toPrivateState(rec.room, s.data.playerId ?? null, this.minigames, gameClock(rec.room, now));
       const key = JSON.stringify(priv);
       if (rec.lastPrivate.get(sid) !== key) {
         rec.lastPrivate.set(sid, key);
@@ -350,8 +360,8 @@ export class RoomManager {
   /** Force-resend full state to one socket (after (re)join). */
   resend(rec: LiveRoom, socket: IoSocket) {
     const now = Date.now();
-    socket.emit("state:public", toPublicState(rec.room, this.minigames, now));
-    const priv = toPrivateState(rec.room, socket.data.playerId ?? null, this.minigames, now);
+    socket.emit("state:public", toPublicState(rec.room, this.minigames, gameClock(rec.room, now)));
+    const priv = toPrivateState(rec.room, socket.data.playerId ?? null, this.minigames, gameClock(rec.room, now));
     rec.lastPrivate.set(socket.id, JSON.stringify(priv));
     socket.emit("state:private", priv);
   }

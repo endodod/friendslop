@@ -59,6 +59,8 @@ export const ClientEvents = {
     minigameId: z.string().max(64).optional(),
   }),
   "game:abort": z.object({}),
+  /** Host only: freeze or unfreeze every timer in the game. */
+  "game:pause": z.object({ paused: z.boolean() }),
   "game:continue": z.object({}),
   /** "Got it!" on a tutorial screen (game start, mini-game intro). */
   "game:ready": z.object({}),
