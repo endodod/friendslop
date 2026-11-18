@@ -4,6 +4,8 @@ import { CustomQuestionDraftSchema } from "../logic/custom";
 import type { GameEvent } from "../engine/types";
 import type { PrivateState, PublicRoomState } from "../engine/projection";
 
+export const CHAT_MAX_LENGTH = 200;
+
 const PlayerIdSchema = z.string().min(1).max(64);
 const RoomCodeSchema = z
   .string()
@@ -81,6 +83,8 @@ export const ClientEvents = {
   "question:draft": z.object({ answer: AnswerSchema }),
   "minigame:input": z.object({ input: z.unknown() }),
   "minigame:submit": z.object({ submission: z.unknown() }),
+  /** Room chat (players only). */
+  "chat:send": z.object({ text: z.string().min(1).max(CHAT_MAX_LENGTH) }),
   "custom:add": z.object({ question: CustomQuestionDraftSchema }),
   "custom:remove": z.object({ id: z.string().max(64) }),
   "account:linkSteam": z.object({ profile: z.string().min(2).max(200) }),
@@ -99,12 +103,30 @@ export interface JoinResult {
   token: string;
 }
 
+/** How many recent messages a room keeps (sent to people who join later). */
+export const CHAT_HISTORY = 60;
+
+export interface ChatMessage {
+  id: string;
+  playerId: string;
+  text: string;
+  at: number;
+}
+
+/** Trim, collapse whitespace, drop control characters. Empty result = nothing to send. */
+export function sanitizeChat(text: string): string {
+  return text.replace(/[\u0000-\u001f\u007f]/g, " ").replace(/\s+/g, " ").trim().slice(0, CHAT_MAX_LENGTH);
+}
+
 export interface ServerToClientEvents {
   "state:public": (state: PublicRoomState) => void;
   "state:private": (state: PrivateState) => void;
   event: (events: GameEvent[]) => void;
   error: (err: { code: string; message: string }) => void;
   kicked: () => void;
+  "chat:message": (m: ChatMessage) => void;
+  /** Recent messages, sent after (re)joining. */
+  "chat:history": (ms: ChatMessage[]) => void;
 }
 
 export type ClientToServerEvents = {

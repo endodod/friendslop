@@ -1,7 +1,10 @@
 import { randomBytes } from "node:crypto";
 import type { Server, Socket } from "socket.io";
 import {
+  CHAT_HISTORY,
   GAME_CONFIG,
+  sanitizeChat,
+  type ChatMessage,
   GameError,
   addPlayer,
   addCustomQuestion,
@@ -57,8 +60,12 @@ interface LiveRoom extends RoomRecord {
   rng: Rng;
   lastPublic: string;
   lastPrivate: Map<string, string>;
+  /** Recent chat (not part of the game state, never persisted). */
+  chat?: ChatMessage[];
+  lastChatAt?: Map<string, number>;
 }
 
+const CHAT_MIN_INTERVAL_MS = 600;
 const LOBBY_DISCONNECT_REMOVE_MS = 3 * 60 * 1000;
 
 export class RoomManager {
@@ -357,8 +364,23 @@ export class RoomManager {
     }
   }
 
+  chat(rec: LiveRoom, playerId: string, raw: string) {
+    const text = sanitizeChat(raw);
+    if (!text) fail("INVALID_INPUT", "Say something first.");
+    if (!rec.room.players.some((p) => p.id === playerId)) fail("UNKNOWN_PLAYER", "Only players can chat.");
+    const now = Date.now();
+    rec.lastChatAt ??= new Map();
+    if (now - (rec.lastChatAt.get(playerId) ?? 0) < CHAT_MIN_INTERVAL_MS) fail("RATE_LIMITED", "Slow down!");
+    rec.lastChatAt.set(playerId, now);
+    const msg: ChatMessage = { id: randomBytes(6).toString("hex"), playerId, text, at: now };
+    rec.chat = [...(rec.chat ?? []), msg].slice(-CHAT_HISTORY);
+    rec.lastActivity = now;
+    this.io.to(rec.room.code).emit("chat:message", msg);
+  }
+
   /** Force-resend full state to one socket (after (re)join). */
   resend(rec: LiveRoom, socket: IoSocket) {
+    socket.emit("chat:history", rec.chat ?? []);
     const now = Date.now();
     socket.emit("state:public", toPublicState(rec.room, this.minigames, gameClock(rec.room, now)));
     const priv = toPrivateState(rec.room, socket.data.playerId ?? null, this.minigames, gameClock(rec.room, now));

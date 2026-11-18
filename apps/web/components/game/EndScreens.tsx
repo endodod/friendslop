@@ -7,6 +7,7 @@ import { ACHIEVEMENTS, computeAchievements, localize, standings, type PlayerStat
 import { clientContent } from "@party-game/content";
 import { act } from "@/lib/useRoom";
 import { useStore } from "@/lib/store";
+import { useRemaining } from "@/lib/time";
 import { Avatar, CoinCount, Icon, PlayerName, StarCount, useIsHost, usePlayers } from "../ui";
 import { Confetti } from "../fx";
 import { SkipButton } from "./PhasePanel";
@@ -91,7 +92,40 @@ export function BonusStarsView({ game }: { game: PublicGameState }) {
           );
         })}
       </ul>
+      {bs.revealed >= bs.awards.length && <FinalStandingsTeaser game={game} />}
     </div>
+  );
+}
+
+/** Shown once every bonus star is out: the new star totals, then the results page after a pause. */
+function FinalStandingsTeaser({ game }: { game: PublicGameState }) {
+  const players = usePlayers();
+  const isHost = useIsHost();
+  const left = useRemaining(game.phaseEndsAt, 250);
+  const ranking = standings(game as never);
+  return (
+    <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="card flex flex-col gap-3 p-4">
+      <h3 className="text-center font-display text-2xl">Final standings</h3>
+      <ol className="flex flex-col gap-1.5">
+        {ranking.map(({ playerId, rank }) => (
+          <li key={playerId} className="flex items-center gap-3 rounded-2xl bg-bg-2 px-3 py-1.5">
+            <span className="w-6 text-center font-display text-xl text-accent">{rank}</span>
+            <Avatar player={players[playerId]} size={32} />
+            <span className="min-w-0 flex-1 truncate font-display">{players[playerId]?.name}</span>
+            <StarCount value={game.players[playerId].stars} />
+            <CoinCount value={game.players[playerId].coins} size={16} />
+          </li>
+        ))}
+      </ol>
+      <div className="flex items-center justify-between gap-3">
+        <span className="text-sm text-muted">Full results in {Math.max(0, Math.ceil(left / 1000))}s</span>
+        {isHost && (
+          <button className="btn-primary min-h-11 text-base" onClick={() => act("game:continue", {})} data-testid="show-results">
+            Show final results
+          </button>
+        )}
+      </div>
+    </motion.section>
   );
 }
 

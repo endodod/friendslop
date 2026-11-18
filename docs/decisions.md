@@ -105,3 +105,8 @@ Defaults picked where the build prompt left room, or where the environment force
 - **Hot Potato** has no maths any more: each pass is a random reflex challenge (match the picture, tap the ink colour, odd one out, count the dots). Bonus = one revive.
 - **Quick Loop removed;** the map picker has a **Random** card in its place (`settings.boardId = "random"`, resolved with the game's RNG in `createGame`).
 - **Unlimited rounds:** `turnCount: 0` (∞ in the lobby) never ends on its own; it ends at the star goal or when the host taps the flag (`game:finish` → `gameEnd`, which hands out bonus stars and shows the podium). The flag works in limited games too.
+- **Item prices can scale with the lobby** (`pricePerOpponent`): Coin Magnet costs 2 + 2 per other player (4 at 2 players, 16 at 8), about two thirds of what it can take.
+- **Room chat:** `chat:send` (players only, 200 chars, one message per 0.6 s). The last 60 messages live on the server's room record (not in game state, not persisted) and are sent on (re)join. Floating button bottom-right with unread badge and a preview bubble; TVs can read but not write.
+- **After the bonus stars** the final standings stay up for 12 s (`bonusStarsHoldMs`) before the results page; the host can tap "Show final results".
+- **Board look:** per-map accent colour, arena-style backdrop, scattered scenery, a soft track bed under the roads, layered roads with a dashed centre line, 3D tiles, pin-shaped tokens with a bobbing marker and a pulse under the active player.
+- **Confetti** renders in a portal on `document.body` (a transformed parent used to clip it) and rolls its randomness once per burst; it now fires from both lower corners plus a few pieces from the top.

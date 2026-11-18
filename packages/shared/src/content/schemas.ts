@@ -185,6 +185,8 @@ export const ItemSchema = z.object({
   description: LocalizedStringSchema,
   icon: iconId,
   price: z.number().int().nonnegative(),
+  /** Extra cost per other player in the game (items that scale with the lobby, e.g. Coin Magnet). */
+  pricePerOpponent: z.number().int().nonnegative().default(0),
   useTiming: z.enum(["turnStart", "onQuestion", "passive"]),
   effect: z.enum(ITEM_EFFECTS),
   /** Effect strength, e.g. { steps: 4 } for Push Back, { bonus: 3 } for Sprint Shoes. */

@@ -1,6 +1,6 @@
 "use client";
 import { useCallback, useEffect, useRef, useState } from "react";
-import type { GameEvent, JoinResult } from "@party-game/shared";
+import type { ChatMessage, GameEvent, JoinResult } from "@party-game/shared";
 import { getSocket, send } from "./socket";
 import { clearSeat, getSeat, profileToken, saveSeat } from "./session";
 import { dispatchGameEvents, useStore } from "./store";
@@ -62,6 +62,8 @@ export function useRoom(code: string, wantDisplay: boolean) {
     const onPrivate = (p: any) => useStore.getState().setPrivate(p);
     const onEvent = (evs: GameEvent[]) => dispatchGameEvents(evs);
     const onError = (e: { message: string }) => useStore.getState().toast(e.message, "error");
+    const onChat = (m: ChatMessage) => useStore.getState().addChat(m);
+    const onChatHistory = (ms: ChatMessage[]) => useStore.getState().setChat(ms);
     const onKicked = () => {
       clearSeat(code);
       useStore.getState().reset();
@@ -74,6 +76,8 @@ export function useRoom(code: string, wantDisplay: boolean) {
     s.on("event", onEvent);
     s.on("error", onError);
     s.on("kicked", onKicked);
+    s.on("chat:message", onChat);
+    s.on("chat:history", onChatHistory);
     if (s.connected) onConnect();
     return () => {
       s.off("connect", onConnect);
@@ -83,6 +87,8 @@ export function useRoom(code: string, wantDisplay: boolean) {
       s.off("event", onEvent);
       s.off("error", onError);
       s.off("kicked", onKicked);
+      s.off("chat:message", onChat);
+      s.off("chat:history", onChatHistory);
     };
   }, [code, rejoin]);
 

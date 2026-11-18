@@ -12,6 +12,7 @@ import { useRoom } from "@/lib/useRoom";
 import { useStore } from "@/lib/store";
 import { saveAvatar, saveColor, saveName, savedAvatar, savedColor, savedName } from "@/lib/session";
 import { SfxBridge } from "./SfxBridge";
+import { ChatDock } from "./ChatDock";
 import { ServerStatus } from "./ServerStatus";
 
 export function RoomClient({ code, display }: { code: string; display: boolean }) {
@@ -46,6 +47,7 @@ export function RoomClient({ code, display }: { code: string; display: boolean }
       ) : (
         <Lobby code={code} onLeave={leave} />
       )}
+      {status === "joined" && pub && <ChatDock />}
     </MotionConfig>
   );
 }

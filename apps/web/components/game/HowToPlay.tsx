@@ -2,7 +2,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { Check, CircleHelp, X } from "lucide-react";
 import { useState } from "react";
-import { GAME_CONFIG, localize } from "@party-game/shared";
+import { GAME_CONFIG, itemPrice, localize } from "@party-game/shared";
 import { clientContent } from "@party-game/content";
 import { useStore } from "@/lib/store";
 import { act } from "@/lib/useRoom";
@@ -112,6 +112,7 @@ export function TileLegend() {
 }
 
 export function ItemList() {
+  const playerCount = useStore((st) => st.pub?.game?.order.length ?? st.pub?.players.length ?? 2);
   return (
     <section className="flex flex-col gap-2">
       <h3 className="font-display text-lg text-muted">Items (max {E.maxItems})</h3>
@@ -122,7 +123,7 @@ export function ItemList() {
             <span className="flex-1 text-sm leading-tight">
               <b className="font-display text-base">{localize(it.name)}</b> · {localize(it.description)}
             </span>
-            <CoinCount value={it.price} size={14} className="text-sm" />
+            <CoinCount value={itemPrice(it, playerCount)} size={14} className="text-sm" />
           </li>
         ))}
       </ul>

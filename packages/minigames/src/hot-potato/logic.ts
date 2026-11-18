@@ -58,8 +58,9 @@ function makePrompt(rng: () => number): Prompt {
   const n = 2 + Math.floor(rng() * 6); // 2–7 dots
   const dots: { x: number; y: number }[] = [];
   while (dots.length < n) {
-    const d = { x: 10 + rng() * 80, y: 15 + rng() * 70 };
-    if (dots.every((o) => Math.hypot(o.x - d.x, o.y - d.y) > 16)) dots.push(d);
+    // The dot box is about 3.3× wider than tall, so vertical distance counts for less.
+    const d = { x: 8 + rng() * 84, y: 18 + rng() * 64 };
+    if (dots.every((o) => Math.hypot(o.x - d.x, (o.y - d.y) * 0.3) > 9)) dots.push(d);
   }
   const wrong = shuffle(rng, [n - 2, n - 1, n + 1, n + 2].filter((v) => v >= 1)).slice(0, 2);
   const choices = shuffle(rng, [n, ...wrong]).map(String);

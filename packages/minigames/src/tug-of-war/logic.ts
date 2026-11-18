@@ -21,6 +21,10 @@ export interface TugState {
   winner: 0 | 1 | "tie" | null;
 }
 
+/** Pull strength per tap relative to an even split: smaller teams pull harder so uneven teams stay fair. */
+export const teamStrength = (teams: [PlayerId[], PlayerId[]], team: 0 | 1): number =>
+  (teams[0].length + teams[1].length) / 2 / Math.max(1, teams[team].length);
+
 export const teamOf = (s: TugState, pid: PlayerId): 0 | 1 => (s.teams[0].includes(pid) ? 0 : 1);
 
 export const tugOfWar: MiniGameDefinition<TugState, { tap: true }> = {
@@ -48,7 +52,7 @@ export const tugOfWar: MiniGameDefinition<TugState, { tap: true }> = {
     if (now - (s.lastTapAt[pid] ?? 0) < MIN_TAP_INTERVAL_MS) return s;
     const team = teamOf(s, pid);
     // Smaller teams pull harder per person so uneven teams stay fair.
-    const strength = (TAP_STEP * (s.players.length / 2)) / s.teams[team].length;
+    const strength = TAP_STEP * teamStrength(s.teams, team);
     const pull = strength * (s.bonuses.includes(pid) ? BONUS_STRENGTH : 1) * (team === 0 ? -1 : 1);
     const rope = Math.max(-LIMIT, Math.min(LIMIT, s.rope + pull));
     const winner = rope <= -LIMIT ? 0 : rope >= LIMIT ? 1 : null;
