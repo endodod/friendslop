@@ -578,6 +578,42 @@
         "tile",
         "minigameIntro"
       ]
+    },
+    {
+      "id": "take.rank-drinks",
+      "themes": [
+        "hot-takes"
+      ],
+      "format": "ranking",
+      "prompt": "Rank the drinks the way {target} would, best first:",
+      "answers": [
+        "Coffee",
+        "Tea",
+        "Soda",
+        "Water"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "take.rank-messages",
+      "themes": [
+        "hot-takes"
+      ],
+      "format": "ranking",
+      "prompt": "Rank the ways to reach {target}, favorite first:",
+      "answers": [
+        "Text message",
+        "Voice message",
+        "Phone call",
+        "Showing up in person"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
     }
   ]
 }

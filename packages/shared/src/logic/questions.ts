@@ -23,7 +23,7 @@ export const RECENT_QUESTION_MEMORY = 800;
 
 export interface SelectArgs {
   content: ContentBundle;
-  settings: Pick<RoomSettings, "themes" | "familyFriendly" | "language"> & { packs?: string[] };
+  settings: Pick<RoomSettings, "familyFriendly" | "language"> & { packs?: string[] };
   history: QuestionHistory;
   rng: Rng;
   usage: QuestionUsage;
@@ -41,14 +41,12 @@ interface Candidate {
 
 function candidates(args: SelectArgs): Candidate[] {
   const { content, settings } = args;
-  const enabled = new Set(settings.themes);
   const out: Candidate[] = [];
   for (const pack of content.packs) {
     if (settings.packs && !settings.packs.includes(pack.id)) continue;
     for (const q of pack.questions) {
       if (q.truthSource) continue; // data questions come from generators
       if (!q.usage.includes(args.usage)) continue;
-      if (pack.id !== "custom" && !q.themes.some((t) => enabled.has(t))) continue;
       if (settings.familyFriendly && q.tags?.includes("spicy")) continue;
       if ((q.minPlayers ?? 2) > args.playerCount) continue;
       // "Who would {target} call from jail?" needs at least two other players to choose from.
@@ -70,7 +68,7 @@ export function promptKey(q: Question): string {
 }
 
 /**
- * Weighted random from enabled themes. Never repeats a question within a game while unasked ones
+ * Weighted random from enabled packs. Never repeats a question within a game while unasked ones
  * remain, prefers questions this room hasn't seen in earlier games, and avoids the same theme twice
  * in a row when possible. Once everything has been asked, the least recently asked come back first.
  */
@@ -119,7 +117,6 @@ export interface ResolveArgs {
   participants: PlayerId[];
   rng: Rng;
   language: Language;
-  enabledThemes: string[];
 }
 
 export function substitutePlaceholders(
@@ -141,7 +138,7 @@ export function resolveQuestion(q: Question, pack: Pack, args: ResolveArgs): Res
   const lang = args.language;
   const loc = (s: Parameters<typeof localize>[0]) =>
     typeof s === "string" ? s : localize(s, lang);
-  const themeId = q.themes.find((t) => args.enabledThemes.includes(t)) ?? q.themes[0];
+  const themeId = q.themes[0];
   const base: ResolvedQuestion = {
     id: q.id,
     format: q.format,

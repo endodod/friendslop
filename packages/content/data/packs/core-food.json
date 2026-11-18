@@ -581,6 +581,42 @@
         "tile",
         "minigameIntro"
       ]
+    },
+    {
+      "id": "food.rank-meals",
+      "themes": [
+        "food"
+      ],
+      "format": "ranking",
+      "prompt": "Rank the meals the way {target} would, most important first:",
+      "answers": [
+        "Breakfast",
+        "Lunch",
+        "Dinner",
+        "Midnight snack"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "food.rank-pizza",
+      "themes": [
+        "food"
+      ],
+      "format": "ranking",
+      "prompt": "Rank these pizza toppings the way {target} would, best first:",
+      "answers": [
+        "Pepperoni",
+        "Mushrooms",
+        "Pineapple",
+        "Extra cheese"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
     }
   ]
 }

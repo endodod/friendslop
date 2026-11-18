@@ -210,6 +210,19 @@
       }
     },
     {
+      "id": "classics",
+      "name": {
+        "en": "Group Classics",
+        "de": "Gruppenklassiker"
+      },
+      "icon": "crown",
+      "color": "#bef264",
+      "description": {
+        "en": "Most Likely To, rankings and who-would-you-pick classics.",
+        "de": "Wer würde am ehesten, Rankings und Wen-würdest-du-wählen-Klassiker."
+      }
+    },
+    {
       "id": "custom",
       "name": {
         "en": "Custom",

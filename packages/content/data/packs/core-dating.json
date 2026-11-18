@@ -489,6 +489,42 @@
         "tile",
         "questionOnlyMinigame"
       ]
+    },
+    {
+      "id": "love.rank-qualities",
+      "themes": [
+        "dating"
+      ],
+      "format": "ranking",
+      "prompt": "Rank what {target} looks for in a partner, most important first:",
+      "answers": [
+        "Humor",
+        "Looks",
+        "Kindness",
+        "Ambition"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "love.rank-gifts",
+      "themes": [
+        "dating"
+      ],
+      "format": "ranking",
+      "prompt": "Rank these gifts the way {target} would, best first:",
+      "answers": [
+        "Flowers",
+        "A handwritten letter",
+        "A trip",
+        "Something practical"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
     }
   ]
 }

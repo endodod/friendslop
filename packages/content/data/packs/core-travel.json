@@ -489,6 +489,42 @@
         "tile",
         "questionOnlyMinigame"
       ]
+    },
+    {
+      "id": "travel.rank-transport",
+      "themes": [
+        "travel"
+      ],
+      "format": "ranking",
+      "prompt": "Rank how {target} likes to travel, favorite first:",
+      "answers": [
+        "Plane",
+        "Train",
+        "Car",
+        "Bus"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "travel.rank-continents",
+      "themes": [
+        "travel"
+      ],
+      "format": "ranking",
+      "prompt": "Rank where {target} would rather go, first choice first:",
+      "answers": [
+        "Asia",
+        "The Americas",
+        "Europe",
+        "Africa"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
     }
   ]
 }

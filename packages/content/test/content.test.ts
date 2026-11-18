@@ -27,8 +27,8 @@ describe("content lint", () => {
 
   it("question-only mini-games have enough questions", () => {
     const qs = content.packs.flatMap((p) => p.questions).filter((q) => !q.truthSource && q.usage.includes("questionOnlyMinigame"));
-    expect(qs.filter((q) => q.tags?.includes("mostLikely")).length, "Most Likely To").toBeGreaterThanOrEqual(10);
-    expect(qs.filter((q) => q.format === "ranking").length, "Ranking").toBeGreaterThanOrEqual(6);
+    expect(qs.filter((q) => q.tags?.includes("mostLikely")).length, "Most Likely To").toBeGreaterThanOrEqual(60);
+    expect(qs.filter((q) => q.format === "ranking").length, "Ranking").toBeGreaterThanOrEqual(45);
     expect(qs.filter((q) => q.format === "number" || q.format === "scale").length, "Hot or Not / Duel").toBeGreaterThanOrEqual(20);
     expect(qs.filter((q) => q.format === "tiles").length, "Speed Sync").toBeGreaterThanOrEqual(20);
   });

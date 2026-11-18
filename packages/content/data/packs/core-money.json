@@ -503,6 +503,42 @@
         "tile",
         "questionOnlyMinigame"
       ]
+    },
+    {
+      "id": "money.rank-spend",
+      "themes": [
+        "money"
+      ],
+      "format": "ranking",
+      "prompt": "Rank where {target}'s money goes, most first:",
+      "answers": [
+        "Food",
+        "Going out",
+        "Rent and bills",
+        "Online shopping"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "money.rank-win",
+      "themes": [
+        "money"
+      ],
+      "format": "ranking",
+      "prompt": "{target} wins 10,000 €. Rank what they do, most likely first:",
+      "answers": [
+        "Save it",
+        "Travel",
+        "Treat friends",
+        "Buy something big"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
     }
   ]
 }

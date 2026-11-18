@@ -548,6 +548,42 @@
         "tile",
         "minigameIntro"
       ]
+    },
+    {
+      "id": "music.rank-listen",
+      "themes": [
+        "music"
+      ],
+      "format": "ranking",
+      "prompt": "Rank where {target} listens to music most, first = most:",
+      "answers": [
+        "Headphones on the go",
+        "In the car",
+        "At home on speakers",
+        "In the shower"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "music.rank-events",
+      "themes": [
+        "music"
+      ],
+      "format": "ranking",
+      "prompt": "Rank these music outings the way {target} would, best first:",
+      "answers": [
+        "Festival",
+        "Small club gig",
+        "Karaoke night",
+        "Stadium concert"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
     }
   ]
 }

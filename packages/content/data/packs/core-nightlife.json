@@ -485,6 +485,42 @@
         "tile",
         "questionOnlyMinigame"
       ]
+    },
+    {
+      "id": "night.rank-night",
+      "themes": [
+        "party"
+      ],
+      "format": "ranking",
+      "prompt": "Rank the parts of a night out the way {target} would, best first:",
+      "answers": [
+        "Pre-drinks",
+        "Dancing",
+        "Late-night food",
+        "The walk home"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "night.rank-music",
+      "themes": [
+        "party"
+      ],
+      "format": "ranking",
+      "prompt": "Rank the party music the way {target} would, best first:",
+      "answers": [
+        "Pop",
+        "Hip-hop",
+        "Techno",
+        "Throwbacks"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
     }
   ]
 }

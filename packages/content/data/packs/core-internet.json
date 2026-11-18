@@ -503,6 +503,42 @@
         "tile",
         "minigameIntro"
       ]
+    },
+    {
+      "id": "net.rank-apps",
+      "themes": [
+        "internet"
+      ],
+      "format": "ranking",
+      "prompt": "Rank the apps by how much {target} uses them, most first:",
+      "answers": [
+        "Messaging",
+        "Video",
+        "Social media",
+        "Games"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "net.rank-content",
+      "themes": [
+        "internet"
+      ],
+      "format": "ranking",
+      "prompt": "Rank what {target} watches online, most first:",
+      "answers": [
+        "Short videos",
+        "Long videos",
+        "Streams",
+        "Series"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
     }
   ]
 }

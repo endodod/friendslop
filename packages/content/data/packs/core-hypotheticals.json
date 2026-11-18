@@ -520,6 +520,42 @@
         "tile",
         "minigameIntro"
       ]
+    },
+    {
+      "id": "hypo.rank-powers",
+      "themes": [
+        "hypotheticals"
+      ],
+      "format": "ranking",
+      "prompt": "Rank the powers the way {target} would, best first:",
+      "answers": [
+        "Teleporting",
+        "Mind reading",
+        "Time travel",
+        "Flying"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "hypo.rank-survival",
+      "themes": [
+        "hypotheticals"
+      ],
+      "format": "ranking",
+      "prompt": "Stranded on an island: rank what {target} would grab first:",
+      "answers": [
+        "Knife",
+        "Lighter",
+        "Water bottle",
+        "Phone"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
     }
   ]
 }

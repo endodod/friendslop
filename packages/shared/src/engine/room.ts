@@ -18,7 +18,6 @@ export function generateRoomCode(rng: Rng, taken: (code: string) => boolean = ()
 export function defaultSettings(content: ContentBundle): RoomSettings {
   return {
     turnCount: GAME_CONFIG.turns.default,
-    themes: content.themes.map((t) => t.id),
     tileFrequency: {},
     starGoal: GAME_CONFIG.starGoals.default,
     packs: [...selectablePacks(content).map((p) => p.id), CUSTOM_PACK_ID],
@@ -124,9 +123,8 @@ export function updateSettings(room: RoomState, patch: Partial<RoomSettings>, co
   if (room.stage !== "lobby") fail("GAME_IN_PROGRESS", "Settings are locked during a game.");
   const s = { ...room.settings, ...patch };
   if (!(GAME_CONFIG.turns.options as readonly number[]).includes(s.turnCount)) fail("INVALID_INPUT", "Invalid turn count.");
-  const known = new Set(content.themes.map((t) => t.id));
-  s.themes = [...new Set(s.themes)].filter((t) => known.has(t));
-  if (s.themes.length === 0) fail("INVALID_INPUT", "Pick at least one theme.");
+  // Themes used to be a separate filter; packs are the only switch now.
+  delete (s as { themes?: unknown }).themes;
   if (!content.boards.some((b) => b.id === s.boardId)) fail("INVALID_INPUT", "Unknown board.");
   if (!(GAME_CONFIG.starGoals.options as readonly number[]).includes(s.starGoal ?? 0)) fail("INVALID_INPUT", "Invalid win condition.");
   const packIds = new Set([...selectablePacks(content).map((p) => p.id), CUSTOM_PACK_ID]);

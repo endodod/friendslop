@@ -208,7 +208,6 @@ export function Lobby({ code, onLeave }: { code: string; onLeave: () => Promise<
 function SettingsPanel({ settings, editable, canData }: { settings: RoomSettings; editable: boolean; canData: boolean }) {
   const set = (patch: Partial<RoomSettings>) => act("room:settings", patch);
   const customCount = useStore((s) => s.pub?.customQuestions?.length ?? 0);
-  const themes = clientContent.themes.filter((t) => t.id !== "custom");
   return (
     <section className="card flex flex-col gap-5 p-5">
       <h2 className="flex items-center gap-2 font-display text-2xl">
@@ -241,28 +240,6 @@ function SettingsPanel({ settings, editable, canData }: { settings: RoomSettings
         <span className="font-display text-lg">Question packs</span>
         <PackPicker value={settings.packs} editable={editable} customCount={customCount} onChange={(packs) => set({ packs })} />
       </div>
-
-      <details className="rounded-2xl bg-bg-2 p-3">
-        <summary className="cursor-pointer font-display text-lg">Themes (filter inside the packs)</summary>
-        <div className="mt-3 flex flex-wrap gap-2">
-          {themes.map((t) => {
-            const on = settings.themes.includes(t.id);
-            return (
-              <button
-                key={t.id}
-                disabled={!editable}
-                aria-pressed={on}
-                onClick={() => set({ themes: on ? settings.themes.filter((x) => x !== t.id) : [...settings.themes, t.id] })}
-                className="flex min-h-11 items-center gap-2 rounded-full border-2 px-3 font-display transition-all disabled:cursor-default"
-                style={{ borderColor: t.color, background: on ? t.color : "transparent", color: on ? "#14112a" : t.color, opacity: on ? 1 : 0.65 }}
-              >
-                <Icon id={t.icon} size={18} />
-                {localize(t.name)}
-              </button>
-            );
-          })}
-        </div>
-      </details>
 
       <details className="rounded-2xl bg-bg-2 p-3">
         <summary className="cursor-pointer font-display text-lg">

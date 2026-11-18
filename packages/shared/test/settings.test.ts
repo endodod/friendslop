@@ -54,7 +54,7 @@ describe("question packs", () => {
     for (let i = 0; i < 40; i++) {
       const s = selectQuestion({
         content,
-        settings: { themes: content.themes.map((t) => t.id), familyFriendly: false, language: "en", packs: ["core-league"] },
+        settings: { familyFriendly: false, language: "en", packs: ["core-league"] },
         history: { questionIds: [], lastThemeId: null },
         rng,
         usage: "tile",

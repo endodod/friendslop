@@ -555,6 +555,42 @@
         "tile",
         "questionOnlyMinigame"
       ]
+    },
+    {
+      "id": "league.rank-objectives",
+      "themes": [
+        "league"
+      ],
+      "format": "ranking",
+      "prompt": "Rank the objectives the way {target} would, most important first:",
+      "answers": [
+        "Dragon",
+        "Baron",
+        "Towers",
+        "Kills"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "league.rank-tilt",
+      "themes": [
+        "league"
+      ],
+      "format": "ranking",
+      "prompt": "Rank what tilts {target} most, worst first:",
+      "answers": [
+        "A feeding teammate",
+        "A troll pick",
+        "Losing to a lucky crit",
+        "Being flamed"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
     }
   ]
 }

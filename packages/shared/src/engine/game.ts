@@ -885,7 +885,6 @@ function questionServices(d: Draft): MinigameServices {
         participants,
         rng: s.ctx.rng,
         language: room.settings.language,
-        enabledThemes: room.settings.themes,
       });
       g.history.lastThemeId = rq.themeId;
       return rq;

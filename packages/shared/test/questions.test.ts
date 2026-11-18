@@ -210,7 +210,7 @@ describe("scoring", () => {
 });
 
 describe("selection", () => {
-  const settings = { themes: content.themes.map((t) => t.id), familyFriendly: false, language: "en" as const };
+  const settings = { familyFriendly: false, language: "en" as const };
   it("never repeats within a game until the pool is exhausted", () => {
     const rng = createRng(1);
     const history = { questionIds: [] as string[], lastThemeId: null as string | null };
@@ -261,12 +261,12 @@ describe("selection", () => {
       history.questionIds.push(s.question.id);
     }
   });
-  it("family-friendly excludes spicy, theme filter works", () => {
+  it("family-friendly excludes spicy, pack filter works", () => {
     const rng = createRng(3);
     for (let i = 0; i < 50; i++) {
       const s = selectQuestion({
         content,
-        settings: { ...settings, themes: ["hot-takes"], familyFriendly: true },
+        settings: { ...settings, packs: ["core-hot-takes"], familyFriendly: true },
         history: { questionIds: [], lastThemeId: null },
         rng,
         usage: "tile",

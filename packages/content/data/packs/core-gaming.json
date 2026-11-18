@@ -535,6 +535,42 @@
         "tile",
         "minigameIntro"
       ]
+    },
+    {
+      "id": "game.rank-genres",
+      "themes": [
+        "gaming"
+      ],
+      "format": "ranking",
+      "prompt": "Rank these game genres the way {target} would, favorite first:",
+      "answers": [
+        "Shooter",
+        "RPG",
+        "Strategy",
+        "Party games"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "game.rank-annoy",
+      "themes": [
+        "gaming"
+      ],
+      "format": "ranking",
+      "prompt": "Rank what annoys {target} most in games, worst first:",
+      "answers": [
+        "Lag",
+        "Unskippable cutscenes",
+        "Bad teammates",
+        "Losing progress"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
     }
   ]
 }

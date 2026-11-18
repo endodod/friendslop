@@ -490,6 +490,42 @@
         "tile",
         "questionOnlyMinigame"
       ]
+    },
+    {
+      "id": "child.rank-games",
+      "themes": [
+        "childhood"
+      ],
+      "format": "ranking",
+      "prompt": "Rank these playground games the way little {target} would, best first:",
+      "answers": [
+        "Tag",
+        "Hide and seek",
+        "Football",
+        "Make-believe"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "child.rank-treats",
+      "themes": [
+        "childhood"
+      ],
+      "format": "ranking",
+      "prompt": "Rank these treats the way little {target} would, best first:",
+      "answers": [
+        "Ice cream",
+        "Candy",
+        "Chocolate",
+        "Chips"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
     }
   ]
 }

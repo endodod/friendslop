@@ -10,7 +10,6 @@ export type TileFrequency = "off" | "few" | "normal" | "many";
 
 export interface RoomSettings {
   turnCount: number;
-  themes: string[];
   /** Tile mix: tile type id → how often it appears (missing = normal). */
   tileFrequency: Record<string, TileFrequency>;
   /** 0 = most stars after the last round; otherwise the first player to reach this many stars wins. */

@@ -42,7 +42,7 @@ that folder is loaded, so a new pack is just a new file.
 | Field | Required | Notes |
 |---|---|---|
 | `id` | yes | Unique across all packs, lowercase, e.g. `food.last-meal`. Never change it once shipped (stats use it). |
-| `themes` | yes | Theme ids from `themes.json`. The question appears when any of them is enabled. |
+| `themes` | yes | Theme ids from `themes.json`. The first one sets the colour/icon shown with the question and is used to avoid the same theme twice in a row. |
 | `format` | yes | `tiles`, `number`, `scale`, `player`, `ranking`, `higherLower` |
 | `prompt` | yes | Localized string. Must mention `{target}` (except `player` "most likely to" prompts). |
 | `answers` | tiles / ranking | `tiles`: 2–6 answers (4 is best). `ranking`: 3–4 items. |
@@ -114,8 +114,8 @@ content folder.
 
 ## Question packs in the lobby
 
-Every pack file shows up as a toggle in the lobby (with its question count). Themes are a second
-filter on top of packs. Packs that only contain data questions are hidden until account linking exists.
+Every pack file shows up as a toggle in the lobby (with its question count). Packs are the only
+switch: themes are just tags (colour, icon, variety) and can't be turned off separately. Packs that only contain data questions are hidden until account linking exists.
 
 ## Themes
 

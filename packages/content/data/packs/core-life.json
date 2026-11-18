@@ -582,6 +582,42 @@
         "tile",
         "minigameIntro"
       ]
+    },
+    {
+      "id": "life.rank-morning",
+      "themes": [
+        "life"
+      ],
+      "format": "ranking",
+      "prompt": "Rank {target}'s morning routine, first thing they do first:",
+      "answers": [
+        "Check phone",
+        "Coffee or tea",
+        "Shower",
+        "Hit snooze"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "life.rank-rooms",
+      "themes": [
+        "life"
+      ],
+      "format": "ranking",
+      "prompt": "Rank the rooms the way {target} would, favorite first:",
+      "answers": [
+        "Bedroom",
+        "Kitchen",
+        "Living room",
+        "Bathroom"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
     }
   ]
 }

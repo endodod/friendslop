@@ -464,6 +464,42 @@
         "tile",
         "minigameIntro"
       ]
+    },
+    {
+      "id": "friends.rank-hangouts",
+      "themes": [
+        "friends"
+      ],
+      "format": "ranking",
+      "prompt": "Rank group hangouts the way {target} would, best first:",
+      "answers": [
+        "Game night",
+        "Dinner out",
+        "House party",
+        "Road trip"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "friends.rank-chat",
+      "themes": [
+        "friends"
+      ],
+      "format": "ranking",
+      "prompt": "Rank what {target} posts most in the group chat, most first:",
+      "answers": [
+        "Memes",
+        "Voice messages",
+        "Plans that never happen",
+        "Just 'haha'"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
     }
   ]
 }

@@ -488,6 +488,42 @@
         "tile",
         "minigameIntro"
       ]
+    },
+    {
+      "id": "work.rank-perks",
+      "themes": [
+        "work"
+      ],
+      "format": "ranking",
+      "prompt": "Rank job perks the way {target} would, best first:",
+      "answers": [
+        "High salary",
+        "Working from home",
+        "Free lunch",
+        "Nice coworkers"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "work.rank-meetings",
+      "themes": [
+        "work"
+      ],
+      "format": "ranking",
+      "prompt": "Rank what {target} does in a boring meeting, most likely first:",
+      "answers": [
+        "Doodle",
+        "Check phone",
+        "Actually listen",
+        "Fall asleep"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
     }
   ]
 }

@@ -547,6 +547,42 @@
         "tile",
         "questionOnlyMinigame"
       ]
+    },
+    {
+      "id": "movie.rank-watch",
+      "themes": [
+        "movies"
+      ],
+      "format": "ranking",
+      "prompt": "Rank how {target} would rather watch a movie, favorite first:",
+      "answers": [
+        "Cinema",
+        "Sofa at home",
+        "In bed on a laptop",
+        "Outdoor screening"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "movie.rank-snacks",
+      "themes": [
+        "movies"
+      ],
+      "format": "ranking",
+      "prompt": "Rank the movie snacks the way {target} would, best first:",
+      "answers": [
+        "Popcorn",
+        "Nachos",
+        "Candy",
+        "Ice cream"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
     }
   ]
 }
