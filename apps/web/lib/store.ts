@@ -19,6 +19,8 @@ interface Store {
   toasts: ToastMsg[];
   muted: boolean;
   chat: ChatMessage[];
+  /** A token walk is still animating on the board: full-screen phases wait for it. */
+  boardBusy: boolean;
   setChat(ms: ChatMessage[]): void;
   addChat(m: ChatMessage): void;
   setConnected(c: boolean): void;
@@ -43,6 +45,7 @@ export const useStore = create<Store>((set) => ({
   toasts: [],
   muted: false,
   chat: [],
+  boardBusy: false,
   setChat: (chat) => set({ chat }),
   addChat: (m) => set((s) => (s.chat.some((x) => x.id === m.id) ? s : { chat: [...s.chat, m].slice(-100) })),
   setConnected: (connected) => set({ connected }),

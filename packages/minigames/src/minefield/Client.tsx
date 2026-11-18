@@ -5,10 +5,10 @@ import type { MinigameClientProps } from "../kit/types";
 import { Arena } from "../kit/visual";
 import { TILES, TURN_MS } from "./logic";
 
-interface Pub { alive: string[]; out: string[]; opened: number[]; current: string | null; turnEndsAt: number; boom: { tile: number; playerId: string } | null; grid: number }
+interface Pub { alive: string[]; out: string[]; opened: number[]; current: string | null; turnEndsAt: number; boom: { tile: number; playerId: string } | null; cleared?: boolean; grid: number }
 
 export function MinefieldClient(p: MinigameClientProps<Pub, { safe: number | null }>) {
-  const myTurn = p.isParticipant && p.pub.current === p.me;
+  const myTurn = !p.pub.cleared && p.isParticipant && p.pub.current === p.me;
   const boomKey = p.pub.boom ? `${p.pub.grid}-${p.pub.boom.tile}` : null;
   const last = useRef<string | null>(null);
   useEffect(() => {
@@ -29,10 +29,14 @@ export function MinefieldClient(p: MinigameClientProps<Pub, { safe: number | nul
           animate={{ y: 0, opacity: 1 }}
           className={`font-display text-2xl ${p.pub.boom ? "text-bad" : myTurn ? "text-accent" : ""}`}
         >
-          {p.pub.boom ? `BOOM! ${p.players[p.pub.boom.playerId]?.name} is out!` : myTurn ? "Your turn — pick a tile!" : `${cur?.name ?? ""}'s turn`}
+          {p.pub.boom
+            ? `BOOM! ${p.players[p.pub.boom.playerId]?.name} is out!`
+            : p.pub.cleared
+              ? "Only the bomb was left — new field!"
+              : myTurn ? "Your turn — pick a tile!" : `${cur?.name ?? ""}'s turn`}
         </motion.p>
       </div>
-      {!p.pub.boom && <p.ui.Timer endsAt={p.pub.turnEndsAt} totalMs={TURN_MS} />}
+      {!p.pub.boom && !p.pub.cleared && <p.ui.Timer endsAt={p.pub.turnEndsAt} totalMs={TURN_MS} />}
       <Arena
         tone={p.pub.boom ? "#ff4d5e" : "#2fd27a"}
         className={`p-3 ${p.pub.boom ? "shake" : ""}`}

@@ -1,5 +1,6 @@
 "use client";
 import { AnimatePresence, motion } from "framer-motion";
+import { ChatPanel } from "../ChatPanel";
 import { Flag, LogOut, Map as MapIcon, Pause, Play, X } from "lucide-react";
 import { setGamePaused } from "@party-game/minigames/client";
 import { useEffect, useState } from "react";
@@ -10,7 +11,7 @@ import { BoardView } from "../board/BoardView";
 import { QuestionView } from "../question/QuestionView";
 import { MinigameView } from "../minigame/MinigameView";
 import { useScreenShake } from "../fx";
-import { CoinCount, Icon, MuteButton, StarCount, useIsHost, usePlayers } from "../ui";
+import { Avatar, CoinCount, Icon, MuteButton, StarCount, useIsHost, usePlayers } from "../ui";
 import { BonusStarsView, GameEndBanner, Podium } from "./EndScreens";
 import { GameStartPanel, PhasePanel, SkipButton } from "./PhasePanel";
 import { HelpButton } from "./HowToPlay";
@@ -71,6 +72,36 @@ function FocusContent({ display }: { display: boolean }) {
   }
 }
 
+/** Who plays now and who's next (this round, then the next round from the top). */
+function TurnOrder() {
+  const g = useStore((s) => s.pub!.game!);
+  const players = usePlayers();
+  const n = g.order.length;
+  if (n < 2) return null;
+  // Rest of this round first; the ↻ marks where the next round (after the mini-game) starts.
+  const upcoming = Array.from({ length: n }, (_, k) => (g.activeIndex + k) % n);
+  return (
+    <ol className="flex shrink-0 items-center gap-1" aria-label="Turn order">
+      {upcoming.map((idx, k) => {
+        const p = players[g.order[idx]];
+        if (!p) return null;
+        const newRound = k > 0 && idx === 0;
+        return (
+          <li key={p.id} className="flex items-center gap-1" title={k === 0 ? `${p.name} (now)` : `${p.name}${k === 1 ? " (next)" : ""}`}>
+            {k > 0 && (
+              <span className="text-xs text-muted" aria-hidden>
+                {newRound ? "↻" : "›"}
+              </span>
+            )}
+            <span className="sr-only">{k === 0 ? "Now: " : newRound ? "Next round: " : ""}{p.name}</span>
+            <Avatar player={p} size={k === 0 ? 28 : 22} ring={k === 0} dim={k > 1} />
+          </li>
+        );
+      })}
+    </ol>
+  );
+}
+
 function TopBar({ compact }: { compact?: boolean }) {
   const pub = useStore((s) => s.pub!);
   const g = useStore((s) => s.pub!.game!);
@@ -90,6 +121,7 @@ function TopBar({ compact }: { compact?: boolean }) {
       {!compact && g.mode === "board" && active && !FOCUS_PHASES.has(g.phase) && (
         <span className="truncate font-display text-muted">{active.name}&apos;s turn</span>
       )}
+      {g.mode === "board" && g.phase !== "podium" && <TurnOrder />}
       <span className="flex-1" />
       {me && (
         <span className="flex items-center gap-2 rounded-xl bg-panel-2 px-2 py-1 sm:gap-3 sm:px-3">
@@ -212,7 +244,9 @@ function GameScreenInner() {
   const [showBoard, setShowBoard] = useState(false);
 
   const display = role === "display";
-  const focus = FOCUS_PHASES.has(g.phase) || g.mode !== "board";
+  // Let a token finish walking (and land) before a full-screen phase hides the board.
+  const boardBusy = useStore((s) => s.boardBusy);
+  const focus = g.mode !== "board" || (FOCUS_PHASES.has(g.phase) && !boardBusy);
   const controllerMode = !display && pub.displays > 0; // same room: phones are controllers
   const myTurn = playerId === g.order[g.activeIndex];
   const selectable = g.phase === "junctionChoice" && myTurn && !display ? (g.junction?.options ?? []) : [];
@@ -261,6 +295,7 @@ function GameScreenInner() {
               </div>
             )}
             <Log />
+            <ChatPanel />
           </aside>
         </div>
       </main>
@@ -282,6 +317,8 @@ function GameScreenInner() {
               <MapIcon size={18} /> Show board
             </button>
           )}
+          <Log />
+          <ChatPanel />
         </div>
         <AnimatePresence>
           {showBoard && (
@@ -321,6 +358,7 @@ function GameScreenInner() {
             {!focus && <section className="card p-4">{panel}</section>}
             <Scoreboard game={g} compact />
             <Log />
+            <ChatPanel />
           </aside>
         </div>
       </main>
@@ -334,6 +372,8 @@ function GameScreenInner() {
       <div className="flex flex-1 flex-col gap-3 px-3 pb-6">
         <section className="card p-4">{panel}</section>
         {!focus && <Scoreboard game={g} compact />}
+        <Log />
+        <ChatPanel />
       </div>
     </main>
   );

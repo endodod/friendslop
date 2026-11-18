@@ -1,25 +1,54 @@
 "use client";
 import { PLAYER_AVATARS, colorHex } from "@party-game/shared";
+import { photoUrl } from "@/lib/account";
 
-/** Pick a little icon to show instead of your initials. "Aa" = initials. */
+/**
+ * Pick a little icon to show instead of your initials. "Aa" = initials.
+ * Signed in with a profile picture: the picture is the first option (and the default).
+ */
 export function AvatarPicker({
   value,
   color,
   name,
   onChange,
+  photo,
+  usePhoto,
+  onUsePhoto,
 }: {
   value: string | null | undefined;
   color: string;
   name: string;
+  /** Picking an icon/initials also means "don't use my profile picture". */
   onChange: (a: string | null) => void;
+  /** Server path of the account's profile picture (shows the extra option). */
+  photo?: string | null;
+  usePhoto?: boolean;
+  onUsePhoto?: () => void;
 }) {
   const hex = colorHex(color);
   const initials = (name.trim().slice(0, 2) || "Aa").toUpperCase();
   const options: (string | null)[] = [null, ...PLAYER_AVATARS];
+  const src = photoUrl(photo);
+  const photoOn = !!src && !!usePhoto;
   return (
     <div className="grid grid-cols-8 gap-1.5 p-1.5 sm:gap-2" role="radiogroup" aria-label="Icon">
+      {src && (
+        <button
+          type="button"
+          role="radio"
+          aria-checked={photoOn}
+          aria-label="Profile picture"
+          title="Your profile picture"
+          onClick={() => onUsePhoto?.()}
+          className="flex aspect-square w-full max-w-11 items-center justify-center justify-self-center overflow-hidden rounded-full transition-transform active:scale-90"
+          style={{ boxShadow: photoOn ? `0 0 0 3px #0d0b1a, 0 0 0 6px ${hex}` : "inset 0 0 0 1px #ffffff1a", opacity: photoOn ? 1 : 0.7 }}
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={src} alt="" className="h-full w-full object-cover" />
+        </button>
+      )}
       {options.map((a) => {
-        const selected = (value ?? null) === a;
+        const selected = !photoOn && (value ?? null) === a;
         return (
           <button
             key={a ?? "initials"}

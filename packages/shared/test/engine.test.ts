@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { GAME_CONFIG, tickGame, toPrivateState, toPublicState, updatePlayer, onConnectionChange } from "../src";
-import { Harness } from "./helpers";
+import { GAME_CONFIG, getBoard, tickGame, toPrivateState, toPublicState, updatePlayer, onConnectionChange } from "../src";
+import { Harness, content } from "./helpers";
 
 /** Give the active player an item and roll a fixed value with Custom Dice. */
 function rollExactly(h: Harness, n: number) {
@@ -534,24 +534,38 @@ describe("special tiles", () => {
     expect(r.coinsDelta).toBe(r.roll! * 2);
   });
 
-  it("Piggy Bank: walking past pays in, landing takes the pot", () => {
+  it("Piggy Bank: red-tile losses pay in, walking past is free, landing takes the pot", () => {
     const h = new Harness(2);
     toTurnStart(h);
     const pid = h.active();
     h.room.game!.starTileId = "m20";
     h.room.game!.players[pid].tileId = "m11";
-    rollExactly(h, 2); // past m12 (bank) → m13
-    expect(h.g.bank).toBe(2);
-    expect(h.g.players[pid].coins).toBe(8);
+    h.room.game!.tileTypes.m13 = "red";
+    rollExactly(h, 2); // past m12 (bank, free) → m13 (red: −3 into the bank)
+    h.timeout();
+    expect(h.g.bank).toBe(3);
+    expect(h.g.players[pid].coins).toBe(7);
     h.advanceTo("turnStart");
     const other = h.active();
     h.room.game!.players[other].tileId = "m11";
     const before = h.g.players[other].coins;
     rollExactly(h, 1); // lands on m12
     h.timeout();
-    expect(h.g.tileResult!.coinsDelta).toBe(2);
-    expect(h.g.players[other].coins).toBe(before + 2);
+    expect(h.g.tileResult!.coinsDelta).toBe(3);
+    expect(h.g.players[other].coins).toBe(before + 3);
     expect(h.g.bank).toBe(0);
+  });
+
+  it("Start: walking past it pays a lap bonus", () => {
+    const h = new Harness(2);
+    toTurnStart(h);
+    const pid = h.active();
+    h.room.game!.starTileId = "m10";
+    const before = h.g.players[pid].coins;
+    const last = getBoard(content, h.g.boardId).tiles.find((t) => t.next.includes("m0"))!.id;
+    h.room.game!.players[pid].tileId = last;
+    rollExactly(h, 2); // past m0 (Start) → m1
+    expect(h.g.players[pid].coins).toBe(before + 5);
   });
 
   it("Thief: steals from a random other player; a Shield blocks it", () => {

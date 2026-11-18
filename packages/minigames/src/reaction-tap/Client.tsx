@@ -6,7 +6,7 @@ import type { MinigameClientProps } from "../kit/types";
 import { KeyHint, SoloStatus, SubmittedNotice, useKey } from "../kit/hooks";
 import type { SoloPrivate, SoloPublic } from "@party-game/shared";
 import { Hud, Pill, RoundDots } from "../kit/visual";
-import { FALSE_START_PENALTY_MS, MAX_REACTION_MS, ROUNDS, greenDelays } from "./logic";
+import { BONUS_ROUNDS, MAX_REACTION_MS, ROUNDS, greenDelays } from "./logic";
 
 type Stage = "ready" | "waiting" | "green" | "result" | "done";
 
@@ -17,12 +17,12 @@ export function ReactionTapClient(p: MinigameClientProps<SoloPublic, SoloPrivate
   const [round, setRound] = useState(0);
   const [stage, setStage] = useState<Stage>("ready");
   const [times, setTimes] = useState<number[]>([]);
-  const [falseStarts, setFalseStarts] = useState(0);
+  const [falseStart, setFalseStart] = useState(false);
   const [msg, setMsg] = useState("");
   const greenAt = useRef(0);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const delays = greenDelays(p.seed ?? 1);
-  const forgiven = p.bonus && falseStarts === 0;
+  const total = p.bonus ? BONUS_ROUNDS : ROUNDS;
 
   useEffect(() => () => void (timer.current && clearTimeout(timer.current)), []);
   // A pause cancels the round in progress (no penalty); tap again to restart it.
@@ -52,9 +52,9 @@ export function ReactionTapClient(p: MinigameClientProps<SoloPublic, SoloPrivate
     const next = [...times, ms];
     setTimes(next);
     setMsg(`${Math.round(ms)} ms`);
-    if (next.length >= ROUNDS) {
+    if (next.length >= total) {
       setStage("done");
-      p.submit({ times: next, falseStarts });
+      p.submit({ times: next, falseStart: false });
     } else {
       setStage("result");
       setRound((r) => r + 1);
@@ -67,9 +67,10 @@ export function ReactionTapClient(p: MinigameClientProps<SoloPublic, SoloPrivate
       if (timer.current) clearTimeout(timer.current);
       p.ui.play("bad");
       p.ui.vibrate(80);
-      setFalseStarts((f) => f + 1);
-      setMsg(forgiven ? "False start! (forgiven — bonus)" : `False start! +${FALSE_START_PENALTY_MS} ms`);
-      setStage("result");
+      // Tapping before green disqualifies you from this mini-game.
+      setFalseStart(true);
+      setStage("done");
+      p.submit({ times, falseStart: true });
       return;
     }
     if (stage === "green") record(gameNow() - greenAt.current);
@@ -78,7 +79,13 @@ export function ReactionTapClient(p: MinigameClientProps<SoloPublic, SoloPrivate
   if (!p.isParticipant || p.priv?.submitted || stage === "done") {
     return (
       <div className="flex flex-col gap-3">
-        {p.isParticipant && <SubmittedNotice label={`Best: ${Math.round(Math.min(...(times.length ? times : [0])))} ms`} />}
+        {p.isParticipant && falseStart && (
+          <div className="rounded-3xl bg-bad/20 p-5 text-center" role="status">
+            <p className="font-display text-4xl text-bad">False start!</p>
+            <p className="text-muted">You tapped before green, so you&apos;re out of this one.</p>
+          </div>
+        )}
+        {p.isParticipant && !falseStart && times.length > 0 && <SubmittedNotice label={`Best: ${Math.round(Math.min(...times))} ms`} />}
         <SoloStatus participants={p.participants} submitted={p.pub.submitted} labels={p.pub.labels} players={p.players} Avatar={p.ui.Avatar} />
       </div>
     );
@@ -95,7 +102,7 @@ export function ReactionTapClient(p: MinigameClientProps<SoloPublic, SoloPrivate
   return (
     <div className="flex flex-col gap-3">
       <Hud
-        left={<RoundDots total={ROUNDS} done={Math.min(times.length, ROUNDS)} />}
+        left={<RoundDots total={total} done={Math.min(times.length, total)} />}
         right={
           <>
             {times.map((t, i) => (
@@ -134,7 +141,7 @@ export function ReactionTapClient(p: MinigameClientProps<SoloPublic, SoloPrivate
           />
         )}
         <span className="relative text-xl opacity-80">
-          Round {Math.min(round + 1, ROUNDS)}/{ROUNDS}
+          Try {Math.min(round + 1, total)}/{total}
         </span>
         <motion.span
           key={stage}
@@ -156,7 +163,9 @@ export function ReactionTapClient(p: MinigameClientProps<SoloPublic, SoloPrivate
             {msg.endsWith(" ms") && last !== undefined && <span className="ml-2 text-lg opacity-80">{rating(last)}</span>}
           </motion.span>
         )}
-        {p.bonus && <span className="relative rounded-full bg-black/30 px-3 py-1 text-sm text-white">Bonus: one false start forgiven</span>}
+        <span className="relative rounded-full bg-black/30 px-3 py-1 text-sm text-white">
+          Best try counts · tapping before green = out{p.bonus ? " · Bonus: one extra try" : ""}
+        </span>
         <span className="relative">
           <KeyHint text="or tap / press" />
         </span>

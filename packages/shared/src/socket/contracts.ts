@@ -43,6 +43,8 @@ export const ClientEvents = {
     color: z.string().max(16).optional(),
     avatar: z.string().max(16).nullable().optional(),
     profileToken: z.string().max(64).optional(),
+    /** Signed in with a profile picture: show it (default) or use the chosen icon instead. */
+    usePhoto: z.boolean().optional(),
   }),
   "room:join": z.object({
     code: RoomCodeSchema,
@@ -53,10 +55,18 @@ export const ClientEvents = {
     /** Seat token from localStorage for reconnecting. */
     token: z.string().max(128).optional(),
     profileToken: z.string().max(64).optional(),
+    /** Signed in with a profile picture: show it (default) or use the chosen icon instead. */
+    usePhoto: z.boolean().optional(),
   }),
   "room:leave": z.object({}),
   "room:settings": RoomSettingsPatchSchema,
-  "room:profile": z.object({ name: z.string().max(40).optional(), color: z.string().max(16).optional(), avatar: z.string().max(16).nullable().optional() }),
+  "room:profile": z.object({
+    name: z.string().max(40).optional(),
+    color: z.string().max(16).optional(),
+    avatar: z.string().max(16).nullable().optional(),
+    /** Switch between your profile picture and your icon (signed-in players). */
+    usePhoto: z.boolean().optional(),
+  }),
   "room:kick": z.object({ playerId: PlayerIdSchema }),
   "player:ready": z.object({ ready: z.boolean() }),
   "game:start": z.object({

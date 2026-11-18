@@ -208,6 +208,8 @@ function Playing({ display }: { display: boolean }) {
   );
 }
 
+const ordinal = (n: number) => `${n}${n % 10 === 1 && n !== 11 ? "st" : n % 10 === 2 && n !== 12 ? "nd" : n % 10 === 3 && n !== 13 ? "rd" : "th"}`;
+
 function Results() {
   const g = useStore((s) => s.pub!.game!);
   const players = usePlayers();
@@ -216,6 +218,9 @@ function Results() {
   const meta = clientContent.minigames.find((m) => m.id === mg.id)!;
   const placements = mg.placements ?? [];
   const iWon = placements.some((p) => p.playerId === playerId && p.rank === 1);
+  // First a short outcome screen, then the table (timed from the phase start, so reconnects agree).
+  const outcomeLeft = useRemaining(g.phaseStartedAt + M.outcomeMs, 100);
+  if (outcomeLeft > 0) return <Outcome />;
   return (
     <div className="flex flex-col gap-4" data-testid="minigame-results">
       <Confetti fireKey={iWon ? `${mg.id}-${g.round}` : null} />
@@ -242,6 +247,58 @@ function Results() {
         ))}
       </ol>
       <SkipButton />
+    </div>
+  );
+}
+
+/** "You won!" / "You lost!" (or who won, for spectators) before the results table. */
+function Outcome() {
+  const g = useStore((s) => s.pub!.game!);
+  const players = usePlayers();
+  const playerId = useStore((s) => s.playerId);
+  const mg = g.minigame!;
+  const placements = mg.placements ?? [];
+  const mine = placements.find((p) => p.playerId === playerId);
+  const winners = placements.filter((p) => p.rank === 1);
+  const lastRank = Math.max(...placements.map((p) => p.rank), 1);
+  useEffect(() => {
+    if (!mine) return;
+    play(mine.rank === 1 ? "win" : mine.rank === lastRank ? "bad" : "pop");
+    if (mine.rank !== 1) vibrate(120);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const tone = !mine ? "neutral" : mine.rank === 1 ? "win" : mine.rank === lastRank ? "loss" : "mid";
+  const title = !mine
+    ? winners.length > 1
+      ? "It's a tie!"
+      : `${players[winners[0]?.playerId]?.name ?? "Someone"} wins!`
+    : mine.rank === 1
+      ? winners.length > 1
+        ? "Shared win!"
+        : "You won!"
+      : mine.rank === lastRank
+        ? "You lost!"
+        : `${ordinal(mine.rank)} place`;
+  const colors = { win: "text-accent", loss: "text-bad", mid: "text-ink", neutral: "text-accent" } as const;
+  return (
+    <div className="flex min-h-[40dvh] flex-col items-center justify-center gap-4 text-center" data-testid="minigame-outcome">
+      <Confetti fireKey={tone === "win" ? `${mg.id}-${g.round}-outcome` : null} />
+      <motion.div
+        initial={{ scale: 0.4, opacity: 0, rotate: tone === "loss" ? 0 : -6 }}
+        animate={tone === "loss" ? { scale: 1, opacity: 1, x: [0, -10, 10, -6, 6, 0] } : { scale: 1, opacity: 1, rotate: 0 }}
+        // Springs can't play multi-step keyframes: the shake gets its own tween.
+        transition={{ type: "spring", stiffness: 300, damping: 14, x: { type: "tween", duration: 0.5, delay: 0.25 } }}
+        className="flex flex-col items-center gap-3"
+      >
+        <span className="flex -space-x-3">
+          {(mine ? [mine] : winners).map((p) => (
+            <Avatar key={p.playerId} player={players[p.playerId]} size={tone === "loss" ? 72 : 88} ring={tone !== "loss"} dim={tone === "loss"} />
+          ))}
+        </span>
+        <h2 className={`font-display text-5xl sm:text-6xl ${colors[tone]}`}>{title}</h2>
+        {mine?.label && <p className="font-display text-xl text-muted">{mine.label}</p>}
+      </motion.div>
     </div>
   );
 }

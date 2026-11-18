@@ -20,6 +20,17 @@ export function availableItems(content: ContentBundle, g: Pick<GameState, "tileT
   return content.items.filter((i) => i.effect !== "bankHeist" || hasBank);
 }
 
+/**
+ * Chance weight for the free item on Item tiles: the stronger (pricier, for this game) the item,
+ * the rarer. Items at or below the base price drop at their normal weight; e.g. a 12-coin item
+ * drops ~35% as often, Star Warp (35) ~7%, Star Thief ~1%.
+ */
+export function itemDropWeight(item: Item, playerCount: number): number {
+  const D = GAME_CONFIG.economy.itemDrop;
+  const price = item.price + item.pricePerOpponent * Math.max(0, playerCount - 1);
+  return item.weight * Math.pow(D.basePrice / Math.max(D.basePrice, price), D.falloff);
+}
+
 export function shopStock(content: ContentBundle, step: Step, g?: Pick<GameState, "tileTypes">): string[] {
   const pool = shuffle(step.ctx.rng, g ? availableItems(content, g) : content.items);
   const out: string[] = [];

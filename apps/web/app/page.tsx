@@ -12,7 +12,7 @@ import { ServerStatus } from "@/components/ServerStatus";
 import { AccountChip } from "@/components/account/AccountChip";
 import { useAccount } from "@/lib/account";
 import { getSocket, send } from "@/lib/socket";
-import { profileToken, saveAvatar, saveColor, saveName, saveSeat, savedAvatar, savedColor, savedName } from "@/lib/session";
+import { profileToken, saveUsePhoto, savedUsePhoto, saveAvatar, saveColor, saveName, saveSeat, savedAvatar, savedColor, savedName } from "@/lib/session";
 
 export default function Landing() {
   const router = useRouter();
@@ -23,6 +23,8 @@ export default function Landing() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const username = useAccount((s) => s.user?.username);
+  const accountPhoto = useAccount((s) => s.user?.photo ?? null);
+  const [usePhoto, setUsePhoto] = useState(true);
   // Signed in without a saved name: play under the username.
   useEffect(() => {
     if (username) setName((n) => n || username);
@@ -32,6 +34,7 @@ export default function Landing() {
     setName((n) => n || savedName());
     setColor(savedColor() ?? PLAYER_COLORS[Math.floor(Math.random() * 4)].id);
     setAvatar(savedAvatar());
+    setUsePhoto(savedUsePhoto());
     getSocket();
   }, []);
 
@@ -42,7 +45,7 @@ export default function Landing() {
     saveName(name.trim());
     saveColor(color);
     saveAvatar(avatar);
-    const res = await send("room:create", { role, name: role === "player" ? name.trim() : undefined, color, avatar, profileToken: profileToken() });
+    const res = await send("room:create", { role, name: role === "player" ? name.trim() : undefined, color, avatar, profileToken: profileToken(), usePhoto });
     setBusy(false);
     if (!res.ok) return setError(res.message);
     const r = res as unknown as JoinResult;
@@ -99,7 +102,22 @@ export default function Landing() {
         </div>
         <div className="flex flex-col gap-2">
           <span className="font-display text-lg">Your icon</span>
-          <AvatarPicker value={avatar} color={color} name={name} onChange={setAvatar} />
+          <AvatarPicker
+            value={avatar}
+            color={color}
+            name={name}
+            onChange={(a) => {
+              setAvatar(a);
+              setUsePhoto(false);
+              saveUsePhoto(false);
+            }}
+            photo={accountPhoto}
+            usePhoto={usePhoto}
+            onUsePhoto={() => {
+              setUsePhoto(true);
+              saveUsePhoto(true);
+            }}
+          />
         </div>
       </section>
 

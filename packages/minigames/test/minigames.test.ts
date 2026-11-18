@@ -22,24 +22,39 @@ describe("registry", () => {
 });
 
 describe("reaction-tap", () => {
-  it("best of 3 with false-start penalty; bonus forgives one", () => {
-    let s = init(reactionTap, ["a", "b"], ["b"]);
-    s = reactionTap.onSubmit!(s, "a", { times: [300, 250, 400], falseStarts: 1 }, ctx(0));
-    s = reactionTap.onSubmit!(s, "b", { times: [300, 250, 400], falseStarts: 1 }, ctx(0));
-    expect(s.scores.a).toBe(850);
-    expect(s.scores.b).toBe(250);
+  it("best try counts; a false start disqualifies; the bonus gives one extra try", () => {
+    let s = init(reactionTap, ["a", "b", "c"], ["b"]);
+    s = reactionTap.onSubmit!(s, "a", { times: [300, 250, 400], falseStart: false }, ctx(0));
+    s = reactionTap.onSubmit!(s, "b", { times: [300, 260, 400, 240], falseStart: false }, ctx(0));
+    s = reactionTap.onSubmit!(s, "c", { times: [180], falseStart: true }, ctx(0));
+    expect(s.scores.a).toBe(250);
+    expect(s.scores.b).toBe(240);
     expect(reactionTap.isFinished(s, 0)).toBe(true);
-    expect(reactionTap.results(s)[0].playerId).toBe("b");
+    const res = reactionTap.results(s);
+    expect(res.map((r) => r.playerId)).toEqual(["b", "a", "c"]);
+    expect(res[2].label).toBe("False start");
+  });
+  it("only bonus players get a 4th try", () => {
+    let s = init(reactionTap);
+    s = reactionTap.onSubmit!(s, "a", { times: [300, 250, 400, 120], falseStart: false }, ctx(0));
+    expect(s.rejected).toContain("a");
   });
   it("rejects reaction times under 100ms", () => {
     let s = init(reactionTap);
-    s = reactionTap.onSubmit!(s, "a", { times: [50, 250, 400], falseStarts: 0 }, ctx(0));
+    s = reactionTap.onSubmit!(s, "a", { times: [50, 250, 400], falseStart: false }, ctx(0));
     expect(s.scores.a).toBeNull();
     expect(s.rejected).toContain("a");
   });
 });
 
 describe("stacker", () => {
+  it("equal heights share a place", () => {
+    const res = stacker.results({ players: ["a", "b", "c"], bonuses: [], seed: 1, scores: { a: 5, b: 5, c: 3 }, submitted: ["a", "b", "c"], rejected: [] } as never);
+    expect(res.find((r) => r.playerId === "a")!.rank).toBe(1);
+    expect(res.find((r) => r.playerId === "b")!.rank).toBe(1);
+    expect(res.find((r) => r.playerId === "c")!.rank).toBe(3);
+    expect(res[0].label).toBe("5 blocks");
+  });
   it("server re-simulation matches and rewards aligned drops", () => {
     // Find drop times where the slider is exactly over the tower.
     const seed = 123;
@@ -74,7 +89,7 @@ describe("memory-flip", () => {
       pairs.push(i, j);
       seen.add(i).add(j);
     }
-    expect(replay(cards, pairs)).toEqual({ solved: true, valid: true });
+    expect(replay(cards, pairs)).toEqual({ solved: true, valid: true, pairs: 8 });
     expect(replay(cards, [0, 0]).valid).toBe(false);
     let s = memoryFlip.init({ players: ["a", "b"], bonuses: [], seed: 5, rng: createRng(1), now: 0, services });
     s = memoryFlip.onSubmit!(s, "a", { flips: pairs, timeMs: 20000 }, ctx(0));

@@ -93,10 +93,10 @@ export function useRoom(code: string, wantDisplay: boolean) {
   }, [code, rejoin]);
 
   const join = useCallback(
-    async (name: string, color?: string, avatar?: string | null) => {
+    async (name: string, color?: string, avatar?: string | null, usePhoto?: boolean) => {
       setError(null);
       setStatus("joining");
-      const res = await send("room:join", { code, role: "player", name, color, avatar, profileToken: profileToken() });
+      const res = await send("room:join", { code, role: "player", name, color, avatar, profileToken: profileToken(), usePhoto });
       if (!res.ok) {
         setError(res.message);
         setStatus(res.code === "ROOM_NOT_FOUND" ? "notFound" : "needsJoin");

@@ -10,10 +10,9 @@ import { GameScreen } from "./game/GameScreen";
 import { ConnectionBadge, Toasts } from "./ui";
 import { useRoom } from "@/lib/useRoom";
 import { useStore } from "@/lib/store";
-import { saveAvatar, saveColor, saveName, savedAvatar, savedColor, savedName } from "@/lib/session";
+import { saveAvatar, saveColor, saveName, saveUsePhoto, savedAvatar, savedColor, savedName, savedUsePhoto } from "@/lib/session";
 import { SfxBridge } from "./SfxBridge";
 import { useAccount } from "@/lib/account";
-import { ChatDock } from "./ChatDock";
 import { ServerStatus } from "./ServerStatus";
 
 export function RoomClient({ code, display }: { code: string; display: boolean }) {
@@ -48,7 +47,6 @@ export function RoomClient({ code, display }: { code: string; display: boolean }
       ) : (
         <Lobby code={code} onLeave={leave} />
       )}
-      {status === "joined" && pub && <ChatDock />}
     </MotionConfig>
   );
 }
@@ -57,13 +55,16 @@ function Center({ children }: { children: React.ReactNode }) {
   return <main className="flex min-h-dvh flex-col items-center justify-center gap-4 p-6 text-center">{children}</main>;
 }
 
-function JoinForm({ code, error, onJoin }: { code: string; error: string | null; onJoin: (n: string, c?: string, a?: string | null) => Promise<boolean> }) {
+function JoinForm({ code, error, onJoin }: { code: string; error: string | null; onJoin: (n: string, c?: string, a?: string | null, usePhoto?: boolean) => Promise<boolean> }) {
   const [name, setName] = useState("");
   const [color, setColor] = useState<string>(PLAYER_COLORS[0].id);
   const [avatar, setAvatar] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const pub = useStore((s) => s.pub);
   const username = useAccount((s) => s.user?.username);
+  const accountPhoto = useAccount((s) => s.user?.photo ?? null);
+  const [usePhoto, setUsePhoto] = useState(true);
+  useEffect(() => setUsePhoto(savedUsePhoto()), []);
   useEffect(() => {
     if (username) setName((n) => n || username);
   }, [username]);
@@ -86,7 +87,7 @@ function JoinForm({ code, error, onJoin }: { code: string; error: string | null;
           saveName(name.trim());
           saveColor(color);
           saveAvatar(avatar);
-          await onJoin(name.trim(), color, avatar);
+          await onJoin(name.trim(), color, avatar, usePhoto);
           setBusy(false);
         }}
       >
@@ -100,7 +101,22 @@ function JoinForm({ code, error, onJoin }: { code: string; error: string | null;
         </div>
         <div className="flex flex-col gap-2">
           <span className="font-display text-lg">Your icon</span>
-          <AvatarPicker value={avatar} color={color} name={name} onChange={setAvatar} />
+          <AvatarPicker
+            value={avatar}
+            color={color}
+            name={name}
+            onChange={(a) => {
+              setAvatar(a);
+              setUsePhoto(false);
+              saveUsePhoto(false);
+            }}
+            photo={accountPhoto}
+            usePhoto={usePhoto}
+            onUsePhoto={() => {
+              setUsePhoto(true);
+              saveUsePhoto(true);
+            }}
+          />
         </div>
         <button className="btn-primary" disabled={busy || !name.trim()}>
           Join

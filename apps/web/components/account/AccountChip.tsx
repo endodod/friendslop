@@ -28,3 +28,27 @@ export function AccountChip() {
     </Link>
   );
 }
+
+/** Compact profile button for the lobby header. Opens in a new tab so you keep your seat. */
+export function LobbyProfileLink() {
+  const user = useAccount((s) => s.user);
+  const incoming = useAccount((s) => s.friends.filter((f) => f.status === "incoming").length);
+  if (!user) return null;
+  return (
+    <Link
+      href="/profile"
+      target="_blank"
+      className="btn-ghost relative min-h-11 gap-2 px-2"
+      aria-label="Your profile (opens in a new tab)"
+      title="Your profile"
+    >
+      <UserPhoto user={user} size={30} />
+      <span className="hidden max-w-[8rem] truncate text-base sm:inline">{user.username}</span>
+      {incoming > 0 && (
+        <span className="absolute right-0 top-0 flex h-5 min-w-5 items-center justify-center rounded-full bg-bad px-1 text-xs text-white">
+          {incoming}
+        </span>
+      )}
+    </Link>
+  );
+}

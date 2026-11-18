@@ -74,7 +74,7 @@ Defaults picked where the build prompt left room, or where the environment force
 - **Spending coins:** walking past a Shop stops you to shop (only if you can afford an item and have room), like passing the star. New item: Star Warp (12 coins) teleports you right in front of the star. Your turn screen always shows your items or where to get them.
 - Fixed: the target's answer reveal could hang because the "?" card's exit animation inherited the drumroll's infinite repeat.
 - **More coin sinks:** a third Shop on the main loop stretch every player walks (m15), and two pink Item tiles (m3 near the start, a2 on the upper shortcut) that give a free random item when you land on them; with a full bag (3 items) you get 3 coins instead.
-- **More tile variety:** Lucky (die roll × 2 coins, ×2 on the board), Piggy Bank (passing pays 2 coins into a pot, landing takes it), Mind Reader (only the lander guesses about the least-targeted other player, double coins; no "pick a player" questions with only two people answering), Thief (steal 4 from a random player). They replaced the two Data tiles (inert without account linking) and three blue tiles. The help legend only lists tile types that are on the current board.
+- **More tile variety:** Lucky (die roll × 2 coins, ×2 on the board), Piggy Bank (collects every coin lost on red tiles; landing takes the pot. Originally passing paid 2 coins in; changed so the pot grows from bad luck instead of a toll), Mind Reader (only the lander guesses about the least-targeted other player, double coins; no "pick a player" questions with only two people answering), Thief (steal 4 from a random player). They replaced the two Data tiles (inert without account linking) and three blue tiles. The help legend only lists tile types that are on the current board.
 - **More themes:** Friend Group, Childhood, Internet & Phones, Money, Travel, Love & Dating, School & Work, Party & Nightlife (9 questions each, 146 questions total). All themes are enabled by default.
 - **Lobby settings:** map choice (4 maps with previews), question pack toggles (plus the room's Custom pack), and a per-tile-type "Tile mix" (Off/Few/Normal/Many) that replaced the old question-pacing setting. Themes stay as a filter inside the packs.
 - **Custom questions** are room state (public, they contain no answers), limited to 80 per room, removable by their author or the host, and only editable in the lobby. They skip the theme filter (their theme is "Custom").
@@ -111,3 +111,19 @@ Defaults picked where the build prompt left room, or where the environment force
 - **Board look:** per-map accent colour, arena-style backdrop, scattered scenery, a soft track bed under the roads, layered roads with a dashed centre line, 3D tiles, pin-shaped tokens with a bobbing marker and a pulse under the active player.
 - **Confetti** renders in a portal on `document.body` (a transformed parent used to clip it) and rolls its randomness once per burst; it now fires from both lower corners plus a few pieces from the top.
 - **Ambient animations** (CSS, off with reduced motion): board sparkles twinkle, road centre lines flow, junction rings turn, a slow drifting glow behind the board, tiles pop in on load and squash when a token hops on them; Roll! breathes and shines; cards rise in; coin/star numbers pop green/red when they change; the landing title floats; chunky buttons lift on hover.
+
+## Playtest batch (accounts follow-up)
+
+- **Piggy Bank** fills from red-tile losses instead of a walk-past toll. **Start** pays +5 coins when passed or landed on.
+- **Item tiles** drop strong items rarely: weight × (6 / effective price)^1.5 (`economy.itemDrop`). Shops are unchanged.
+- **Bonus stars** are drawn at random from the highlight categories (`bonusStars.json`, now also Biggest Thief and a
+  per-question Enigma), only among categories somebody won; count = 1 + ceil(players / 2). The results page shows one
+  Highlights list with the starred categories first. No category is guaranteed any more.
+- **Ties:** mini-game scores no longer hide tie-breakers the label doesn't show (Stacker width, Memory Flip flip
+  count, Red Light finish order within one tick). Same label = same place.
+- **Reaction Tap:** best of 3 tries; a false start disqualifies (last place); the question bonus is a 4th try.
+- **Minefield:** when only the bomb is left, the field is re-dealt instead of forcing the next player onto it.
+- **No skipped screens:** full-screen phases (mini-games, questions) wait on the client until the token has finished
+  walking plus a short landing beat; the tile-effect panel waits too (tileEffectMs got +400 ms of slack). Mini-game
+  results open with a 2.4 s personal outcome screen ("You won!" / "You lost!") that the host can't skip, then the table.
+- **Chat** is part of the page (lobby, under the game log) instead of a floating popup.

@@ -103,10 +103,10 @@ export const redLight: MiniGameDefinition<RedLightState, { hold: boolean }> = {
     }
     return s;
   },
-  // First to the finish wins; everyone else is ranked by distance.
+  // First to the finish wins (crossing in the same tick = shared win); everyone else by distance.
   isFinished: (s) => s.finished.length > 0 || s.players.every((p) => s.finished.includes(p)),
   results: (s) => {
-    const score = Object.fromEntries(s.players.map((p) => [p, s.finished.includes(p) ? 1000 - s.finished.indexOf(p) : Math.floor(s.pos[p])]));
+    const score = Object.fromEntries(s.players.map((p) => [p, s.finished.includes(p) ? 1000 : Math.floor(s.pos[p])]));
     return rankByScore(s.players, score, true, (v) => (v >= 900 ? "Finished!" : `${v}%`));
   },
   publicState: (s): RedLightPublic => ({

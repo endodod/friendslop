@@ -9,7 +9,8 @@ import { clientContent } from "@party-game/content";
 import { Avatar, Icon, MuteButton, useIsHost, useMe } from "../ui";
 import { AvatarPicker } from "../AvatarPicker";
 import { ColorPicker } from "../ColorPicker";
-import { saveAvatar, saveColor } from "@/lib/session";
+import { saveAvatar, saveColor, saveUsePhoto } from "@/lib/session";
+import { useAccount } from "@/lib/account";
 import { useStore } from "@/lib/store";
 import { act } from "@/lib/useRoom";
 import { MINIGAME_CLIENTS } from "@party-game/minigames/client";
@@ -19,6 +20,8 @@ import { TileMix } from "./TileMix";
 import { MinigameMix } from "./MinigameMix";
 import { CustomQuestions } from "./CustomQuestions";
 import { InviteFriends } from "./InviteFriends";
+import { ChatPanel } from "../ChatPanel";
+import { LobbyProfileLink } from "../account/AccountChip";
 import Link from "next/link";
 
 export function Lobby({ code, onLeave }: { code: string; onLeave: () => Promise<void> }) {
@@ -35,12 +38,15 @@ export function Lobby({ code, onLeave }: { code: string; onLeave: () => Promise<
   const meRoom = players.find((p) => p.id === me?.id);
   const isDisplay = role === "display";
   const [practice, setPractice] = useState("red-light");
+  const accountPhoto = useAccount((s) => s.user?.photo ?? null);
+  const accountUserId = useAccount((s) => s.user?.id ?? null);
 
   return (
     <main className={`mx-auto flex min-h-dvh flex-col gap-4 px-4 py-5 ${isDisplay ? "max-w-6xl" : "max-w-2xl"}`}>
       <header className="flex items-center justify-between gap-2">
         <h1 className="font-display text-2xl text-accent">Lobby</h1>
         <div className="flex items-center gap-1">
+          {!isDisplay && <LobbyProfileLink />}
           <MuteButton />
           {!isDisplay && (
             <button
@@ -159,18 +165,26 @@ export function Lobby({ code, onLeave }: { code: string; onLeave: () => Promise<
               act("room:profile", { color });
             }}
           />
-          {meRoom.photo && <p className="text-sm text-muted">Your profile picture is shown instead of the icon.</p>}
           <AvatarPicker
             value={meRoom.avatar}
             color={meRoom.color}
             name={meRoom.name}
             onChange={(avatar) => {
               saveAvatar(avatar);
-              act("room:profile", { avatar });
+              if (accountPhoto) saveUsePhoto(false);
+              act("room:profile", accountPhoto && meRoom.userId === accountUserId ? { avatar, usePhoto: false } : { avatar });
+            }}
+            photo={meRoom.userId === accountUserId ? accountPhoto : null}
+            usePhoto={!!meRoom.photo}
+            onUsePhoto={() => {
+              saveUsePhoto(true);
+              act("room:profile", { usePhoto: true });
             }}
           />
         </section>
       )}
+
+      <ChatPanel height="h-64" />
 
       {meRoom && <InviteFriends />}
 

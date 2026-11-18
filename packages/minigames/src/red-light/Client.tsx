@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import { colorHex } from "@party-game/shared";
 import type { MinigameClientProps } from "../kit/types";
 import { HoldButton } from "../kit/hooks";
-import type { RedLightPublic } from "./logic";
+import { FINISH, type RedLightPublic } from "./logic";
 
 const LIGHT_COLORS = { green: "#2fd27a", yellow: "#ffc933", red: "#ff4d5e" };
 
@@ -79,7 +79,8 @@ export function RedLightClient(p: MinigameClientProps<RedLightPublic, { bonus: b
               />
               <span
                 className="absolute top-1.5 transition-[left] duration-100 ease-linear"
-                style={{ left: `calc(${(pos[pid] ?? 0) * 0.84}% + 4px)` }}
+                /* 0 → left edge; FINISH → the avatar touches the middle of the finish strip, at any track width */
+                style={{ left: `calc(${Math.min(1, (pos[pid] ?? 0) / FINISH)} * (100% - 54px) + 4px)` }}
               >
                 <motion.span
                   className="block"

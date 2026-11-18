@@ -60,11 +60,15 @@ const fmtName = (n: unknown) => (typeof n === "string" ? n : localize(n as never
 // ---------------------------------------------------------------------------
 export function PhasePanel({ board, display }: { board: Board | null; display?: boolean }) {
   const { g } = useGameCtx();
-  const key = `${g.phase}-${g.activeIndex}-${g.round}`;
+  // While the token is still walking on the board, keep showing the move instead of what it lands on.
+  const boardBusy = useStore((s) => s.boardBusy);
+  const holdMove = boardBusy && (g.phase === "tileEffect" || g.phase === "event" || g.phase === "turnEnd");
+  const key = holdMove ? `moving-${g.activeIndex}-${g.round}` : `${g.phase}-${g.activeIndex}-${g.round}`;
   return (
     <AnimatePresence mode="wait">
       <motion.div key={key} className="flex flex-col gap-3">
         {(() => {
+          if (holdMove) return <RollingPanel />;
           switch (g.phase) {
             case "gameStart":
               return <GameStartPanel />;

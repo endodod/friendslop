@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { Home, RotateCcw } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { ACHIEVEMENTS, computeAchievements, localize, standings, type PlayerStats, type PublicGameState } from "@party-game/shared";
+import { ACHIEVEMENTS, computeAchievements, evaluateBonusStar, localize, standings, type PlayerStats, type PublicGameState } from "@party-game/shared";
 import { clientContent } from "@party-game/content";
 import { act } from "@/lib/useRoom";
 import { useStore } from "@/lib/store";
@@ -132,6 +132,7 @@ function FinalStandingsTeaser({ game }: { game: PublicGameState }) {
 /** "75%" for rate awards, the plain number otherwise. */
 function awardValue(id: string, value: number): string {
   const def = clientContent.bonusStars.find((b) => b.id === id);
+  if (def?.per === "timesTarget") return `${value.toFixed(1)} matches per question`;
   return def?.per ? `${Math.round(value * 100)}%` : String(value);
 }
 
@@ -162,53 +163,50 @@ function Section({ title, children }: { title: string; children: React.ReactNode
   );
 }
 
-/** Group records: who was best at what. */
+/**
+ * Highlights: who led each category. It's the same pool the bonus stars are drawn from; the
+ * categories that handed out a star this game come first, marked +1 ★.
+ */
 function Highlights({ game }: { game: PublicGameState }) {
   const players = usePlayers();
-  const ids = Object.keys(game.players);
-  const st = (id: string) => game.players[id].stats;
-  const best = (score: (id: string) => number | null, higher = true) => {
-    const vals = ids.map((id) => [id, score(id)] as const).filter((x): x is readonly [string, number] => x[1] !== null);
-    if (!vals.length) return null;
-    const top = higher ? Math.max(...vals.map((v) => v[1])) : Math.min(...vals.map((v) => v[1]));
-    if (higher && top <= 0) return null;
-    return { ids: vals.filter((v) => v[1] === top).map((v) => v[0]), value: top };
-  };
-  const rows = [
-    { icon: "mind", label: "Best mind reader", r: best((id) => (st(id).guesses >= 1 ? st(id).matchesMade / st(id).guesses : null)), fmt: (v: number) => `${Math.round(v * 100)}% matched` },
-    { icon: "open-book", label: "Easiest to read", r: best((id) => (st(id).timesTarget >= 1 ? st(id).matchedAsTarget / st(id).timesTarget : null)), fmt: (v: number) => `${v.toFixed(1)} matches per question` },
-    { icon: "enigma", label: "Hardest to read", r: best((id) => (st(id).timesTarget >= 1 ? st(id).matchedAsTarget / st(id).timesTarget : null), false), fmt: (v: number) => `${v.toFixed(1)} matches per question` },
-    { icon: "trophy", label: "Mini-game king", r: best((id) => st(id).minigameWins), fmt: (v: number) => `${v} wins` },
-    { icon: "coins", label: "Top earner", r: best((id) => st(id).coinsEarned), fmt: (v: number) => `${v} coins earned` },
-    { icon: "steal", label: "Biggest thief", r: best((id) => st(id).steals), fmt: (v: number) => `${v} steals` },
-    { icon: "footprints", label: "Furthest walked", r: best((id) => st(id).stepsMoved), fmt: (v: number) => `${v} spaces` },
-  ].filter((x) => x.r);
-  if (!rows.length) return null;
+  const starred = new Set((game.bonusStars?.awards ?? []).map((a) => a.bonusStarId));
+  const rows = clientContent.bonusStars
+    .map((def) => ({ def, r: evaluateBonusStar(game as never, def) }))
+    .filter((x) => x.r.playerIds.length > 0)
+    .sort((a, b) => Number(starred.has(b.def.id)) - Number(starred.has(a.def.id)));
+  if (!rows.length) return <p className="text-muted">Nothing to brag about this time.</p>;
   return (
-    <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-      {rows.map((row, i) => (
-        <motion.div
-          key={row.label}
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.6 + i * 0.08 }}
-          className="flex items-center gap-3 rounded-2xl bg-bg-2 p-3"
-        >
-          <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-accent/15 text-accent">
-            <Icon id={row.icon} size={26} />
-          </span>
-          <div className="min-w-0 flex-1 leading-tight">
-            <p className="font-display">{row.label}</p>
-            <p className="text-sm text-muted">{row.fmt(row.r!.value)}</p>
-          </div>
-          <span className="flex -space-x-2">
-            {row.r!.ids.map((id) => (
-              <Avatar key={id} player={players[id]} size={34} />
-            ))}
-          </span>
-        </motion.div>
-      ))}
-    </div>
+    <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+      {rows.map(({ def, r }, i) => {
+        const star = starred.has(def.id);
+        return (
+          <motion.li
+            key={def.id}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.6 + i * 0.06 }}
+            className={`flex items-center gap-3 rounded-2xl p-3 ${star ? "bg-[#ffe066]/10 ring-1 ring-[#ffe066]/40" : "bg-bg-2"}`}
+          >
+            <span className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${star ? "bg-[#ffe066]/20 text-[#ffe066]" : "bg-accent/15 text-accent"}`}>
+              <Icon id={def.icon} size={26} />
+            </span>
+            <div className="min-w-0 flex-1 leading-tight">
+              <p className="font-display">
+                {localize(def.name)}
+                {star && <span className="ml-2 text-sm text-[#ffe066]">+1 ★</span>}
+              </p>
+              <p className="text-xs text-muted">{localize(def.description)}</p>
+              <p className="text-sm text-muted">{awardValue(def.id, r.value)}</p>
+            </div>
+            <span className="flex -space-x-2">
+              {r.playerIds.map((id) => (
+                <Avatar key={id} player={players[id]} size={34} ring={star} />
+              ))}
+            </span>
+          </motion.li>
+        );
+      })}
+    </ul>
   );
 }
 
@@ -375,37 +373,6 @@ export function Podium({ game }: { game: PublicGameState }) {
           );
         })}
       </div>
-
-      {game.bonusStars && game.bonusStars.awards.length > 0 && (
-        <Section title="Star awards">
-          <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-            {game.bonusStars.awards.map((a) => {
-              const def = clientContent.bonusStars.find((b) => b.id === a.bonusStarId);
-              return (
-                <li key={a.bonusStarId} className="flex items-center gap-3 rounded-2xl bg-bg-2 p-3">
-                  <Icon id={def?.icon ?? "star"} size={34} className="shrink-0 text-[#ffe066]" />
-                  <span className="min-w-0 flex-1 leading-tight">
-                    <span className="block font-display">{def ? localize(def.name) : a.bonusStarId}</span>
-                    <span className="block text-xs text-muted">{def ? localize(def.description) : ""}</span>
-                  </span>
-                  {a.playerIds.length ? (
-                    <span className="flex flex-col items-end gap-1">
-                      <span className="flex -space-x-2">
-                        {a.playerIds.map((pid) => (
-                          <Avatar key={pid} player={players[pid]} size={32} ring />
-                        ))}
-                      </span>
-                      <span className="text-xs text-muted">{awardValue(a.bonusStarId, a.value)} · +1 ★</span>
-                    </span>
-                  ) : (
-                    <span className="text-sm text-muted">Nobody</span>
-                  )}
-                </li>
-              );
-            })}
-          </ul>
-        </Section>
-      )}
 
       <Section title="Highlights">
         <Highlights game={game} />

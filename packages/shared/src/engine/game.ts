@@ -5,7 +5,7 @@ import { localize } from "../i18n";
 import { getBoard, resolveBoardId, getTile, nextTiles, pickStarTile, tileDef, computeTileTypes } from "../logic/board";
 import { changeCoins, itemPrice, changeStars, placementCoins, standings, transferCoins } from "../logic/economy";
 import { applyEvent, drawEvent } from "../logic/events";
-import { applyTurnStartItem, availableItems, getItem, log, shopStock, tryShield } from "../logic/items";
+import { applyTurnStartItem, availableItems, getItem, itemDropWeight, log, shopStock, tryShield } from "../logic/items";
 import {
   bonusRecipients,
   generateDataQuestion,
@@ -403,7 +403,9 @@ function handleAction(d: Draft, a: GameAction, isHost: boolean): void {
       if (!isHost) fail("NOT_HOST", "Only the host can skip.");
       // A second tap on the Skip button (it sits in the same spot on consecutive screens) must not
       // skip the next screen right away.
-      if (d.s.ctx.now - g.phaseStartedAt < SKIP_GRACE_MS) return;
+      // Mini-game results open with the outcome screen: that part can't be skipped.
+      const grace = g.phase === "minigameResults" ? M.outcomeMs + SKIP_GRACE_MS : SKIP_GRACE_MS;
+      if (d.s.ctx.now - g.phaseStartedAt < grace) return;
       const skippable: Phase[] = ["gameStart", "tileEffect", "event", "roundEnd", "minigameIntro", "minigameResults", "gameEnd", "bonusStars", "turnEnd"];
       if (skippable.includes(g.phase)) return onTimeout(d);
       if ((g.phase === "questionRound" || g.phase === "minigameQuestion") && g.question?.stage !== "answering")
@@ -559,9 +561,14 @@ function advanceMovement(d: Draft) {
     mv.remaining--;
     path.push(to);
     p.stats.stepsMoved++;
-    // Walking past the Piggy Bank: drop coins into the pot.
-    const passDef = mv.remaining > 0 && to !== g.starTileId ? tileDef(s.ctx.content, g.tileTypes[to] ?? "blue") : null;
-    if (passDef?.effect === "bank") g.bank += -changeCoins(g, s, pid, -(passDef.params.passCost ?? 2), "bank");
+    // Passing (or landing on) Start pays a lap bonus.
+    const stepDef = tileDef(s.ctx.content, g.tileTypes[to] ?? getTile(board, to).type);
+    const lapCoins = stepDef?.params?.passCoins ?? 0;
+    if (lapCoins > 0) {
+      changeCoins(g, s, pid, lapCoins, "tile:start");
+      emit(s, { type: "sfx", id: "coin" });
+      log(g, s, `${playerName(d, pid)} passed Start: +${lapCoins} coins`, pid);
+    }
     if (to === g.starTileId && mv.remaining > 0) {
       stop = "starPass";
       break;
@@ -643,6 +650,8 @@ function land(d: Draft) {
       const amount = def.params.amount ?? 0;
       const delta = changeCoins(g, s, pid, amount, `tile:${type}`);
       g.tileResult.coinsDelta = delta;
+      // Coins lost on red tiles feed the Piggy Bank (if this map has one).
+      if (delta < 0 && Object.values(g.tileTypes).some((t) => tileDef(s.ctx.content, t)?.effect === "bank")) g.bank += -delta;
       if (amount > 0) p.stats.blueTiles++;
       else p.stats.redTiles++;
       emit(s, { type: "sfx", id: amount > 0 ? "coin" : "bad" });
@@ -651,7 +660,8 @@ function land(d: Draft) {
     case "item": {
       // Free random item; a full bag gets coins instead.
       if (p.items.length < GAME_CONFIG.economy.maxItems) {
-        const item = weightedPick(s.ctx.rng, availableItems(s.ctx.content, g), (i) => i.weight)!;
+        const playerCount = Object.keys(g.players).length;
+        const item = weightedPick(s.ctx.rng, availableItems(s.ctx.content, g), (i) => itemDropWeight(i, playerCount))!;
         p.items.push(item.id);
         g.tileResult.itemId = item.id;
         emit(s, { type: "itemGained", playerId: pid, itemId: item.id });
@@ -1261,34 +1271,51 @@ function afterMinigameResults(d: Draft): void {
 // ---------------------------------------------------------------------------
 // Game end
 // ---------------------------------------------------------------------------
+/** Who leads a bonus-star / highlight category (ties share it). Empty when nobody qualifies. */
+export function evaluateBonusStar(
+  g: Pick<GameState, "players">,
+  b: ContentBundle["bonusStars"][number],
+): BonusStarAward {
+  const eligible = Object.values(g.players).filter(
+    (p) => (!b.requiresTargetAtLeastOnce || p.stats.timesTarget > 0) && (!b.per || p.stats[b.per] >= (b.minPer ?? 1)),
+  );
+  if (!eligible.length) return { bonusStarId: b.id, playerIds: [], value: 0 };
+  // Rates are compared rounded, so 2/3 and 4/6 tie.
+  const valueOf = (p: (typeof eligible)[number]) =>
+    b.per ? Math.round((p.stats[b.stat] / p.stats[b.per]) * 1000) / 1000 : p.stats[b.stat];
+  const vals = eligible.map(valueOf);
+  const best = b.mode === "max" ? Math.max(...vals) : Math.min(...vals);
+  // A "max" award for 0 is meaningless; nobody gets it.
+  if (b.mode === "max" && best === 0) return { bonusStarId: b.id, playerIds: [], value: 0 };
+  return { bonusStarId: b.id, playerIds: eligible.filter((p) => valueOf(p) === best).map((p) => p.id), value: best };
+}
+
+/** How many bonus stars a game hands out: more players, more stars (2 players → 2, 8 players → 5). */
+export function bonusStarCount(players: number): number {
+  const { base, playersPerStar } = GAME_CONFIG.bonusStars;
+  return base + Math.ceil(players / playersPerStar);
+}
+
+/**
+ * End-of-game bonus stars: drawn at random from the highlight categories (bonusStars.json),
+ * only among categories somebody actually won. The count depends on the number of players.
+ */
 export function computeBonusStars(g: GameState, content: ContentBundle, rng: () => number): BonusStarAward[] {
-  const { min, max } = GAME_CONFIG.bonusStars.count;
-  const count = Math.min(content.bonusStars.length, min + Math.floor(rng() * (max - min + 1)));
-  const always = content.bonusStars.filter((b) => b.always);
-  const others = shuffle(rng, content.bonusStars.filter((b) => !b.always));
-  const chosen = [...always, ...others].slice(0, Math.max(count, always.length));
-  return chosen.map((b) => {
-    const eligible = Object.values(g.players).filter(
-      (p) => (!b.requiresTargetAtLeastOnce || p.stats.timesTarget > 0) && (!b.per || p.stats[b.per] >= (b.minPer ?? 1)),
-    );
-    if (!eligible.length) return { bonusStarId: b.id, playerIds: [], value: 0 };
-    // Rates are compared rounded, so 2/3 and 4/6 tie.
-    const valueOf = (p: (typeof eligible)[number]) =>
-      b.per ? Math.round((p.stats[b.stat] / p.stats[b.per]) * 1000) / 1000 : p.stats[b.stat];
-    const vals = eligible.map(valueOf);
-    const best = b.mode === "max" ? Math.max(...vals) : Math.min(...vals);
-    const winners = eligible.filter((p) => valueOf(p) === best).map((p) => p.id);
-    // A "max" award for 0 is meaningless; nobody gets it.
-    if (b.mode === "max" && best === 0) return { bonusStarId: b.id, playerIds: [], value: 0 };
-    return { bonusStarId: b.id, playerIds: winners, value: best };
-  });
+  const count = bonusStarCount(Object.keys(g.players).length);
+  const won = shuffle(rng, content.bonusStars)
+    .map((b) => evaluateBonusStar(g, b))
+    .filter((a) => a.playerIds.length > 0);
+  return won.slice(0, count);
 }
 
 function startBonusStars(d: Draft) {
   const { g, s } = d;
   // A star race was won outright: no bonus stars that could change the result.
   if (g.starGoalWinner) return finishGame(d);
-  g.bonusStars = { awards: computeBonusStars(g, s.ctx.content, s.ctx.rng), revealed: 0 };
+  const awards = computeBonusStars(g, s.ctx.content, s.ctx.rng);
+  // Nobody won any category (e.g. a game ended right away): nothing to reveal.
+  if (!awards.length) return finishGame(d);
+  g.bonusStars = { awards, revealed: 0 };
   goto(d, "bonusStars", 1500);
 }
 

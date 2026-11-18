@@ -128,6 +128,20 @@ describe("turn-based & realtime", () => {
     expect(minefield.isFinished(s, 1e9)).toBe(true);
     expect(JSON.stringify(minefield.publicState(init(minefield), 0))).not.toContain('"bomb"');
   });
+  it("minefield: when only the bomb is left, nobody has to press it — new field", () => {
+    let s = init(minefield);
+    const grid = s.grid;
+    const safe = Array.from({ length: 16 }, (_, i) => i).filter((i) => i !== s.bomb);
+    for (const tile of safe) s = minefield.onInput!(s, s.alive[s.turn % s.alive.length], { tile }, ctx(10));
+    expect(s.cleared).not.toBeNull();
+    expect(s.out).toEqual([]);
+    const next = s.alive[s.turn % s.alive.length];
+    expect(minefield.onInput!(s, next, { tile: s.bomb }, ctx(20))).toBe(s); // ignored during the pause
+    s = minefield.tick!(s, ctx(10 + 2000));
+    expect(s.grid).toBe(grid + 1);
+    expect(s.opened).toEqual([]);
+    expect(s.cleared).toBeNull();
+  });
   it("musical chairs: no chair = out; bonus sees chairs early", () => {
     let s = init(musicalChairs, ["a", "b", "c"], ["c"]);
     expect(musicalChairs.privateState!(s, "c", s.stopAt - 100) as any).toMatchObject({ earlyChairs: s.chairs });

@@ -17,6 +17,8 @@ export const GAME_CONFIG = {
     starCost: 20,
     maxItems: 3,
     shopStockSize: 5,
+    /** Item tiles: drop weight × (basePrice / price)^falloff for items pricier than basePrice. */
+    itemDrop: { basePrice: 6, falloff: 1.5 },
   },
 
   dice: { sides: 6 },
@@ -46,7 +48,8 @@ export const GAME_CONFIG = {
     rollingMs: 1400,
     hopMs: 330,
     junctionMs: 12000,
-    tileEffectMs: 2200,
+    // Includes a little slack: the panel waits for the token to finish walking on screen.
+    tileEffectMs: 2600,
     shopMs: 20000,
     starPurchaseMs: 12000,
     eventMs: 4500,
@@ -92,7 +95,9 @@ export const GAME_CONFIG = {
     /** Max time on the tutorial screen (ends early once every participant taps "Got it!"). */
     introMs: 30000,
     countdownMs: 3600,
-    resultsMs: 6500,
+    /** Results phase: first a personal outcome screen ("You won!" / "You lost!"), then the table. */
+    outcomeMs: 2400,
+    resultsMs: 6500 + 2400,
     /** Extra time after a mini-game's duration before forcing results. */
     graceMs: 3000,
     /** Placement → coins, by number of participants. Ties share the better placement. */
@@ -116,7 +121,8 @@ export const GAME_CONFIG = {
   items: { stealCoins: 10 },
 
   /** Bonus stars per game: the `always` ones plus random others up to this count. */
-  bonusStars: { count: { min: 3, max: 4 } },
+  /** Bonus stars at the end: base + ceil(players / playersPerStar), drawn from the highlight categories. */
+  bonusStars: { base: 1, playersPerStar: 2 },
 
   rateLimit: { eventsPerSecond: 30 },
 

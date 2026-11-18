@@ -252,8 +252,6 @@ export const BonusStarSchema = z.object({
   per: z.enum(BONUS_STAT_KEYS).optional(),
   /** Rate award: players need at least this much of `per` to qualify. */
   minPer: z.number().int().min(1).default(1),
-  /** Handed out in every game (the rest are drawn at random). */
-  always: z.boolean().default(false),
 });
 export type BonusStar = z.infer<typeof BonusStarSchema>;
 export const BonusStarsFileSchema = z.object({

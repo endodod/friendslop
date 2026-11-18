@@ -103,7 +103,7 @@ export function updatePlayer(room: RoomState, playerId: string, patch: Partial<R
 export function setPlayerProfile(
   room: RoomState,
   playerId: string,
-  patch: { name?: string; color?: string; avatar?: string | null },
+  patch: { name?: string; color?: string; avatar?: string | null; photo?: string | null },
 ): RoomState {
   if (room.stage !== "lobby") fail("GAME_IN_PROGRESS", "Can't change that during a game.");
   const out: Partial<RoomPlayer> = {};
@@ -123,6 +123,8 @@ export function setPlayerProfile(
     if (patch.avatar !== null && !isPlayerAvatar(patch.avatar)) fail("INVALID_INPUT", "Unknown icon.");
     out.avatar = patch.avatar;
   }
+  // Server-resolved (the account's own picture or null), never taken from the client.
+  if (patch.photo !== undefined) out.photo = patch.photo;
   return updatePlayer(room, playerId, { ...out, ready: false });
 }
 

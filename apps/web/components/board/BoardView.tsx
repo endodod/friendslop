@@ -3,7 +3,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { GAME_CONFIG, colorHex, type Board, type PublicGameState } from "@party-game/shared";
 import { clientContent } from "@party-game/content";
-import { onGameEvent } from "@/lib/store";
+import { onGameEvent, useStore } from "@/lib/store";
 import { play } from "@/lib/sfx";
 import { photoUrl } from "@/lib/account";
 import { initials, type PlayerLike } from "../ui";
@@ -60,6 +60,8 @@ interface Props {
   className?: string;
 }
 
+const LANDING_BEAT_MS = 450;
+
 /** Token positions as displayed (lag behind server state while hop animations play). */
 function useDisplayedPositions(game: PublicGameState) {
   const [pos, setPos] = useState<Record<string, string>>(() =>
@@ -72,6 +74,7 @@ function useDisplayedPositions(game: PublicGameState) {
   target.current = game;
 
   useEffect(() => {
+    let release: ReturnType<typeof setTimeout> | null = null;
     const run = () => {
       if (animating.current) return;
       const next = queue.current.shift();
@@ -79,8 +82,12 @@ function useDisplayedPositions(game: PublicGameState) {
         // settle on server truth
         setPos(Object.fromEntries(Object.values(target.current.players).map((p) => [p.id, p.tileId])));
         setHopping(null);
+        // A short beat on the landing tile before any full-screen phase (mini-game, question) takes over.
+        release = setTimeout(() => useStore.setState({ boardBusy: false }), LANDING_BEAT_MS);
         return;
       }
+      if (release) clearTimeout(release);
+      useStore.setState({ boardBusy: true });
       animating.current = true;
       setHopping(next.playerId);
       let i = 0;
@@ -97,7 +104,7 @@ function useDisplayedPositions(game: PublicGameState) {
       };
       step();
     };
-    return onGameEvent((e) => {
+    const off = onGameEvent((e) => {
       if (e.type === "tokenMoved") {
         queue.current.push({ playerId: e.playerId, path: e.path });
         run();
@@ -105,6 +112,11 @@ function useDisplayedPositions(game: PublicGameState) {
         setPos((p) => ({ ...p, [e.playerId]: e.tileId }));
       }
     });
+    return () => {
+      off();
+      if (release) clearTimeout(release);
+      useStore.setState({ boardBusy: false });
+    };
   }, []);
 
   // When no animation is running, follow the server state (reconnects, new games).
@@ -222,18 +234,23 @@ export function BoardView({ board, game, players, follow, selectable = [], onSel
             ),
           )}
         </g>
-        {/* track bed: a soft island under every path */}
+        {/* track bed: a soft island under every path. Opacity sits on the groups, not the lines, so
+            overlapping line caps at tiles don't add up into a bright halo around every tile. */}
         <g pointerEvents="none" strokeLinecap="round">
-          {edges.map(([a0, b0]) => {
-            const a = xy(a0);
-            const b = xy(b0);
-            return <line key={`bed-${a0}-${b0}`} x1={a.x} y1={a.y} x2={b.x} y2={b.y} stroke={tone} strokeOpacity={0.13} strokeWidth={118} />;
-          })}
-          {edges.map(([a0, b0]) => {
-            const a = xy(a0);
-            const b = xy(b0);
-            return <line key={`bed2-${a0}-${b0}`} x1={a.x} y1={a.y} x2={b.x} y2={b.y} stroke="#0d0b1a" strokeOpacity={0.55} strokeWidth={84} />;
-          })}
+          <g opacity={0.13}>
+            {edges.map(([a0, b0]) => {
+              const a = xy(a0);
+              const b = xy(b0);
+              return <line key={`bed-${a0}-${b0}`} x1={a.x} y1={a.y} x2={b.x} y2={b.y} stroke={tone} strokeWidth={100} />;
+            })}
+          </g>
+          <g opacity={0.55}>
+            {edges.map(([a0, b0]) => {
+              const a = xy(a0);
+              const b = xy(b0);
+              return <line key={`bed2-${a0}-${b0}`} x1={a.x} y1={a.y} x2={b.x} y2={b.y} stroke="#0d0b1a" strokeWidth={72} />;
+            })}
+          </g>
         </g>
         {/* roads: dark edge, surface, dashed centre line */}
         <g strokeLinecap="round">

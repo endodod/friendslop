@@ -4,10 +4,13 @@
     {
       "id": "start",
       "name": "Start",
-      "description": "Where it all begins.",
+      "description": "Pass or land here: +5 coins.",
       "icon": "start",
       "color": "#e8e8f0",
-      "effect": "none"
+      "effect": "none",
+      "params": {
+        "passCoins": 5
+      }
     },
     {
       "id": "blue",
@@ -25,7 +28,7 @@
     {
       "id": "red",
       "name": "Red",
-      "description": "−3 coins",
+      "description": "−3 coins (they go into the Piggy Bank)",
       "icon": "skull",
       "color": "#ff4d5e",
       "effect": "coins",
@@ -100,13 +103,10 @@
     {
       "id": "bank",
       "name": "Piggy Bank",
-      "description": "Walk past: drop 2 coins in. Land here: take the whole pot!",
+      "description": "Collects every coin lost on red tiles. Land here: take the whole pot!",
       "icon": "bank",
       "color": "#f9a8d4",
-      "effect": "bank",
-      "params": {
-        "passCost": 2
-      }
+      "effect": "bank"
     },
     {
       "id": "mind-reader",

@@ -24,6 +24,7 @@ describe("chat text", () => {
 describe("bonus stars", () => {
   it("hold on the final standings before the results page; the host can skip", () => {
     const h = new Harness(2, { seed: 8 });
+    h.room.game!.players.p1.stats.stepsMoved = 12;
     h.act({ type: "finish" }, true);
     h.advanceTo("bonusStars");
     while (h.g.bonusStars!.revealed < h.g.bonusStars!.awards.length) h.timeout();

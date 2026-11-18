@@ -246,7 +246,7 @@ export class RoomManager {
     this.broadcast(rec, []);
   }
 
-  setProfile(rec: LiveRoom, playerId: string, patch: { name?: string; color?: string; avatar?: string | null }) {
+  setProfile(rec: LiveRoom, playerId: string, patch: { name?: string; color?: string; avatar?: string | null; photo?: string | null }) {
     rec.room = setPlayerProfile(rec.room, playerId, patch);
     this.broadcast(rec, []);
   }

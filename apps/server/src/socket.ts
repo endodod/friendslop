@@ -78,6 +78,8 @@ export function registerSocketHandlers(io: Server<any, ServerToClientEvents, any
       const u = await c.user.findUnique({ where: { id: userId }, select: { id: true, username: true, avatarVersion: true, avatarMime: true } });
       return u ? { userId: u.id, username: u.username, photo: u.avatarMime ? avatarPath(u.id, u.avatarVersion) : null } : null;
     }
+    const withPhotoChoice = <T extends { photo: string | null } | null>(acc: T, usePhoto: boolean | undefined): T =>
+      acc && usePhoto === false ? { ...acc, photo: null } : acc;
     const roomChanged = () => {
       const userId = userOfSocket(socket.id);
       if (userId) void notifyFriends(userId);
@@ -98,7 +100,7 @@ export function registerSocketHandlers(io: Server<any, ServerToClientEvents, any
         color: p.color,
         avatar: p.avatar,
         profileId,
-        account: p.role === "player" ? await account() : null,
+        account: p.role === "player" ? withPhotoChoice(await account(), p.usePhoto) : null,
       });
       rooms.resend(rec, socket);
       roomChanged();
@@ -115,7 +117,7 @@ export function registerSocketHandlers(io: Server<any, ServerToClientEvents, any
         avatar: p.avatar,
         token: p.token,
         profileId,
-        account: p.role === "player" && !p.token ? await account() : null,
+        account: p.role === "player" && !p.token ? withPhotoChoice(await account(), p.usePhoto) : null,
       });
       rooms.resend(rec, socket);
       roomChanged();
@@ -155,7 +157,17 @@ export function registerSocketHandlers(io: Server<any, ServerToClientEvents, any
       });
     });
     on("room:settings", (p) => rooms.setSettings(current(), socket.data, p));
-    on("room:profile", (p) => rooms.setProfile(current(), me(), p));
+    on("room:profile", async (p) => {
+      const rec = current();
+      const pid = me();
+      const { usePhoto, ...patch } = p;
+      if (usePhoto === undefined) return rooms.setProfile(rec, pid, patch);
+      const acc = await account();
+      const player = rec.room.players.find((x) => x.id === pid);
+      // Only your own account's picture, and only for the account that joined this seat.
+      const photo = usePhoto && acc && player?.userId === acc.userId ? acc.photo : null;
+      rooms.setProfile(rec, pid, { ...patch, photo });
+    });
     on("room:kick", (p) => rooms.kick(current(), socket.data, p.playerId));
     on("player:ready", (p) => rooms.setReady(current(), me(), p.ready));
     on("game:start", (p) => rooms.start(current(), socket.data, p.mode, p.minigameId));

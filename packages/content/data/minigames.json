@@ -51,11 +51,11 @@
       "howTo": [
         "Tap to start a round and wait on the red screen.",
         "Tap the moment it turns green.",
-        "Best of 3 counts. Tapping too early costs time."
+        "Your best of 3 tries counts. Tap too early and you're out!"
       ],
-      "rules": "Tap the moment the screen turns green. Best of 3. False starts cost you.",
+      "rules": "Tap the moment the screen turns green. Best of 3 counts. A false start disqualifies you.",
       "controls": "Tap anywhere when it's green.",
-      "bonus": "One false start is forgiven."
+      "bonus": "One extra try."
     },
     {
       "id": "stacker",

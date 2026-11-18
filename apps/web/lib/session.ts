@@ -83,3 +83,11 @@ export function sessionToken(): string | null {
 export function setSessionToken(t: string | null) {
   safeSet(`${P}:session`, t);
 }
+
+/** Signed in with a profile picture: show it in rooms (default) instead of the icon. */
+export function savedUsePhoto(): boolean {
+  return safeGet(`${P}:usePhoto`) !== "0";
+}
+export function saveUsePhoto(v: boolean) {
+  safeSet(`${P}:usePhoto`, v ? "1" : "0");
+}
