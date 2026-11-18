@@ -2,7 +2,7 @@ import { GAME_CONFIG } from "../config/game";
 import type { ContentBundle } from "../content/schemas";
 import { getFormat, validateAnswer } from "../formats";
 import { localize } from "../i18n";
-import { getBoard, getTile, nextTiles, pickStarTile, tileDef, computeTileTypes } from "../logic/board";
+import { getBoard, resolveBoardId, getTile, nextTiles, pickStarTile, tileDef, computeTileTypes } from "../logic/board";
 import { changeCoins, changeStars, placementCoins, standings, transferCoins } from "../logic/economy";
 import { applyEvent, drawEvent } from "../logic/events";
 import { applyTurnStartItem, availableItems, getItem, log, shopStock, tryShield } from "../logic/items";
@@ -51,7 +51,9 @@ export type GameAction =
   | { type: "minigameInput"; playerId: PlayerId; input: unknown }
   | { type: "minigameSubmit"; playerId: PlayerId; submission: unknown }
   | { type: "ready"; playerId: PlayerId }
-  | { type: "continue" };
+  | { type: "continue" }
+  /** Host: end the game now and go to the results (used for unlimited games). */
+  | { type: "finish" };
 
 export interface EngineResult {
   room: RoomState;
@@ -110,7 +112,7 @@ function minigameDef(d: Draft, id: string): MiniGameDefinition {
 // ---------------------------------------------------------------------------
 export function createGame(room: RoomState, ctx: EngineContext, mode: GameMode): GameState {
   const content = ctx.content;
-  const board = getBoard(content, room.settings.boardId);
+  const board = getBoard(content, resolveBoardId(content, room.settings.boardId, ctx.rng));
   const tileTypes = computeTileTypes(board, content, room.settings.tileFrequency ?? {}, ctx.rng);
   const order = shuffle(
     ctx.rng,
@@ -407,6 +409,17 @@ function handleAction(d: Draft, a: GameAction, isHost: boolean): void {
       if ((g.phase === "questionRound" || g.phase === "minigameQuestion") && g.question?.stage !== "answering")
         return onTimeout(d);
       fail("WRONG_PHASE", "Nothing to skip.");
+    }
+    case "finish": {
+      if (!isHost) fail("NOT_HOST", "Only the host can finish the game.");
+      if (g.mode !== "board") fail("WRONG_PHASE", "Practice modes are ended from the menu.");
+      if (g.phase === "gameEnd" || g.phase === "podium") fail("WRONG_PHASE", "The game is already over.");
+      // Drop whatever was in progress; results are computed from what has been earned so far.
+      g.question = null;
+      g.minigame = null;
+      g.movement = null;
+      g.junction = null;
+      return goto(d, "gameEnd", T.gameEndMs);
     }
   }
 }
@@ -1236,7 +1249,7 @@ function afterMinigameResults(d: Draft): void {
   if (origin === "duel") return turnEnd(d);
   if (g.mode === "minigameDebug") return startRoundMinigame(d);
   g.round++;
-  if (g.round > g.turnCount) {
+  if (g.turnCount > 0 && g.round > g.turnCount) {
     g.round = g.turnCount;
     return goto(d, "gameEnd", T.gameEndMs);
   }

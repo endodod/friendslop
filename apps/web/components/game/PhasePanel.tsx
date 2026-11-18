@@ -106,7 +106,7 @@ export function GameStartPanel() {
       <BoardRules compact />
       <div className="flex flex-col gap-2 rounded-2xl bg-bg-2 p-3">
         <p className="font-display text-muted">
-          {g.turnCount} rounds · turn order
+          {g.turnCount > 0 ? `${g.turnCount} rounds` : "Unlimited rounds"} · turn order
         </p>
         <ol className="flex flex-wrap gap-3">
           {g.order.map((pid, i) => (

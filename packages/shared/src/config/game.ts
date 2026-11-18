@@ -5,7 +5,8 @@
 export const GAME_CONFIG = {
   players: { min: 2, max: 8 },
 
-  turns: { options: [10, 12, 15, 20] as const, default: 12 },
+  /** 0 = unlimited: the game runs until someone reaches the star goal or the host finishes it. */
+  turns: { options: [10, 12, 15, 20, 0] as const, default: 12 },
 
   /** Win condition: 0 = most stars after the last round; N = first to N stars wins (rounds = time limit). */
   starGoals: { options: [0, 3, 5] as const, default: 0 },

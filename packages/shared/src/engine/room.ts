@@ -3,6 +3,7 @@ import type { ContentBundle } from "../content/schemas";
 import type { Rng } from "../rng";
 import { fail } from "./errors";
 import { CUSTOM_PACK_ID } from "../logic/custom";
+import { RANDOM_BOARD_ID } from "../logic/board";
 import type { RoomPlayer, RoomSettings, RoomState } from "./types";
 
 export function generateRoomCode(rng: Rng, taken: (code: string) => boolean = () => false): string {
@@ -131,7 +132,7 @@ export function updateSettings(room: RoomState, patch: Partial<RoomSettings>, co
   if (!(GAME_CONFIG.turns.options as readonly number[]).includes(s.turnCount)) fail("INVALID_INPUT", "Invalid turn count.");
   // Themes used to be a separate filter; packs are the only switch now.
   delete (s as { themes?: unknown }).themes;
-  if (!content.boards.some((b) => b.id === s.boardId)) fail("INVALID_INPUT", "Unknown board.");
+  if (s.boardId !== RANDOM_BOARD_ID && !content.boards.some((b) => b.id === s.boardId)) fail("INVALID_INPUT", "Unknown board.");
   if (!(GAME_CONFIG.starGoals.options as readonly number[]).includes(s.starGoal ?? 0)) fail("INVALID_INPUT", "Invalid win condition.");
   const packIds = new Set([...selectablePacks(content).map((p) => p.id), CUSTOM_PACK_ID]);
   s.packs = [...new Set(s.packs)].filter((p) => packIds.has(p));

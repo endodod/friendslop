@@ -21,10 +21,10 @@ export function BoardRules({ compact }: { compact?: boolean }) {
       <Goal>
         {goal > 0 ? (
           <>
-            First to {goal} {star} stars wins! (Otherwise: most stars after {settings?.turnCount} rounds.)
+            First to {goal} {star} stars wins! {settings?.turnCount ? `(Otherwise: most stars after ${settings.turnCount} rounds.)` : "(No round limit: the host can finish the game any time.)"}
           </>
         ) : (
-          <>Collect the most {star} stars. Coins break ties.</>
+          <>Collect the most {star} stars. Coins break ties.{settings?.turnCount === 0 ? " No round limit: the host finishes the game with the flag button." : ""}</>
         )}
       </Goal>
       <Steps

@@ -1,6 +1,6 @@
 "use client";
 import { AnimatePresence, motion } from "framer-motion";
-import { LogOut, Map as MapIcon, Pause, Play, X } from "lucide-react";
+import { Flag, LogOut, Map as MapIcon, Pause, Play, X } from "lucide-react";
 import { setGamePaused } from "@party-game/minigames/client";
 import { useEffect, useState } from "react";
 import { useStore } from "@/lib/store";
@@ -82,7 +82,7 @@ function TopBar({ compact }: { compact?: boolean }) {
   return (
     <header className="flex items-center gap-1 px-2 py-2 sm:gap-3 sm:px-3">
       <span className="min-w-0 truncate whitespace-nowrap rounded-xl bg-panel-2 px-2 py-1 font-display sm:px-3">
-        {g.mode === "questionDebug" ? "Questions" : g.mode === "minigameDebug" ? "Mini-games" : `Round ${g.round}/${g.turnCount}`}
+        {g.mode === "questionDebug" ? "Questions" : g.mode === "minigameDebug" ? "Mini-games" : g.turnCount > 0 ? `Round ${g.round}/${g.turnCount}` : `Round ${g.round}`}
       </span>
       {g.mode === "board" && (pub.settings.starGoal ?? 0) > 0 && (
         <span className="rounded-xl bg-[#ffe066]/15 px-2 py-1 font-display text-sm text-[#ffe066]">First to {pub.settings.starGoal} ★</span>
@@ -99,6 +99,19 @@ function TopBar({ compact }: { compact?: boolean }) {
       )}
       <HelpButton minigameId={g.minigame?.id ?? null} />
       <MuteButton />
+      {isHost && g.mode === "board" && g.phase !== "podium" && g.phase !== "gameEnd" && (
+        <button
+          className="btn-ghost min-h-11 min-w-9 px-1 sm:min-w-11 sm:px-2"
+          aria-label="Finish the game now and show the results"
+          title="Finish game"
+          data-testid="finish-button"
+          onClick={() => {
+            if (confirm("Finish the game now? Bonus stars are handed out and the winner is crowned.")) act("game:finish", {});
+          }}
+        >
+          <Flag size={20} />
+        </button>
+      )}
       {isHost && g.phase !== "podium" && (
         <button
           className="btn-ghost min-h-11 min-w-9 px-1 sm:min-w-11 sm:px-2"

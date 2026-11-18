@@ -245,7 +245,7 @@ function SettingsPanel({ settings, editable, canData }: { settings: RoomSettings
       <Row label={settings.starGoal ? "Rounds (time limit)" : "Rounds"}>
         <Segmented
           value={settings.turnCount}
-          options={GAME_CONFIG.turns.options.map((n) => ({ value: n, label: String(n) }))}
+          options={GAME_CONFIG.turns.options.map((n) => ({ value: n, label: n === 0 ? "∞" : String(n) }))}
           disabled={!editable}
           onChange={(turnCount) => set({ turnCount })}
         />

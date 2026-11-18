@@ -3,6 +3,15 @@ import type { Board, BoardTile, ContentBundle, TileDef } from "../content/schema
 import { pick, shuffle, type Rng } from "../rng";
 import type { GameState, TileFrequency } from "../engine/types";
 
+/** Lobby setting value meaning "pick a map at random when the game starts". */
+export const RANDOM_BOARD_ID = "random";
+
+/** Resolve the lobby's map choice ("random" picks one of the shipped maps). */
+export function resolveBoardId(content: ContentBundle, id: string, rng: () => number): string {
+  if (id !== RANDOM_BOARD_ID || content.boards.length === 0) return id;
+  return content.boards[Math.floor(rng() * content.boards.length)].id;
+}
+
 export function getBoard(content: ContentBundle, id: string): Board {
   const b = content.boards.find((x) => x.id === id) ?? content.boards[0];
   if (!b) throw new Error("no boards in content");

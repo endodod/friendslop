@@ -65,6 +65,7 @@ export const ClientEvents = {
   /** Host only: freeze or unfreeze every timer in the game. */
   "game:pause": z.object({ paused: z.boolean() }),
   "game:continue": z.object({}),
+  "game:finish": z.object({}),
   /** "Got it!" on a tutorial screen (game start, mini-game intro). */
   "game:ready": z.object({}),
   "game:playAgain": z.object({}),

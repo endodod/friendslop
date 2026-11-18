@@ -1,6 +1,6 @@
 "use client";
-import { Check } from "lucide-react";
-import { localize, type Board } from "@party-game/shared";
+import { Check, Shuffle } from "lucide-react";
+import { RANDOM_BOARD_ID, localize, type Board } from "@party-game/shared";
 import { clientContent } from "@party-game/content";
 import { useBoards } from "@/lib/board";
 
@@ -88,6 +88,31 @@ export function MapPicker({ value, editable, onChange }: { value: string; editab
           </button>
         );
       })}
+      <button
+        key={RANDOM_BOARD_ID}
+        role="radio"
+        aria-checked={value === RANDOM_BOARD_ID}
+        disabled={!editable && value !== RANDOM_BOARD_ID}
+        onClick={() => editable && onChange(RANDOM_BOARD_ID)}
+        className={`relative flex flex-col gap-1 rounded-2xl p-2 text-left transition-all ${
+          value === RANDOM_BOARD_ID ? "bg-panel-2 ring-2 ring-accent" : "bg-bg-2 opacity-80 hover:opacity-100"
+        } disabled:opacity-35`}
+        data-testid="map-random"
+      >
+        {value === RANDOM_BOARD_ID && (
+          <span className="absolute right-2 top-2 rounded-full bg-accent p-0.5 text-[#241a00]">
+            <Check size={14} strokeWidth={4} />
+          </span>
+        )}
+        <span className="flex aspect-[1.6] w-full items-center justify-center rounded-xl bg-bg/60">
+          <span className="font-display text-5xl text-accent drop-shadow-[0_3px_0_#7a5a00]">?</span>
+        </span>
+        <span className="flex items-center gap-1 font-display text-base leading-tight">
+          <Shuffle size={16} /> Random
+        </span>
+        <span className="text-xs text-muted">Any of the {boards.length} maps</span>
+        <span className="text-xs leading-snug text-muted">A surprise map, picked when the game starts.</span>
+      </button>
     </div>
   );
 }
