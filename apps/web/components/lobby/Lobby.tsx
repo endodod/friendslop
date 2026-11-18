@@ -14,6 +14,7 @@ import { MINIGAME_CLIENTS } from "@party-game/minigames/client";
 import { MapPicker } from "./MapPicker";
 import { PackPicker } from "./PackPicker";
 import { TileMix } from "./TileMix";
+import { MinigameMix } from "./MinigameMix";
 import { CustomQuestions } from "./CustomQuestions";
 
 export function Lobby({ code, onLeave }: { code: string; onLeave: () => Promise<void> }) {
@@ -250,6 +251,18 @@ function SettingsPanel({ settings, editable, canData }: { settings: RoomSettings
         </summary>
         <div className="mt-3">
           <TileMix value={settings.tileFrequency ?? {}} editable={editable} onChange={(tileFrequency) => set({ tileFrequency })} />
+        </div>
+      </details>
+
+      <details className="rounded-2xl bg-bg-2 p-3">
+        <summary className="cursor-pointer font-display text-lg">
+          Mini-game mix{" "}
+          <span className="text-sm text-muted">
+            {Object.keys(settings.minigameMix ?? {}).length ? `(${Object.keys(settings.minigameMix ?? {}).length} changed)` : "(all normal)"}
+          </span>
+        </summary>
+        <div className="mt-3">
+          <MinigameMix value={settings.minigameMix ?? {}} editable={editable} onChange={(minigameMix) => set({ minigameMix })} />
         </div>
       </details>
 

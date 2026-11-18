@@ -227,3 +227,25 @@ describe("playtest fixes", () => {
     expect(s.alive).not.toContain("a");
   });
 });
+
+describe("hot potato challenges", () => {
+  it("every challenge has 3 choices, a valid answer, and the answer stays secret", async () => {
+    const { hotPotato } = await import("../src/hot-potato/logic");
+    const kinds = new Set<string>();
+    for (let seed = 1; seed < 80; seed++) {
+      const s = hotPotato.init({ players: ["a", "b"], bonuses: [], seed, rng: createRng(seed), now: 0, services: {} as never });
+      const pr = s.prompt;
+      kinds.add(pr.kind);
+      expect(pr.choices).toHaveLength(3);
+      expect(pr.answer).toBeGreaterThanOrEqual(0);
+      expect(pr.answer).toBeLessThan(3);
+      if (pr.kind === "match") expect(pr.choices[pr.answer]).toBe(pr.icon);
+      if (pr.kind === "ink") expect(pr.choices[pr.answer]).toBe(pr.ink);
+      if (pr.kind === "count") expect(Number(pr.choices[pr.answer])).toBe(pr.dots.length);
+      if (pr.kind === "odd") expect(pr.choices.filter((c) => c === pr.choices[pr.answer])).toHaveLength(1);
+      expect(new Set(pr.choices).size).toBe(pr.kind === "odd" ? 2 : 3);
+      expect(JSON.stringify(hotPotato.publicState(s, 0))).not.toContain('"answer"');
+    }
+    expect(kinds.size).toBe(4);
+  });
+});

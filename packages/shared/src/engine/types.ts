@@ -12,6 +12,8 @@ export interface RoomSettings {
   turnCount: number;
   /** Tile mix: tile type id → how often it appears (missing = normal). */
   tileFrequency: Record<string, TileFrequency>;
+  /** Mini-game mix: mini-game id → how often it comes up (missing = normal). */
+  minigameMix?: Record<string, TileFrequency>;
   /** 0 = most stars after the last round; otherwise the first player to reach this many stars wins. */
   starGoal: number;
   /** Enabled question pack ids. */

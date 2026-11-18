@@ -3,8 +3,9 @@ import { motion } from "framer-motion";
 import { useEffect, useRef } from "react";
 import type { MinigameClientProps } from "../kit/types";
 import { Arena, ChunkyButton } from "../kit/visual";
+import type { PublicPrompt } from "./logic";
 
-interface Pub { alive: string[]; out: string[]; holder: string; prompt: { text: string; choices: number[] } | null; boom: string | null; revive: boolean; locked: boolean; extraLife: string[] }
+interface Pub { alive: string[]; out: string[]; holder: string; prompt: PublicPrompt | null; boom: string | null; revive: boolean; locked: boolean; extraLife: string[] }
 
 export function HotPotatoClient(p: MinigameClientProps<Pub>) {
   const mine = p.isParticipant && p.pub.holder === p.me && !p.pub.boom;
@@ -102,23 +103,80 @@ export function HotPotatoClient(p: MinigameClientProps<Pub>) {
         )
       ) : mine ? (
         <div className="flex w-full flex-col items-center gap-3">
-          <p className="font-display text-2xl text-bad">You have the bomb! Solve to pass it:</p>
-          {(
-            <>
-              <p className="font-display text-6xl">{p.pub.prompt?.text}</p>
-              <div className="grid w-full grid-cols-3 gap-2">
-                {p.pub.prompt?.choices.map((c) => (
-                  <ChunkyButton key={c} disabled={p.pub.locked} color="#3a3462" textColor="#f4f1ff" className="min-h-20 text-3xl" onClick={() => p.input({ choice: c })}>
-                    {c}
-                  </ChunkyButton>
-                ))}
-              </div>
-            </>
+          <p className="font-display text-2xl text-bad">You have the bomb! Quick, pass it:</p>
+          {p.pub.prompt && (
+            <Challenge
+              prompt={p.pub.prompt}
+              locked={p.pub.locked}
+              Icon={p.ui.Icon}
+              onPick={(i) => {
+                p.input({ choice: i });
+                p.ui.vibrate(15);
+              }}
+            />
           )}
         </div>
       ) : (
         <p className="font-display text-2xl">{p.players[p.pub.holder]?.name} has the bomb…</p>
       )}
     </div>
+  );
+}
+
+const INSTRUCTION: Record<PublicPrompt["kind"], string> = {
+  match: "Tap the same picture",
+  ink: "Tap the INK colour, not the word",
+  odd: "Tap the odd one out",
+  count: "How many dots?",
+};
+
+/** One quick challenge: a question area and three big buttons. */
+function Challenge({
+  prompt,
+  locked,
+  onPick,
+  Icon,
+}: {
+  prompt: PublicPrompt;
+  locked: boolean;
+  onPick: (i: number) => void;
+  Icon: MinigameClientProps["ui"]["Icon"];
+}) {
+  return (
+    <motion.div key={JSON.stringify(prompt)} initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="flex w-full flex-col items-center gap-3">
+      <p className="font-display text-xl text-muted">{INSTRUCTION[prompt.kind]}</p>
+      {prompt.kind === "match" && (
+        <span className="flex h-24 w-24 items-center justify-center rounded-3xl bg-accent/20 text-accent ring-2 ring-accent">
+          <Icon id={prompt.icon} size={64} />
+        </span>
+      )}
+      {prompt.kind === "ink" && (
+        <p className="font-display text-6xl drop-shadow-[0_3px_0_#000a]" style={{ color: prompt.ink }}>
+          {prompt.word}
+        </p>
+      )}
+      {prompt.kind === "count" && (
+        <div className="relative h-32 w-full max-w-xs rounded-2xl bg-bg-2">
+          {prompt.dots.map((d, i) => (
+            <span key={i} className="absolute h-5 w-5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent shadow-[0_0_8px_#ffc933]" style={{ left: `${d.x}%`, top: `${d.y}%` }} />
+          ))}
+        </div>
+      )}
+      <div className="grid w-full grid-cols-3 gap-2">
+        {prompt.choices.map((c, i) => (
+          <ChunkyButton
+            key={`${c}-${i}`}
+            ariaLabel={prompt.kind === "ink" ? `colour ${i + 1}` : prompt.kind === "count" ? c : `${c} ${i + 1}`}
+            disabled={locked}
+            color={prompt.kind === "ink" ? c : "#3a3462"}
+            textColor="#f4f1ff"
+            className="flex min-h-20 items-center justify-center text-3xl"
+            onClick={() => onPick(i)}
+          >
+            {prompt.kind === "count" ? c : prompt.kind === "ink" ? "" : <Icon id={c} size={44} />}
+          </ChunkyButton>
+        ))}
+      </div>
+    </motion.div>
   );
 }

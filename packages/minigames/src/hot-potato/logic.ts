@@ -1,7 +1,23 @@
 import { z } from "zod";
 import { shuffle, type MiniGameDefinition, type Placement, type PlayerId } from "@party-game/shared";
 
-export interface Prompt { text: string; choices: number[]; answer: number }
+/**
+ * Quick reflex challenges (no maths): match the picture, tap the ink colour, find the odd one out,
+ * count the dots. `choices` are what the buttons show; `answer` (secret) is the right index.
+ */
+export type Prompt =
+  | { kind: "match"; icon: string; choices: string[]; answer: number }
+  | { kind: "ink"; word: string; ink: string; choices: string[]; answer: number }
+  | { kind: "odd"; choices: string[]; answer: number }
+  | { kind: "count"; dots: { x: number; y: number }[]; choices: string[]; answer: number };
+
+export const POTATO_ICONS = ["food", "music", "gaming", "movies", "chicken", "balloon", "crown", "potato", "star", "trophy", "coin", "magnet"];
+export const POTATO_COLORS = [
+  { name: "RED", hex: "#ff4d5e" },
+  { name: "BLUE", hex: "#3d8bff" },
+  { name: "GREEN", hex: "#2fd27a" },
+  { name: "YELLOW", hex: "#ffc933" },
+];
 
 export interface PotatoState {
   players: PlayerId[];
@@ -22,20 +38,44 @@ export interface PotatoState {
 }
 
 function makePrompt(rng: () => number): Prompt {
-  const a = 2 + Math.floor(rng() * 12);
-  const b = 2 + Math.floor(rng() * 12);
-  const answer = a + b;
-  const wrong = new Set<number>();
-  while (wrong.size < 2) {
-    const w = answer + (Math.floor(rng() * 7) - 3 || 4);
-    if (w !== answer) wrong.add(w);
+  const pickN = <T,>(arr: T[], n: number) => shuffle(rng, arr).slice(0, n);
+  const kind = (["match", "ink", "odd", "count"] as const)[Math.floor(rng() * 4)];
+  if (kind === "match") {
+    const choices = pickN(POTATO_ICONS, 3);
+    const answer = Math.floor(rng() * 3);
+    return { kind, icon: choices[answer], choices, answer };
   }
-  return { text: `${a} + ${b}`, answer, choices: shuffle(rng, [answer, ...wrong]) };
+  if (kind === "ink") {
+    const [ink, word, other] = pickN(POTATO_COLORS, 3);
+    const choices = shuffle(rng, [ink.hex, word.hex, other.hex]);
+    return { kind, word: word.name, ink: ink.hex, choices, answer: choices.indexOf(ink.hex) };
+  }
+  if (kind === "odd") {
+    const [same, odd] = pickN(POTATO_ICONS, 2);
+    const answer = Math.floor(rng() * 3);
+    return { kind, choices: [0, 1, 2].map((i) => (i === answer ? odd : same)), answer };
+  }
+  const n = 2 + Math.floor(rng() * 6); // 2–7 dots
+  const dots: { x: number; y: number }[] = [];
+  while (dots.length < n) {
+    const d = { x: 10 + rng() * 80, y: 15 + rng() * 70 };
+    if (dots.every((o) => Math.hypot(o.x - d.x, o.y - d.y) > 16)) dots.push(d);
+  }
+  const wrong = shuffle(rng, [n - 2, n - 1, n + 1, n + 2].filter((v) => v >= 1)).slice(0, 2);
+  const choices = shuffle(rng, [n, ...wrong]).map(String);
+  return { kind, dots, choices, answer: choices.indexOf(String(n)) };
 }
 
 function giveTo(s: PotatoState, pid: PlayerId, now: number, rng: () => number): PotatoState {
   return { ...s, holder: pid, prompt: makePrompt(rng), lockedUntil: now };
 }
+
+/** Everything but the answer. */
+function publicPrompt(p: Prompt) {
+  const { answer: _a, ...rest } = p;
+  return rest;
+}
+export type PublicPrompt = ReturnType<typeof publicPrompt>;
 
 const nextAlive = (s: PotatoState) => s.alive[(s.alive.indexOf(s.holder) + 1) % s.alive.length];
 const fuse = (now: number, rng: () => number) => now + 8000 + rng() * 9000;
@@ -45,7 +85,7 @@ export const hotPotato: MiniGameDefinition<PotatoState, { choice: number }> = {
   kind: "turnBased",
   durationSec: 90,
   minPlayers: 2,
-  inputSchema: z.object({ choice: z.number().int().min(-1000).max(1000) }),
+  inputSchema: z.object({ choice: z.number().int().min(0).max(2) }),
   init: ({ players, bonuses, now, rng }) => {
     const s: PotatoState = { players, bonuses, alive: [...players], out: [], holder: players[0], prompt: makePrompt(rng), explodeAt: fuse(now, rng), boomUntil: null, boomPlayer: null, boomRevive: false, revived: [], lockedUntil: now };
     return giveTo(s, players[Math.floor(rng() * players.length)], now, rng);
@@ -81,7 +121,7 @@ export const hotPotato: MiniGameDefinition<PotatoState, { choice: number }> = {
     alive: s.alive,
     out: s.out,
     holder: s.holder,
-    prompt: s.boomUntil ? null : { text: s.prompt.text, choices: s.prompt.choices },
+    prompt: s.boomUntil ? null : publicPrompt(s.prompt),
     boom: s.boomUntil ? s.boomPlayer : null,
     revive: !!s.boomUntil && s.boomRevive,
     locked: now < s.lockedUntil,

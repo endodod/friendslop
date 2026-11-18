@@ -19,6 +19,7 @@ export function defaultSettings(content: ContentBundle): RoomSettings {
   return {
     turnCount: GAME_CONFIG.turns.default,
     tileFrequency: {},
+    minigameMix: {},
     starGoal: GAME_CONFIG.starGoals.default,
     packs: [...selectablePacks(content).map((p) => p.id), CUSTOM_PACK_ID],
     dataQuestions: true,
@@ -137,6 +138,11 @@ export function updateSettings(room: RoomState, patch: Partial<RoomSettings>, co
       ([k, v]) => tileIds.has(k) && freqs.has(v) && !GAME_CONFIG.tiles.notTunable.includes(k),
     ),
   ) as RoomSettings["tileFrequency"];
+  const mgIds = new Set(content.minigames.filter((m) => m.enabled && m.id !== "duel").map((m) => m.id));
+  s.minigameMix = Object.fromEntries(
+    Object.entries(s.minigameMix ?? {}).filter(([k, v]) => mgIds.has(k) && freqs.has(v) && v !== "normal"),
+  ) as RoomSettings["tileFrequency"];
+  if ([...mgIds].every((id) => s.minigameMix![id] === "off")) fail("INVALID_INPUT", "Keep at least one mini-game on.");
   return { ...room, settings: s, players: room.players.map((p) => ({ ...p, ready: false })) };
 }
 

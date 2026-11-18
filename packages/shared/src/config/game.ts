@@ -20,6 +20,12 @@ export const GAME_CONFIG = {
 
   dice: { sides: 6 },
 
+  /** Mini-game mix setting: pick weight multiplier, and how often a game may come up per cycle. */
+  minigameMix: {
+    weight: { off: 0, few: 0.35, normal: 1, many: 2.5 } as Record<string, number>,
+    perCycle: { off: 0, few: 1, normal: 1, many: 2 } as Record<string, number>,
+  },
+
   /** Tile mix setting: how often each tile type appears compared to the board's design. */
   tiles: {
     frequency: { off: 0, few: 0.5, normal: 1, many: 1.6 } as Record<string, number>,

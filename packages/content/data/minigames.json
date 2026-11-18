@@ -273,11 +273,11 @@
       "icon": "bomb",
       "goal": "Don't be holding the bomb when it explodes.",
       "howTo": [
-        "If you have the bomb, solve the sum to pass it on.",
-        "Wrong answers give you a new sum and a short delay.",
+        "If you have the bomb, beat the quick challenge to pass it on (match, colour, odd one out, count).",
+        "A wrong tap gives you a new challenge and a short delay.",
         "The fuse is secret. Last survivor wins."
       ],
-      "rules": "Answer a quick prompt to pass the bomb. The hidden fuse explodes on someone.",
+      "rules": "Beat a quick reflex challenge to pass the bomb. The hidden fuse explodes on someone.",
       "controls": "Answer to pass it on.",
       "bonus": "One revive: survive your first explosion."
     },
