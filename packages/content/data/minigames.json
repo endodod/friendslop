@@ -175,11 +175,11 @@
       "icon": "mole",
       "goal": "Score the most points.",
       "howTo": [
-        "Hammers pop up in the holes: tap them for +1.",
+        "Moles pop up out of the holes: whack them for +1.",
         "Avoid bombs: −3.",
         "They disappear quickly, so be fast."
       ],
-      "rules": "Tap icons as they pop up. Avoid the bombs!",
+      "rules": "Whack the moles as they pop up. Avoid the bombs!",
       "controls": "Tap the targets.",
       "bonus": "Targets stay up longer."
     },

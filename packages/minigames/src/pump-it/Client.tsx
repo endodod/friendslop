@@ -3,6 +3,7 @@ import { useRef } from "react";
 import { motion } from "framer-motion";
 import type { MinigameClientProps } from "../kit/types";
 import { KeyHint, useKey } from "../kit/hooks";
+import { Arena, ChunkyButton, Hud, Pill, PlayerChip, PopText } from "../kit/visual";
 import { BALLOONS, type PumpPrivate, type PumpPublic } from "./logic";
 
 const COLORS = ["#ff4d5e", "#3d8bff", "#2fd27a"];
@@ -26,32 +27,74 @@ export function PumpItClient(p: MinigameClientProps<PumpPublic, PumpPrivate>) {
     if (cur.pumps > 0) stopAction.current = () => p.input({ action: "stop" });
   }
 
+  const prevBalloon = mine && mine.current > 0 ? mine.balloons[mine.current - 1] : null;
+  const wobble = cur ? Math.min(6, cur.pumps * 0.25) : 0;
+  const color = mine ? COLORS[mine.current % 3] : COLORS[0];
+
   return (
     <div className="flex flex-col gap-4">
       {p.isParticipant && mine && !mine.done && cur && (
         <div className="flex flex-col items-center gap-3">
-          <p className="font-display text-xl">
-            Balloon {mine.current + 1}/{BALLOONS} · banked <span className="text-accent">{mine.total}</span>
-          </p>
+          <Hud
+            left={
+              <span className="flex gap-1.5">
+                {mine.balloons.map((b, i) => (
+                  <span
+                    key={i}
+                    className="h-4 w-3.5 rounded-[50%]"
+                    style={{
+                      background: b.popped ? "#555" : COLORS[i],
+                      opacity: i === mine.current ? 1 : b.banked || b.popped ? 0.8 : 0.3,
+                      boxShadow: i === mine.current ? `0 0 0 2px #fff` : undefined,
+                    }}
+                  />
+                ))}
+              </span>
+            }
+            right={<Pill tone="#ffc933">Banked {mine.total}</Pill>}
+          />
           {p.priv?.hint && (
-            <p className="rounded-full bg-accent px-3 py-1 font-display text-sm text-[#241a00]">
+            <Pill tone="#ffc933">
               Bonus hint: pops between {p.priv.hint.lo} and {p.priv.hint.hi}
-            </p>
+            </Pill>
           )}
-          <div className="flex h-72 items-end justify-center">
+          <Arena tone={color} className="relative flex h-80 w-full items-end justify-center pb-6" pattern="dots"
+            bg={`radial-gradient(80% 60% at 50% 40%, ${color}33 0%, transparent 70%), linear-gradient(180deg, #1d1838, #120f24)`}>
+            <span className="absolute left-1/2 top-1/3 -translate-x-1/2">
+              <PopText id={prevBalloon ? `b${mine.current}` : null} text={prevBalloon?.popped ? "POP!" : `+${prevBalloon?.pumps ?? 0}`} color={prevBalloon?.popped ? "#ff4d5e" : "#2fd27a"} />
+            </span>
             <motion.div
-              animate={{ width: size, height: size * 1.15 }}
-              transition={{ type: "spring", stiffness: 400, damping: 15 }}
-              className="flex items-center justify-center rounded-[50%] font-display text-3xl text-white shadow-[inset_-12px_-12px_0_#0003]"
-              style={{ background: COLORS[mine.current % 3] }}
+              key={mine.current}
+              initial={{ y: 60, opacity: 0 }}
+              animate={{ y: 0, opacity: 1, rotate: [-wobble, wobble, -wobble] }}
+              transition={{ y: { type: "spring", stiffness: 200 }, rotate: { repeat: Infinity, duration: Math.max(0.12, 0.6 - cur.pumps * 0.02) } }}
+              className="flex flex-col items-center"
+              style={{ transformOrigin: "50% 100%" }}
             >
-              {cur.pumps}
+              <motion.div
+                animate={{ width: size, height: size * 1.15 }}
+                transition={{ type: "spring", stiffness: 400, damping: 15 }}
+                className="relative flex items-center justify-center rounded-[50%] font-display text-3xl text-white"
+                style={{
+                  background: `radial-gradient(circle at 32% 28%, color-mix(in srgb, ${color} 100%, white 55%) 0%, ${color} 35%, color-mix(in srgb, ${color} 70%, black) 100%)`,
+                  boxShadow: `0 0 ${10 + cur.pumps * 2}px ${color}88`,
+                }}
+              >
+                <span className="absolute left-[22%] top-[16%] h-[18%] w-[12%] rotate-[-30deg] rounded-[50%] bg-white/50" />
+                <span className="drop-shadow-[0_2px_0_#0006]">{cur.pumps}</span>
+              </motion.div>
+              {/* knot + string */}
+              <span className="-mt-0.5 h-0 w-0 border-x-[7px] border-b-[10px] border-x-transparent" style={{ borderBottomColor: color }} />
+              <svg width="20" height="56" viewBox="0 0 20 56" aria-hidden>
+                <path d="M10 0 C 2 12, 18 22, 10 32 S 4 48, 10 56" stroke="#ffffff88" strokeWidth="2" fill="none" />
+              </svg>
             </motion.div>
-          </div>
+          </Arena>
           <div className="grid w-full grid-cols-[2fr_1fr] gap-3">
-            <button
-              data-testid="pump"
-              className="btn-primary min-h-20 touch-none text-3xl"
+            <ChunkyButton
+              testId="pump"
+              color="#ffc933"
+              className="min-h-20 touch-none text-3xl"
               onPointerDown={() => {
                 p.input({ action: "pump" });
                 p.ui.play("pop", { volume: 0.25, rate: 1.6 + cur.pumps * 0.03 });
@@ -59,38 +102,47 @@ export function PumpItClient(p: MinigameClientProps<PumpPublic, PumpPrivate>) {
               }}
             >
               Pump!
-            </button>
-            <button className="btn-secondary min-h-20 text-2xl" disabled={cur.pumps === 0} onClick={() => p.input({ action: "stop" })}>
-              Stop
-            </button>
+            </ChunkyButton>
+            <ChunkyButton color="#2fd27a" textColor="#06210f" className="min-h-20 text-2xl" disabled={cur.pumps === 0} onClick={() => p.input({ action: "stop" })}>
+              Bank
+            </ChunkyButton>
           </div>
-          <KeyHint label="Space = pump · Enter = stop" text="" />
+          <KeyHint label="Space = pump · Enter = bank" text="" />
         </div>
       )}
       {p.isParticipant && mine?.done && (
-        <p className="rounded-3xl bg-bg-2 p-4 text-center font-display text-2xl">
-          Total: <span className="text-accent">{mine.total}</span> · waiting for the others…
-        </p>
+        <Arena tone="#ffc933" className="p-5 text-center">
+          <p className="font-display text-2xl">
+            Total: <span className="text-4xl text-accent">{mine.total}</span>
+          </p>
+          <p className="text-muted">Waiting for the others…</p>
+        </Arena>
       )}
       <ul className="grid grid-cols-2 gap-2">
         {others.map((pid) => {
           const r = p.pub.runs[pid];
           return (
-            <li key={pid} className="flex items-center gap-2 rounded-2xl bg-bg-2 p-2">
-              <p.ui.Avatar player={p.players[pid]} size={32} />
-              <span className="flex gap-1">
-                {r?.balloons.map((b, i) => (
-                  <span
-                    key={i}
-                    className="flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold text-white"
-                    style={{ background: b.popped ? "#555" : COLORS[i], opacity: i > (r.current ?? 0) ? 0.3 : 1 }}
-                  >
-                    {b.popped ? "💥" : b.banked ? b.pumps : i === r.current ? "…" : ""}
+            <PlayerChip
+              key={pid}
+              avatar={<p.ui.Avatar player={p.players[pid]} size={32} />}
+              name={undefined}
+              value={
+                <span className="flex items-center gap-2">
+                  <span className="flex gap-1">
+                    {r?.balloons.map((b, i) => (
+                      <span
+                        key={i}
+                        className="flex h-7 w-6 items-center justify-center rounded-[50%] text-xs font-bold text-white"
+                        style={{ background: b.popped ? "#444" : COLORS[i], opacity: i > (r.current ?? 0) ? 0.3 : 1 }}
+                      >
+                        {b.popped ? "✕" : b.banked ? b.pumps : i === r.current ? "…" : ""}
+                      </span>
+                    ))}
                   </span>
-                ))}
-              </span>
-              <span className="ml-auto font-display text-accent">{r?.total}</span>
-            </li>
+                  <span className="text-accent">{r?.total}</span>
+                </span>
+              }
+            />
           );
         })}
       </ul>

@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import type { SoloPrivate, SoloPublic } from "@party-game/shared";
 import type { MinigameClientProps } from "../kit/types";
 import { SoloStatus, SubmittedNotice } from "../kit/hooks";
+import { Arena, Hud, Pill } from "../kit/visual";
 import { PEEK_MS, layout } from "./logic";
 
 export function MemoryFlipClient(p: MinigameClientProps<SoloPublic, SoloPrivate>) {
@@ -73,29 +74,63 @@ export function MemoryFlipClient(p: MinigameClientProps<SoloPublic, SoloPrivate>
     );
   }
 
+  const pairs = cards.length / 2;
   return (
     <div className="flex flex-col gap-3">
-      <p className="text-center font-display text-xl">
-        {peek ? "Bonus peek! Memorize!" : `${matched.size / 2} / ${cards.length / 2} pairs`}
-      </p>
-      <div className="mx-auto grid w-full max-w-md grid-cols-4 gap-2" data-testid="memory-grid">
-        {cards.map((icon, i) => {
-          const up = peek || open.includes(i) || matched.has(i);
-          return (
-            <motion.button
-              key={`${i}-${up}`}
-              onClick={() => flip(i)}
-              initial={{ scaleX: 0.1 }}
-              animate={{ scaleX: 1 }}
-              transition={{ duration: 0.18 }}
-              aria-label={up ? icon : `card ${i + 1}`}
-              className={`flex aspect-square items-center justify-center rounded-2xl ${matched.has(i) ? "bg-good/40" : up ? "bg-panel-2" : "bg-accent"}`}
-            >
-              {up ? <p.ui.Icon id={icon} size={40} /> : <span className="font-display text-2xl text-[#241a00]">?</span>}
-            </motion.button>
-          );
-        })}
-      </div>
+      <Hud
+        left={<Pill tone="#2fd27a">{matched.size / 2} / {pairs} pairs</Pill>}
+        right={<Pill>{Math.floor(flips.current.length / 2)} tries</Pill>}
+      />
+      {peek && <p className="text-center font-display text-2xl text-accent">Bonus peek! Memorize!</p>}
+      <Arena tone="#b26bff" className="p-3" pattern="grid">
+        <div className="mx-auto grid w-full max-w-md grid-cols-4 gap-2" data-testid="memory-grid" style={{ perspective: 800 }}>
+          {cards.map((icon, i) => {
+            const up = peek || open.includes(i) || matched.has(i);
+            const isMatched = matched.has(i);
+            return (
+              <button
+                key={i}
+                onClick={() => flip(i)}
+                aria-label={up ? icon : `card ${i + 1}`}
+                className="relative aspect-square"
+              >
+                <motion.span
+                  className="absolute inset-0"
+                  initial={false}
+                  animate={{ rotateY: up ? 180 : 0, scale: isMatched ? [1, 1.12, 1] : 1 }}
+                  transition={{ duration: 0.3 }}
+                  style={{ transformStyle: "preserve-3d" }}
+                >
+                  {/* back */}
+                  <span
+                    className="absolute inset-0 flex items-center justify-center rounded-2xl"
+                    style={{
+                      backfaceVisibility: "hidden",
+                      background: "repeating-linear-gradient(45deg, #ffc933 0 7px, #ffb800 7px 14px)",
+                      boxShadow: "inset 0 0 0 3px #fff8, 0 4px 0 #b38a12",
+                    }}
+                  >
+                    <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#241a00]/80 font-display text-xl text-accent">?</span>
+                  </span>
+                  {/* face */}
+                  <span
+                    className="absolute inset-0 flex items-center justify-center rounded-2xl"
+                    style={{
+                      backfaceVisibility: "hidden",
+                      transform: "rotateY(180deg)",
+                      background: isMatched ? "linear-gradient(160deg, #2fd27a55, #2fd27a22)" : "linear-gradient(160deg, #f6f3ff, #d9d3ef)",
+                      boxShadow: isMatched ? "inset 0 0 0 3px #2fd27a, 0 0 18px #2fd27a66" : "0 4px 0 #8f88b5",
+                      color: isMatched ? "#2fd27a" : "#2a2549",
+                    }}
+                  >
+                    <p.ui.Icon id={icon} size={40} />
+                  </span>
+                </motion.span>
+              </button>
+            );
+          })}
+        </div>
+      </Arena>
     </div>
   );
 }

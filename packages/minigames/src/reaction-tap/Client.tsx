@@ -1,8 +1,10 @@
 "use client";
+import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import type { MinigameClientProps } from "../kit/types";
 import { KeyHint, SoloStatus, SubmittedNotice, useKey } from "../kit/hooks";
 import type { SoloPrivate, SoloPublic } from "@party-game/shared";
+import { Hud, Pill, RoundDots } from "../kit/visual";
 import { FALSE_START_PENALTY_MS, MAX_REACTION_MS, ROUNDS, greenDelays } from "./logic";
 
 type Stage = "ready" | "waiting" | "green" | "result" | "done";
@@ -72,23 +74,86 @@ export function ReactionTapClient(p: MinigameClientProps<SoloPublic, SoloPrivate
   }
 
   keyAction.current = tap;
-  const bg = stage === "green" ? "#2fd27a" : stage === "waiting" ? "#ff4d5e" : "#2a2549";
+  const theme =
+    stage === "green"
+      ? { bg: "radial-gradient(circle at 50% 45%, #7dffb3 0%, #2fd27a 40%, #0f8a49 100%)", tone: "#2fd27a", ink: "#06210f" }
+      : stage === "waiting"
+        ? { bg: "radial-gradient(circle at 50% 45%, #ff7b88 0%, #ff4d5e 40%, #8f1323 100%)", tone: "#ff4d5e", ink: "#fff" }
+        : { bg: "radial-gradient(circle at 50% 35%, #4a3f8a 0%, #2a2549 50%, #15122b 100%)", tone: "#7b5cff", ink: "#fff" };
+  const last = times[times.length - 1];
   return (
-    <button
-      onPointerDown={tap}
-      className="flex min-h-[55dvh] w-full touch-none select-none flex-col items-center justify-center gap-3 rounded-3xl text-center font-display text-white"
-      style={{ background: bg }}
-      data-testid="reaction-pad"
-    >
-      <span className="text-xl opacity-80">
-        Round {Math.min(round + 1, ROUNDS)}/{ROUNDS}
-      </span>
-      <span className="text-5xl">
-        {stage === "ready" ? "Tap to start" : stage === "waiting" ? "Wait for green…" : stage === "green" ? "TAP!" : "Tap for next"}
-      </span>
-      {msg && <span className="text-3xl">{msg}</span>}
-      {p.bonus && <span className="rounded-full bg-black/30 px-3 py-1 text-sm">Bonus: one false start forgiven</span>}
-      <KeyHint text="or tap / press" />
-    </button>
+    <div className="flex flex-col gap-3">
+      <Hud
+        left={<RoundDots total={ROUNDS} done={Math.min(times.length, ROUNDS)} />}
+        right={
+          <>
+            {times.map((t, i) => (
+              <Pill key={i} tone={t === Math.min(...times) ? "#2fd27a" : undefined}>
+                {Math.round(t)}
+              </Pill>
+            ))}
+          </>
+        }
+      />
+      <button
+        onPointerDown={tap}
+        className="relative flex min-h-[55dvh] w-full touch-none select-none flex-col items-center justify-center gap-3 overflow-hidden rounded-[28px] text-center font-display"
+        style={{ background: theme.bg, color: theme.ink, boxShadow: `inset 0 0 0 3px ${theme.tone}aa, 0 0 50px ${theme.tone}55, 0 12px 30px #0008` }}
+        data-testid="reaction-pad"
+      >
+        {stage === "waiting" &&
+          [0, 1, 2].map((i) => (
+            <motion.span
+              key={i}
+              aria-hidden
+              className="pointer-events-none absolute left-1/2 top-1/2 aspect-square w-[40%] -translate-x-1/2 -translate-y-1/2 rounded-full border-4 border-white/40"
+              initial={{ scale: 0.4, opacity: 0.8 }}
+              animate={{ scale: 2.6, opacity: 0 }}
+              transition={{ repeat: Infinity, duration: 2.1, delay: i * 0.7, ease: "easeOut" }}
+            />
+          ))}
+        {stage === "green" && (
+          <motion.span
+            aria-hidden
+            className="pointer-events-none absolute inset-0"
+            style={{ background: "repeating-conic-gradient(from 0deg, #ffffff33 0 10deg, transparent 10deg 20deg)" }}
+            initial={{ scale: 0.5, opacity: 0, rotate: 0 }}
+            animate={{ scale: 1.6, opacity: 1, rotate: 30 }}
+            transition={{ duration: 0.4 }}
+          />
+        )}
+        <span className="relative text-xl opacity-80">
+          Round {Math.min(round + 1, ROUNDS)}/{ROUNDS}
+        </span>
+        <motion.span
+          key={stage}
+          initial={{ scale: 0.6, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ type: "spring", stiffness: 400, damping: 18 }}
+          className="relative px-4 text-5xl leading-tight drop-shadow-[0_3px_0_#0005] sm:text-6xl"
+        >
+          {stage === "ready" ? "Tap to start" : stage === "waiting" ? "Wait for green…" : stage === "green" ? "TAP!" : "Tap for next"}
+        </motion.span>
+        {msg && (
+          <motion.span
+            key={msg + times.length}
+            initial={{ y: 12, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            className={`relative rounded-2xl px-4 py-1 text-3xl ${msg.startsWith("False") ? "bg-black/40 text-white" : "bg-black/25"}`}
+          >
+            {msg}
+            {!msg.startsWith("False") && last !== undefined && <span className="ml-2 text-lg opacity-80">{rating(last)}</span>}
+          </motion.span>
+        )}
+        {p.bonus && <span className="relative rounded-full bg-black/30 px-3 py-1 text-sm text-white">Bonus: one false start forgiven</span>}
+        <span className="relative">
+          <KeyHint text="or tap / press" />
+        </span>
+      </button>
+    </div>
   );
+}
+
+function rating(ms: number) {
+  return ms < 200 ? "Lightning!" : ms < 260 ? "Sharp!" : ms < 350 ? "Nice" : "Sleepy…";
 }
