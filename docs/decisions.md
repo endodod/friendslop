@@ -127,3 +127,8 @@ Defaults picked where the build prompt left room, or where the environment force
   walking plus a short landing beat; the tile-effect panel waits too (tileEffectMs got +400 ms of slack). Mini-game
   results open with a 2.4 s personal outcome screen ("You won!" / "You lost!") that the host can't skip, then the table.
 - **Chat** is part of the page (lobby, under the game log) instead of a floating popup.
+- **Cursed names:** players whose room name or account username contains a slur, hate reference or swear word
+  (`packages/shared/src/logic/names.ts`) keep their name but are marked "cursed": every die only rolls 1–3, Custom
+  Dice included. Matching undoes leetspeak, accents and stretched letters; short/ambiguous words only count as whole
+  words, plus a small allowlist (Scunthorpe, Ashkenazi, Shiitake…). Renaming to a clean name in the lobby lifts it.
+  Chat is not filtered.

@@ -45,6 +45,8 @@ export interface RoomPlayer {
   username?: string | null;
   /** Server path of the account's custom profile picture, e.g. /api/users/<id>/avatar?v=3. */
   photo?: string | null;
+  /** Offensive name or username: dice only roll 1–3 (see logic/names.ts). */
+  cursed?: boolean;
   ready: boolean;
   connected: boolean;
   joinedAt: number;

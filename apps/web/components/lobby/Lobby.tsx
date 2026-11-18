@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { GAME_CONFIG, dataQuestionsAvailable, localize, type RoomSettings } from "@party-game/shared";
 import { clientContent } from "@party-game/content";
-import { Avatar, Icon, MuteButton, useIsHost, useMe } from "../ui";
+import { Avatar, CursedBadge, Icon, MuteButton, useIsHost, useMe } from "../ui";
 import { AvatarPicker } from "../AvatarPicker";
 import { ColorPicker } from "../ColorPicker";
 import { saveAvatar, saveColor, saveUsePhoto } from "@/lib/session";
@@ -99,10 +99,11 @@ export function Lobby({ code, onLeave }: { code: string; onLeave: () => Promise<
               >
                 <Avatar player={p} size={44} dim={!p.connected} />
                 <div className="flex min-w-0 flex-1 flex-col">
-                  <span className="flex items-center gap-2 truncate font-display text-xl">
-                    {p.name}
+                  <span className="flex min-w-0 items-center gap-2 font-display text-xl">
+                    <span className="truncate">{p.name}</span>
                     {pub.hostId === p.id && <Crown size={16} className="text-accent" aria-label="Host" />}
                     {p.id === me?.id && <span className="text-sm text-muted">(you)</span>}
+                    {p.cursed && <CursedBadge />}
                   </span>
                   {p.username && !isDisplay && (
                     <Link href={`/u/${encodeURIComponent(p.username)}`} target="_blank" className="w-fit truncate text-xs text-muted hover:underline">
