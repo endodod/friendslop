@@ -64,11 +64,19 @@ body {
 @utility btn-secondary {
   @apply btn bg-panel-2 text-ink shadow-[0_5px_0_#15122b] active:shadow-[0_2px_0_#15122b] active:translate-y-[3px];
 }
+@media (hover: hover) {
+  .btn-primary:not(:disabled):hover,
+  .btn-secondary:not(:disabled):hover {
+    filter: brightness(1.08);
+    transform: translateY(-1px);
+  }
+}
 @utility btn-ghost {
   @apply btn bg-transparent text-muted hover:text-ink;
 }
 @utility card {
   @apply rounded-3xl bg-panel border border-line/70 shadow-[0_10px_40px_#00000055];
+  animation: rise 0.35s ease-out both;
 }
 @utility input {
   @apply w-full rounded-2xl bg-bg-2 border-2 border-line px-4 min-h-12 text-lg outline-none focus:border-accent transition-colors;
@@ -85,7 +93,66 @@ body {
   animation: shake 0.35s ease-in-out;
 }
 
+/* ---- Subtle ambient animations (all disabled with reduced motion) ---- */
+@keyframes twinkle {
+  0%, 100% { opacity: var(--tw-o, 0.25); transform: scale(0.85); }
+  50% { opacity: calc(var(--tw-o, 0.25) + 0.35); transform: scale(1.15); }
+}
+.anim-twinkle {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: twinkle 3.6s ease-in-out infinite;
+}
+@keyframes flow {
+  to { stroke-dashoffset: -48; }
+}
+.anim-flow { animation: flow 2.4s linear infinite; }
+@keyframes spin-slow {
+  to { transform: rotate(360deg); }
+}
+.anim-spin-slow {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: spin-slow 18s linear infinite;
+}
+@keyframes drift {
+  0%, 100% { transform: translate(-6%, -4%) scale(1); }
+  50% { transform: translate(6%, 5%) scale(1.12); }
+}
+.anim-drift { animation: drift 22s ease-in-out infinite; }
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+.anim-float { animation: float 3.2s ease-in-out infinite; }
+@keyframes breathe {
+  0%, 100% { box-shadow: 0 5px 0 #b38a12, 0 0 0 0 #ffc93300; }
+  50% { box-shadow: 0 5px 0 #b38a12, 0 0 26px 4px #ffc93355; }
+}
+.anim-breathe { animation: breathe 2s ease-in-out infinite; }
+.anim-breathe:active { animation: none; }
+@keyframes rise {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+.anim-rise { animation: rise 0.35s ease-out both; }
+@keyframes sheen {
+  0%, 70% { transform: translateX(-120%) skewX(-20deg); }
+  100% { transform: translateX(220%) skewX(-20deg); }
+}
+.anim-sheen { position: relative; overflow: hidden; }
+.anim-sheen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: 40%;
+  background: linear-gradient(90deg, transparent, #ffffff55, transparent);
+  animation: sheen 4.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .anim-twinkle, .anim-flow, .anim-spin-slow, .anim-drift, .anim-float, .anim-breathe, .anim-sheen::after { animation: none; }
   .shake { animation: none; }
   *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
 }

@@ -239,7 +239,7 @@ function TurnStartPanel({ display }: { display?: boolean }) {
       <motion.button
         data-testid="roll-button"
         whileTap={{ scale: 0.9, rotate: -8 }}
-        className="btn-primary min-h-16 text-3xl"
+        className="btn-primary anim-breathe anim-sheen min-h-16 text-3xl"
         onClick={() => act("turn:roll", pending === "custom" ? { value: customValue } : {})}
       >
         <Dices size={30} /> Roll!
