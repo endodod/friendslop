@@ -252,6 +252,257 @@
         "minigameIntro",
         "questionOnlyMinigame"
       ]
+    },
+    {
+      "id": "net.wifi-name",
+      "themes": [
+        "internet"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s Wi-Fi name is…",
+      "answers": [
+        "A pun",
+        "The default one",
+        "Something passive-aggressive",
+        "A meme"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "net.emoji",
+      "themes": [
+        "internet"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s most-used emoji?",
+      "answers": [
+        "😂",
+        "💀",
+        "❤️",
+        "👍"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "net.notification",
+      "themes": [
+        "internet"
+      ],
+      "format": "tiles",
+      "prompt": "How many notifications does {target} have on right now?",
+      "answers": [
+        "All of them",
+        "Only messages",
+        "None, peaceful",
+        "Badges everywhere, ignored"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "net.argue",
+      "themes": [
+        "internet"
+      ],
+      "format": "tiles",
+      "prompt": "{target} sees someone wrong on the internet. They…",
+      "answers": [
+        "Write an essay reply",
+        "Screenshot it for the group",
+        "Scroll on",
+        "Leave a single emoji"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "net.passwords",
+      "themes": [
+        "internet"
+      ],
+      "format": "tiles",
+      "prompt": "How does {target} handle passwords?",
+      "answers": [
+        "Password manager",
+        "Same one everywhere",
+        "Written on a sticky note",
+        "Reset it every time"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "net.memes",
+      "themes": [
+        "internet"
+      ],
+      "format": "scale",
+      "prompt": "How fluent is {target} in current memes, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "still sends minion memes",
+        "max": "knows them before they trend"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "net.privacy",
+      "themes": [
+        "internet"
+      ],
+      "format": "scale",
+      "prompt": "How careful is {target} with their privacy online, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "accepts all cookies",
+        "max": "tape over the webcam"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "net.tabs-phone",
+      "themes": [
+        "internet"
+      ],
+      "format": "number",
+      "prompt": "How many tabs are open in {target}'s phone browser?",
+      "number": {
+        "min": 0,
+        "max": 500,
+        "step": 1,
+        "tolerance": {
+          "type": "relative",
+          "value": 0.4
+        },
+        "unit": "tabs"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "net.selfies",
+      "themes": [
+        "internet"
+      ],
+      "format": "number",
+      "prompt": "How many selfies does {target} take to get one good one?",
+      "number": {
+        "min": 1,
+        "max": 50,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 2
+        },
+        "unit": "selfies"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "net.screen",
+      "themes": [
+        "internet"
+      ],
+      "format": "higherLower",
+      "prompt": "{target}'s phone screen time is 4 hours a day. Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 16,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "h"
+      },
+      "reference": 4,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "net.charge",
+      "themes": [
+        "internet"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} charges their phone when it hits 20%. Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "%"
+      },
+      "reference": 20,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "net.memes-send",
+      "themes": [
+        "internet"
+      ],
+      "format": "player",
+      "prompt": "Who here does {target} send the most memes to?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
     }
   ]
 }

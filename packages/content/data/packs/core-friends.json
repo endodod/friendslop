@@ -242,6 +242,228 @@
         "minigameIntro",
         "questionOnlyMinigame"
       ]
+    },
+    {
+      "id": "friends.gift",
+      "themes": [
+        "friends"
+      ],
+      "format": "tiles",
+      "prompt": "{target} buys a group birthday gift. What happens?",
+      "answers": [
+        "Organizes everything perfectly",
+        "Forgets and chips in last minute",
+        "Picks something weirdly personal",
+        "Makes a card nobody signs"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "friends.plans",
+      "themes": [
+        "friends"
+      ],
+      "format": "tiles",
+      "prompt": "Plans get cancelled. {target} is…",
+      "answers": [
+        "Secretly relieved",
+        "Genuinely sad",
+        "Already on the sofa",
+        "The one who cancelled"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "friends.photo",
+      "themes": [
+        "friends"
+      ],
+      "format": "tiles",
+      "prompt": "In group photos, {target} is…",
+      "answers": [
+        "Always taking them",
+        "Blinking",
+        "In the middle, posing",
+        "Not there, somehow"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "friends.argument",
+      "themes": [
+        "friends"
+      ],
+      "format": "tiles",
+      "prompt": "Two friends are arguing. {target}…",
+      "answers": [
+        "Mediates",
+        "Grabs popcorn",
+        "Picks a side instantly",
+        "Leaves the chat"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "friends.loyal",
+      "themes": [
+        "friends"
+      ],
+      "format": "scale",
+      "prompt": "How loyal is {target} as a friend, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "fair-weather friend",
+        "max": "would hide a body"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "friends.advice",
+      "themes": [
+        "friends"
+      ],
+      "format": "scale",
+      "prompt": "How good is {target}'s advice, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "please don't listen",
+        "max": "wise beyond their years"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "friends.best-friends",
+      "themes": [
+        "friends"
+      ],
+      "format": "number",
+      "prompt": "How many people would {target} call a best friend?",
+      "number": {
+        "min": 0,
+        "max": 20,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        },
+        "unit": "friends"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "friends.reply",
+      "themes": [
+        "friends"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} takes 30 minutes to answer the group chat. Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 600,
+        "step": 5,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "min"
+      },
+      "reference": 30,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "friends.secret",
+      "themes": [
+        "friends"
+      ],
+      "format": "player",
+      "prompt": "Who here would {target} tell a big secret to first?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "friends.road-trip",
+      "themes": [
+        "friends"
+      ],
+      "format": "player",
+      "prompt": "Who here would {target} want next to them on a 10-hour road trip?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "friends.borrow",
+      "themes": [
+        "friends"
+      ],
+      "format": "player",
+      "prompt": "Who here would {target} borrow clothes from?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "friends.prank",
+      "themes": [
+        "friends"
+      ],
+      "format": "player",
+      "prompt": "Who here would {target} most like to prank?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
     }
   ]
 }

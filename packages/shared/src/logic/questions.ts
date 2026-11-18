@@ -18,6 +18,9 @@ export interface QuestionHistory {
   lastThemeId: string | null;
 }
 
+/** How many question ids a room remembers across games (oldest dropped first). */
+export const RECENT_QUESTION_MEMORY = 800;
+
 export interface SelectArgs {
   content: ContentBundle;
   settings: Pick<RoomSettings, "themes" | "familyFriendly" | "language"> & { packs?: string[] };
@@ -27,6 +30,8 @@ export interface SelectArgs {
   playerCount: number;
   formats?: string[];
   tags?: string[];
+  /** Question ids asked in earlier games in this room, oldest first. Avoided while fresh ones remain. */
+  recentIds?: string[];
 }
 
 interface Candidate {
@@ -34,8 +39,8 @@ interface Candidate {
   pack: Pack;
 }
 
-function candidates(args: SelectArgs, ignoreHistory: boolean): Candidate[] {
-  const { content, settings, history } = args;
+function candidates(args: SelectArgs): Candidate[] {
+  const { content, settings } = args;
   const enabled = new Set(settings.themes);
   const out: Candidate[] = [];
   for (const pack of content.packs) {
@@ -52,25 +57,53 @@ function candidates(args: SelectArgs, ignoreHistory: boolean): Candidate[] {
       if (args.tags && !args.tags.some((t) => q.tags?.includes(t))) continue;
       const lang = hasLanguage(q.prompt, settings.language, pack.language) ? settings.language : "en";
       if (!hasLanguage(q.prompt, lang, pack.language)) continue;
-      if (!ignoreHistory && history.questionIds.includes(q.id)) continue;
       out.push({ q, pack });
     }
   }
   return out;
 }
 
+/** Normalized prompt text, so the same question in two packs (or a custom copy) counts as one. */
+export function promptKey(q: Question): string {
+  const text = typeof q.prompt === "string" ? q.prompt : (q.prompt.en ?? Object.values(q.prompt)[0] ?? "");
+  return text.toLowerCase().replace(/[^a-z0-9{}]+/g, " ").trim();
+}
+
 /**
- * Weighted random from enabled themes. Never repeats a question within a game (unless the
- * pool is exhausted), and avoids the same theme twice in a row when possible.
+ * Weighted random from enabled themes. Never repeats a question within a game while unasked ones
+ * remain, prefers questions this room hasn't seen in earlier games, and avoids the same theme twice
+ * in a row when possible. Once everything has been asked, the least recently asked come back first.
  */
 export function selectQuestion(args: SelectArgs): { question: Question; pack: Pack } | null {
-  let pool = candidates(args, false);
-  if (pool.length === 0) pool = candidates(args, true);
-  if (pool.length === 0) return null;
+  const all = candidates(args);
+  if (all.length === 0) return null;
+  const asked = args.history.questionIds;
+  const recent = args.recentIds ?? [];
+  // Prompts already asked this game (by text), so duplicates across packs never show twice.
+  const byId = new Map(all.map((c) => [c.q.id, c]));
+  const askedKeys = new Set(asked.map((id) => byId.get(id)).filter(Boolean).map((c) => promptKey(c!.q)));
+  const unaskedThisGame = all.filter((c) => !asked.includes(c.q.id) && !askedKeys.has(promptKey(c.q)));
+
+  let pool: Candidate[];
+  if (unaskedThisGame.length > 0) {
+    const neverSeen = unaskedThisGame.filter((c) => !recent.includes(c.q.id));
+    pool = neverSeen.length > 0 ? neverSeen : leastRecent(unaskedThisGame, recent);
+  } else {
+    // Everything was asked this game: bring back the ones asked longest ago.
+    pool = leastRecent(all, [...recent, ...asked]);
+  }
   const fresh = pool.filter((c) => !c.q.themes.includes(args.history.lastThemeId ?? "\u0000"));
   if (fresh.length > 0) pool = fresh;
   const chosen = weightedPick(args.rng, pool, (c) => c.q.weight ?? 1)!;
   return { question: chosen.q, pack: chosen.pack };
+}
+
+/** The third of `pool` asked longest ago according to `order` (oldest first; never asked = oldest). */
+function leastRecent(pool: Candidate[], order: string[]): Candidate[] {
+  const last = new Map<string, number>();
+  order.forEach((id, i) => last.set(id, i));
+  const sorted = [...pool].sort((a, b) => (last.get(a.q.id) ?? -1) - (last.get(b.q.id) ?? -1));
+  return sorted.slice(0, Math.max(1, Math.ceil(sorted.length / 3)));
 }
 
 /** Player questions about the target ("Who would {target} call…") don't offer the target as an answer. */

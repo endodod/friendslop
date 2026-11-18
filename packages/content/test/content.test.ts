@@ -1,7 +1,7 @@
 import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { lintContent, parseContent, placeholdersIn } from "@party-game/shared";
+import { lintContent, parseContent, placeholdersIn, promptKey } from "@party-game/shared";
 import { loadContent, readRawContent } from "../src/node";
 
 const ICON_DIR = join(__dirname, "../../../apps/web/public/icons");
@@ -31,6 +31,14 @@ describe("content lint", () => {
     expect(qs.filter((q) => q.format === "ranking").length, "Ranking").toBeGreaterThanOrEqual(6);
     expect(qs.filter((q) => q.format === "number" || q.format === "scale").length, "Hot or Not / Duel").toBeGreaterThanOrEqual(20);
     expect(qs.filter((q) => q.format === "tiles").length, "Speed Sync").toBeGreaterThanOrEqual(20);
+  });
+
+  it("has no duplicate question ids or prompts across packs", () => {
+    const qs = content.packs.flatMap((p) => p.questions);
+    expect(new Set(qs.map((q) => q.id)).size).toBe(qs.length);
+    const keys = qs.map((q) => promptKey(q));
+    const dupes = keys.filter((k, i) => keys.indexOf(k) !== i);
+    expect(dupes).toEqual([]);
   });
 
   it("pack files have unique ids", () => {

@@ -255,6 +255,240 @@
         "minigameIntro",
         "questionOnlyMinigame"
       ]
+    },
+    {
+      "id": "love.app-bio",
+      "themes": [
+        "dating"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s dating app bio?",
+      "answers": [
+        "A list of hobbies",
+        "One mysterious emoji",
+        "A joke",
+        "Way too long"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "love.pickup",
+      "themes": [
+        "dating"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s pickup line?",
+      "answers": [
+        "A terrible pun",
+        "Just says hi",
+        "A compliment that goes too far",
+        "Doesn't need one"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "love.anniversary",
+      "themes": [
+        "dating"
+      ],
+      "format": "tiles",
+      "prompt": "{target} plans an anniversary. What happens?",
+      "answers": [
+        "A whole surprise trip",
+        "Fancy dinner",
+        "Forgets, panics, buys flowers",
+        "A homemade gift"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "love.ex",
+      "themes": [
+        "dating"
+      ],
+      "format": "tiles",
+      "prompt": "{target} runs into their ex. They…",
+      "answers": [
+        "Act super happy",
+        "Hide behind a shelf",
+        "Chat like old friends",
+        "Leave the country"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "love.ideal-partner",
+      "themes": [
+        "dating"
+      ],
+      "format": "tiles",
+      "prompt": "What does {target} look for in a partner first?",
+      "answers": [
+        "Humor",
+        "Looks",
+        "Kindness",
+        "Same music taste"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "love.clingy",
+      "themes": [
+        "dating"
+      ],
+      "format": "scale",
+      "prompt": "How clingy is {target} in a relationship, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "needs space",
+        "max": "glued together"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "love.flirting",
+      "themes": [
+        "dating"
+      ],
+      "format": "scale",
+      "prompt": "How good is {target} at flirting, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "doesn't notice it's happening",
+        "max": "smooth operator"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "love.crush-days",
+      "themes": [
+        "dating"
+      ],
+      "format": "number",
+      "prompt": "How many days does {target} wait before telling a crush they like them?",
+      "number": {
+        "min": 0,
+        "max": 365,
+        "step": 1,
+        "tolerance": {
+          "type": "relative",
+          "value": 0.4
+        },
+        "unit": "days"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "love.wedding-guests",
+      "themes": [
+        "dating"
+      ],
+      "format": "higherLower",
+      "prompt": "{target}'s dream wedding has 80 guests. Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 400,
+        "step": 10,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        }
+      },
+      "reference": 80,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "love.wingman",
+      "themes": [
+        "dating"
+      ],
+      "format": "player",
+      "prompt": "Who here would {target} pick as their wingman?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "love.advice",
+      "themes": [
+        "dating"
+      ],
+      "format": "player",
+      "prompt": "Who here would {target} ask for dating advice?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "love.dates",
+      "themes": [
+        "dating"
+      ],
+      "format": "ranking",
+      "prompt": "Rank these dates the way {target} would, best first:",
+      "answers": [
+        "Picnic",
+        "Cinema",
+        "Fancy dinner",
+        "Escape room"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
     }
   ]
 }

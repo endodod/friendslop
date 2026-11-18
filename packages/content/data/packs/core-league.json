@@ -310,6 +310,251 @@
         "minigameIntro",
         "questionOnlyMinigame"
       ]
+    },
+    {
+      "id": "league.first-item",
+      "themes": [
+        "league"
+      ],
+      "format": "tiles",
+      "prompt": "{target} is shopping at the start of the game. They…",
+      "answers": [
+        "Copy the recommended build",
+        "Have their build memorized",
+        "Improvise every time",
+        "Are still shopping at 1:30"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "league.recall",
+      "themes": [
+        "league"
+      ],
+      "format": "tiles",
+      "prompt": "When does {target} recall?",
+      "answers": [
+        "Perfect timing, always",
+        "Only when nearly dead",
+        "When the enemy is right there",
+        "Never, fights to the end"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "league.queue",
+      "themes": [
+        "league"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s favorite game mode?",
+      "answers": [
+        "Ranked Solo",
+        "ARAM",
+        "Normals with friends",
+        "Whatever the event mode is"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "league.skins",
+      "themes": [
+        "league"
+      ],
+      "format": "tiles",
+      "prompt": "How does {target} feel about skins?",
+      "answers": [
+        "Owns way too many",
+        "Only for their mains",
+        "Never bought one",
+        "Buys them to play better"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "league.mute",
+      "themes": [
+        "league"
+      ],
+      "format": "tiles",
+      "prompt": "When does {target} mute everyone?",
+      "answers": [
+        "Before the game starts",
+        "After the first flame",
+        "Never, reads everything",
+        "Only pings"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "league.mechanics",
+      "themes": [
+        "league"
+      ],
+      "format": "scale",
+      "prompt": "How good are {target}'s mechanics, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "presses buttons randomly",
+        "max": "highlight reel"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "league.macro",
+      "themes": [
+        "league"
+      ],
+      "format": "scale",
+      "prompt": "How good is {target}'s map awareness, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "what's a minimap",
+        "max": "sees everything"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "league.champs",
+      "themes": [
+        "league"
+      ],
+      "format": "number",
+      "prompt": "How many champions has {target} actually played in ranked?",
+      "number": {
+        "min": 0,
+        "max": 170,
+        "step": 1,
+        "tolerance": {
+          "type": "relative",
+          "value": 0.3
+        },
+        "unit": "champs"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "league.cs",
+      "themes": [
+        "league"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} gets 6 CS per minute. Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 12,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        }
+      },
+      "reference": 6,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "league.games-day",
+      "themes": [
+        "league"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} plays 4 games of League a day. Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 20,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        }
+      },
+      "reference": 4,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "league.carry",
+      "themes": [
+        "league"
+      ],
+      "format": "player",
+      "prompt": "Who here would {target} trust to carry the team?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "league.roles",
+      "themes": [
+        "league"
+      ],
+      "format": "ranking",
+      "prompt": "Rank the roles the way {target} would, favorite first:",
+      "answers": [
+        "Top",
+        "Jungle",
+        "Mid",
+        "Support"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
     }
   ]
 }

@@ -248,6 +248,248 @@
         "minigameIntro",
         "questionOnlyMinigame"
       ]
+    },
+    {
+      "id": "child.school-bag",
+      "themes": [
+        "childhood"
+      ],
+      "format": "tiles",
+      "prompt": "What was always in {target}'s school bag?",
+      "answers": [
+        "Crushed snacks",
+        "Homework, done",
+        "Homework, not done",
+        "A toy they weren't allowed to bring"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "child.playground",
+      "themes": [
+        "childhood"
+      ],
+      "format": "tiles",
+      "prompt": "{target} on the playground was…",
+      "answers": [
+        "The leader of every game",
+        "On the swings, alone",
+        "Trading cards behind the slide",
+        "Getting into fights"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "child.pet",
+      "themes": [
+        "childhood"
+      ],
+      "format": "tiles",
+      "prompt": "Which pet did {target} beg their parents for?",
+      "answers": [
+        "A dog",
+        "A horse",
+        "A hamster",
+        "Something wildly illegal"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "child.sleepover",
+      "themes": [
+        "childhood"
+      ],
+      "format": "tiles",
+      "prompt": "{target} at a sleepover?",
+      "answers": [
+        "First to fall asleep",
+        "Up all night talking",
+        "Called parents to go home",
+        "Planned all the pranks"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "child.lunchbox",
+      "themes": [
+        "childhood"
+      ],
+      "format": "tiles",
+      "prompt": "What was in {target}'s lunchbox?",
+      "answers": [
+        "Healthy stuff they traded away",
+        "A sad sandwich",
+        "Way too many snacks",
+        "Money for the canteen"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "child.student",
+      "themes": [
+        "childhood"
+      ],
+      "format": "scale",
+      "prompt": "How good a student was {target}, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "permanent detention",
+        "max": "teacher's pet"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "child.picky",
+      "themes": [
+        "childhood"
+      ],
+      "format": "scale",
+      "prompt": "How picky an eater was {target} as a kid, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "ate everything",
+        "max": "only plain pasta"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "child.first-phone",
+      "themes": [
+        "childhood"
+      ],
+      "format": "number",
+      "prompt": "How old was {target} when they got their first phone?",
+      "number": {
+        "min": 4,
+        "max": 25,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        },
+        "unit": "years"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "child.pocket-money",
+      "themes": [
+        "childhood"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} got 5 € pocket money a week as a kid. Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 50,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "€"
+      },
+      "reference": 5,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "child.classmate",
+      "themes": [
+        "childhood"
+      ],
+      "format": "player",
+      "prompt": "Who here would {target} have been best friends with in school?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "child.fear",
+      "themes": [
+        "childhood"
+      ],
+      "format": "tiles",
+      "prompt": "What was {target} scared of as a kid?",
+      "answers": [
+        "The dark",
+        "Clowns",
+        "The monster under the bed",
+        "Absolutely nothing"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "child.holidays",
+      "themes": [
+        "childhood"
+      ],
+      "format": "ranking",
+      "prompt": "Rank the holidays the way little {target} would, best first:",
+      "answers": [
+        "Christmas",
+        "Birthday",
+        "Summer break",
+        "Halloween"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
     }
   ]
 }

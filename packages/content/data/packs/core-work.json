@@ -248,6 +248,246 @@
         "minigameIntro",
         "questionOnlyMinigame"
       ]
+    },
+    {
+      "id": "work.desk",
+      "themes": [
+        "work"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s desk looks like…",
+      "answers": [
+        "Spotless",
+        "Organized chaos",
+        "A crime scene",
+        "They work from bed"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "work.lunch",
+      "themes": [
+        "work"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s lunch break?",
+      "answers": [
+        "Packed lunch",
+        "Same place every day",
+        "Snacks at the desk",
+        "Forgets to eat"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "work.monday",
+      "themes": [
+        "work"
+      ],
+      "format": "tiles",
+      "prompt": "Monday morning, {target} is…",
+      "answers": [
+        "Ready to go",
+        "Running on coffee",
+        "Still in weekend mode",
+        "Pretending to be sick"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "work.excuse",
+      "themes": [
+        "work"
+      ],
+      "format": "tiles",
+      "prompt": "{target} missed a deadline. The excuse?",
+      "answers": [
+        "Technical problems",
+        "Was sick",
+        "Honest: forgot",
+        "What deadline?"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "work.presentation",
+      "themes": [
+        "work"
+      ],
+      "format": "tiles",
+      "prompt": "{target} gives a presentation. They…",
+      "answers": [
+        "Nail it, confident",
+        "Read every word off the slide",
+        "Make too many jokes",
+        "Sweat through their shirt"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "work.workaholic",
+      "themes": [
+        "work"
+      ],
+      "format": "scale",
+      "prompt": "How much of a workaholic is {target}, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "work? never heard of it",
+        "max": "answers emails on holiday"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "work.multitask",
+      "themes": [
+        "work"
+      ],
+      "format": "scale",
+      "prompt": "How good is {target} at multitasking, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "one thing at a time, slowly",
+        "max": "juggles ten things"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "work.coffee-breaks",
+      "themes": [
+        "work"
+      ],
+      "format": "number",
+      "prompt": "How many breaks does {target} take on a normal work or school day?",
+      "number": {
+        "min": 0,
+        "max": 20,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        },
+        "unit": "breaks"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "work.commute",
+      "themes": [
+        "work"
+      ],
+      "format": "higherLower",
+      "prompt": "{target}'s commute is 30 minutes. Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 180,
+        "step": 5,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "min"
+      },
+      "reference": 30,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "work.retire",
+      "themes": [
+        "work"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} wants to retire at 55. Higher or lower?",
+      "number": {
+        "min": 25,
+        "max": 90,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        }
+      },
+      "reference": 55,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "work.coworker",
+      "themes": [
+        "work"
+      ],
+      "format": "player",
+      "prompt": "Who here would {target} want as a coworker?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "work.never-boss",
+      "themes": [
+        "work"
+      ],
+      "format": "player",
+      "prompt": "Who here would {target} never want as their boss?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
     }
   ]
 }

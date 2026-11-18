@@ -388,6 +388,238 @@
         "tile",
         "questionOnlyMinigame"
       ]
+    },
+    {
+      "id": "party.mlt-reality-tv",
+      "themes": [
+        "life"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to end up on a reality TV show?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.mlt-plant",
+      "themes": [
+        "life"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to kill a cactus?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.mlt-wrong-chat",
+      "themes": [
+        "life"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to send a message to the wrong group chat?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.mlt-alien",
+      "themes": [
+        "life"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to befriend an alien?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.mlt-spoiler",
+      "themes": [
+        "life"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to spoil a movie by accident?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.mlt-late-flight",
+      "themes": [
+        "life"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to miss a flight?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.mlt-cookbook",
+      "themes": [
+        "life"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to write a cookbook?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.mlt-wrong-name",
+      "themes": [
+        "life"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to call someone the wrong name for a year without correcting it?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.mlt-dance-viral",
+      "themes": [
+        "life"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to start a dance craze?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.mlt-escape",
+      "themes": [
+        "life"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to get everyone out of an escape room?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.mlt-pet-name",
+      "themes": [
+        "life"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to give their pet a human name?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.mlt-mayor",
+      "themes": [
+        "life"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to become mayor of a small town?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.mlt-lost-phone",
+      "themes": [
+        "life"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to lose their phone while holding it?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.mlt-laugh",
+      "themes": [
+        "life"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to laugh at the worst possible moment?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.rank-chores-hated",
+      "themes": [
+        "life"
+      ],
+      "format": "ranking",
+      "prompt": "Rank the chores the way {target} would, most hated first:",
+      "answers": [
+        "Dishes",
+        "Laundry",
+        "Vacuuming",
+        "Taking out the trash"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.rank-weekend",
+      "themes": [
+        "life"
+      ],
+      "format": "ranking",
+      "prompt": "Rank weekend activities the way {target} would, favorite first:",
+      "answers": [
+        "Sleeping in",
+        "Going out",
+        "Gaming",
+        "Seeing family"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
     }
   ],
   "description": "\"Most likely to\" prompts, rankings and who-would-you-pick questions."

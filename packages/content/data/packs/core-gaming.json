@@ -288,6 +288,253 @@
         "tile",
         "minigameIntro"
       ]
+    },
+    {
+      "id": "game.loading",
+      "themes": [
+        "gaming"
+      ],
+      "format": "tiles",
+      "prompt": "During a loading screen, {target}…",
+      "answers": [
+        "Reads every tip",
+        "Checks their phone",
+        "Goes for snacks",
+        "Complains about the loading screen"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "game.character",
+      "themes": [
+        "gaming"
+      ],
+      "format": "tiles",
+      "prompt": "{target} makes their character. How long does it take?",
+      "answers": [
+        "One click, random",
+        "Five minutes",
+        "Half an hour of sliders",
+        "Longer than the actual game"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "game.genre",
+      "themes": [
+        "gaming"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s comfort game genre?",
+      "answers": [
+        "Cozy farming",
+        "Shooters",
+        "RPGs",
+        "Strategy"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "game.lose",
+      "themes": [
+        "gaming"
+      ],
+      "format": "tiles",
+      "prompt": "{target} loses an online match. What do they say?",
+      "answers": [
+        "\"GG\"",
+        "\"Lag.\"",
+        "Nothing, just queues again",
+        "Something we can't print"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "game.save",
+      "themes": [
+        "gaming"
+      ],
+      "format": "tiles",
+      "prompt": "How does {target} handle save files?",
+      "answers": [
+        "Saves every 30 seconds",
+        "Trusts the autosave",
+        "Forgets and loses hours",
+        "Has 40 save slots"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "game.completionist",
+      "themes": [
+        "gaming"
+      ],
+      "format": "scale",
+      "prompt": "How much of a completionist is {target}, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "credits roll, done",
+        "max": "100% or nothing"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "game.tryhard",
+      "themes": [
+        "gaming"
+      ],
+      "format": "scale",
+      "prompt": "How much of a try-hard is {target} in casual games, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "just vibing",
+        "max": "playing for the world title"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "game.oldest-console",
+      "themes": [
+        "gaming"
+      ],
+      "format": "number",
+      "prompt": "How many consoles has {target} owned in their life?",
+      "number": {
+        "min": 0,
+        "max": 20,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        },
+        "unit": "consoles"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "game.session",
+      "themes": [
+        "gaming"
+      ],
+      "format": "higherLower",
+      "prompt": "{target}'s longest gaming session was 10 hours. Higher or lower?",
+      "number": {
+        "min": 1,
+        "max": 48,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "h"
+      },
+      "reference": 10,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "game.price",
+      "themes": [
+        "gaming"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} would pay 70 € for a new game on launch day. Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 150,
+        "step": 5,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "€"
+      },
+      "reference": 70,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "game.platforms",
+      "themes": [
+        "gaming"
+      ],
+      "format": "ranking",
+      "prompt": "Rank how {target} would rather play, favorite first:",
+      "answers": [
+        "PC",
+        "Console",
+        "Phone",
+        "Handheld"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "game.coop",
+      "themes": [
+        "gaming"
+      ],
+      "format": "player",
+      "prompt": "Who here would {target} pick for a two-player co-op game?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
     }
   ]
 }

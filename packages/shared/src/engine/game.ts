@@ -13,6 +13,7 @@ import {
   resolveQuestion,
   scoreQuestion,
   selectQuestion,
+  RECENT_QUESTION_MEMORY,
 } from "../logic/questions";
 import type { MinigameServices, MiniGameDefinition } from "../minigame/types";
 import { withCustomPack } from "../logic/custom";
@@ -860,6 +861,7 @@ function questionServices(d: Draft): MinigameServices {
         });
         if (dq) {
           g.history.questionIds.push(dq.id);
+          rememberAsked(room, dq.id);
           return dq;
         }
       }
@@ -872,9 +874,11 @@ function questionServices(d: Draft): MinigameServices {
         playerCount: participants.length,
         formats: opts.formats,
         tags: opts.tags,
+        recentIds: room.askedQuestionIds,
       });
       if (!sel) return null;
       g.history.questionIds.push(sel.question.id);
+      rememberAsked(room, sel.question.id);
       const rq = resolveQuestion(sel.question, sel.pack, {
         targetId: opts.targetId,
         names: nm,
@@ -894,6 +898,13 @@ function questionServices(d: Draft): MinigameServices {
       g.history.targetCounts[pid] = (g.history.targetCounts[pid] ?? 0) + 1;
     },
   };
+}
+
+/** Remember a question across games in this room (most recent last, bounded). */
+function rememberAsked(room: RoomState, id: string) {
+  const list = (room.askedQuestionIds ?? []).filter((x) => x !== id);
+  list.push(id);
+  room.askedQuestionIds = list.slice(-RECENT_QUESTION_MEMORY);
 }
 
 function startQuestionRound(

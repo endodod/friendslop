@@ -332,6 +332,256 @@
         "minigameIntro",
         "questionOnlyMinigame"
       ]
+    },
+    {
+      "id": "life.laundry",
+      "themes": [
+        "life"
+      ],
+      "format": "tiles",
+      "prompt": "How does {target} handle clean laundry?",
+      "answers": [
+        "Folds it right away",
+        "The chair pile",
+        "Lives out of the basket",
+        "What laundry?"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "life.sleep-position",
+      "themes": [
+        "life"
+      ],
+      "format": "tiles",
+      "prompt": "How does {target} sleep?",
+      "answers": [
+        "Like a starfish",
+        "Curled up",
+        "Like a corpse, perfectly still",
+        "Upside down by morning"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "life.bed",
+      "themes": [
+        "life"
+      ],
+      "format": "tiles",
+      "prompt": "What's always on {target}'s bed?",
+      "answers": [
+        "Way too many pillows",
+        "Clothes",
+        "A laptop",
+        "Snack crumbs"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "life.cleaning",
+      "themes": [
+        "life"
+      ],
+      "format": "tiles",
+      "prompt": "{target} cleans the flat when…",
+      "answers": [
+        "Every Saturday, like clockwork",
+        "Guests are coming",
+        "Procrastinating something else",
+        "Never, honestly"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "life.keys",
+      "themes": [
+        "life"
+      ],
+      "format": "tiles",
+      "prompt": "Where are {target}'s keys right now?",
+      "answers": [
+        "In their pocket",
+        "On the hook by the door",
+        "Nobody knows",
+        "Still in the door"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "life.punctual",
+      "themes": [
+        "life"
+      ],
+      "format": "scale",
+      "prompt": "How punctual is {target}, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "fashionably very late",
+        "max": "early to everything"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "life.adulting",
+      "themes": [
+        "life"
+      ],
+      "format": "scale",
+      "prompt": "How good is {target} at adulting, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "barely surviving",
+        "max": "has a pension plan"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "life.ready",
+      "themes": [
+        "life"
+      ],
+      "format": "number",
+      "prompt": "How many minutes does {target} need to get ready in the morning?",
+      "number": {
+        "min": 0,
+        "max": 120,
+        "step": 5,
+        "tolerance": {
+          "type": "relative",
+          "value": 0.3
+        },
+        "unit": "min"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "life.steps",
+      "themes": [
+        "life"
+      ],
+      "format": "number",
+      "prompt": "How many steps does {target} walk on an average day?",
+      "number": {
+        "min": 0,
+        "max": 30000,
+        "step": 500,
+        "tolerance": {
+          "type": "relative",
+          "value": 0.3
+        },
+        "unit": "steps"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "life.alarm",
+      "themes": [
+        "life"
+      ],
+      "format": "higherLower",
+      "prompt": "{target}'s alarm goes off at 7:00. Later or earlier (higher or lower)?",
+      "number": {
+        "min": 3,
+        "max": 12,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": ":00"
+      },
+      "reference": 7,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "life.shoes",
+      "themes": [
+        "life"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} owns 8 pairs of shoes. Higher or lower?",
+      "number": {
+        "min": 1,
+        "max": 60,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        }
+      },
+      "reference": 8,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "life.roommate",
+      "themes": [
+        "life"
+      ],
+      "format": "player",
+      "prompt": "Who here would {target} pick as a roommate?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
     }
   ]
 }

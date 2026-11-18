@@ -242,6 +242,253 @@
         "tile",
         "questionOnlyMinigame"
       ]
+    },
+    {
+      "id": "travel.seat",
+      "themes": [
+        "travel"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s preferred seat on a plane?",
+      "answers": [
+        "Window",
+        "Aisle",
+        "Middle, they don't care",
+        "Business, ideally"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "travel.packing",
+      "themes": [
+        "travel"
+      ],
+      "format": "tiles",
+      "prompt": "When does {target} pack for a trip?",
+      "answers": [
+        "A week early, with a list",
+        "The night before",
+        "One hour before leaving",
+        "At the airport, buying stuff"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "travel.hotel",
+      "themes": [
+        "travel"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s ideal place to stay?",
+      "answers": [
+        "Fancy hotel",
+        "Cozy cabin",
+        "Tent under the stars",
+        "A friend's sofa"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "travel.photo",
+      "themes": [
+        "travel"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s vacation photos are mostly…",
+      "answers": [
+        "Food",
+        "Landscapes",
+        "Selfies",
+        "Blurry"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "travel.language",
+      "themes": [
+        "travel"
+      ],
+      "format": "tiles",
+      "prompt": "{target} abroad, trying the local language?",
+      "answers": [
+        "Fluent in a week",
+        "Learns 'thank you' and nothing else",
+        "Just talks louder in English",
+        "Uses the translation app for everything"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "travel.adventure",
+      "themes": [
+        "travel"
+      ],
+      "format": "scale",
+      "prompt": "How adventurous is {target} on holiday, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "pool and nothing else",
+        "max": "bungee jumping before breakfast"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "travel.planning",
+      "themes": [
+        "travel"
+      ],
+      "format": "scale",
+      "prompt": "How detailed is {target}'s travel itinerary, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "we'll see when we get there",
+        "max": "hourly spreadsheet"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "travel.flights",
+      "themes": [
+        "travel"
+      ],
+      "format": "number",
+      "prompt": "How many flights has {target} taken in their life?",
+      "number": {
+        "min": 0,
+        "max": 300,
+        "step": 1,
+        "tolerance": {
+          "type": "relative",
+          "value": 0.3
+        },
+        "unit": "flights"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "travel.trip-length",
+      "themes": [
+        "travel"
+      ],
+      "format": "higherLower",
+      "prompt": "{target}'s perfect holiday lasts 10 days. Higher or lower?",
+      "number": {
+        "min": 1,
+        "max": 60,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "days"
+      },
+      "reference": 10,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "travel.airport-early",
+      "themes": [
+        "travel"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} arrives at the airport 2 hours before the flight. Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 6,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "h"
+      },
+      "reference": 2,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "travel.roadtrip-driver",
+      "themes": [
+        "travel"
+      ],
+      "format": "player",
+      "prompt": "Who here would {target} trust to drive on a road trip?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "travel.trips",
+      "themes": [
+        "travel"
+      ],
+      "format": "ranking",
+      "prompt": "Rank these trips the way {target} would, best first:",
+      "answers": [
+        "Beach",
+        "City break",
+        "Mountains",
+        "Road trip"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
     }
   ]
 }

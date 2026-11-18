@@ -63,6 +63,8 @@ export interface RoomState {
   displays: number;
   /** Questions written by players for this room. */
   customQuestions: CustomQuestion[];
+  /** Question ids asked in this room's earlier games (oldest first), so new games pick fresh ones. */
+  askedQuestionIds?: string[];
   stage: RoomStage;
   game: GameState | null;
 }

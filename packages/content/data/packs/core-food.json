@@ -332,6 +332,255 @@
         "minigameIntro",
         "questionOnlyMinigame"
       ]
+    },
+    {
+      "id": "food.breakfast",
+      "themes": [
+        "food"
+      ],
+      "format": "tiles",
+      "prompt": "What does {target} actually eat for breakfast?",
+      "answers": [
+        "Nothing, just coffee",
+        "Cereal",
+        "Eggs, properly cooked",
+        "Last night's leftovers"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "food.sandwich",
+      "themes": [
+        "food"
+      ],
+      "format": "tiles",
+      "prompt": "{target} builds the ultimate sandwich. The secret ingredient?",
+      "answers": [
+        "Crisps inside",
+        "Way too much cheese",
+        "A fried egg",
+        "Hot sauce on everything"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "food.snack-drawer",
+      "themes": [
+        "food"
+      ],
+      "format": "tiles",
+      "prompt": "What's hidden in {target}'s snack stash?",
+      "answers": [
+        "Gummy bears",
+        "Chocolate",
+        "Crisps",
+        "Something healthy, sadly"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "food.potato",
+      "themes": [
+        "food"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s favorite form of potato?",
+      "answers": [
+        "Fries",
+        "Mashed",
+        "Crisps",
+        "Roast potatoes"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "food.leftovers",
+      "themes": [
+        "food"
+      ],
+      "format": "tiles",
+      "prompt": "Someone ate {target}'s labeled leftovers. {target}…",
+      "answers": [
+        "Says nothing, seethes forever",
+        "Sends a passive-aggressive message",
+        "Investigates like a detective",
+        "Eats theirs next time as revenge"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "food.sweet-tooth",
+      "themes": [
+        "food"
+      ],
+      "format": "scale",
+      "prompt": "How big is {target}'s sweet tooth, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "doesn't do dessert",
+        "max": "dessert is a main course"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "food.recipe",
+      "themes": [
+        "food"
+      ],
+      "format": "scale",
+      "prompt": "How closely does {target} follow a recipe, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "vibes only",
+        "max": "weighs salt to the gram"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "food.takeaway",
+      "themes": [
+        "food"
+      ],
+      "format": "number",
+      "prompt": "How many times did {target} order takeaway in the last month?",
+      "number": {
+        "min": 0,
+        "max": 40,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 2
+        }
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "food.cups-water",
+      "themes": [
+        "food"
+      ],
+      "format": "number",
+      "prompt": "How many glasses of water does {target} drink on a normal day?",
+      "number": {
+        "min": 0,
+        "max": 15,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        },
+        "unit": "glasses"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "food.ketchup",
+      "themes": [
+        "food"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} rates ketchup on pasta a 2/10. Higher or lower?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        }
+      },
+      "reference": 2,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "food.dinner-time",
+      "themes": [
+        "food"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} eats dinner at 19:00 on a normal day. Later or earlier (higher or lower)?",
+      "number": {
+        "min": 16,
+        "max": 24,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": ":00"
+      },
+      "reference": 19,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "food.cook-for",
+      "themes": [
+        "food"
+      ],
+      "format": "player",
+      "prompt": "Who here would {target} ask to cook for their birthday?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
     }
   ]
 }

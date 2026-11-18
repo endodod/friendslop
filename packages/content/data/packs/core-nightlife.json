@@ -251,6 +251,240 @@
         "minigameIntro",
         "questionOnlyMinigame"
       ]
+    },
+    {
+      "id": "night.leaving",
+      "themes": [
+        "party"
+      ],
+      "format": "tiles",
+      "prompt": "How does {target} leave a party?",
+      "answers": [
+        "Irish exit, gone",
+        "Says bye to everyone for an hour",
+        "Last one standing",
+        "Falls asleep there"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "night.drink",
+      "themes": [
+        "party"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s party drink?",
+      "answers": [
+        "Something fancy",
+        "Beer",
+        "Water, responsibly",
+        "Whatever is free"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "night.karaoke",
+      "themes": [
+        "party"
+      ],
+      "format": "tiles",
+      "prompt": "Karaoke night. {target}…",
+      "answers": [
+        "Grabs the mic first",
+        "Needs three drinks first",
+        "Only does duets",
+        "Films everyone else"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "night.kebab",
+      "themes": [
+        "party"
+      ],
+      "format": "tiles",
+      "prompt": "End of the night food for {target}?",
+      "answers": [
+        "Kebab",
+        "Pizza slice",
+        "Fries",
+        "Straight to bed"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "night.dancefloor",
+      "themes": [
+        "party"
+      ],
+      "format": "tiles",
+      "prompt": "Where is {target} on the dance floor?",
+      "answers": [
+        "Centre stage",
+        "Edge, nodding along",
+        "By the DJ requesting songs",
+        "Not on it, ever"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "night.hangover",
+      "themes": [
+        "party"
+      ],
+      "format": "scale",
+      "prompt": "How bad are {target}'s hangovers, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "fresh as a daisy",
+        "max": "dead for two days"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "night.plans",
+      "themes": [
+        "party"
+      ],
+      "format": "scale",
+      "prompt": "How likely is {target} to say 'just one drink' and stay out until 4, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "actually just one",
+        "max": "every single time"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "night.invites",
+      "themes": [
+        "party"
+      ],
+      "format": "number",
+      "prompt": "How many people would {target} invite to their birthday party?",
+      "number": {
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "tolerance": {
+          "type": "relative",
+          "value": 0.3
+        },
+        "unit": "people"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "night.friends-met",
+      "themes": [
+        "party"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} meets 3 new people on a night out. Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 30,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        }
+      },
+      "reference": 3,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "night.party-planner",
+      "themes": [
+        "party"
+      ],
+      "format": "player",
+      "prompt": "Who here would {target} trust to plan their birthday party?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "night.safe-home",
+      "themes": [
+        "party"
+      ],
+      "format": "player",
+      "prompt": "Who here would {target} trust to get them home safe?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "night.party-types",
+      "themes": [
+        "party"
+      ],
+      "format": "ranking",
+      "prompt": "Rank the party types the way {target} would, best first:",
+      "answers": [
+        "House party",
+        "Club",
+        "Bar",
+        "Festival"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
     }
   ]
 }

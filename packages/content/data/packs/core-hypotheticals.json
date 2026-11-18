@@ -285,6 +285,241 @@
         "minigameIntro",
         "questionOnlyMinigame"
       ]
+    },
+    {
+      "id": "hypo.era",
+      "themes": [
+        "hypotheticals"
+      ],
+      "format": "tiles",
+      "prompt": "{target} has to live in another era. Which one?",
+      "answers": [
+        "Ancient Rome",
+        "The Middle Ages",
+        "The Wild West",
+        "The 80s"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "hypo.mythical-pet",
+      "themes": [
+        "hypotheticals"
+      ],
+      "format": "tiles",
+      "prompt": "{target} gets a mythical creature as a pet. Which one?",
+      "answers": [
+        "A dragon",
+        "A unicorn",
+        "A phoenix",
+        "A tiny kraken"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "hypo.swap",
+      "themes": [
+        "hypotheticals"
+      ],
+      "format": "tiles",
+      "prompt": "{target} wakes up as an animal for a day. Which one?",
+      "answers": [
+        "A cat",
+        "An eagle",
+        "A dolphin",
+        "A sloth"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "hypo.mars",
+      "themes": [
+        "hypotheticals"
+      ],
+      "format": "tiles",
+      "prompt": "A free ticket to Mars, no return. {target}…",
+      "answers": [
+        "Packs immediately",
+        "Asks about the Wi-Fi first",
+        "Laughs and says no",
+        "Sells the ticket"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "hypo.skill",
+      "themes": [
+        "hypotheticals"
+      ],
+      "format": "tiles",
+      "prompt": "{target} can instantly master one skill. Which one?",
+      "answers": [
+        "Every language",
+        "Any instrument",
+        "Cooking",
+        "Fighting"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "hypo.ghost",
+      "themes": [
+        "hypotheticals"
+      ],
+      "format": "tiles",
+      "prompt": "{target} becomes a ghost. What do they do?",
+      "answers": [
+        "Haunt their enemies",
+        "Watch movies for free",
+        "Help lost souls",
+        "Move people's keys"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "hypo.villain",
+      "themes": [
+        "hypotheticals"
+      ],
+      "format": "scale",
+      "prompt": "If {target} turned evil, how dangerous would they be, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "steals office pens",
+        "max": "world domination"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "hypo.space",
+      "themes": [
+        "hypotheticals"
+      ],
+      "format": "scale",
+      "prompt": "How long would {target} survive on a space station, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "panics at launch",
+        "max": "born astronaut"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "hypo.price-no-phone",
+      "themes": [
+        "hypotheticals"
+      ],
+      "format": "number",
+      "prompt": "For how many € would {target} give up the internet for a month?",
+      "number": {
+        "min": 0,
+        "max": 10000,
+        "step": 100,
+        "tolerance": {
+          "type": "relative",
+          "value": 0.4
+        },
+        "unit": "€"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "hypo.age-forever",
+      "themes": [
+        "hypotheticals"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} could stay one age forever. They'd pick 25. Higher or lower?",
+      "number": {
+        "min": 5,
+        "max": 80,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        }
+      },
+      "reference": 25,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "hypo.bunker",
+      "themes": [
+        "hypotheticals"
+      ],
+      "format": "player",
+      "prompt": "Who here would {target} share a bunker with for a year?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "hypo.body-swap",
+      "themes": [
+        "hypotheticals"
+      ],
+      "format": "player",
+      "prompt": "Who here would {target} swap bodies with for a day?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
     }
   ]
 }

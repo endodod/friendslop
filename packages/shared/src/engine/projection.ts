@@ -40,7 +40,7 @@ export type PublicGameState = Omit<GameState, "question" | "minigame" | "players
   history: { targetCounts: Record<PlayerId, number>; minigamesPlayed: string[] };
 };
 
-export type PublicRoomState = Omit<RoomState, "game"> & {
+export type PublicRoomState = Omit<RoomState, "game" | "askedQuestionIds"> & {
   game: PublicGameState | null;
   serverNow: number;
 };
@@ -81,7 +81,7 @@ function publicQuestion(q: QuestionRound): PublicQuestionRound {
 }
 
 export function toPublicState(room: RoomState, registry: MinigameRegistry, now: number): PublicRoomState {
-  const { game, ...rest } = room;
+  const { game, askedQuestionIds: _asked, ...rest } = room;
   if (!game) return { ...rest, game: null, serverNow: now };
   const { question, minigame, players, history, ...g } = game;
   let mg: PublicMinigame | null = null;

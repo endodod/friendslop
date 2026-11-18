@@ -331,6 +331,253 @@
         "minigameIntro",
         "questionOnlyMinigame"
       ]
+    },
+    {
+      "id": "take.toilet-roll",
+      "themes": [
+        "hot-takes"
+      ],
+      "format": "tiles",
+      "prompt": "Toilet roll: over or under, according to {target}?",
+      "answers": [
+        "Over, obviously",
+        "Under",
+        "Doesn't matter",
+        "On the floor"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "take.best-day",
+      "themes": [
+        "hot-takes"
+      ],
+      "format": "tiles",
+      "prompt": "Best day of the week, according to {target}?",
+      "answers": [
+        "Friday",
+        "Saturday",
+        "Sunday",
+        "Wednesday, weirdly"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "take.water",
+      "themes": [
+        "hot-takes"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s take on sparkling water?",
+      "answers": [
+        "Superior water",
+        "Angry water",
+        "Only with juice",
+        "Never tried it"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "take.dog-cat",
+      "themes": [
+        "hot-takes"
+      ],
+      "format": "tiles",
+      "prompt": "{target} has to pick one forever:",
+      "answers": [
+        "Dogs",
+        "Cats",
+        "Neither",
+        "A pet rock"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "take.breakfast-dinner",
+      "themes": [
+        "hot-takes"
+      ],
+      "format": "tiles",
+      "prompt": "Breakfast for dinner, according to {target}?",
+      "answers": [
+        "Best meal ever",
+        "Wrong and illegal",
+        "Only pancakes count",
+        "Every night, honestly"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "take.phone-calls",
+      "themes": [
+        "hot-takes"
+      ],
+      "format": "scale",
+      "prompt": "How much does {target} hate unexpected phone calls, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "loves a chat",
+        "max": "lets it ring out"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "take.small-talk",
+      "themes": [
+        "hot-takes"
+      ],
+      "format": "scale",
+      "prompt": "How much does {target} enjoy small talk, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "please no",
+        "max": "can chat to anyone"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "take.coffee",
+      "themes": [
+        "hot-takes"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} rates coffee a 7/10. Higher or lower?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        }
+      },
+      "reference": 7,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "take.winter",
+      "themes": [
+        "hot-takes"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} rates winter a 4/10. Higher or lower?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        }
+      },
+      "reference": 4,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "take.mornings",
+      "themes": [
+        "hot-takes"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} thinks the ideal wake-up time is 8:00. Later or earlier (higher or lower)?",
+      "number": {
+        "min": 4,
+        "max": 13,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": ":00"
+      },
+      "reference": 8,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "take.sauces",
+      "themes": [
+        "hot-takes"
+      ],
+      "format": "ranking",
+      "prompt": "Rank the sauces the way {target} would, best first:",
+      "answers": [
+        "Ketchup",
+        "Mayo",
+        "BBQ",
+        "Garlic sauce"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "take.debate",
+      "themes": [
+        "hot-takes"
+      ],
+      "format": "player",
+      "prompt": "Who here would {target} want on their side in a heated debate?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
     }
   ]
 }

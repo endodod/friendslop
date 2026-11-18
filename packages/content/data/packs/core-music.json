@@ -304,6 +304,250 @@
         "minigameIntro",
         "questionOnlyMinigame"
       ]
+    },
+    {
+      "id": "music.walkout",
+      "themes": [
+        "music"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s walkout song for a boxing match?",
+      "answers": [
+        "Something epic and orchestral",
+        "A hype rap track",
+        "A cheesy 80s anthem",
+        "Something ironic and silly"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "music.genre-hate",
+      "themes": [
+        "music"
+      ],
+      "format": "tiles",
+      "prompt": "Which genre would {target} skip instantly?",
+      "answers": [
+        "Country",
+        "Heavy metal",
+        "Jazz",
+        "Techno"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "music.concert-spot",
+      "themes": [
+        "music"
+      ],
+      "format": "tiles",
+      "prompt": "Where does {target} stand at a concert?",
+      "answers": [
+        "Front row, sweaty",
+        "In the middle of the crowd",
+        "At the back near the bar",
+        "Wherever their friends are"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "music.headphones",
+      "themes": [
+        "music"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s headphones are…",
+      "answers": [
+        "Big over-ear ones",
+        "Wireless earbuds",
+        "Tangled wired ones",
+        "Lost, again"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "music.playlist-name",
+      "themes": [
+        "music"
+      ],
+      "format": "tiles",
+      "prompt": "What is {target}'s most-played playlist called?",
+      "answers": [
+        "Something with emojis",
+        "Just 'Mix'",
+        "An inside joke",
+        "A very dramatic title"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "music.lyrics",
+      "themes": [
+        "music"
+      ],
+      "format": "scale",
+      "prompt": "How well does {target} know the lyrics to the songs they sing, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "makes up every word",
+        "max": "word-perfect"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "music.taste",
+      "themes": [
+        "music"
+      ],
+      "format": "scale",
+      "prompt": "How good does {target} think their own music taste is, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "it's whatever",
+        "max": "superior to everyone"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "music.playlist-count",
+      "themes": [
+        "music"
+      ],
+      "format": "number",
+      "prompt": "How many playlists has {target} made?",
+      "number": {
+        "min": 0,
+        "max": 200,
+        "step": 1,
+        "tolerance": {
+          "type": "relative",
+          "value": 0.3
+        },
+        "unit": "playlists"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "music.age-first-concert",
+      "themes": [
+        "music"
+      ],
+      "format": "number",
+      "prompt": "How old was {target} at their first concert?",
+      "number": {
+        "min": 0,
+        "max": 40,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 2
+        },
+        "unit": "years"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "music.songs-repeat",
+      "themes": [
+        "music"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} would listen to the same song 15 times in a row. Higher or lower?",
+      "number": {
+        "min": 1,
+        "max": 100,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        }
+      },
+      "reference": 15,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "music.decades",
+      "themes": [
+        "music"
+      ],
+      "format": "ranking",
+      "prompt": "Rank the music decades the way {target} would, best first:",
+      "answers": [
+        "70s",
+        "80s",
+        "90s",
+        "2000s"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "music.dj",
+      "themes": [
+        "music"
+      ],
+      "format": "player",
+      "prompt": "Who here would {target} let DJ their party?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
     }
   ]
 }

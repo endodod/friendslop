@@ -304,6 +304,249 @@
         "minigameIntro",
         "questionOnlyMinigame"
       ]
+    },
+    {
+      "id": "movie.snack",
+      "themes": [
+        "movies"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s movie night snack?",
+      "answers": [
+        "Popcorn",
+        "Nachos",
+        "Candy",
+        "Whatever is in the fridge"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "movie.genre",
+      "themes": [
+        "movies"
+      ],
+      "format": "tiles",
+      "prompt": "Which genre does {target} pick for movie night?",
+      "answers": [
+        "Comedy",
+        "Horror",
+        "Action",
+        "Rom-com"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "movie.credits",
+      "themes": [
+        "movies"
+      ],
+      "format": "tiles",
+      "prompt": "When the credits roll, {target}…",
+      "answers": [
+        "Waits for the post-credits scene",
+        "Is already gone",
+        "Reads the names for some reason",
+        "Is asleep"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "movie.cast",
+      "themes": [
+        "movies"
+      ],
+      "format": "tiles",
+      "prompt": "{target} gets cast in a movie. As who?",
+      "answers": [
+        "The main hero",
+        "The comic sidekick",
+        "The first to die",
+        "The mysterious villain"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "movie.rewatch",
+      "themes": [
+        "movies"
+      ],
+      "format": "tiles",
+      "prompt": "{target} watches a show for the first time. How?",
+      "answers": [
+        "One episode a week, patiently",
+        "The whole season in a weekend",
+        "Starts, forgets, restarts",
+        "Skips to the good bits"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "movie.subtitles",
+      "themes": [
+        "movies"
+      ],
+      "format": "scale",
+      "prompt": "How much does {target} rely on subtitles, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "never needs them",
+        "max": "won't watch without"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "movie.critic",
+      "themes": [
+        "movies"
+      ],
+      "format": "scale",
+      "prompt": "How harsh is {target} as a movie critic, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "loves everything",
+        "max": "nothing is good enough"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "movie.cinema-year",
+      "themes": [
+        "movies"
+      ],
+      "format": "number",
+      "prompt": "How many times did {target} go to the cinema in the last year?",
+      "number": {
+        "min": 0,
+        "max": 50,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 2
+        }
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "movie.streaming",
+      "themes": [
+        "movies"
+      ],
+      "format": "number",
+      "prompt": "How many streaming subscriptions does {target} pay for?",
+      "number": {
+        "min": 0,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "movie.length",
+      "themes": [
+        "movies"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} thinks a TV episode should be 45 minutes. Higher or lower?",
+      "number": {
+        "min": 10,
+        "max": 90,
+        "step": 5,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "min"
+      },
+      "reference": 45,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "movie.watch-with",
+      "themes": [
+        "movies"
+      ],
+      "format": "player",
+      "prompt": "Who here would {target} watch a horror movie with?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "movie.genres",
+      "themes": [
+        "movies"
+      ],
+      "format": "ranking",
+      "prompt": "Rank these genres the way {target} would, favorite first:",
+      "answers": [
+        "Horror",
+        "Comedy",
+        "Documentary",
+        "Fantasy"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
     }
   ]
 }

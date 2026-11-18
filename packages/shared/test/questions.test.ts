@@ -224,6 +224,33 @@ describe("selection", () => {
     }
     expect(selectQuestion({ content, settings, history, rng, usage: "tile", playerCount: 4 })).not.toBeNull();
   });
+  it("prefers questions not asked in earlier games of the room", () => {
+    const rng = createRng(5);
+    const tilePool = content.packs.flatMap((p) => p.questions).filter((q) => !q.truthSource && q.usage.includes("tile"));
+    // Pretend an earlier game asked all but 5 questions.
+    const recentIds = tilePool.slice(5).map((q) => q.id);
+    const fresh = new Set(tilePool.slice(0, 5).map((q) => q.id));
+    const history = { questionIds: [] as string[], lastThemeId: null as string | null };
+    for (let i = 0; i < 5; i++) {
+      const s = selectQuestion({ content, settings, history, rng, usage: "tile", playerCount: 4, recentIds })!;
+      expect(fresh.has(s.question.id)).toBe(true);
+      history.questionIds.push(s.question.id);
+    }
+    // Fresh ones used up: falls back to the ones asked longest ago, never this game's.
+    const s = selectQuestion({ content, settings, history, rng, usage: "tile", playerCount: 4, recentIds })!;
+    expect(history.questionIds).not.toContain(s.question.id);
+    expect(recentIds.indexOf(s.question.id)).toBeLessThan(Math.ceil(recentIds.length / 3) + 1);
+  });
+  it("after the pool is exhausted, does not immediately repeat the latest questions", () => {
+    const rng = createRng(6);
+    const tilePool = content.packs.flatMap((p) => p.questions).filter((q) => !q.truthSource && q.usage.includes("tile"));
+    const history = { questionIds: tilePool.map((q) => q.id), lastThemeId: null as string | null };
+    const latest = new Set(history.questionIds.slice(-20));
+    for (let i = 0; i < 20; i++) {
+      const s = selectQuestion({ content, settings, history, rng, usage: "tile", playerCount: 4 })!;
+      expect(latest.has(s.question.id)).toBe(false);
+    }
+  });
   it("avoids the same theme twice in a row", () => {
     const rng = createRng(2);
     const history = { questionIds: [] as string[], lastThemeId: null as string | null };

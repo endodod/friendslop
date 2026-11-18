@@ -1,4 +1,5 @@
 "use client";
+import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 
 /** Re-render on every animation frame while `active`. Returns the server-synced time. */
@@ -60,33 +61,67 @@ export function HoldButton({
       type="button"
       disabled={disabled}
       onPointerDown={(e) => {
-        (e.target as HTMLElement).setPointerCapture?.(e.pointerId);
+        e.currentTarget.setPointerCapture?.(e.pointerId);
         set(true);
       }}
       onPointerUp={() => set(false)}
       onPointerCancel={() => set(false)}
       onContextMenu={(e) => e.preventDefault()}
-      className="min-h-28 w-full touch-none select-none rounded-3xl font-display text-3xl text-[#14112a] transition-transform disabled:opacity-40"
+      className="relative min-h-28 w-full touch-none select-none overflow-hidden rounded-3xl font-display text-3xl text-[#14112a] transition-[transform,box-shadow] duration-75 disabled:opacity-40"
       style={{
-        background: color,
-        transform: holding ? "translateY(6px) scale(0.98)" : undefined,
-        boxShadow: holding ? "0 2px 0 #0006" : "0 8px 0 #0006",
+        background: `linear-gradient(180deg, color-mix(in srgb, ${color} 100%, white 22%) 0%, ${color} 55%, color-mix(in srgb, ${color} 82%, black) 100%)`,
+        transform: holding ? "translateY(6px) scale(0.985)" : undefined,
+        boxShadow: holding
+          ? `0 2px 0 color-mix(in srgb, ${color} 50%, black), 0 0 34px ${color}aa, inset 0 2px 0 #fff6`
+          : `0 8px 0 color-mix(in srgb, ${color} 50%, black), 0 12px 22px #0007, inset 0 2px 0 #fff6`,
         WebkitUserSelect: "none",
         WebkitTouchCallout: "none",
       }}
     >
-      {holding ? (holdingLabel ?? "Holding…") : label}
+      <span
+        aria-hidden
+        className="pointer-events-none absolute inset-x-6 top-2 h-1/3 rounded-full bg-white/25 blur-[1px]"
+      />
+      <span className="relative">{holding ? (holdingLabel ?? "Holding…") : label}</span>
     </button>
   );
 }
 
 export function SubmittedNotice({ label }: { label: string }) {
   return (
-    <div className="rounded-3xl bg-bg-2 p-6 text-center">
-      <p className="font-display text-3xl text-good">Done!</p>
-      <p className="mt-1 text-xl">{label}</p>
-      <p className="mt-2 text-muted">Waiting for the others…</p>
-    </div>
+    <motion.div
+      initial={{ scale: 0.85, opacity: 0 }}
+      animate={{ scale: 1, opacity: 1 }}
+      transition={{ type: "spring", stiffness: 260, damping: 18 }}
+      className="relative overflow-hidden rounded-[28px] p-6 text-center"
+      style={{
+        background: "radial-gradient(120% 100% at 50% 0%, #2fd27a40 0%, transparent 65%), linear-gradient(180deg, #1d1838, #120f24)",
+        boxShadow: "inset 0 0 0 2px #2fd27a66, 0 10px 30px #0006",
+      }}
+    >
+      <motion.span
+        aria-hidden
+        className="pointer-events-none absolute -inset-10 opacity-30"
+        style={{ background: "conic-gradient(from 0deg, transparent 0 20deg, #2fd27a55 20deg 30deg, transparent 30deg 60deg, #ffc93344 60deg 70deg, transparent 70deg 120deg)" }}
+        animate={{ rotate: 360 }}
+        transition={{ repeat: Infinity, duration: 18, ease: "linear" }}
+      />
+      <p className="relative font-display text-4xl text-good drop-shadow-[0_3px_0_#0007]">Done!</p>
+      <p className="relative mt-1 font-display text-3xl text-ink">{label}</p>
+      <p className="relative mt-2 flex items-center justify-center gap-1.5 text-muted">
+        <span className="inline-flex gap-1" aria-hidden>
+          {[0, 1, 2].map((i) => (
+            <motion.span
+              key={i}
+              className="h-1.5 w-1.5 rounded-full bg-muted"
+              animate={{ y: [0, -4, 0] }}
+              transition={{ repeat: Infinity, duration: 0.9, delay: i * 0.15 }}
+            />
+          ))}
+        </span>
+        Waiting for the others
+      </p>
+    </motion.div>
   );
 }
 
@@ -106,13 +141,30 @@ export function SoloStatus({
 }) {
   return (
     <ul className="grid grid-cols-2 gap-2">
-      {participants.map((pid) => (
-        <li key={pid} className="flex items-center gap-2 rounded-2xl bg-bg-2 p-2">
-          <Avatar player={players[pid]} size={32} dim={!submitted.includes(pid)} />
-          <span className="flex-1 truncate font-display">{players[pid]?.name}</span>
-          <span className="font-display text-accent">{submitted.includes(pid) ? labels[pid] : "…"}</span>
-        </li>
-      ))}
+      {participants.map((pid) => {
+        const done = submitted.includes(pid);
+        return (
+          <motion.li
+            key={pid}
+            layout
+            className="flex items-center gap-2 rounded-2xl p-2"
+            style={{
+              background: done ? "linear-gradient(90deg, #2fd27a26, #ffffff08)" : "linear-gradient(90deg, #ffffff10, #ffffff05)",
+              boxShadow: done ? "inset 0 0 0 1.5px #2fd27a77" : "inset 0 0 0 1px #ffffff14",
+            }}
+          >
+            <Avatar player={players[pid]} size={32} dim={!done} />
+            <span className="flex-1 truncate font-display">{players[pid]?.name}</span>
+            {done ? (
+              <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }} className="font-display text-accent">
+                {labels[pid]}
+              </motion.span>
+            ) : (
+              <span className="text-xs text-muted">playing…</span>
+            )}
+          </motion.li>
+        );
+      })}
     </ul>
   );
 }

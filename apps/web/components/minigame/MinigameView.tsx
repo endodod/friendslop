@@ -168,6 +168,17 @@ function Playing({ display }: { display: boolean }) {
   const isParticipant = !!playerId && (mg.inputPlayers ?? mg.participants).includes(playerId);
   const kitPlayers = useMemo(() => players, [players]);
   if (!entry) return <p className="text-center text-muted">This mini-game has no client yet.</p>;
+  // The private state (with the solo seed) arrives just after the public one. Solo games build
+  // their layout from the seed once on mount, so wait for it instead of starting with a wrong one.
+  const seed = priv?.minigameSeed ?? null;
+  if (isParticipant && !display && mg.kind === "soloScored" && seed === null) {
+    return (
+      <div className="flex flex-col gap-3" data-testid={`minigame-${mg.id}`}>
+        <GoalBanner id={mg.id} />
+        <p className="animate-pulse py-10 text-center font-display text-2xl text-muted">Get ready…</p>
+      </div>
+    );
+  }
   const C = entry.Component;
   return (
     <div className="flex flex-col gap-3" data-testid={`minigame-${mg.id}`}>
@@ -178,7 +189,8 @@ function Playing({ display }: { display: boolean }) {
       <C
         pub={mg.state}
         priv={priv?.minigame ?? null}
-        seed={priv?.minigameSeed ?? null}
+        key={mg.kind === "soloScored" ? (seed ?? "no-seed") : "live"}
+        seed={seed}
         me={playerId}
         isParticipant={isParticipant && !display}
         participants={mg.participants}
