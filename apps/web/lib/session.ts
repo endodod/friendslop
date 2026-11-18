@@ -75,3 +75,11 @@ export function getMuted(): boolean {
 export function setMutedStored(m: boolean) {
   safeSet(`${P}:muted`, m ? "1" : "0");
 }
+
+/** Bearer token of the signed-in account (null = guest). */
+export function sessionToken(): string | null {
+  return safeGet(`${P}:session`);
+}
+export function setSessionToken(t: string | null) {
+  safeSet(`${P}:session`, t);
+}

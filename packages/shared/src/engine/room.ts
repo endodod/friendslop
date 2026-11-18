@@ -60,13 +60,22 @@ export function freeColor(room: RoomState): string {
 
 export function addPlayer(
   room: RoomState,
-  args: { id: string; name: string; color?: string; avatar?: string | null; now: number },
+  args: {
+    id: string;
+    name: string;
+    color?: string;
+    avatar?: string | null;
+    now: number;
+    account?: { userId: string; username: string; photo: string | null } | null;
+  },
 ): RoomState {
   if (room.stage !== "lobby") fail("GAME_IN_PROGRESS", "This game has already started.");
   if (room.players.length >= GAME_CONFIG.players.max) fail("ROOM_FULL", `This room is full (${GAME_CONFIG.players.max} players max).`);
   const name = sanitizeName(args.name);
   if (!name) fail("NAME_INVALID", "Please enter a name.");
   if (room.players.some((p) => p.name.toLowerCase() === name.toLowerCase())) fail("NAME_TAKEN", "That name is taken.");
+  if (args.account && room.players.some((p) => p.userId === args.account!.userId))
+    fail("ALREADY_IN_ROOM", "You're already in this room on another device.");
   let color = args.color && PLAYER_COLORS.some((c) => c.id === args.color) ? args.color : freeColor(room);
   if (room.players.some((p) => p.color === color)) color = freeColor(room);
   const player: RoomPlayer = {
@@ -74,6 +83,9 @@ export function addPlayer(
     name,
     color,
     avatar: args.avatar && isPlayerAvatar(args.avatar) ? args.avatar : null,
+    userId: args.account?.userId ?? null,
+    username: args.account?.username ?? null,
+    photo: args.account?.photo ?? null,
     ready: false,
     connected: true,
     joinedAt: args.now,

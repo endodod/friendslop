@@ -18,6 +18,8 @@ import { PackPicker } from "./PackPicker";
 import { TileMix } from "./TileMix";
 import { MinigameMix } from "./MinigameMix";
 import { CustomQuestions } from "./CustomQuestions";
+import { InviteFriends } from "./InviteFriends";
+import Link from "next/link";
 
 export function Lobby({ code, onLeave }: { code: string; onLeave: () => Promise<void> }) {
   const pub = useStore((s) => s.pub)!;
@@ -96,6 +98,11 @@ export function Lobby({ code, onLeave }: { code: string; onLeave: () => Promise<
                     {pub.hostId === p.id && <Crown size={16} className="text-accent" aria-label="Host" />}
                     {p.id === me?.id && <span className="text-sm text-muted">(you)</span>}
                   </span>
+                  {p.username && !isDisplay && (
+                    <Link href={`/u/${encodeURIComponent(p.username)}`} target="_blank" className="w-fit truncate text-xs text-muted hover:underline">
+                      @{p.username}
+                    </Link>
+                  )}
                   <span className="flex items-center gap-2 text-sm text-muted">
                     {p.connected ? <Wifi size={14} /> : <WifiOff size={14} className="text-bad" />}
                     {p.linked.filter((l) => l.status === "ok").map((l) => (
@@ -152,6 +159,7 @@ export function Lobby({ code, onLeave }: { code: string; onLeave: () => Promise<
               act("room:profile", { color });
             }}
           />
+          {meRoom.photo && <p className="text-sm text-muted">Your profile picture is shown instead of the icon.</p>}
           <AvatarPicker
             value={meRoom.avatar}
             color={meRoom.color}
@@ -163,6 +171,8 @@ export function Lobby({ code, onLeave }: { code: string; onLeave: () => Promise<
           />
         </section>
       )}
+
+      {meRoom && <InviteFriends />}
 
       <CustomQuestions />
 

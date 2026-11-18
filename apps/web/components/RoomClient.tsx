@@ -12,6 +12,7 @@ import { useRoom } from "@/lib/useRoom";
 import { useStore } from "@/lib/store";
 import { saveAvatar, saveColor, saveName, savedAvatar, savedColor, savedName } from "@/lib/session";
 import { SfxBridge } from "./SfxBridge";
+import { useAccount } from "@/lib/account";
 import { ServerStatus } from "./ServerStatus";
 
 export function RoomClient({ code, display }: { code: string; display: boolean }) {
@@ -60,6 +61,10 @@ function JoinForm({ code, error, onJoin }: { code: string; error: string | null;
   const [avatar, setAvatar] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const pub = useStore((s) => s.pub);
+  const username = useAccount((s) => s.user?.username);
+  useEffect(() => {
+    if (username) setName((n) => n || username);
+  }, [username]);
   useEffect(() => {
     setName((n) => n || savedName());
     setColor(savedColor() ?? PLAYER_COLORS[0].id);

@@ -11,6 +11,11 @@ import type { z } from "zod";
 import type { RoomManager, SocketData } from "./rooms/manager";
 import { persistence } from "./persistence/hooks";
 import { linkSteam, unlinkProvider } from "./providers/linking";
+import { userFromToken } from "./accounts/auth";
+import { areFriends } from "./accounts/friends";
+import { emitToUser, isOnline, notifyFriends, setSocketUser, userOfSocket } from "./accounts/presence";
+import { db } from "./persistence/db";
+import { avatarPath } from "@party-game/shared";
 
 type IoSocket = Socket<any, ServerToClientEvents, any, SocketData>;
 
@@ -63,6 +68,21 @@ export function registerSocketHandlers(io: Server<any, ServerToClientEvents, any
       return pid;
     };
 
+    /** The signed-in account of this socket, as shown in rooms. */
+    let identifying: Promise<unknown> = Promise.resolve();
+    async function account() {
+      await identifying;
+      const userId = userOfSocket(socket.id);
+      const c = db();
+      if (!userId || !c) return null;
+      const u = await c.user.findUnique({ where: { id: userId }, select: { id: true, username: true, avatarVersion: true, avatarMime: true } });
+      return u ? { userId: u.id, username: u.username, photo: u.avatarMime ? avatarPath(u.id, u.avatarVersion) : null } : null;
+    }
+    const roomChanged = () => {
+      const userId = userOfSocket(socket.id);
+      if (userId) void notifyFriends(userId);
+    };
+
     async function profileFor(token: string | undefined, name: string | undefined) {
       if (!token || !name) return null;
       return persistence.upsertProfile(token, name);
@@ -72,20 +92,68 @@ export function registerSocketHandlers(io: Server<any, ServerToClientEvents, any
       if (p.role === "player" && !p.name?.trim()) fail("NAME_INVALID", "Please enter a name.");
       const rec = rooms.createRoom();
       const profileId = await profileFor(p.profileToken, p.name);
-      const seat = rooms.join(socket, rec, { role: p.role, name: p.name, color: p.color, avatar: p.avatar, profileId });
+      const seat = rooms.join(socket, rec, {
+        role: p.role,
+        name: p.name,
+        color: p.color,
+        avatar: p.avatar,
+        profileId,
+        account: p.role === "player" ? await account() : null,
+      });
       rooms.resend(rec, socket);
+      roomChanged();
       return { code: rec.room.code, role: seat.role, playerId: seat.playerId ?? undefined, token: seat.token };
     });
 
     on("room:join", async (p) => {
       const rec = rooms.get(p.code);
       const profileId = p.token ? null : await profileFor(p.profileToken, p.name);
-      const seat = rooms.join(socket, rec, { role: p.role, name: p.name, color: p.color, avatar: p.avatar, token: p.token, profileId });
+      const seat = rooms.join(socket, rec, {
+        role: p.role,
+        name: p.name,
+        color: p.color,
+        avatar: p.avatar,
+        token: p.token,
+        profileId,
+        account: p.role === "player" && !p.token ? await account() : null,
+      });
       rooms.resend(rec, socket);
+      roomChanged();
       return { code: rec.room.code, role: seat.role, playerId: seat.playerId ?? undefined, token: seat.token };
     });
 
-    on("room:leave", () => rooms.leave(socket));
+    on("room:leave", () => {
+      rooms.leave(socket);
+      roomChanged();
+    });
+
+    on("auth:identify", async (p) => {
+      // room:join may arrive right behind this; account() waits for it.
+      const work = (async () => {
+        const user = p.token ? await userFromToken(p.token).catch(() => null) : null;
+        setSocketUser(socket, user?.id ?? null);
+        return user?.id ?? null;
+      })();
+      identifying = work;
+      return { userId: await work };
+    });
+    on("friend:invite", async (p) => {
+      const rec = current();
+      const pid = me();
+      const from = userOfSocket(socket.id);
+      const c = db();
+      if (!from || !c) fail("UNAUTHORIZED", "Sign in to invite friends.");
+      if (!(await areFriends(c, from, p.userId))) fail("NOT_FRIENDS", "You can only invite friends.");
+      rooms.canInvite(rec);
+      const player = rec.room.players.find((x) => x.id === pid);
+      if (rec.room.players.some((x) => x.userId === p.userId)) fail("INVALID_INPUT", "They're already here.");
+      if (!isOnline(p.userId)) fail("INVALID_INPUT", "That friend is offline.");
+      emitToUser(p.userId, "invite", {
+        code: rec.room.code,
+        from: { userId: from, username: player?.username ?? player?.name ?? "A friend", photo: player?.photo ?? null },
+        at: Date.now(),
+      });
+    });
     on("room:settings", (p) => rooms.setSettings(current(), socket.data, p));
     on("room:profile", (p) => rooms.setProfile(current(), me(), p));
     on("room:kick", (p) => rooms.kick(current(), socket.data, p.playerId));
@@ -134,6 +202,9 @@ export function registerSocketHandlers(io: Server<any, ServerToClientEvents, any
       await unlinkProvider(rooms, rec, pid, seat?.profileId ?? null, p.provider);
     });
 
-    socket.on("disconnect", () => rooms.disconnect(socket));
+    socket.on("disconnect", () => {
+      rooms.disconnect(socket);
+      setSocketUser(socket, null);
+    });
   });
 }

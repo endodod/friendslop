@@ -4,6 +4,7 @@ import { Volume2, VolumeX } from "lucide-react";
 import { useEffect, useState } from "react";
 import { colorHex, type PlayerId, type PublicRoomState } from "@party-game/shared";
 import { useStore } from "@/lib/store";
+import { photoUrl } from "@/lib/account";
 import { isMuted, play, setMuted } from "@/lib/sfx";
 import { useRemaining } from "@/lib/time";
 
@@ -33,6 +34,8 @@ export interface PlayerLike {
   color: string;
   /** Optional emoji icon shown instead of initials. */
   avatar?: string | null;
+  /** Server path of a custom profile picture (signed-in players). Shown instead of the icon. */
+  photo?: string | null;
 }
 
 /** Avatar = the player's icon (or initials) in a colored circle. Meaning never by color alone. */
@@ -51,6 +54,27 @@ export function Avatar({
 }) {
   if (!player) return null;
   const hex = colorHex(player.color);
+  const photo = photoUrl(player.photo);
+  if (photo)
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img
+        src={photo}
+        alt={player.name}
+        title={player.name}
+        width={size}
+        height={size}
+        className={`shrink-0 rounded-full object-cover ${className}`}
+        style={{
+          width: size,
+          height: size,
+          background: hex,
+          opacity: dim ? 0.4 : 1,
+          // The player's color stays visible as a ring around the photo.
+          boxShadow: ring ? `0 0 0 3px #0d0b1a, 0 0 0 6px ${hex}` : `0 0 0 ${Math.max(2, size * 0.06)}px ${hex}`,
+        }}
+      />
+    );
   return (
     <span
       title={player.name}

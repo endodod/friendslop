@@ -48,6 +48,24 @@ export const persistence = {
       const profiles = new Map<string, string>();
       for (const seat of rec.seats.values()) if (seat.playerId && seat.profileId) profiles.set(seat.playerId, seat.profileId);
       const winner = g.finalRanking?.[0];
+      if (g.mode === "board") {
+        // Account stats: everyone signed in who is still in the room when the game ends.
+        for (const rp of rec.room.players) {
+          const gp = g.players[rp.id];
+          if (!rp.userId || !gp) continue;
+          const userId = rp.userId;
+          void safely("userStats", (db) =>
+            db.user.update({
+              where: { id: userId },
+              data: {
+                gamesPlayed: { increment: 1 },
+                gamesWon: { increment: rp.id === winner ? 1 : 0 },
+                starsCollected: { increment: gp.stars },
+              },
+            }),
+          );
+        }
+      }
       void matchPromise?.then((matchId) =>
         safely("finishMatch", async (db) => {
           if (!matchId) return;

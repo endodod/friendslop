@@ -9,6 +9,8 @@ import { AvatarPicker } from "@/components/AvatarPicker";
 import { ColorPicker } from "@/components/ColorPicker";
 import { Icon, Toasts } from "@/components/ui";
 import { ServerStatus } from "@/components/ServerStatus";
+import { AccountChip } from "@/components/account/AccountChip";
+import { useAccount } from "@/lib/account";
 import { getSocket, send } from "@/lib/socket";
 import { profileToken, saveAvatar, saveColor, saveName, saveSeat, savedAvatar, savedColor, savedName } from "@/lib/session";
 
@@ -20,6 +22,11 @@ export default function Landing() {
   const [code, setCode] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const username = useAccount((s) => s.user?.username);
+  // Signed in without a saved name: play under the username.
+  useEffect(() => {
+    if (username) setName((n) => n || username);
+  }, [username]);
 
   useEffect(() => {
     setName((n) => n || savedName());
@@ -59,6 +66,9 @@ export default function Landing() {
     <main className="mx-auto flex min-h-dvh max-w-md flex-col gap-6 px-4 py-8">
       <Toasts />
       <ServerStatus />
+      <div className="-mb-2 flex justify-end">
+        <AccountChip />
+      </div>
       <motion.header initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="text-center">
         <div className="mx-auto mb-3 flex w-fit gap-2">
           {["food", "music", "gaming", "hot-takes"].map((i, k) => (

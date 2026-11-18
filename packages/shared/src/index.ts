@@ -22,4 +22,5 @@ export * from "./minigame/helpers";
 export * from "./data/types";
 export * from "./data/generators";
 export * from "./socket/contracts";
+export * from "./accounts";
 export * from "./logic/achievements";

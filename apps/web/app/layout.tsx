@@ -3,6 +3,7 @@ import "@fontsource/lilita-one";
 import "@fontsource-variable/inter";
 import "./globals.css";
 import { BRANDING } from "@party-game/shared";
+import { AccountProvider } from "@/components/account/AccountProvider";
 
 export const metadata: Metadata = {
   title: BRANDING.name,
@@ -19,7 +20,10 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        {children}
+        <AccountProvider />
+      </body>
     </html>
   );
 }

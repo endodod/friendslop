@@ -39,6 +39,12 @@ export interface RoomPlayer {
   color: string;
   /** Optional icon (emoji from PLAYER_AVATARS) shown instead of initials. */
   avatar?: string | null;
+  /** Signed-in account behind this seat (null = guest). */
+  userId?: string | null;
+  /** Account username (shown on the profile link; the in-room name can differ). */
+  username?: string | null;
+  /** Server path of the account's custom profile picture, e.g. /api/users/<id>/avatar?v=3. */
+  photo?: string | null;
   ready: boolean;
   connected: boolean;
   joinedAt: number;

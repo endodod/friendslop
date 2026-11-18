@@ -1,13 +1,14 @@
 "use client";
-import { Pencil, Plus, Trash2, Upload, X } from "lucide-react";
+import { BookmarkPlus, Check, ChevronDown, Pencil, Plus, Trash2, Upload, X } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { BRANDING, CUSTOM_LIMITS, type CustomQuestion, type CustomQuestionDraft } from "@party-game/shared";
 import { useStore } from "@/lib/store";
 import { act } from "@/lib/useRoom";
 import { Avatar, useIsHost, usePlayers } from "../ui";
+import { loadSavedQuestions, promptKey, saveQuestions, useAccount } from "@/lib/account";
 
 type Format = CustomQuestionDraft["format"];
-const FORMATS: { id: Format; label: string; hint: string }[] = [
+export const FORMATS: { id: Format; label: string; hint: string }[] = [
   { id: "tiles", label: "Multiple choice", hint: "2–6 answers" },
   { id: "scale", label: "1–10 scale", hint: "rate something" },
   { id: "number", label: "Number", hint: "guess a number" },
@@ -16,7 +17,8 @@ const FORMATS: { id: Format; label: string; hint: string }[] = [
 
 const SAVED_KEY = `${BRANDING.storagePrefix}:customQuestions`;
 
-function loadSaved(): CustomQuestionDraft[] {
+/** Questions saved on this device (works without an account). */
+export function loadSaved(): CustomQuestionDraft[] {
   try {
     return JSON.parse(localStorage.getItem(SAVED_KEY) ?? "[]") as CustomQuestionDraft[];
   } catch {
@@ -33,7 +35,7 @@ function saveDraft(d: CustomQuestionDraft) {
 }
 
 /** Shows {target} as a highlighted name chip. */
-function PromptPreview({ text, name }: { text: string; name: string }) {
+export function PromptPreview({ text, name }: { text: string; name: string }) {
   const parts = text.split(/(\{target\}|\{player:random\}|\{otherPlayer\})/);
   return (
     <span>
@@ -58,10 +60,24 @@ export function CustomQuestions() {
   const [open, setOpen] = useState(false);
   const [saved, setSaved] = useState<CustomQuestionDraft[]>([]);
   useEffect(() => setSaved(loadSaved()), [open]);
+  const user = useAccount((s) => s.user);
 
   const list = pub.customQuestions ?? [];
   const inRoom = new Set(list.map((c) => String(c.question.prompt).toLowerCase()));
-  const notYetAdded = saved.filter((d) => !inRoom.has(d.prompt.replace(/\s+/g, " ").trim().toLowerCase()));
+  const notYetAdded = saved.filter((d) => !inRoom.has(promptKey(d.prompt)));
+
+  async function addToRoom(d: CustomQuestionDraft): Promise<boolean> {
+    const res = await act("custom:add", { question: d });
+    if (!res.ok) return false;
+    saveDraft(d);
+    // Signed in: keep it on the profile too, for any device.
+    if (useAccount.getState().user) {
+      const err = await saveQuestions([d]);
+      if (err) useStore.getState().toast(err, "error");
+    }
+    useStore.getState().toast("Question added!", "good");
+    return true;
+  }
 
   return (
     <section className="card flex flex-col gap-3 p-5" data-testid="custom-questions">
@@ -80,9 +96,22 @@ export function CustomQuestions() {
         packs) and come up more often than regular questions.
       </p>
 
-      {open && playerId && <Editor onClose={() => setOpen(false)} />}
+      {open && playerId && (
+        <QuestionEditor
+          onClose={() => setOpen(false)}
+          onSubmit={addToRoom}
+          submitLabel="Add to Custom pack"
+          footnote={
+            user
+              ? "Your questions are also saved on your profile, so you can load them into any room."
+              : "Your questions are also saved on this device. Sign in to keep them on your profile."
+          }
+        />
+      )}
 
-      {playerId && notYetAdded.length > 0 && (
+      {playerId && user && <SavedOnProfile inRoom={inRoom} />}
+
+      {playerId && !user && notYetAdded.length > 0 && (
         <button
           className="btn-secondary min-h-11 self-start text-sm"
           onClick={async () => {
@@ -120,7 +149,78 @@ export function CustomQuestions() {
   );
 }
 
-function Editor({ onClose }: { onClose: () => void }) {
+/** Lobby: load questions saved on your profile straight into this room. */
+function SavedOnProfile({ inRoom }: { inRoom: Set<string> }) {
+  const questions = useAccount((s) => s.questions);
+  const [open, setOpen] = useState(false);
+  const [busy, setBusy] = useState(false);
+  useEffect(() => {
+    void loadSavedQuestions();
+  }, []);
+  if (!questions?.length) return null;
+  const missing = questions.filter((q) => !inRoom.has(promptKey(q.draft.prompt)));
+  const addAll = async () => {
+    setBusy(true);
+    let n = 0;
+    for (const q of missing) if ((await act("custom:add", { question: q.draft })).ok) n++;
+    setBusy(false);
+    if (n) useStore.getState().toast(`Added ${n} question${n > 1 ? "s" : ""} from your profile`, "good");
+  };
+  return (
+    <div className="rounded-2xl bg-bg-2 p-3">
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <button className="flex min-h-11 items-center gap-2 font-display text-lg" aria-expanded={open} onClick={() => setOpen(!open)}>
+          <ChevronDown size={18} className={`transition-transform ${open ? "" : "-rotate-90"}`} />
+          Saved on your profile <span className="text-sm text-muted">{questions.length}</span>
+        </button>
+        {missing.length > 0 && (
+          <button className="btn-secondary min-h-11 text-sm" disabled={busy} onClick={addAll} data-testid="add-all-saved">
+            <Upload size={16} /> Add {missing.length === questions.length ? "all" : `${missing.length} more`}
+          </button>
+        )}
+      </div>
+      {open && (
+        <ul className="mt-2 flex flex-col gap-2">
+          {questions.map((q) => {
+            const added = inRoom.has(promptKey(q.draft.prompt));
+            return (
+              <li key={q.id} className="flex items-center gap-2 rounded-xl bg-panel p-2 pl-3">
+                <div className="min-w-0 flex-1">
+                  <p className="leading-snug">
+                    <PromptPreview text={q.draft.prompt} name="[player]" />
+                  </p>
+                  <p className="text-xs text-muted">{FORMATS.find((f) => f.id === q.draft.format)?.label}</p>
+                </div>
+                {added ? (
+                  <span className="flex items-center gap-1 px-2 text-sm text-good">
+                    <Check size={16} /> Added
+                  </span>
+                ) : (
+                  <button className="btn-secondary min-h-11 px-3 text-sm" onClick={() => act("custom:add", { question: q.draft })}>
+                    <Plus size={16} /> Add
+                  </button>
+                )}
+              </li>
+            );
+          })}
+        </ul>
+      )}
+    </div>
+  );
+}
+
+/** The question form. Used in the lobby (adds to the room) and on the profile (saves to the account). */
+export function QuestionEditor({
+  onClose,
+  onSubmit,
+  submitLabel,
+  footnote,
+}: {
+  onClose: () => void;
+  onSubmit: (d: CustomQuestionDraft) => Promise<boolean>;
+  submitLabel: string;
+  footnote?: string;
+}) {
   const players = usePlayers();
   const playerId = useStore((s) => s.playerId);
   const sampleName = useMemo(() => Object.values(players).find((p) => p.id !== playerId)?.name ?? "Sam", [players, playerId]);
@@ -154,16 +254,13 @@ function Editor({ onClose }: { onClose: () => void }) {
       onSubmit={async (e) => {
         e.preventDefault();
         setBusy(true);
-        const d = draft();
-        const res = await act("custom:add", { question: d });
+        const ok = await onSubmit(draft());
         setBusy(false);
-        if (res.ok) {
-          saveDraft(d);
+        if (ok) {
           setPrompt("");
           setAnswers(["", "", "", ""]);
           setMinLabel("");
           setMaxLabel("");
-          useStore.getState().toast("Question added!", "good");
         }
       }}
     >
@@ -269,9 +366,9 @@ function Editor({ onClose }: { onClose: () => void }) {
       )}
 
       <button className="btn-primary min-h-12" disabled={busy || !prompt.trim() || !hasTarget} data-testid="custom-add">
-        <Plus size={18} /> Add to Custom pack
+        {submitLabel.startsWith("Save") ? <BookmarkPlus size={18} /> : <Plus size={18} />} {submitLabel}
       </button>
-      <p className="text-xs text-muted">Your questions are also saved on this device, so you can add them to your next room in one tap.</p>
+      {footnote && <p className="text-xs text-muted">{footnote}</p>}
     </form>
   );
 }

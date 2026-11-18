@@ -1,5 +1,6 @@
 "use client";
 import { io, type Socket } from "socket.io-client";
+import { sessionToken } from "./session";
 import type { Ack, ClientEventName, ClientPayload, ServerToClientEvents } from "@party-game/shared";
 
 let socket: Socket<ServerToClientEvents, any> | null = null;
@@ -15,6 +16,10 @@ export function serverUrl(): string {
 export function getSocket(): Socket<ServerToClientEvents, any> {
   if (!socket) {
     socket = io(serverUrl(), { transports: ["websocket", "polling"], autoConnect: true, reconnection: true });
+    // Registered first, so the account is known before any room:join sent on (re)connect.
+    socket.on("connect", () => {
+      socket?.emit("auth:identify", { token: sessionToken() }, () => {});
+    });
   }
   return socket;
 }

@@ -127,7 +127,15 @@ export class RoomManager {
   join(
     socket: IoSocket,
     rec: LiveRoom,
-    args: { role: "player" | "display"; name?: string; color?: string; avatar?: string | null; token?: string; profileId?: string | null },
+    args: {
+      role: "player" | "display";
+      name?: string;
+      color?: string;
+      avatar?: string | null;
+      token?: string;
+      profileId?: string | null;
+      account?: { userId: string; username: string; photo: string | null } | null;
+    },
   ): Seat {
     const room = rec.room;
     let seat = args.token ? rec.seats.get(args.token) : undefined;
@@ -149,7 +157,7 @@ export class RoomManager {
       rec.room = { ...room, displays: room.displays + 1 };
     } else {
       const id = "p_" + randomBytes(6).toString("base64url");
-      rec.room = addPlayer(room, { id, name: args.name ?? "", color: args.color, avatar: args.avatar, now: Date.now() });
+      rec.room = addPlayer(room, { id, name: args.name ?? "", color: args.color, avatar: args.avatar, now: Date.now(), account: args.account });
       seat = { token: this.newToken(), role: "player", playerId: id, profileId: args.profileId ?? null };
       rec.seats.set(seat.token, seat);
     }
@@ -285,6 +293,12 @@ export class RoomManager {
     const res = startGame(lobby, this.ctx(rec), "board");
     this.apply(rec, res);
     persistence.onGameStart(rec);
+  }
+
+  /** Invite a friend to this room. Checks are done by the caller (friendship, sender in room). */
+  canInvite(rec: LiveRoom): void {
+    if (rec.room.stage !== "lobby") fail("GAME_IN_PROGRESS", "The game has already started.");
+    if (rec.room.players.length >= GAME_CONFIG.players.max) fail("ROOM_FULL", "The room is full.");
   }
 
   // -------------------------------------------------------------------------

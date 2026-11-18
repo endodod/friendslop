@@ -73,3 +73,66 @@ model QuestionStat {
   matchRate    Float    @default(0)
   updatedAt    DateTime @updatedAt
 }
+
+// ---------------------------------------------------------------------------
+// User accounts (optional sign-in). Anonymous play keeps working without one.
+// ---------------------------------------------------------------------------
+model User {
+  id             String       @id @default(cuid())
+  username       String
+  /// lower-cased username for case-insensitive uniqueness and lookups
+  usernameKey    String       @unique
+  passwordHash   String
+  /// Custom profile picture (small, resized client-side). Null = use the icon picker.
+  avatarData     Bytes?
+  avatarMime     String?
+  /// Bumped on every upload so the picture URL changes (cache busting).
+  avatarVersion  Int          @default(0)
+  gamesPlayed    Int          @default(0)
+  gamesWon       Int          @default(0)
+  starsCollected Int          @default(0)
+  createdAt      DateTime     @default(now())
+  sessions       Session[]
+  questions      SavedQuestion[]
+  sentFriends    Friendship[] @relation("FriendRequester")
+  gotFriends     Friendship[] @relation("FriendAddressee")
+}
+
+model Session {
+  /// sha256 of the bearer token; the token itself is never stored
+  id        String   @id
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+
+  @@index([userId])
+}
+
+/// One row per pair. status "pending" until the addressee accepts.
+model Friendship {
+  id          String   @id @default(cuid())
+  requesterId String
+  requester   User     @relation("FriendRequester", fields: [requesterId], references: [id], onDelete: Cascade)
+  addresseeId String
+  addressee   User     @relation("FriendAddressee", fields: [addresseeId], references: [id], onDelete: Cascade)
+  status      String   @default("pending") // "pending" | "accepted"
+  createdAt   DateTime @default(now())
+
+  @@unique([requesterId, addresseeId])
+  @@index([addresseeId])
+}
+
+/// A custom question saved on a profile, loadable into any lobby.
+model SavedQuestion {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  /// lower-cased, whitespace-collapsed prompt (no duplicates per user)
+  promptKey String
+  /// CustomQuestionDraft as the lobby editor sends it
+  draft     Json
+  createdAt DateTime @default(now())
+
+  @@unique([userId, promptKey])
+}

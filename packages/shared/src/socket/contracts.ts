@@ -83,6 +83,10 @@ export const ClientEvents = {
   "minigame:submit": z.object({ submission: z.unknown() }),
   "custom:add": z.object({ question: CustomQuestionDraftSchema }),
   "custom:remove": z.object({ id: z.string().max(64) }),
+  /** Tell the server which signed-in account this socket belongs to (null = signed out). */
+  "auth:identify": z.object({ token: z.string().max(128).nullable() }),
+  /** Invite a friend (by user id) to the room you're in. */
+  "friend:invite": z.object({ userId: z.string().min(1).max(64) }),
   "account:linkSteam": z.object({ profile: z.string().min(2).max(200) }),
   "account:unlink": z.object({ provider: z.enum(["steam", "lastfm", "spotify"]) }),
 } as const;
@@ -105,6 +109,16 @@ export interface ServerToClientEvents {
   event: (events: GameEvent[]) => void;
   error: (err: { code: string; message: string }) => void;
   kicked: () => void;
+  /** A friend invited you to their room. */
+  invite: (inv: RoomInvite) => void;
+  /** Your friend list changed (request received/accepted/removed, or a friend came online). */
+  "friends:changed": () => void;
+}
+
+export interface RoomInvite {
+  code: string;
+  from: { userId: string; username: string; photo: string | null };
+  at: number;
 }
 
 export type ClientToServerEvents = {

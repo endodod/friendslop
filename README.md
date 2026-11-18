@@ -21,6 +21,22 @@ mini-game. Most stars after the last round wins (coins break ties), after 2–3 
 Refreshing or losing connection is fine: you get your seat back automatically. If you're gone
 on your turn, it auto-plays after a few seconds.
 
+## Accounts (optional)
+
+Players can play as guests, or sign in (username + password) for:
+
+- a **profile** (`/profile`) with a custom **profile picture** (shown instead of the icon in rooms and on the board)
+  and **stats**: games played, games won, stars collected (updated when a board game reaches the podium)
+- **friends**: add by username (or from the lobby), accept/decline requests, see who's online and in which room;
+  public profiles at `/u/<username>`
+- **invites**: in the lobby, invite online friends from your friend list; they get a pop-up with a Join button on any page
+- **saved custom questions**: questions you write are kept on your profile and can be loaded into any lobby in one tap
+
+Accounts need `DATABASE_URL`; without it everything else still works and the account pages say they're unavailable.
+The API lives on the game server under `/api/*` (bearer token in localStorage, no cookies, since web and server are on
+different domains). Passwords are hashed with scrypt; only a SHA-256 of each session token is stored. Profile pictures
+are center-cropped to 256×256 in the browser and stored in Postgres.
+
 ## Run it
 
 Requirements: Node 22+, pnpm 10. Postgres 16 is optional (or use Docker).
@@ -37,7 +53,7 @@ Open http://localhost:3000. Phones on the same Wi-Fi: `http://<your-computer-ip>
 app talks to the game server on the same host, port 4000, unless `NEXT_PUBLIC_SERVER_URL` is set).
 
 Without `DATABASE_URL` (or with Postgres down) the game runs normally; it just doesn't store
-match history or question stats.
+match history or question stats, and accounts are unavailable.
 
 ### Docker
 
@@ -73,7 +89,7 @@ sleeps during a game. Rooms are lost on a restart/redeploy.
 On Render, set `WEB_ORIGINS` to your Vercel URL (e.g. `https://friendslop.vercel.app`, comma-separate several).
 
 **Optional database:** set `DATABASE_URL` on Render to a free Postgres (e.g. [Neon](https://neon.tech)) and run
-`pnpm --filter @party-game/server exec prisma migrate deploy` once against it. Without it the game works the same, just without match history or question stats.
+`pnpm --filter @party-game/server exec prisma migrate deploy` once against it. Without it the game works the same, just without accounts, match history or question stats.
 
 ## Tests
 

@@ -5,6 +5,7 @@ import { GAME_CONFIG, colorHex, type Board, type PublicGameState } from "@party-
 import { clientContent } from "@party-game/content";
 import { onGameEvent } from "@/lib/store";
 import { play } from "@/lib/sfx";
+import { photoUrl } from "@/lib/account";
 import { initials, type PlayerLike } from "../ui";
 
 const W = 1600;
@@ -276,6 +277,22 @@ export function BoardView({ board, game, players, follow, selectable = [], onSel
                 <ellipse cx={0} cy={36} rx={22} ry={7} fill="#000" opacity={0.3} />
                 {active && <circle r={34} fill="none" stroke="#fff" strokeWidth={5} opacity={0.9} />}
                 <circle r={28} fill={hex} stroke="#14112a" strokeWidth={5} />
+                {p.photo ? (
+                  <>
+                    <clipPath id={`tok-${pid}`}>
+                      <circle r={23} />
+                    </clipPath>
+                    <image
+                      href={photoUrl(p.photo) ?? undefined}
+                      x={-23}
+                      y={-23}
+                      width={46}
+                      height={46}
+                      clipPath={`url(#tok-${pid})`}
+                      preserveAspectRatio="xMidYMid slice"
+                    />
+                  </>
+                ) : (
                 <text
                   textAnchor="middle"
                   dominantBaseline="central"
@@ -285,6 +302,7 @@ export function BoardView({ board, game, players, follow, selectable = [], onSel
                 >
                   {p.avatar || initials(p.name)}
                 </text>
+                )}
               </motion.g>
             </motion.g>
           );

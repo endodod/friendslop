@@ -7,6 +7,7 @@ import { env } from "./config";
 import { initDb } from "./persistence/db";
 import { RoomManager } from "./rooms/manager";
 import { registerSocketHandlers } from "./socket";
+import { handleApi } from "./accounts/http";
 
 async function main() {
   // Throws with a list of problems if content is invalid. CONTENT_DIR points at another content folder.
@@ -18,6 +19,10 @@ async function main() {
   await initDb();
 
   const http = createServer((req, res) => {
+    if (req.url?.startsWith("/api/")) {
+      void handleApi(req, res);
+      return;
+    }
     if (req.url === "/health") {
       res.writeHead(200, { "content-type": "application/json" });
       res.end(JSON.stringify({ ok: true, name: BRANDING.name }));
