@@ -31,7 +31,7 @@ export function HotPotatoClient(p: MinigameClientProps<Pub>) {
     <div className="flex flex-col items-center gap-4">
       <Arena
         tone={mine ? "#ff4d5e" : "#ff8a3d"}
-        className="relative aspect-square w-full max-w-[min(100%,42dvh)]"
+        className={`relative aspect-square w-full transition-[max-width] duration-300 ${mine ? "max-w-[min(100%,30dvh)]" : "max-w-[min(100%,42dvh)]"}`}
         bg={`radial-gradient(60% 60% at 50% 50%, ${p.pub.boom ? "#ff4d5e55" : "#ff8a3d33"} 0%, transparent 70%), linear-gradient(180deg, #1d1838, #120f24)`}
       >
         {/* circle */}
@@ -156,9 +156,9 @@ function Challenge({
         </p>
       )}
       {prompt.kind === "count" && (
-        <div className="relative h-32 w-full max-w-xs rounded-2xl bg-bg-2">
+        <div className="relative h-24 w-full max-w-xs rounded-2xl bg-bg-2">
           {prompt.dots.map((d, i) => (
-            <span key={i} className="absolute h-5 w-5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent shadow-[0_0_8px_#ffc933]" style={{ left: `${d.x}%`, top: `${d.y}%` }} />
+            <span key={i} className="absolute h-4 w-4 -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent shadow-[0_0_8px_#ffc933]" style={{ left: `${d.x}%`, top: `${d.y}%` }} />
           ))}
         </div>
       )}
@@ -170,7 +170,7 @@ function Challenge({
             disabled={locked}
             color={prompt.kind === "ink" ? c : "#3a3462"}
             textColor="#f4f1ff"
-            className="flex min-h-20 items-center justify-center text-3xl"
+            className="flex min-h-16 items-center justify-center text-3xl"
             onClick={() => onPick(i)}
           >
             {prompt.kind === "count" ? c : prompt.kind === "ink" ? "" : <Icon id={c} size={44} />}

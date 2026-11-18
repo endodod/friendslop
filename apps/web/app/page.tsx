@@ -77,7 +77,7 @@ export default function Landing() {
             </motion.span>
           ))}
         </div>
-        <h1 className="font-display text-5xl text-accent drop-shadow-[0_4px_0_#7a5a00]">{BRANDING.name}</h1>
+        <h1 className="anim-float font-display text-5xl text-accent drop-shadow-[0_4px_0_#7a5a00]">{BRANDING.name}</h1>
         <p className="mt-2 text-muted">{BRANDING.tagline}</p>
       </motion.header>
 

@@ -2,7 +2,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowRight, Dices, FastForward, ShoppingBag } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { GAME_CONFIG, localize, starPrice, type Board, type PublicGameState } from "@party-game/shared";
+import { GAME_CONFIG, itemPrice, localize, starPrice, type Board, type PublicGameState } from "@party-game/shared";
 import { clientContent } from "@party-game/content";
 import { useStore } from "@/lib/store";
 import { act } from "@/lib/useRoom";
@@ -239,7 +239,7 @@ function TurnStartPanel({ display }: { display?: boolean }) {
       <motion.button
         data-testid="roll-button"
         whileTap={{ scale: 0.9, rotate: -8 }}
-        className="btn-primary min-h-16 text-3xl"
+        className="btn-primary anim-breathe anim-sheen min-h-16 text-3xl"
         onClick={() => act("turn:roll", pending === "custom" ? { value: customValue } : {})}
       >
         <Dices size={30} /> Roll!
@@ -421,14 +421,15 @@ function ShopPanel({ display }: { display?: boolean }) {
       <ul className="flex flex-col gap-1.5">
         {stock.map((it) => {
           const bought = g.shop?.bought.includes(it.id);
-          const afford = (me?.coins ?? 0) >= it.price;
+          const price = itemPrice(it, g.order.length);
+          const afford = (me?.coins ?? 0) >= price;
           return (
             <li key={it.id} className="flex items-center gap-3 rounded-2xl bg-bg-2 px-3 py-2">
               <Icon id={it.icon} size={30} className="shrink-0 text-accent" />
               <div className="min-w-0 flex-1">
                 <p className="flex items-baseline gap-2 font-display leading-tight">
                   <span className="truncate">{localize(it.name)}</span>
-                  {!canAct && <CoinCount value={it.price} size={14} className="shrink-0 text-sm text-muted" />}
+                  {!canAct && <CoinCount value={price} size={14} className="shrink-0 text-sm text-muted" />}
                 </p>
                 <p className="line-clamp-2 text-xs leading-snug text-muted">{localize(it.description)}</p>
               </div>
@@ -436,7 +437,7 @@ function ShopPanel({ display }: { display?: boolean }) {
                 <button
                   className="btn-primary min-h-11 w-[4.5rem] shrink-0 px-2 text-base"
                   disabled={!afford || full || bought}
-                  aria-label={`Buy ${localize(it.name)} for ${it.price} coins`}
+                  aria-label={`Buy ${localize(it.name)} for ${price} coins`}
                   onClick={() => act("shop:buy", { itemId: it.id })}
                 >
                   {bought ? (
@@ -444,7 +445,7 @@ function ShopPanel({ display }: { display?: boolean }) {
                   ) : (
                     <span className="inline-flex items-center gap-1">
                       <Icon id="coin" size={16} className="text-[#241a00]/80" />
-                      {it.price}
+                      {price}
                     </span>
                   )}
                 </button>

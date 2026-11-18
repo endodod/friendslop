@@ -11,6 +11,43 @@ import { initials, type PlayerLike } from "../ui";
 const W = 1600;
 const TILE_R = 34;
 
+/** Each map gets its own accent so boards feel distinct (like the mini-game arenas). */
+const BOARD_TONES: Record<string, string> = {
+  classic: "#7b5cff",
+  "figure-eight": "#3d8bff",
+  ladder: "#2fd27a",
+  metropolis: "#ff8a3d",
+  orbit: "#b26bff",
+};
+const toneOf = (id: string) => BOARD_TONES[id] ?? "#7b5cff";
+
+/** Tiny deterministic RNG so scenery doesn't move between renders. */
+function seeded(str: string) {
+  let h = 2166136261;
+  for (let i = 0; i < str.length; i++) h = Math.imul(h ^ str.charCodeAt(i), 16777619);
+  return () => {
+    h = (h + 0x6d2b79f5) | 0;
+    let t = Math.imul(h ^ (h >>> 15), 1 | h);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+/** Decorative bits (sparkles, pebbles) scattered where there are no tiles. */
+function scenery(board: Board, H: number) {
+  const rng = seeded(board.id);
+  const pts = board.tiles.map((t) => ({ x: t.x * W, y: t.y * H }));
+  const out: { x: number; y: number; kind: "spark" | "dot" | "ring"; s: number; o: number }[] = [];
+  for (let tries = 0; tries < 400 && out.length < 46; tries++) {
+    const x = 30 + rng() * (W - 60);
+    const y = 30 + rng() * (H - 60);
+    if (pts.some((p) => Math.hypot(p.x - x, p.y - y) < 95)) continue;
+    const r = rng();
+    out.push({ x, y, kind: r < 0.35 ? "spark" : r < 0.8 ? "dot" : "ring", s: 0.6 + rng() * 0.9, o: 0.12 + rng() * 0.25 });
+  }
+  return out;
+}
+
 interface Props {
   board: Board;
   game: PublicGameState;
@@ -107,23 +144,50 @@ export function BoardView({ board, game, players, follow, selectable = [], onSel
   }
 
   const star = xy(game.starTileId);
+  const tone = toneOf(board.id);
+  const decor = useMemo(() => scenery(board, H), [board, H]);
+  const edges = useMemo(
+    () => board.tiles.flatMap((t) => t.next.map((n) => [t.id, n] as const)),
+    [board],
+  );
+  const activeTile = pos[activeId];
+  const steppedOn = hopping ? pos[hopping] : null;
 
   return (
+    <div
+      className={`relative h-full w-full overflow-hidden rounded-[28px] ${className}`}
+      style={{
+        background: `radial-gradient(120% 90% at 50% 0%, ${tone}38 0%, transparent 60%), radial-gradient(80% 60% at 50% 110%, ${tone}22 0%, transparent 70%), radial-gradient(#ffffff10 1.2px, transparent 1.3px) 0 0 / 22px 22px, linear-gradient(180deg, #1d1838 0%, #120f24 100%)`,
+        boxShadow: `inset 0 0 0 2px ${tone}55, inset 0 -18px 40px #00000055, 0 10px 30px #00000066`,
+      }}
+    >
+    <div
+      aria-hidden
+      className="anim-drift pointer-events-none absolute -inset-[20%]"
+      style={{ background: `radial-gradient(35% 30% at 30% 35%, ${tone}26, transparent 70%), radial-gradient(30% 25% at 72% 70%, #ff6bc61a, transparent 70%)` }}
+    />
     <svg
       viewBox={`0 0 ${W} ${H}`}
-      className={`h-full w-full select-none ${className}`}
+      className="relative h-full w-full select-none"
       role="img"
       aria-label="Game board"
       preserveAspectRatio="xMidYMid meet"
     >
       <defs>
+        <radialGradient id="tileShine" cx="35%" cy="28%" r="75%">
+          <stop offset="0%" stopColor="#fff" stopOpacity="0.55" />
+          <stop offset="45%" stopColor="#fff" stopOpacity="0.08" />
+          <stop offset="100%" stopColor="#000" stopOpacity="0.25" />
+        </radialGradient>
+        <radialGradient id="tokenShine" cx="35%" cy="25%" r="80%">
+          <stop offset="0%" stopColor="#fff" stopOpacity="0.6" />
+          <stop offset="50%" stopColor="#fff" stopOpacity="0" />
+          <stop offset="100%" stopColor="#000" stopOpacity="0.2" />
+        </radialGradient>
         <radialGradient id="starGlow">
           <stop offset="0%" stopColor="#ffe066" stopOpacity="0.9" />
           <stop offset="100%" stopColor="#ffe066" stopOpacity="0" />
         </radialGradient>
-        <filter id="tileShadow" x="-50%" y="-50%" width="200%" height="200%">
-          <feDropShadow dx="0" dy="6" stdDeviation="0" floodColor="#000" floodOpacity="0.35" />
-        </filter>
       </defs>
       <motion.g
         initial={false}
@@ -131,26 +195,81 @@ export function BoardView({ board, game, players, follow, selectable = [], onSel
         transition={reduced ? { duration: 0 } : { type: "spring", stiffness: 60, damping: 18 }}
         style={{ originX: 0, originY: 0 }}
       >
-        {/* paths */}
-        {board.tiles.flatMap((t) =>
-          t.next.map((n) => {
-            const a = xy(t.id);
-            const b = xy(n);
-            const branch = t.next.length > 1;
-            return (
-              <line
-                key={`${t.id}-${n}`}
-                x1={a.x}
-                y1={a.y}
-                x2={b.x}
-                y2={b.y}
-                stroke={selectable.includes(n) ? "#ffc933" : "#3a3462"}
-                strokeWidth={selectable.includes(n) ? 16 : 12}
-                strokeLinecap="round"
-                strokeDasharray={branch && !selectable.includes(n) ? "1 0" : undefined}
+        {/* scenery */}
+        <g pointerEvents="none">
+          {decor.map((d, i) =>
+            d.kind === "spark" ? (
+              <g key={i} transform={`translate(${d.x} ${d.y}) scale(${d.s})`}>
+                <path
+                  d="M0 -14 L3 -3 L14 0 L3 3 L0 14 L-3 3 L-14 0 L-3 -3 Z"
+                  fill={tone}
+                  className="anim-twinkle"
+                  style={{ ["--tw-o" as string]: d.o + 0.1, animationDelay: `${-(i * 0.73) % 3.6}s`, animationDuration: `${3 + (i % 5) * 0.5}s` }}
+                />
+              </g>
+            ) : d.kind === "ring" ? (
+              <circle key={i} cx={d.x} cy={d.y} r={10 * d.s} fill="none" stroke="#fff" strokeWidth={3} opacity={d.o} />
+            ) : (
+              <circle
+                key={i}
+                cx={d.x}
+                cy={d.y}
+                r={5 * d.s}
+                fill="#fff"
+                className={i % 3 === 0 ? "anim-twinkle" : undefined}
+                style={i % 3 === 0 ? { ["--tw-o" as string]: d.o, animationDelay: `${-(i * 0.41) % 3.6}s` } : { opacity: d.o }}
               />
+            ),
+          )}
+        </g>
+        {/* track bed: a soft island under every path */}
+        <g pointerEvents="none" strokeLinecap="round">
+          {edges.map(([a0, b0]) => {
+            const a = xy(a0);
+            const b = xy(b0);
+            return <line key={`bed-${a0}-${b0}`} x1={a.x} y1={a.y} x2={b.x} y2={b.y} stroke={tone} strokeOpacity={0.13} strokeWidth={118} />;
+          })}
+          {edges.map(([a0, b0]) => {
+            const a = xy(a0);
+            const b = xy(b0);
+            return <line key={`bed2-${a0}-${b0}`} x1={a.x} y1={a.y} x2={b.x} y2={b.y} stroke="#0d0b1a" strokeOpacity={0.55} strokeWidth={84} />;
+          })}
+        </g>
+        {/* roads: dark edge, surface, dashed centre line */}
+        <g strokeLinecap="round">
+          {edges.map(([a0, b0]) => {
+            const a = xy(a0);
+            const b = xy(b0);
+            return <line key={`edge-${a0}-${b0}`} x1={a.x} y1={a.y} x2={b.x} y2={b.y} stroke="#0d0b1a" strokeWidth={30} />;
+          })}
+          {edges.map(([a0, b0]) => {
+            const a = xy(a0);
+            const b = xy(b0);
+            const sel = selectable.includes(b0);
+            return (
+              <line key={`road-${a0}-${b0}`} x1={a.x} y1={a.y} x2={b.x} y2={b.y} stroke={sel ? "#ffc933" : "#433c72"} strokeWidth={sel ? 24 : 20} />
             );
-          }),
+          })}
+          {edges.map(([a0, b0]) => {
+            const a = xy(a0);
+            const b = xy(b0);
+            return (
+              <line key={`mid-${a0}-${b0}`} x1={a.x} y1={a.y} x2={b.x} y2={b.y} stroke="#ffffff" strokeOpacity={0.16} strokeWidth={3} strokeDasharray="10 14" className="anim-flow" />
+            );
+          })}
+        </g>
+        {/* where the active player stands */}
+        {activeTile && game.phase !== "podium" && (
+          <motion.circle
+            cx={xy(activeTile).x}
+            cy={xy(activeTile).y}
+            r={TILE_R + 16}
+            fill={colorHex(players[activeId]?.color ?? "")}
+            opacity={0.25}
+            animate={reduced ? undefined : { r: [TILE_R + 10, TILE_R + 24, TILE_R + 10], opacity: [0.35, 0.12, 0.35] }}
+            transition={{ repeat: Infinity, duration: 1.6 }}
+            pointerEvents="none"
+          />
         )}
         {/* direction arrows only at intersections: right next to the junction tile, one per way out */}
         {board.tiles.flatMap((t) =>
@@ -183,7 +302,7 @@ export function BoardView({ board, game, players, follow, selectable = [], onSel
           }),
         )}
         {/* tiles */}
-        {board.tiles.map((t) => {
+        {board.tiles.map((t, idx) => {
           const type = game.tileTypes[t.id] ?? t.type;
           const def = clientContent.tiles.find((d) => d.id === type);
           const { x, y } = xy(t.id);
@@ -208,10 +327,30 @@ export function BoardView({ board, game, players, follow, selectable = [], onSel
                   transition={{ repeat: Infinity, duration: 1 }}
                 />
               )}
-              {junction && <circle r={TILE_R + 8} fill="none" stroke="#f4f1ff55" strokeWidth={4} strokeDasharray="6 8" />}
-              <circle r={TILE_R} fill={def?.color ?? "#888"} filter="url(#tileShadow)" />
-              <circle r={TILE_R - 5} fill="none" stroke="#ffffff40" strokeWidth={3} />
-              <image href={`/icons/${def?.icon ?? "question"}.svg`} x={-20} y={-20} width={40} height={40} opacity={0.82} />
+              {junction && <circle r={TILE_R + 9} fill="none" stroke="#f4f1ff66" strokeWidth={4} strokeDasharray="6 8" className="anim-spin-slow" />}
+              {/* chunky 3D disc: dark base, coloured top, shine, rim. Pops in once, squashes when stepped on. */}
+              <motion.g
+                initial={reduced ? false : { scale: 0, opacity: 0 }}
+                animate={
+                  steppedOn === t.id && !reduced
+                    ? { scale: [1, 0.86, 1.06, 1], opacity: 1 }
+                    : { scale: 1, opacity: 1 }
+                }
+                transition={
+                  steppedOn === t.id
+                    ? { duration: 0.32 }
+                    : { delay: Math.min(0.6, idx * 0.012), type: "spring", stiffness: 420, damping: 18 }
+                }
+              >
+              <ellipse cx={0} cy={13} rx={TILE_R + 2} ry={TILE_R - 4} fill="#000" opacity={0.35} />
+              <circle cy={7} r={TILE_R} fill={def?.color ?? "#888"} />
+              <circle cy={7} r={TILE_R} fill="#000" opacity={0.35} />
+              <circle r={TILE_R} fill={def?.color ?? "#888"} />
+              <circle r={TILE_R} fill="url(#tileShine)" />
+              <circle r={TILE_R - 1.5} fill="none" stroke="#14112a" strokeOpacity={0.55} strokeWidth={3} />
+              <circle r={TILE_R - 7} fill="none" stroke="#ffffff" strokeOpacity={0.3} strokeWidth={2.5} />
+              <image href={`/icons/${def?.icon ?? "question"}.svg`} x={-20} y={-21} width={40} height={40} opacity={0.85} />
+              </motion.g>
               {def?.effect === "bank" && (
                 <g transform="translate(0 50)">
                   <rect x={-30} y={-14} width={60} height={28} rx={14} fill="#14112a" stroke="#f9a8d4" strokeWidth={3} />
@@ -274,9 +413,20 @@ export function BoardView({ board, game, players, follow, selectable = [], onSel
                 animate={hopping === pid && !reduced ? { y: [0, -28, 0] } : { y: 0 }}
                 transition={hopping === pid ? { repeat: Infinity, duration: GAME_CONFIG.timers.hopMs / 1000 } : undefined}
               >
-                <ellipse cx={0} cy={36} rx={22} ry={7} fill="#000" opacity={0.3} />
-                {active && <circle r={34} fill="none" stroke="#fff" strokeWidth={5} opacity={0.9} />}
+                <ellipse cx={0} cy={38} rx={22} ry={7} fill="#000" opacity={0.35} />
+                {/* pin stem */}
+                <path d="M -9 22 L 0 38 L 9 22 Z" fill={hex} stroke="#14112a" strokeWidth={4} strokeLinejoin="round" />
+                {active && <circle r={35} fill="none" stroke="#fff" strokeWidth={5} opacity={0.95} />}
                 <circle r={28} fill={hex} stroke="#14112a" strokeWidth={5} />
+                <circle r={26} fill="url(#tokenShine)" />
+                {active && !reduced && (
+                  <motion.path
+                    d="M -10 -50 L 10 -50 L 0 -38 Z"
+                    fill="#fff"
+                    animate={{ y: [0, -8, 0] }}
+                    transition={{ repeat: Infinity, duration: 0.9 }}
+                  />
+                )}
                 {p.photo ? (
                   <>
                     <clipPath id={`tok-${pid}`}>
@@ -309,5 +459,6 @@ export function BoardView({ board, game, players, follow, selectable = [], onSel
         })}
       </motion.g>
     </svg>
+    </div>
   );
 }

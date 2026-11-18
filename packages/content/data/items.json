@@ -140,14 +140,15 @@
     {
       "id": "coin-magnet",
       "name": "Coin Magnet",
-      "description": "Take 3 coins from every other player.",
+      "description": "Take 3 coins from every other player. Costs 2 + 2 per other player.",
       "icon": "magnet",
-      "price": 12,
+      "price": 2,
       "useTiming": "turnStart",
       "effect": "coinMagnet",
       "params": {
         "amount": 3
-      }
+      },
+      "pricePerOpponent": 2
     },
     {
       "id": "star-thief",

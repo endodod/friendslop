@@ -1,7 +1,7 @@
 "use client";
 import { AnimatePresence, motion } from "framer-motion";
 import { Volume2, VolumeX } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { colorHex, type PlayerId, type PublicRoomState } from "@party-game/shared";
 import { useStore } from "@/lib/store";
 import { photoUrl } from "@/lib/account";
@@ -116,11 +116,34 @@ export function useMe() {
   return playerId ? players[playerId] : undefined;
 }
 
+/** A number that gives a small pop whenever it changes (not on first render). */
+function PopNumber({ value }: { value: number }) {
+  const first = useRef(true);
+  const prev = useRef(value);
+  const changed = !first.current && prev.current !== value;
+  const up = value > prev.current;
+  useEffect(() => {
+    first.current = false;
+    prev.current = value;
+  }, [value]);
+  return (
+    <motion.span
+      key={value}
+      className="inline-block tabular-nums"
+      initial={changed ? { scale: 1.45, textShadow: `0 0 12px ${up ? "#2fd27aff" : "#ff4d5eff"}` } : false}
+      animate={{ scale: 1, textShadow: `0 0 0px ${up ? "#2fd27a00" : "#ff4d5e00"}` }}
+      transition={{ duration: 0.45, ease: "easeOut" }}
+    >
+      {value}
+    </motion.span>
+  );
+}
+
 export function CoinCount({ value, size = 20, className = "" }: { value: number; size?: number; className?: string }) {
   return (
     <span className={`inline-flex items-center gap-1 font-display ${className}`}>
       <Icon id="coin" size={size} className="text-accent" />
-      <span>{value}</span>
+      <PopNumber value={value} />
     </span>
   );
 }
@@ -129,7 +152,7 @@ export function StarCount({ value, size = 20, className = "" }: { value: number;
   return (
     <span className={`inline-flex items-center gap-1 font-display ${className}`}>
       <Icon id="star" size={size} className="text-[#ffe066]" />
-      <span>{value}</span>
+      <PopNumber value={value} />
     </span>
   );
 }

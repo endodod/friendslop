@@ -55,6 +55,8 @@ export const GAME_CONFIG = {
     roundEndMs: 2500,
     gameEndMs: 4500,
     bonusStarRevealMs: 4000,
+    /** After the last bonus star: time to take in the new standings before the results page (host can skip). */
+    bonusStarsHoldMs: 12000,
     /** How long a disconnected player's turn waits before auto-playing. */
     disconnectedAutoplayMs: 4000,
   },

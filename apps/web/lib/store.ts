@@ -1,6 +1,6 @@
 "use client";
 import { create } from "zustand";
-import type { GameEvent, PrivateState, PublicRoomState } from "@party-game/shared";
+import type { ChatMessage, GameEvent, PrivateState, PublicRoomState } from "@party-game/shared";
 
 export interface ToastMsg {
   id: number;
@@ -18,6 +18,9 @@ interface Store {
   playerId: string | null;
   toasts: ToastMsg[];
   muted: boolean;
+  chat: ChatMessage[];
+  setChat(ms: ChatMessage[]): void;
+  addChat(m: ChatMessage): void;
   setConnected(c: boolean): void;
   setPublic(p: PublicRoomState): void;
   setPrivate(p: PrivateState): void;
@@ -39,6 +42,9 @@ export const useStore = create<Store>((set) => ({
   playerId: null,
   toasts: [],
   muted: false,
+  chat: [],
+  setChat: (chat) => set({ chat }),
+  addChat: (m) => set((s) => (s.chat.some((x) => x.id === m.id) ? s : { chat: [...s.chat, m].slice(-100) })),
   setConnected: (connected) => set({ connected }),
   setPublic: (pub) =>
     set((s) => {
@@ -60,7 +66,7 @@ export const useStore = create<Store>((set) => ({
     }),
   dismiss: (id) => set((s) => ({ toasts: s.toasts.filter((t) => t.id !== id) })),
   setMuted: (muted) => set({ muted }),
-  reset: () => set({ pub: null, priv: null, role: null, playerId: null }),
+  reset: () => set({ pub: null, priv: null, role: null, playerId: null, chat: [] }),
 }));
 
 // --- game events (for animations / sfx) ---------------------------------------------------

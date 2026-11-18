@@ -4,7 +4,7 @@ import { useRef } from "react";
 import type { MinigameClientProps } from "../kit/types";
 import { useFrameNow, useKey, KeyHint } from "../kit/hooks";
 import { Arena, ChunkyButton, Hud, Pill, SecondsPill } from "../kit/visual";
-import { LIMIT, PULL_MS, READY_MS } from "./logic";
+import { LIMIT, PULL_MS, READY_MS, teamStrength } from "./logic";
 
 interface Pub {
   teams: [string[], string[]];
@@ -41,8 +41,17 @@ export function TugOfWarClient(p: MinigameClientProps<Pub, { team: 0 | 1; bonus:
       />
       <Arena tone={myTeam !== null ? TEAM_COLORS[myTeam] : "#7b5cff"} className="flex flex-col gap-4 p-4" bg="linear-gradient(180deg, #1f3a5c 0%, #183022 55%, #2a4d1e 100%)" pattern="none">
         <div className="grid grid-cols-2 gap-2">
-          {[0, 1].map((t) => (
-            <div key={t} className={`flex flex-wrap gap-1 ${t === 1 ? "justify-end" : ""}`}>
+          {([0, 1] as const).map((t) => (
+            <div key={t} className={`flex flex-wrap items-center gap-1 ${t === 1 ? "justify-end" : ""}`}>
+              {pub.teams[0].length !== pub.teams[1].length && (
+                <span
+                  className="rounded-full px-2 py-0.5 font-display text-xs"
+                  style={{ background: `${TEAM_COLORS[t]}55` }}
+                  title="Smaller teams pull harder so it stays fair"
+                >
+                  {pub.teams[t].length} {pub.teams[t].length === 1 ? "player" : "players"} · pull ×{teamStrength(pub.teams, t).toFixed(2).replace(/\.?0+$/, "")}
+                </span>
+              )}
               {pub.teams[t].map((pid) => (
                 <span key={pid} className="flex items-center gap-1 rounded-full py-0.5 pl-0.5 pr-2 text-sm" style={{ background: `${TEAM_COLORS[t]}33` }}>
                   <p.ui.Avatar player={p.players[pid]} size={22} />
@@ -63,6 +72,9 @@ export function TugOfWarClient(p: MinigameClientProps<Pub, { team: 0 | 1; bonus:
           </motion.div>
           <span className="sr-only">Rope at {Math.round(knot)}%</span>
         </div>
+        {pub.teams[0].length !== pub.teams[1].length && ready && (
+          <p className="text-center text-sm text-muted">Uneven teams: the smaller team pulls harder per tap.</p>
+        )}
         <p className="text-center font-display text-2xl">
           {ready
             ? "Get ready…"

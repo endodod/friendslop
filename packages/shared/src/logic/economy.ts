@@ -1,3 +1,4 @@
+import type { Item } from "../content/schemas";
 import type { Step } from "../engine/context";
 import { emit } from "../engine/context";
 import type { GameState, PlayerId } from "../engine/types";
@@ -44,4 +45,9 @@ export function standings(g: GameState): { playerId: PlayerId; rank: number }[] 
 export function placementCoins(table: Record<number, number[]>, participants: number, rank: number): number {
   const row = table[participants] ?? table[Math.max(...Object.keys(table).map(Number))];
   return row[Math.min(rank - 1, row.length - 1)] ?? 0;
+}
+
+/** What an item costs in a game with `playerCount` players. */
+export function itemPrice(item: Pick<Item, "price" | "pricePerOpponent">, playerCount: number): number {
+  return item.price + (item.pricePerOpponent ?? 0) * Math.max(0, playerCount - 1);
 }

@@ -3,7 +3,7 @@ import type { ContentBundle } from "../content/schemas";
 import { getFormat, validateAnswer } from "../formats";
 import { localize } from "../i18n";
 import { getBoard, resolveBoardId, getTile, nextTiles, pickStarTile, tileDef, computeTileTypes } from "../logic/board";
-import { changeCoins, changeStars, placementCoins, standings, transferCoins } from "../logic/economy";
+import { changeCoins, itemPrice, changeStars, placementCoins, standings, transferCoins } from "../logic/economy";
 import { applyEvent, drawEvent } from "../logic/events";
 import { applyTurnStartItem, availableItems, getItem, log, shopStock, tryShield } from "../logic/items";
 import {
@@ -404,7 +404,7 @@ function handleAction(d: Draft, a: GameAction, isHost: boolean): void {
       // A second tap on the Skip button (it sits in the same spot on consecutive screens) must not
       // skip the next screen right away.
       if (d.s.ctx.now - g.phaseStartedAt < SKIP_GRACE_MS) return;
-      const skippable: Phase[] = ["gameStart", "tileEffect", "event", "roundEnd", "minigameIntro", "minigameResults", "gameEnd", "turnEnd"];
+      const skippable: Phase[] = ["gameStart", "tileEffect", "event", "roundEnd", "minigameIntro", "minigameResults", "gameEnd", "bonusStars", "turnEnd"];
       if (skippable.includes(g.phase)) return onTimeout(d);
       if ((g.phase === "questionRound" || g.phase === "minigameQuestion") && g.question?.stage !== "answering")
         return onTimeout(d);
@@ -607,7 +607,7 @@ function isShopTile(d: Draft, tileId: string): boolean {
 
 function canShop(d: Draft, pid: PlayerId): boolean {
   const p = d.g.players[pid];
-  const cheapest = Math.min(...d.s.ctx.content.items.map((i) => i.price));
+  const cheapest = Math.min(...d.s.ctx.content.items.map((i) => itemPrice(i, d.g.order.length)));
   return p.items.length < GAME_CONFIG.economy.maxItems && p.coins >= cheapest;
 }
 
@@ -788,8 +788,9 @@ function shopBuy(d: Draft, pid: PlayerId, itemId: string) {
   const item = getItem(s.ctx.content, itemId);
   const p = g.players[pid];
   if (p.items.length >= GAME_CONFIG.economy.maxItems) fail("INVENTORY_FULL", "You can only carry 3 items.");
-  if (p.coins < item.price) fail("NOT_ENOUGH_COINS", "Not enough coins.");
-  changeCoins(g, s, pid, -item.price, "shop");
+  const price = itemPrice(item, g.order.length);
+  if (p.coins < price) fail("NOT_ENOUGH_COINS", "Not enough coins.");
+  changeCoins(g, s, pid, -price, "shop");
   p.items.push(itemId);
   g.shop.bought.push(itemId);
   emit(s, { type: "itemBought", playerId: pid, itemId });
@@ -1300,7 +1301,7 @@ function revealNextBonusStar(d: Draft) {
   for (const pid of award.playerIds) changeStars(g, s, pid, 1, `bonus:${award.bonusStarId}`);
   emit(s, { type: "bonusStarRevealed", bonusStarId: award.bonusStarId, playerIds: award.playerIds });
   emit(s, { type: "sfx", id: "star" });
-  goto(d, "bonusStars", T.bonusStarRevealMs);
+  goto(d, "bonusStars", bs.revealed >= bs.awards.length ? T.bonusStarsHoldMs : T.bonusStarRevealMs);
 }
 
 function finishGame(d: Draft) {
