@@ -1,0 +1,437 @@
+{
+  "id": "orbit",
+  "name": {
+    "en": "Orbit",
+    "de": "Umlaufbahn"
+  },
+  "description": {
+    "en": "An inner ring with four outer districts. Detours lead to shops, banks and lucky tiles. Made for 3–8 players.",
+    "de": "Ein innerer Ring mit vier Außenbezirken. Umwege führen zu Shops, Banken und Glücksfeldern. Für 3–8 Spieler."
+  },
+  "startTileId": "r7",
+  "aspect": 1.6,
+  "recommendedPlayers": {
+    "min": 3,
+    "max": 8
+  },
+  "tiles": [
+    {
+      "id": "r0",
+      "type": "question",
+      "x": 0.5,
+      "y": 0.2,
+      "next": [
+        "r1"
+      ]
+    },
+    {
+      "id": "r1",
+      "type": "blue",
+      "x": 0.5814,
+      "y": 0.2297,
+      "next": [
+        "r2"
+      ]
+    },
+    {
+      "id": "r2",
+      "type": "blue",
+      "x": 0.6466,
+      "y": 0.313,
+      "next": [
+        "r3",
+        "ne-in"
+      ]
+    },
+    {
+      "id": "r3",
+      "type": "red",
+      "x": 0.6828,
+      "y": 0.4332,
+      "next": [
+        "r4"
+      ]
+    },
+    {
+      "id": "r4",
+      "type": "question",
+      "x": 0.6828,
+      "y": 0.5668,
+      "next": [
+        "r5",
+        "se-in"
+      ]
+    },
+    {
+      "id": "r5",
+      "type": "event",
+      "x": 0.6466,
+      "y": 0.687,
+      "next": [
+        "r6"
+      ]
+    },
+    {
+      "id": "r6",
+      "type": "blue",
+      "x": 0.5814,
+      "y": 0.7703,
+      "next": [
+        "r7"
+      ]
+    },
+    {
+      "id": "r7",
+      "type": "start",
+      "x": 0.5,
+      "y": 0.8,
+      "next": [
+        "r8"
+      ]
+    },
+    {
+      "id": "r8",
+      "type": "duel",
+      "x": 0.4186,
+      "y": 0.7703,
+      "next": [
+        "r9"
+      ]
+    },
+    {
+      "id": "r9",
+      "type": "blue",
+      "x": 0.3534,
+      "y": 0.687,
+      "next": [
+        "r10",
+        "sw-in"
+      ]
+    },
+    {
+      "id": "r10",
+      "type": "question",
+      "x": 0.3172,
+      "y": 0.5668,
+      "next": [
+        "r11"
+      ]
+    },
+    {
+      "id": "r11",
+      "type": "red",
+      "x": 0.3172,
+      "y": 0.4332,
+      "next": [
+        "r12",
+        "nw-in"
+      ]
+    },
+    {
+      "id": "r12",
+      "type": "item",
+      "x": 0.3534,
+      "y": 0.313,
+      "next": [
+        "r13"
+      ]
+    },
+    {
+      "id": "r13",
+      "type": "mind-reader",
+      "x": 0.4186,
+      "y": 0.2297,
+      "next": [
+        "r0"
+      ]
+    },
+    {
+      "id": "ne-in",
+      "type": "blue",
+      "x": 0.728,
+      "y": 0.2484,
+      "next": [
+        "ne0"
+      ]
+    },
+    {
+      "id": "ne0",
+      "type": "shop",
+      "x": 0.8095,
+      "y": 0.1839,
+      "next": [
+        "ne1"
+      ]
+    },
+    {
+      "id": "ne1",
+      "type": "lucky",
+      "x": 0.8487,
+      "y": 0.0875,
+      "next": [
+        "ne2"
+      ]
+    },
+    {
+      "id": "ne2",
+      "type": "question",
+      "x": 0.9205,
+      "y": 0.0936,
+      "next": [
+        "ne3"
+      ]
+    },
+    {
+      "id": "ne3",
+      "type": "bank",
+      "x": 0.953,
+      "y": 0.1961,
+      "next": [
+        "ne4"
+      ]
+    },
+    {
+      "id": "ne4",
+      "type": "blue",
+      "x": 0.9138,
+      "y": 0.2925,
+      "next": [
+        "ne5"
+      ]
+    },
+    {
+      "id": "ne5",
+      "type": "item",
+      "x": 0.842,
+      "y": 0.2864,
+      "next": [
+        "ne-out"
+      ]
+    },
+    {
+      "id": "ne-out",
+      "type": "red",
+      "x": 0.7624,
+      "y": 0.3598,
+      "next": [
+        "r3"
+      ]
+    },
+    {
+      "id": "se-in",
+      "type": "lucky",
+      "x": 0.7624,
+      "y": 0.6402,
+      "next": [
+        "se0"
+      ]
+    },
+    {
+      "id": "se0",
+      "type": "shop",
+      "x": 0.842,
+      "y": 0.7136,
+      "next": [
+        "se1"
+      ]
+    },
+    {
+      "id": "se1",
+      "type": "question",
+      "x": 0.9138,
+      "y": 0.7075,
+      "next": [
+        "se2"
+      ]
+    },
+    {
+      "id": "se2",
+      "type": "lucky",
+      "x": 0.953,
+      "y": 0.8039,
+      "next": [
+        "se3"
+      ]
+    },
+    {
+      "id": "se3",
+      "type": "thief",
+      "x": 0.9205,
+      "y": 0.9064,
+      "next": [
+        "se4"
+      ]
+    },
+    {
+      "id": "se4",
+      "type": "blue",
+      "x": 0.8487,
+      "y": 0.9125,
+      "next": [
+        "se5"
+      ]
+    },
+    {
+      "id": "se5",
+      "type": "event",
+      "x": 0.8095,
+      "y": 0.8161,
+      "next": [
+        "se-out"
+      ]
+    },
+    {
+      "id": "se-out",
+      "type": "red",
+      "x": 0.728,
+      "y": 0.7516,
+      "next": [
+        "r5"
+      ]
+    },
+    {
+      "id": "sw-in",
+      "type": "blue",
+      "x": 0.272,
+      "y": 0.7516,
+      "next": [
+        "sw0"
+      ]
+    },
+    {
+      "id": "sw0",
+      "type": "shop",
+      "x": 0.1905,
+      "y": 0.8161,
+      "next": [
+        "sw1"
+      ]
+    },
+    {
+      "id": "sw1",
+      "type": "duel",
+      "x": 0.1513,
+      "y": 0.9125,
+      "next": [
+        "sw2"
+      ]
+    },
+    {
+      "id": "sw2",
+      "type": "question",
+      "x": 0.0795,
+      "y": 0.9064,
+      "next": [
+        "sw3"
+      ]
+    },
+    {
+      "id": "sw3",
+      "type": "bank",
+      "x": 0.047,
+      "y": 0.8039,
+      "next": [
+        "sw4"
+      ]
+    },
+    {
+      "id": "sw4",
+      "type": "blue",
+      "x": 0.0862,
+      "y": 0.7075,
+      "next": [
+        "sw5"
+      ]
+    },
+    {
+      "id": "sw5",
+      "type": "item",
+      "x": 0.158,
+      "y": 0.7136,
+      "next": [
+        "sw-out"
+      ]
+    },
+    {
+      "id": "sw-out",
+      "type": "thief",
+      "x": 0.2376,
+      "y": 0.6402,
+      "next": [
+        "r10"
+      ]
+    },
+    {
+      "id": "nw-in",
+      "type": "blue",
+      "x": 0.2376,
+      "y": 0.3598,
+      "next": [
+        "nw0"
+      ]
+    },
+    {
+      "id": "nw0",
+      "type": "shop",
+      "x": 0.158,
+      "y": 0.2864,
+      "next": [
+        "nw1"
+      ]
+    },
+    {
+      "id": "nw1",
+      "type": "question",
+      "x": 0.0862,
+      "y": 0.2925,
+      "next": [
+        "nw2"
+      ]
+    },
+    {
+      "id": "nw2",
+      "type": "mind-reader",
+      "x": 0.047,
+      "y": 0.1961,
+      "next": [
+        "nw3"
+      ]
+    },
+    {
+      "id": "nw3",
+      "type": "event",
+      "x": 0.0795,
+      "y": 0.0936,
+      "next": [
+        "nw4"
+      ]
+    },
+    {
+      "id": "nw4",
+      "type": "blue",
+      "x": 0.1513,
+      "y": 0.0875,
+      "next": [
+        "nw5"
+      ]
+    },
+    {
+      "id": "nw5",
+      "type": "question",
+      "x": 0.1905,
+      "y": 0.1839,
+      "next": [
+        "nw-out"
+      ]
+    },
+    {
+      "id": "nw-out",
+      "type": "red",
+      "x": 0.272,
+      "y": 0.2484,
+      "next": [
+        "r12"
+      ]
+    }
+  ]
+}
