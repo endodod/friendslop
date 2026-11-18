@@ -93,3 +93,4 @@ Defaults picked where the build prompt left room, or where the environment force
 - **Themes merged into packs:** the separate theme filter is gone (`settings.themes` removed); packs are the only switch. Group Classics got its own `classics` theme instead of borrowing "Life".
 - **Orbit map** (46 tiles): inner ring of 14 tiles; four junctions lead out to corner districts (6-tile loops with a shop each) and back onto the next ring tile.
 - **Mini-game visuals:** shared kit (`packages/minigames/src/kit/visual.tsx`: arena, HUD pills, time bar, round dots, pop text, chunky buttons, score strip); every mini-game got its own themed look.
+- **Items are public:** every player's items are in the public state (`items` next to `itemCount`). The scoreboard shows item icons; tap a player to see the list with descriptions.

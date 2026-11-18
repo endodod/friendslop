@@ -1,9 +1,11 @@
 "use client";
-import { motion } from "framer-motion";
-import { UserX, WifiOff } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
+import { ChevronDown, UserX, WifiOff } from "lucide-react";
+import { useState } from "react";
+import { clientContent } from "@party-game/content";
 import { useStore } from "@/lib/store";
 import { act } from "@/lib/useRoom";
-import { colorHex, standings, type PublicGameState } from "@party-game/shared";
+import { colorHex, localize, standings, type PublicGameState } from "@party-game/shared";
 import { Avatar, CoinCount, Icon, StarCount, useIsHost, usePlayers } from "../ui";
 import { CoinDelta } from "../fx";
 
@@ -14,6 +16,7 @@ export function Scoreboard({ game, compact, highlight }: { game: PublicGameState
   const me = useStore((s) => s.playerId);
   const ranking = standings(game as never);
   const activeId = game.order[game.activeIndex];
+  const [openId, setOpenId] = useState<string | null>(null);
   return (
     <ol className={`grid gap-2 ${compact ? "grid-cols-2" : "grid-cols-2 lg:grid-cols-1"}`} aria-label="Scoreboard">
       {ranking.map(({ playerId, rank }) => {
@@ -25,7 +28,7 @@ export function Scoreboard({ game, compact, highlight }: { game: PublicGameState
           <motion.li
             layout
             key={playerId}
-            className={`relative flex items-center gap-2 rounded-2xl p-2 ${active ? "bg-panel-2" : "bg-bg-2"}`}
+            className={`relative flex flex-wrap items-center gap-2 rounded-2xl p-2 ${active ? "bg-panel-2" : "bg-bg-2"} ${openId === playerId ? "col-span-full" : ""}`}
             style={{ boxShadow: active || highlight === playerId ? `inset 0 0 0 3px ${colorHex(p.color)}` : undefined }}
           >
             <span className="w-5 text-center font-display text-muted">{rank}</span>
@@ -33,8 +36,17 @@ export function Scoreboard({ game, compact, highlight }: { game: PublicGameState
               <Avatar player={p} size={compact ? 32 : 40} dim={!p.connected} />
               {!p.connected && <WifiOff size={14} className="absolute -bottom-1 -right-1 text-bad" aria-label="disconnected" />}
             </span>
-            <div className="flex min-w-0 flex-1 flex-col leading-tight">
-              <span className="truncate font-display">{p.name}</span>
+            <button
+              type="button"
+              className="flex min-w-0 flex-1 flex-col text-left leading-tight"
+              aria-expanded={openId === playerId}
+              aria-label={`${p.name}: show items`}
+              onClick={() => setOpenId(openId === playerId ? null : playerId)}
+            >
+              <span className="flex items-center gap-1 truncate font-display">
+                {p.name}
+                <ChevronDown size={14} className={`shrink-0 text-muted transition-transform ${openId === playerId ? "rotate-180" : ""}`} />
+              </span>
               <span className="flex items-center gap-3 text-sm">
                 <StarCount value={gp.stars} size={16} />
                 <CoinCount value={gp.coins} size={16} />
@@ -43,14 +55,17 @@ export function Scoreboard({ game, compact, highlight }: { game: PublicGameState
                     <Icon id="ice" size={14} /> frozen
                   </span>
                 )}
-                {gp.itemCount > 0 && (
-                  <span className="inline-flex items-center gap-0.5 text-muted" title={`${gp.itemCount} items`}>
-                    <Icon id="backpack" size={14} />
-                    {gp.itemCount}
+                {(gp.items ?? []).length > 0 && (
+                  <span className="inline-flex items-center gap-0.5 text-accent" title={`${gp.items.length} items`}>
+                    {gp.items.slice(0, 3).map((id, i) => {
+                      const it = clientContent.items.find((x) => x.id === id);
+                      return <Icon key={`${id}-${i}`} id={it?.icon ?? "backpack"} size={15} title={it ? localize(it.name) : id} />;
+                    })}
+                    {gp.items.length > 3 && <span className="text-xs text-muted">+{gp.items.length - 3}</span>}
                   </span>
                 )}
               </span>
-            </div>
+            </button>
             {isHost && !p.connected && playerId !== me && game.phase !== "podium" && (
               <button
                 className="btn-ghost min-h-11 min-w-11 shrink-0 px-1 text-bad"
@@ -64,9 +79,43 @@ export function Scoreboard({ game, compact, highlight }: { game: PublicGameState
               </button>
             )}
             <CoinDelta playerId={playerId} />
+            <AnimatePresence initial={false}>
+              {openId === playerId && (
+                <motion.div
+                  key="items"
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: "auto", opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  className="w-full overflow-hidden"
+                >
+                  <PlayerItems items={gp.items ?? []} name={p.name} />
+                </motion.div>
+              )}
+            </AnimatePresence>
           </motion.li>
         );
       })}
     </ol>
+  );
+}
+
+/** The items a player holds, with what each one does. */
+function PlayerItems({ items, name }: { items: string[]; name: string }) {
+  if (items.length === 0) return <p className="px-1 pt-1 text-sm text-muted">{name} has no items.</p>;
+  return (
+    <ul className="flex flex-col gap-1.5 pt-1" aria-label={`${name}'s items`}>
+      {items.map((id, i) => {
+        const it = clientContent.items.find((x) => x.id === id);
+        return (
+          <li key={`${id}-${i}`} className="flex items-start gap-2 rounded-xl bg-bg/60 p-2">
+            <Icon id={it?.icon ?? "backpack"} size={22} className="mt-0.5 shrink-0 text-accent" />
+            <span className="text-sm leading-snug">
+              <span className="font-display text-base">{it ? localize(it.name) : id}</span>
+              {it && <span className="block text-muted">{localize(it.description)}</span>}
+            </span>
+          </li>
+        );
+      })}
+    </ul>
   );
 }

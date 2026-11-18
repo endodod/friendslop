@@ -12,8 +12,8 @@ import type {
 } from "./types";
 
 /**
- * What everyone may see. Secrets (answers before reveal, data-question truth, items,
- * hidden mini-game state) are stripped here. This is the only path state takes to clients.
+ * What everyone may see. Secrets (answers before reveal, data-question truth,
+ * hidden mini-game state) are stripped here. Items are public: everyone can see what others hold. This is the only path state takes to clients.
  */
 export type PublicQuestionRound = Omit<QuestionRound, "answers" | "answeredAt" | "boosts" | "result" | "question"> & {
   question: Omit<ResolvedQuestion, "truth">;
@@ -31,7 +31,7 @@ export type PublicMinigame = Omit<MinigameRuntime, "state" | "seed"> & {
   inputPlayers: PlayerId[];
 };
 
-export type PublicGamePlayer = Omit<GameState["players"][string], "items"> & { itemCount: number };
+export type PublicGamePlayer = GameState["players"][string] & { itemCount: number };
 
 export type PublicGameState = Omit<GameState, "question" | "minigame" | "players" | "history"> & {
   question: PublicQuestionRound | null;
@@ -99,7 +99,7 @@ export function toPublicState(room: RoomState, registry: MinigameRegistry, now: 
       question: question ? publicQuestion(question) : null,
       minigame: mg,
       players: Object.fromEntries(
-        Object.entries(players).map(([id, { items, ...p }]) => [id, { ...p, itemCount: items.length }]),
+        Object.entries(players).map(([id, p]) => [id, { ...p, items: [...p.items], itemCount: p.items.length }]),
       ),
       history: { targetCounts: history.targetCounts, minigamesPlayed: history.minigamesPlayed },
     },

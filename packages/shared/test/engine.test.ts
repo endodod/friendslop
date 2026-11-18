@@ -260,6 +260,15 @@ describe("question tiles", () => {
 });
 
 describe("items", () => {
+  it("are visible to everyone in the public state", () => {
+    const h = new Harness(2);
+    toTurnStart(h);
+    const pid = h.active();
+    h.room.game!.players[pid].items.push("shield", "steal");
+    const pub = toPublicState(h.room, {}, h.now).game!.players[pid];
+    expect(pub.items).toEqual(["shield", "steal"]);
+    expect(pub.itemCount).toBe(2);
+  });
   it("steal takes 5 coins; a shield blocks it and is consumed", () => {
     const h = new Harness(2);
     toTurnStart(h);
