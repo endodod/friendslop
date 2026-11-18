@@ -524,6 +524,445 @@
         "tile",
         "questionOnlyMinigame"
       ]
+    },
+    {
+      "id": "work.out-of-office",
+      "themes": [
+        "work"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s out-of-office message?",
+      "answers": [
+        "Professional and polite",
+        "\"Do not contact me\"",
+        "Forgot to set one",
+        "Still answers emails on holiday"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "work.zoom",
+      "themes": [
+        "work"
+      ],
+      "format": "tiles",
+      "prompt": "{target} in video calls is…",
+      "answers": [
+        "Camera off, always",
+        "In pajama pants",
+        "Talking while muted",
+        "Perfectly lit"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "work.coffee-machine",
+      "themes": [
+        "work"
+      ],
+      "format": "tiles",
+      "prompt": "At the coffee machine, {target} is…",
+      "answers": [
+        "Gossiping",
+        "Avoiding everyone",
+        "Complaining about the coffee",
+        "Making coffee for everyone"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "work.first-job",
+      "themes": [
+        "work"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s first job?",
+      "answers": [
+        "Fast food",
+        "Retail",
+        "Babysitting",
+        "Delivering newspapers"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "work.sick-day",
+      "themes": [
+        "work"
+      ],
+      "format": "tiles",
+      "prompt": "{target} calls in sick. Are they really sick?",
+      "answers": [
+        "Yes, dying",
+        "Hungover",
+        "Mental health day",
+        "They never call in sick"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "work.raise",
+      "themes": [
+        "work"
+      ],
+      "format": "tiles",
+      "prompt": "{target} asks for a raise. How?",
+      "answers": [
+        "Spreadsheet of achievements",
+        "Casually, hoping for the best",
+        "Threatens to quit",
+        "They'd never ask"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "work.team-event",
+      "themes": [
+        "work"
+      ],
+      "format": "tiles",
+      "prompt": "{target} at a team event?",
+      "answers": [
+        "Leaves early",
+        "Stays the longest",
+        "Organized it",
+        "Doesn't show up"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "work.email-reply",
+      "themes": [
+        "work"
+      ],
+      "format": "tiles",
+      "prompt": "How fast does {target} reply to emails?",
+      "answers": [
+        "Within minutes",
+        "Same day",
+        "After three reminders",
+        "Never"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "work.lunch-spot",
+      "themes": [
+        "work"
+      ],
+      "format": "tiles",
+      "prompt": "Where does {target} eat lunch?",
+      "answers": [
+        "At their desk",
+        "With coworkers",
+        "Alone, in peace",
+        "Skips it"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "work.exam",
+      "themes": [
+        "work"
+      ],
+      "format": "tiles",
+      "prompt": "Night before an exam or deadline, {target}…",
+      "answers": [
+        "Was done a week ago",
+        "Pulls an all-nighter",
+        "Gives up and sleeps",
+        "Makes a beautiful study plan, no studying"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "work.excuse-late",
+      "themes": [
+        "work"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s excuse for being late to work?",
+      "answers": [
+        "Traffic",
+        "The train",
+        "Overslept, honestly",
+        "They're never late"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "work.coworkers",
+      "themes": [
+        "work"
+      ],
+      "format": "number",
+      "prompt": "How many coworkers' or classmates' names does {target} actually know?",
+      "number": {
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "tolerance": {
+          "type": "relative",
+          "value": 0.3
+        },
+        "unit": "names"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "work.emails-day",
+      "themes": [
+        "work"
+      ],
+      "format": "number",
+      "prompt": "How many emails does {target} get on a normal day?",
+      "number": {
+        "min": 0,
+        "max": 300,
+        "step": 5,
+        "tolerance": {
+          "type": "relative",
+          "value": 0.3
+        },
+        "unit": "emails"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "work.office-gossip",
+      "themes": [
+        "work"
+      ],
+      "format": "scale",
+      "prompt": "How much does {target} love workplace gossip, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "stays out of it",
+        "max": "knows everything first"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "work.ambition",
+      "themes": [
+        "work"
+      ],
+      "format": "scale",
+      "prompt": "How ambitious is {target}, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "just here for the paycheck",
+        "max": "future CEO"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "work.meeting-talk",
+      "themes": [
+        "work"
+      ],
+      "format": "scale",
+      "prompt": "How much does {target} talk in meetings, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "silent",
+        "max": "can't stop"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "work.hours-week",
+      "themes": [
+        "work"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} works or studies 40 hours a week. Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 80,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "hours"
+      },
+      "reference": 40,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "work.job-years",
+      "themes": [
+        "work"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} will stay at their next job for 3 years. Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 30,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "years"
+      },
+      "reference": 3,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "work.cofounder",
+      "themes": [
+        "work"
+      ],
+      "format": "player",
+      "prompt": "Who here would {target} pick as a co-founder?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "work.cover",
+      "themes": [
+        "work"
+      ],
+      "format": "player",
+      "prompt": "Who here would cover for {target} if they skipped work?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "work.rank-jobs",
+      "themes": [
+        "work"
+      ],
+      "format": "ranking",
+      "prompt": "Rank these jobs the way {target} would, dream job first:",
+      "answers": [
+        "Astronaut",
+        "Chef",
+        "Rock star",
+        "Professional athlete"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "work.rank-work-from",
+      "themes": [
+        "work"
+      ],
+      "format": "ranking",
+      "prompt": "Rank where {target} would rather work, best first:",
+      "answers": [
+        "Home",
+        "Office",
+        "Café",
+        "Beach"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
     }
   ]
 }

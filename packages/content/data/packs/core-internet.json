@@ -539,6 +539,464 @@
         "tile",
         "questionOnlyMinigame"
       ]
+    },
+    {
+      "id": "net.wallpaper",
+      "themes": [
+        "internet"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s phone wallpaper?",
+      "answers": [
+        "A photo of their partner or pet",
+        "Default wallpaper",
+        "Something aesthetic",
+        "A meme"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "net.call",
+      "themes": [
+        "internet"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s phone rings from an unknown number. They…",
+      "answers": [
+        "Answer",
+        "Let it ring, then google it",
+        "Decline instantly",
+        "Phone is always on silent"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "net.typing",
+      "themes": [
+        "internet"
+      ],
+      "format": "tiles",
+      "prompt": "How does {target} type messages?",
+      "answers": [
+        "Perfect punctuation",
+        "all lowercase no punctuation",
+        "ALL CAPS",
+        "Voice-to-text chaos"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "net.battery",
+      "themes": [
+        "internet"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s phone battery is usually…",
+      "answers": [
+        "Always above 80%",
+        "Hovering around 20%",
+        "Dead by noon",
+        "They carry a power bank"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "net.social",
+      "themes": [
+        "internet"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s most-used social app?",
+      "answers": [
+        "Instagram",
+        "TikTok",
+        "YouTube",
+        "Reddit"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "net.post",
+      "themes": [
+        "internet"
+      ],
+      "format": "tiles",
+      "prompt": "What does {target} post online?",
+      "answers": [
+        "Food photos",
+        "Memes",
+        "Nothing, just lurks",
+        "Thoughtful long posts"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "net.ai",
+      "themes": [
+        "internet"
+      ],
+      "format": "tiles",
+      "prompt": "What does {target} use AI chatbots for?",
+      "answers": [
+        "Work or school",
+        "Settling arguments",
+        "Recipes",
+        "Writing messages to people"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "net.storage",
+      "themes": [
+        "internet"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s phone storage is…",
+      "answers": [
+        "Always full",
+        "Neatly organized",
+        "Mostly screenshots",
+        "Mostly unwatched videos"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "net.text-back",
+      "themes": [
+        "internet"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s texting style?",
+      "answers": [
+        "Instant replies",
+        "Replies in batches once a day",
+        "Reads, forgets",
+        "Sends 10 short messages in a row"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "net.rabbit-hole",
+      "themes": [
+        "internet"
+      ],
+      "format": "tiles",
+      "prompt": "{target} falls into a 3 AM internet rabbit hole about…",
+      "answers": [
+        "Unsolved mysteries",
+        "Celebrity drama",
+        "How things are made",
+        "Animal videos"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "net.influencer",
+      "themes": [
+        "internet"
+      ],
+      "format": "tiles",
+      "prompt": "{target} becomes an influencer. Their niche?",
+      "answers": [
+        "Food",
+        "Fitness",
+        "Gaming",
+        "Chaos vlogs"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "net.followers",
+      "themes": [
+        "internet"
+      ],
+      "format": "number",
+      "prompt": "How many followers does {target} have on their main social account?",
+      "number": {
+        "min": 0,
+        "max": 5000,
+        "step": 10,
+        "tolerance": {
+          "type": "relative",
+          "value": 0.3
+        },
+        "unit": "followers"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "net.screenshots",
+      "themes": [
+        "internet"
+      ],
+      "format": "number",
+      "prompt": "How many screenshots does {target} have on their phone?",
+      "number": {
+        "min": 0,
+        "max": 5000,
+        "step": 10,
+        "tolerance": {
+          "type": "relative",
+          "value": 0.4
+        },
+        "unit": "screenshots"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "net.lurker",
+      "themes": [
+        "internet"
+      ],
+      "format": "scale",
+      "prompt": "How much of a lurker is {target} online, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "posts everything",
+        "max": "ghost account"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "net.typo",
+      "themes": [
+        "internet"
+      ],
+      "format": "scale",
+      "prompt": "How bad are {target}'s typos, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "flawless",
+        "max": "needs a translator"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "net.notifications",
+      "themes": [
+        "internet"
+      ],
+      "format": "scale",
+      "prompt": "How many unread notifications can {target} tolerate, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "zero, always cleared",
+        "max": "thousands, who cares"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "net.posts-week",
+      "themes": [
+        "internet"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} posts 3 stories a week. Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 50,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "stories"
+      },
+      "reference": 3,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "net.phone-age",
+      "themes": [
+        "internet"
+      ],
+      "format": "higherLower",
+      "prompt": "{target}'s phone is 2 years old. Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "years"
+      },
+      "reference": 2,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "net.stalk",
+      "themes": [
+        "internet"
+      ],
+      "format": "player",
+      "prompt": "Whose social media profile does {target} check the most?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "net.tech-support",
+      "themes": [
+        "internet"
+      ],
+      "format": "player",
+      "prompt": "Who here does {target} ask for tech support?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "net.rank-messaging",
+      "themes": [
+        "internet"
+      ],
+      "format": "ranking",
+      "prompt": "Rank the ways to send a message the way {target} would, favorite first:",
+      "answers": [
+        "Text",
+        "Voice message",
+        "Meme",
+        "Phone call"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "net.rank-platforms",
+      "themes": [
+        "internet"
+      ],
+      "format": "ranking",
+      "prompt": "Rank these platforms by how much {target} uses them, most first:",
+      "answers": [
+        "Instagram",
+        "TikTok",
+        "YouTube",
+        "WhatsApp"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "net.screen-state",
+      "themes": [
+        "internet"
+      ],
+      "format": "tiles",
+      "prompt": "State of {target}'s phone screen?",
+      "answers": [
+        "Flawless with a case",
+        "Cracked but working",
+        "Shattered spiderweb",
+        "Brand new phone every year"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
     }
   ]
 }

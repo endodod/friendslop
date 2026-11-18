@@ -1,0 +1,571 @@
+{
+  "id": "core-style",
+  "name": "Style & Looks",
+  "language": "en",
+  "version": 1,
+  "description": "Outfits, hair disasters and fashion crimes.",
+  "questions": [
+    {
+      "id": "style.signature",
+      "themes": [
+        "style"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s signature look?",
+      "answers": [
+        "All black",
+        "Hoodie and sweatpants",
+        "Bright colors",
+        "Smart casual"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "style.shopping",
+      "themes": [
+        "style"
+      ],
+      "format": "tiles",
+      "prompt": "{target} goes clothes shopping. They…",
+      "answers": [
+        "Try on everything",
+        "Buy the same shirt in 3 colors",
+        "Leave with nothing",
+        "Shop online only"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "style.shoes",
+      "themes": [
+        "style"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s go-to shoes?",
+      "answers": [
+        "White sneakers",
+        "Boots",
+        "Sandals, all year",
+        "Whatever's by the door"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "style.morning-outfit",
+      "themes": [
+        "style"
+      ],
+      "format": "tiles",
+      "prompt": "How long does {target} take to choose an outfit?",
+      "answers": [
+        "30 seconds",
+        "10 minutes",
+        "Planned the night before",
+        "Changes three times"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "style.hair",
+      "themes": [
+        "style"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s hair routine?",
+      "answers": [
+        "Wash and go",
+        "10 products",
+        "A hat fixes everything",
+        "Never the same twice"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "style.tattoo",
+      "themes": [
+        "style"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s next tattoo?",
+      "answers": [
+        "Something meaningful",
+        "A meme",
+        "Matching with a friend",
+        "Never, needles"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "style.wardrobe",
+      "themes": [
+        "style"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s wardrobe is…",
+      "answers": [
+        "Color-coordinated",
+        "Overflowing",
+        "Mostly free merch",
+        "Just five outfits on repeat"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "style.accessory",
+      "themes": [
+        "style"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s must-have accessory?",
+      "answers": [
+        "Sunglasses",
+        "A watch",
+        "Jewelry",
+        "Headphones"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "style.trend",
+      "themes": [
+        "style"
+      ],
+      "format": "tiles",
+      "prompt": "A new trend shows up. {target}…",
+      "answers": [
+        "Tried it last month",
+        "Waits to see if it sticks",
+        "Mocks it, then wears it",
+        "Never notices"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "style.fancy",
+      "themes": [
+        "style"
+      ],
+      "format": "tiles",
+      "prompt": "{target} at a formal event?",
+      "answers": [
+        "Overdressed",
+        "Underdressed",
+        "Perfectly dressed",
+        "Left the jacket in the car"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "style.mirror",
+      "themes": [
+        "style"
+      ],
+      "format": "tiles",
+      "prompt": "{target} walks past a mirror. They…",
+      "answers": [
+        "Check themselves out",
+        "Fix their hair",
+        "Don't even look",
+        "Make a face"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "style.fashion-crime",
+      "themes": [
+        "style"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s worst fashion crime?",
+      "answers": [
+        "Socks with sandals",
+        "Matching outfit with their partner",
+        "A very loud shirt",
+        "Crocs"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "style.sweater",
+      "themes": [
+        "style"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s Christmas sweater is…",
+      "answers": [
+        "Lights up",
+        "Handmade by grandma",
+        "Ironically ugly",
+        "They refuse to wear one"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "style.shoes-owned",
+      "themes": [
+        "style"
+      ],
+      "format": "number",
+      "prompt": "How many pairs of sneakers does {target} own?",
+      "number": {
+        "min": 0,
+        "max": 50,
+        "step": 1,
+        "tolerance": {
+          "type": "relative",
+          "value": 0.3
+        },
+        "unit": "pairs"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "style.hoodies",
+      "themes": [
+        "style"
+      ],
+      "format": "number",
+      "prompt": "How many hoodies does {target} own?",
+      "number": {
+        "min": 0,
+        "max": 40,
+        "step": 1,
+        "tolerance": {
+          "type": "relative",
+          "value": 0.3
+        },
+        "unit": "hoodies"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "style.mirror-time",
+      "themes": [
+        "style"
+      ],
+      "format": "number",
+      "prompt": "How many minutes does {target} spend in front of the mirror each morning?",
+      "number": {
+        "min": 0,
+        "max": 90,
+        "step": 1,
+        "tolerance": {
+          "type": "relative",
+          "value": 0.3
+        },
+        "unit": "min"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "style.fashion",
+      "themes": [
+        "style"
+      ],
+      "format": "scale",
+      "prompt": "How fashionable is {target}, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "dressed in the dark",
+        "max": "walks runways"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "style.comfort",
+      "themes": [
+        "style"
+      ],
+      "format": "scale",
+      "prompt": "Comfort or style? Where is {target}, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "comfort above all",
+        "max": "suffering for fashion"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "style.vain",
+      "themes": [
+        "style"
+      ],
+      "format": "scale",
+      "prompt": "How vain is {target}, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "never checks a mirror",
+        "max": "mirror selfie expert"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "style.jeans",
+      "themes": [
+        "style"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} would spend 80 € on jeans. Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 400,
+        "step": 10,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "€"
+      },
+      "reference": 80,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "style.haircut-weeks",
+      "themes": [
+        "style"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} gets a haircut every 6 weeks. Higher or lower?",
+      "number": {
+        "min": 1,
+        "max": 52,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "weeks"
+      },
+      "reference": 6,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "style.stylist",
+      "themes": [
+        "style"
+      ],
+      "format": "player",
+      "prompt": "Who here would {target} let pick their outfit for a week?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "style.borrow-clothes",
+      "themes": [
+        "style"
+      ],
+      "format": "player",
+      "prompt": "Who here would {target} swap wardrobes with?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "style.rank-colors",
+      "themes": [
+        "style"
+      ],
+      "format": "ranking",
+      "prompt": "Rank these colors the way {target} would wear them, favorite first:",
+      "answers": [
+        "Black",
+        "White",
+        "Blue",
+        "Red"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "style.rank-styles",
+      "themes": [
+        "style"
+      ],
+      "format": "ranking",
+      "prompt": "Rank these styles the way {target} would, best first:",
+      "answers": [
+        "Streetwear",
+        "Classic",
+        "Sporty",
+        "Vintage"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "style.rank-shoes",
+      "themes": [
+        "style"
+      ],
+      "format": "ranking",
+      "prompt": "Rank these shoes the way {target} would, favorite first:",
+      "answers": [
+        "Sneakers",
+        "Boots",
+        "Sandals",
+        "Dress shoes"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "style.makeover",
+      "themes": [
+        "style"
+      ],
+      "format": "tiles",
+      "prompt": "{target} gets a total makeover. The result?",
+      "answers": [
+        "Unrecognizable",
+        "Exactly the same",
+        "Way too much",
+        "A new person, inside and out"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "style.matching",
+      "themes": [
+        "style"
+      ],
+      "format": "scale",
+      "prompt": "How well do {target}'s socks match today, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "two different socks",
+        "max": "perfectly coordinated"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    }
+  ]
+}

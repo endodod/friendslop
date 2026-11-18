@@ -1,0 +1,655 @@
+{
+  "id": "core-sports",
+  "name": "Sports & Fitness",
+  "language": "en",
+  "version": 1,
+  "description": "Gym habits, couch athletes and sore losers.",
+  "questions": [
+    {
+      "id": "sport.gym",
+      "themes": [
+        "sports"
+      ],
+      "format": "tiles",
+      "prompt": "{target} at the gym is…",
+      "answers": [
+        "Leg day, every day",
+        "Mostly taking mirror selfies",
+        "Hogging a machine on their phone",
+        "Paying for it, never going"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "sport.watch",
+      "themes": [
+        "sports"
+      ],
+      "format": "tiles",
+      "prompt": "{target} watching a big match is…",
+      "answers": [
+        "Screaming at the screen",
+        "There for the snacks",
+        "Asking what the rules are",
+        "In full jersey and face paint"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "sport.olympics",
+      "themes": [
+        "sports"
+      ],
+      "format": "tiles",
+      "prompt": "{target} gets into the Olympics. Which sport?",
+      "answers": [
+        "Sprinting",
+        "Curling",
+        "Synchronized swimming",
+        "Competitive napping (if it existed)"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "sport.workout",
+      "themes": [
+        "sports"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s workout of choice?",
+      "answers": [
+        "Running",
+        "Weights",
+        "Yoga",
+        "Walking to the fridge"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "sport.loser",
+      "themes": [
+        "sports"
+      ],
+      "format": "tiles",
+      "prompt": "{target} loses a friendly match. They…",
+      "answers": [
+        "Shake hands like a champ",
+        "Demand a rematch",
+        "Blame the ref",
+        "Quit the sport forever"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "sport.team-role",
+      "themes": [
+        "sports"
+      ],
+      "format": "tiles",
+      "prompt": "{target} in a team sport is…",
+      "answers": [
+        "The captain",
+        "The star player",
+        "The one on the bench",
+        "The one cheering the loudest"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "sport.new-year",
+      "themes": [
+        "sports"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s New Year fitness resolution lasts…",
+      "answers": [
+        "A week",
+        "Until February",
+        "All year",
+        "They don't make one"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "sport.injury",
+      "themes": [
+        "sports"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s most likely sports injury?",
+      "answers": [
+        "Pulled a muscle stretching",
+        "Ball to the face",
+        "Twisted ankle",
+        "Hurt themselves on the couch"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "sport.run",
+      "themes": [
+        "sports"
+      ],
+      "format": "tiles",
+      "prompt": "{target} goes for a run. How far?",
+      "answers": [
+        "To the corner and back",
+        "5 km",
+        "A half marathon",
+        "Runs only to catch the bus"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "sport.extreme",
+      "themes": [
+        "sports"
+      ],
+      "format": "tiles",
+      "prompt": "Which extreme sport would {target} try?",
+      "answers": [
+        "Skydiving",
+        "Bungee jumping",
+        "Surfing",
+        "None, absolutely not"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "sport.gear",
+      "themes": [
+        "sports"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s sports gear is…",
+      "answers": [
+        "Top brand, head to toe",
+        "An old school shirt",
+        "Borrowed",
+        "Still in the box"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "sport.bike",
+      "themes": [
+        "sports"
+      ],
+      "format": "tiles",
+      "prompt": "{target} on a bike?",
+      "answers": [
+        "Racing like it's the Tour",
+        "E-bike, no shame",
+        "Wobbling",
+        "Doesn't own one"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "sport.motivation",
+      "themes": [
+        "sports"
+      ],
+      "format": "tiles",
+      "prompt": "What gets {target} to work out?",
+      "answers": [
+        "Music",
+        "A friend dragging them",
+        "Guilt",
+        "Nothing works"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "sport.pushups",
+      "themes": [
+        "sports"
+      ],
+      "format": "number",
+      "prompt": "How many push-ups can {target} do in a row?",
+      "number": {
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "tolerance": {
+          "type": "relative",
+          "value": 0.3
+        },
+        "unit": "push-ups"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "sport.5k",
+      "themes": [
+        "sports"
+      ],
+      "format": "number",
+      "prompt": "How many minutes would {target} need to run 5 km?",
+      "number": {
+        "min": 15,
+        "max": 90,
+        "step": 1,
+        "tolerance": {
+          "type": "relative",
+          "value": 0.2
+        },
+        "unit": "min"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "sport.gym-week",
+      "themes": [
+        "sports"
+      ],
+      "format": "number",
+      "prompt": "How many times a week does {target} work out?",
+      "number": {
+        "min": 0,
+        "max": 14,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        },
+        "unit": "times"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "sport.plank",
+      "themes": [
+        "sports"
+      ],
+      "format": "number",
+      "prompt": "How many seconds can {target} hold a plank?",
+      "number": {
+        "min": 0,
+        "max": 600,
+        "step": 5,
+        "tolerance": {
+          "type": "relative",
+          "value": 0.3
+        },
+        "unit": "sec"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "sport.competitive",
+      "themes": [
+        "sports"
+      ],
+      "format": "scale",
+      "prompt": "How competitive is {target}, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "just here for fun",
+        "max": "must win at everything"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "sport.sporty",
+      "themes": [
+        "sports"
+      ],
+      "format": "scale",
+      "prompt": "How sporty is {target}, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "couch potato",
+        "max": "athlete"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "sport.fan",
+      "themes": [
+        "sports"
+      ],
+      "format": "scale",
+      "prompt": "How big of a sports fan is {target}, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "doesn't know any teams",
+        "max": "knows every stat"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "sport.flexible",
+      "themes": [
+        "sports"
+      ],
+      "format": "scale",
+      "prompt": "How flexible is {target}, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "can't touch their knees",
+        "max": "does the splits"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "sport.steps",
+      "themes": [
+        "sports"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} walks 8,000 steps a day. Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 30000,
+        "step": 500,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "steps"
+      },
+      "reference": 8000,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "sport.marathon",
+      "themes": [
+        "sports"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} could finish a marathon in 5 hours. Higher or lower?",
+      "number": {
+        "min": 2,
+        "max": 10,
+        "step": 0.5,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "hours"
+      },
+      "reference": 5,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "sport.gym-money",
+      "themes": [
+        "sports"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} pays 30 € a month for the gym. Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 150,
+        "step": 5,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "€"
+      },
+      "reference": 30,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "sport.spotter",
+      "themes": [
+        "sports"
+      ],
+      "format": "player",
+      "prompt": "Who here would {target} trust as their gym spotter?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "sport.team",
+      "themes": [
+        "sports"
+      ],
+      "format": "player",
+      "prompt": "Who here would {target} pick first for their team?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "sport.race",
+      "themes": [
+        "sports"
+      ],
+      "format": "player",
+      "prompt": "Who here would {target} beat in a race?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "sport.rank-sports",
+      "themes": [
+        "sports"
+      ],
+      "format": "ranking",
+      "prompt": "Rank these sports the way {target} would, favorite first:",
+      "answers": [
+        "Football",
+        "Basketball",
+        "Tennis",
+        "Swimming"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "sport.rank-workouts",
+      "themes": [
+        "sports"
+      ],
+      "format": "ranking",
+      "prompt": "Rank these workouts the way {target} would, favorite first:",
+      "answers": [
+        "Running",
+        "Lifting",
+        "Yoga",
+        "Dancing"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "sport.rank-watch",
+      "themes": [
+        "sports"
+      ],
+      "format": "ranking",
+      "prompt": "Rank what {target} would rather watch, favorite first:",
+      "answers": [
+        "World Cup final",
+        "Olympics",
+        "Formula 1",
+        "Esports final"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "sport.halftime",
+      "themes": [
+        "sports"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s half-time snack?",
+      "answers": [
+        "Nachos",
+        "Beer",
+        "Nothing, too nervous",
+        "Already ate everything"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "sport.trash-talk",
+      "themes": [
+        "sports"
+      ],
+      "format": "scale",
+      "prompt": "How much does {target} trash-talk during sports, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "quiet sportsman",
+        "max": "non-stop"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    }
+  ]
+}

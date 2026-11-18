@@ -539,6 +539,467 @@
         "tile",
         "questionOnlyMinigame"
       ]
+    },
+    {
+      "id": "money.bargain",
+      "themes": [
+        "money"
+      ],
+      "format": "tiles",
+      "prompt": "{target} sees \"Buy 2, get 1 free\". They…",
+      "answers": [
+        "Buy 3",
+        "Buy 1 anyway",
+        "Calculate if it's really a deal",
+        "Buy 6"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "money.budget",
+      "themes": [
+        "money"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s budgeting method?",
+      "answers": [
+        "Detailed spreadsheet",
+        "An app",
+        "Checking the balance and hoping",
+        "None, pure vibes"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "money.invest",
+      "themes": [
+        "money"
+      ],
+      "format": "tiles",
+      "prompt": "{target} invests money in…",
+      "answers": [
+        "Index funds",
+        "Crypto",
+        "Their hobbies",
+        "Nothing, it sits in the account"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "money.borrow",
+      "themes": [
+        "money"
+      ],
+      "format": "tiles",
+      "prompt": "A friend asks {target} for 100 €. They…",
+      "answers": [
+        "Send it right away",
+        "Ask what it's for",
+        "Make up an excuse",
+        "Write it down forever"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "money.rich-habit",
+      "themes": [
+        "money"
+      ],
+      "format": "tiles",
+      "prompt": "{target} gets rich. Their weirdest habit?",
+      "answers": [
+        "Still uses coupons",
+        "Fresh socks every day",
+        "Private chef",
+        "Buys every gadget"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "money.lunch",
+      "themes": [
+        "money"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s lunch strategy?",
+      "answers": [
+        "Meal prep",
+        "Buys lunch every day",
+        "Skips lunch",
+        "Steals from coworkers"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "money.gift-budget",
+      "themes": [
+        "money"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s gift budget for a friend's birthday?",
+      "answers": [
+        "Under 10 €",
+        "20–30 €",
+        "Whatever it takes",
+        "Homemade, no budget"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "money.end-of-month",
+      "themes": [
+        "money"
+      ],
+      "format": "tiles",
+      "prompt": "End of the month, {target} is…",
+      "answers": [
+        "Fine, as always",
+        "Eating pasta with ketchup",
+        "Borrowing money",
+        "Not checking their account"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "money.side-hustle",
+      "themes": [
+        "money"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s side hustle?",
+      "answers": [
+        "Selling stuff online",
+        "Tutoring",
+        "Dog sitting",
+        "\"Investing\" in crypto"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "money.cheap",
+      "themes": [
+        "money"
+      ],
+      "format": "tiles",
+      "prompt": "Where is {target} weirdly cheap?",
+      "answers": [
+        "Toilet paper",
+        "Haircuts",
+        "Birthday gifts",
+        "Groceries"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "money.expensive",
+      "themes": [
+        "money"
+      ],
+      "format": "tiles",
+      "prompt": "What does {target} never save money on?",
+      "answers": [
+        "Food",
+        "Tech",
+        "Travel",
+        "Clothes"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "money.savings-goal",
+      "themes": [
+        "money"
+      ],
+      "format": "number",
+      "prompt": "How many € does {target} want to save before feeling safe?",
+      "number": {
+        "min": 0,
+        "max": 100000,
+        "step": 500,
+        "tolerance": {
+          "type": "relative",
+          "value": 0.4
+        },
+        "unit": "€"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "money.phone-price",
+      "themes": [
+        "money"
+      ],
+      "format": "number",
+      "prompt": "How much would {target} pay for a new phone?",
+      "number": {
+        "min": 0,
+        "max": 2000,
+        "step": 25,
+        "tolerance": {
+          "type": "relative",
+          "value": 0.25
+        },
+        "unit": "€"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "money.monthly-food",
+      "themes": [
+        "money"
+      ],
+      "format": "number",
+      "prompt": "How much does {target} spend on food delivery in a month?",
+      "number": {
+        "min": 0,
+        "max": 600,
+        "step": 10,
+        "tolerance": {
+          "type": "relative",
+          "value": 0.3
+        },
+        "unit": "€"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "money.generous",
+      "themes": [
+        "money"
+      ],
+      "format": "scale",
+      "prompt": "How generous is {target}, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "counts every cent",
+        "max": "pays for everyone"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "money.impulse",
+      "themes": [
+        "money"
+      ],
+      "format": "scale",
+      "prompt": "How impulsive is {target} with money, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "sleeps on every purchase",
+        "max": "add to cart, checkout, done"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "money.brands",
+      "themes": [
+        "money"
+      ],
+      "format": "scale",
+      "prompt": "How much does {target} care about brands, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "no-name everything",
+        "max": "logos only"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "money.haircut",
+      "themes": [
+        "money"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} would pay 30 € for a haircut. Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 200,
+        "step": 5,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "€"
+      },
+      "reference": 30,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "money.rent-share",
+      "themes": [
+        "money"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} spends 40% of their money on rent. Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "%"
+      },
+      "reference": 40,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "money.business-partner",
+      "themes": [
+        "money"
+      ],
+      "format": "player",
+      "prompt": "Who here would {target} start a business with?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "money.owe",
+      "themes": [
+        "money"
+      ],
+      "format": "player",
+      "prompt": "Who here owes {target} money right now?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "money.rank-treats",
+      "themes": [
+        "money"
+      ],
+      "format": "ranking",
+      "prompt": "Rank how {target} would treat themselves, most likely first:",
+      "answers": [
+        "Nice dinner",
+        "New clothes",
+        "A trip",
+        "Gadget"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "money.rank-luxury",
+      "themes": [
+        "money"
+      ],
+      "format": "ranking",
+      "prompt": "Rank these luxuries the way {target} would, best first:",
+      "answers": [
+        "Private chef",
+        "Personal driver",
+        "Cleaner",
+        "Personal trainer"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
     }
   ]
 }

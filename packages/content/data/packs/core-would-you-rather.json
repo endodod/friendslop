@@ -1,0 +1,638 @@
+{
+  "id": "core-would-you-rather",
+  "name": "Would You Rather",
+  "language": "en",
+  "version": 1,
+  "description": "Two options, one choice: guess which one your friend picks.",
+  "questions": [
+    {
+      "id": "wyr.fly-invisible",
+      "themes": [
+        "would-you-rather"
+      ],
+      "format": "tiles",
+      "prompt": "Would {target} rather fly or be invisible?",
+      "answers": [
+        "Fly",
+        "Be invisible"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "wyr.past-future",
+      "themes": [
+        "would-you-rather"
+      ],
+      "format": "tiles",
+      "prompt": "Would {target} rather travel to the past or the future?",
+      "answers": [
+        "The past",
+        "The future"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "wyr.no-music-no-movies",
+      "themes": [
+        "would-you-rather"
+      ],
+      "format": "tiles",
+      "prompt": "Would {target} rather give up music or movies forever?",
+      "answers": [
+        "Music",
+        "Movies"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "wyr.cold-hot",
+      "themes": [
+        "would-you-rather"
+      ],
+      "format": "tiles",
+      "prompt": "Would {target} rather always be a little cold or a little hot?",
+      "answers": [
+        "A little cold",
+        "A little hot"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "wyr.early-late",
+      "themes": [
+        "would-you-rather"
+      ],
+      "format": "tiles",
+      "prompt": "Would {target} rather be 10 minutes early or 10 minutes late to everything?",
+      "answers": [
+        "Always early",
+        "Always late"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "wyr.talk-animals",
+      "themes": [
+        "would-you-rather"
+      ],
+      "format": "tiles",
+      "prompt": "Would {target} rather talk to animals or speak every language?",
+      "answers": [
+        "Talk to animals",
+        "Speak every language"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "wyr.rich-famous",
+      "themes": [
+        "would-you-rather"
+      ],
+      "format": "tiles",
+      "prompt": "Would {target} rather be rich or famous?",
+      "answers": [
+        "Rich",
+        "Famous"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "wyr.beach-snow",
+      "themes": [
+        "would-you-rather"
+      ],
+      "format": "tiles",
+      "prompt": "Would {target} rather spend a week on a beach or in the snow?",
+      "answers": [
+        "Beach",
+        "Snow"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "wyr.no-phone-no-friends",
+      "themes": [
+        "would-you-rather"
+      ],
+      "format": "tiles",
+      "prompt": "Would {target} rather lose their phone for a month or not see friends for a month?",
+      "answers": [
+        "No phone",
+        "No friends"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "wyr.pizza-burger",
+      "themes": [
+        "would-you-rather"
+      ],
+      "format": "tiles",
+      "prompt": "Would {target} rather eat only pizza or only burgers for a year?",
+      "answers": [
+        "Only pizza",
+        "Only burgers"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "wyr.sing-dance",
+      "themes": [
+        "would-you-rather"
+      ],
+      "format": "tiles",
+      "prompt": "Would {target} rather have to sing or dance everywhere they go?",
+      "answers": [
+        "Sing",
+        "Dance"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "wyr.read-minds",
+      "themes": [
+        "would-you-rather"
+      ],
+      "format": "tiles",
+      "prompt": "Would {target} rather read minds or see the future?",
+      "answers": [
+        "Read minds",
+        "See the future"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "wyr.city-country",
+      "themes": [
+        "would-you-rather"
+      ],
+      "format": "tiles",
+      "prompt": "Would {target} rather live in a big city or the countryside?",
+      "answers": [
+        "Big city",
+        "Countryside"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "wyr.no-coffee-no-sugar",
+      "themes": [
+        "would-you-rather"
+      ],
+      "format": "tiles",
+      "prompt": "Would {target} rather give up coffee or sugar?",
+      "answers": [
+        "Coffee",
+        "Sugar"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "wyr.boss-employee",
+      "themes": [
+        "would-you-rather"
+      ],
+      "format": "tiles",
+      "prompt": "Would {target} rather be a bad boss or have a bad boss?",
+      "answers": [
+        "Be a bad boss",
+        "Have a bad boss"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "wyr.morning-night",
+      "themes": [
+        "would-you-rather"
+      ],
+      "format": "tiles",
+      "prompt": "Would {target} rather only be awake at night or only during the day?",
+      "answers": [
+        "Night",
+        "Day"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "wyr.spiders-snakes",
+      "themes": [
+        "would-you-rather"
+      ],
+      "format": "tiles",
+      "prompt": "Would {target} rather hold a spider or a snake?",
+      "answers": [
+        "Spider",
+        "Snake"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "wyr.space-ocean",
+      "themes": [
+        "would-you-rather"
+      ],
+      "format": "tiles",
+      "prompt": "Would {target} rather explore space or the deep ocean?",
+      "answers": [
+        "Space",
+        "Deep ocean"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "wyr.always-right",
+      "themes": [
+        "would-you-rather"
+      ],
+      "format": "tiles",
+      "prompt": "Would {target} rather always be right or always be happy?",
+      "answers": [
+        "Always right",
+        "Always happy"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "wyr.fame-type",
+      "themes": [
+        "would-you-rather"
+      ],
+      "format": "tiles",
+      "prompt": "Would {target} rather be a famous singer or a famous actor?",
+      "answers": [
+        "Singer",
+        "Actor"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "wyr.cat-dog-size",
+      "themes": [
+        "would-you-rather"
+      ],
+      "format": "tiles",
+      "prompt": "Would {target} rather fight one horse-sized duck or 100 duck-sized horses?",
+      "answers": [
+        "One horse-sized duck",
+        "100 duck-sized horses"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "wyr.free-food-travel",
+      "themes": [
+        "would-you-rather"
+      ],
+      "format": "tiles",
+      "prompt": "Would {target} rather have free food for life or free flights for life?",
+      "answers": [
+        "Free food",
+        "Free flights"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "wyr.reality-show",
+      "themes": [
+        "would-you-rather"
+      ],
+      "format": "tiles",
+      "prompt": "Would {target} rather be on a dating show or a survival show?",
+      "answers": [
+        "Dating show",
+        "Survival show"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "wyr.smell-taste",
+      "themes": [
+        "would-you-rather"
+      ],
+      "format": "tiles",
+      "prompt": "Would {target} rather lose their sense of smell or taste?",
+      "answers": [
+        "Smell",
+        "Taste"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "wyr.ghost-alien",
+      "themes": [
+        "would-you-rather"
+      ],
+      "format": "tiles",
+      "prompt": "Would {target} rather meet a ghost or an alien?",
+      "answers": [
+        "A ghost",
+        "An alien"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "wyr.know-future",
+      "themes": [
+        "would-you-rather"
+      ],
+      "format": "tiles",
+      "prompt": "Would {target} rather know how much money they'll have at 60 or how many kids?",
+      "answers": [
+        "Money at 60",
+        "Number of kids"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "wyr.no-internet-no-ac",
+      "themes": [
+        "would-you-rather"
+      ],
+      "format": "tiles",
+      "prompt": "Would {target} rather have slow internet forever or no heating in winter?",
+      "answers": [
+        "Slow internet",
+        "No heating"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "wyr.text-call",
+      "themes": [
+        "would-you-rather"
+      ],
+      "format": "tiles",
+      "prompt": "Would {target} rather only text or only call for the rest of their life?",
+      "answers": [
+        "Only text",
+        "Only call"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "wyr.sweet-savory",
+      "themes": [
+        "would-you-rather"
+      ],
+      "format": "tiles",
+      "prompt": "Would {target} rather give up sweet or savory snacks?",
+      "answers": [
+        "Give up sweet",
+        "Give up savory"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "wyr.relive-skip",
+      "themes": [
+        "would-you-rather"
+      ],
+      "format": "tiles",
+      "prompt": "Would {target} rather relive their best day or skip their worst?",
+      "answers": [
+        "Relive the best",
+        "Skip the worst"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "wyr.genius-beautiful",
+      "themes": [
+        "would-you-rather"
+      ],
+      "format": "tiles",
+      "prompt": "Would {target} rather be a genius or the best-looking person alive?",
+      "answers": [
+        "Genius",
+        "Best-looking"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "wyr.lottery-love",
+      "themes": [
+        "would-you-rather"
+      ],
+      "format": "tiles",
+      "prompt": "Would {target} rather win the lottery or find true love?",
+      "answers": [
+        "Win the lottery",
+        "Find true love"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "wyr.teleport-time",
+      "themes": [
+        "would-you-rather"
+      ],
+      "format": "tiles",
+      "prompt": "Would {target} rather teleport anywhere or stop time?",
+      "answers": [
+        "Teleport",
+        "Stop time"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "wyr.hiccups-sneeze",
+      "themes": [
+        "would-you-rather"
+      ],
+      "format": "tiles",
+      "prompt": "Would {target} rather have hiccups for a day or sneeze every 10 minutes?",
+      "answers": [
+        "Hiccups",
+        "Sneezing"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "wyr.zombie-robot",
+      "themes": [
+        "would-you-rather"
+      ],
+      "format": "tiles",
+      "prompt": "Would {target} rather survive a zombie or a robot apocalypse?",
+      "answers": [
+        "Zombies",
+        "Robots"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "wyr.sleep-eat",
+      "themes": [
+        "would-you-rather"
+      ],
+      "format": "tiles",
+      "prompt": "Would {target} rather never need to sleep or never need to eat?",
+      "answers": [
+        "Never sleep",
+        "Never eat"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "wyr.past-self",
+      "themes": [
+        "would-you-rather"
+      ],
+      "format": "tiles",
+      "prompt": "Would {target} rather give advice to their past self or get advice from their future self?",
+      "answers": [
+        "Advise the past",
+        "Hear from the future"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    }
+  ]
+}

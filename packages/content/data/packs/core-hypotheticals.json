@@ -556,6 +556,505 @@
         "tile",
         "questionOnlyMinigame"
       ]
+    },
+    {
+      "id": "hypo.famous-for",
+      "themes": [
+        "hypotheticals"
+      ],
+      "format": "tiles",
+      "prompt": "{target} becomes famous overnight. For what?",
+      "answers": [
+        "Accidentally going viral",
+        "A talent nobody knew about",
+        "Solving a crime",
+        "A reality show meltdown"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "hypo.heist",
+      "themes": [
+        "hypotheticals"
+      ],
+      "format": "tiles",
+      "prompt": "In a heist movie, {target} is…",
+      "answers": [
+        "The mastermind",
+        "The hacker",
+        "The getaway driver",
+        "The one who gets caught"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "hypo.haunted",
+      "themes": [
+        "hypotheticals"
+      ],
+      "format": "tiles",
+      "prompt": "{target} spends the night in a haunted house. They…",
+      "answers": [
+        "Leave after 10 minutes",
+        "Make friends with the ghost",
+        "Sleep like a baby",
+        "Bring a camera crew"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "hypo.alien",
+      "themes": [
+        "hypotheticals"
+      ],
+      "format": "tiles",
+      "prompt": "Aliens land. {target}…",
+      "answers": [
+        "Welcomes them",
+        "Hides in the basement",
+        "Tries to sell them something",
+        "Livestreams it"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "hypo.clone",
+      "themes": [
+        "hypotheticals"
+      ],
+      "format": "tiles",
+      "prompt": "{target} gets a clone. What does the clone do?",
+      "answers": [
+        "Go to work for them",
+        "Clean the house",
+        "Deal with phone calls",
+        "Hang out with them"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "hypo.rich",
+      "themes": [
+        "hypotheticals"
+      ],
+      "format": "tiles",
+      "prompt": "{target} becomes a billionaire. First thing?",
+      "answers": [
+        "Buy an island",
+        "Give it away",
+        "Quit everything",
+        "Buy a ridiculous car"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "hypo.king",
+      "themes": [
+        "hypotheticals"
+      ],
+      "format": "tiles",
+      "prompt": "{target} rules a country for a day. First law?",
+      "answers": [
+        "Free pizza Fridays",
+        "4-day work week",
+        "Naps are mandatory",
+        "Ban pineapple on pizza"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "hypo.new-talent",
+      "themes": [
+        "hypotheticals"
+      ],
+      "format": "tiles",
+      "prompt": "{target} wakes up with a new talent. Which one?",
+      "answers": [
+        "Perfect singing voice",
+        "Speaking every language",
+        "Pro-level cooking",
+        "Being a chess grandmaster"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "hypo.medieval",
+      "themes": [
+        "hypotheticals"
+      ],
+      "format": "tiles",
+      "prompt": "{target} in medieval times is…",
+      "answers": [
+        "A knight",
+        "The court jester",
+        "A peasant",
+        "The king or queen"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "hypo.sitcom",
+      "themes": [
+        "hypotheticals"
+      ],
+      "format": "tiles",
+      "prompt": "{target} lives in a sitcom. The laugh track plays when…",
+      "answers": [
+        "They trip",
+        "They talk about their ex",
+        "They make dinner",
+        "They enter a room"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "hypo.no-internet",
+      "themes": [
+        "hypotheticals"
+      ],
+      "format": "tiles",
+      "prompt": "The internet disappears forever. {target}…",
+      "answers": [
+        "Panics",
+        "Finally reads books",
+        "Becomes a farmer",
+        "Starts a newspaper"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "hypo.rewind",
+      "themes": [
+        "hypotheticals"
+      ],
+      "format": "tiles",
+      "prompt": "{target} can rewind time by 10 seconds once a day. They use it to…",
+      "answers": [
+        "Fix awkward moments",
+        "Win games",
+        "Catch the bus",
+        "Never use it"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "hypo.money-lie",
+      "themes": [
+        "hypotheticals"
+      ],
+      "format": "number",
+      "prompt": "For how many € would {target} eat a bug?",
+      "number": {
+        "min": 0,
+        "max": 1000,
+        "step": 5,
+        "tolerance": {
+          "type": "relative",
+          "value": 0.4
+        },
+        "unit": "€"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "hypo.survive-island",
+      "themes": [
+        "hypotheticals"
+      ],
+      "format": "number",
+      "prompt": "How many weeks could {target} survive on a desert island?",
+      "number": {
+        "min": 0,
+        "max": 52,
+        "step": 1,
+        "tolerance": {
+          "type": "relative",
+          "value": 0.3
+        },
+        "unit": "weeks"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "hypo.no-sleep",
+      "themes": [
+        "hypotheticals"
+      ],
+      "format": "number",
+      "prompt": "How many hours could {target} stay awake if they had to?",
+      "number": {
+        "min": 12,
+        "max": 96,
+        "step": 1,
+        "tolerance": {
+          "type": "relative",
+          "value": 0.2
+        },
+        "unit": "hours"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "hypo.horror-survival",
+      "themes": [
+        "hypotheticals"
+      ],
+      "format": "scale",
+      "prompt": "How long would {target} survive in a horror movie, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "first victim",
+        "max": "final survivor"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "hypo.secret-agent",
+      "themes": [
+        "hypotheticals"
+      ],
+      "format": "scale",
+      "prompt": "How good would {target} be as a secret agent, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "blows their cover instantly",
+        "max": "nobody would ever know"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "hypo.game-show",
+      "themes": [
+        "hypotheticals"
+      ],
+      "format": "scale",
+      "prompt": "How well would {target} do on a quiz show, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "out in round one",
+        "max": "champion"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "hypo.live-to",
+      "themes": [
+        "hypotheticals"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} wants to live to 90. Higher or lower?",
+      "number": {
+        "min": 50,
+        "max": 150,
+        "step": 5,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "years"
+      },
+      "reference": 90,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "hypo.price-name",
+      "themes": [
+        "hypotheticals"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} would change their name for 10,000 €. More or less (higher or lower)?",
+      "number": {
+        "min": 0,
+        "max": 100000,
+        "step": 1000,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "€"
+      },
+      "reference": 10000,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "hypo.zombie-bite",
+      "themes": [
+        "hypotheticals"
+      ],
+      "format": "player",
+      "prompt": "Who here would {target} sacrifice first in a zombie apocalypse?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "hypo.spaceship",
+      "themes": [
+        "hypotheticals"
+      ],
+      "format": "player",
+      "prompt": "Who here would {target} take to space with them?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "hypo.rank-eras",
+      "themes": [
+        "hypotheticals"
+      ],
+      "format": "ranking",
+      "prompt": "Rank the eras the way {target} would live in them, favorite first:",
+      "answers": [
+        "Ancient Rome",
+        "Medieval times",
+        "The 1920s",
+        "The far future"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "hypo.rank-pets",
+      "themes": [
+        "hypotheticals"
+      ],
+      "format": "ranking",
+      "prompt": "Mythical pets: rank them the way {target} would, favorite first:",
+      "answers": [
+        "A dragon",
+        "A unicorn",
+        "A phoenix",
+        "A griffin"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "hypo.villain-2",
+      "themes": [
+        "hypotheticals"
+      ],
+      "format": "tiles",
+      "prompt": "{target} becomes a villain. Their evil plan?",
+      "answers": [
+        "Ban all slow walkers",
+        "Steal every last snack",
+        "Rule the world",
+        "Make everyone listen to their playlist"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
     }
   ]
 }

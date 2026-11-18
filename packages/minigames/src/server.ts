@@ -26,6 +26,10 @@ import { stopTheBar } from "./stop-the-bar/logic";
 import { thinIce } from "./thin-ice/logic";
 import { typeRace } from "./type-race/logic";
 import { whackAMole } from "./whack-a-mole/logic";
+import { loneWolfGame } from "./lone-wolf/logic";
+import { tugOfWar } from "./tug-of-war/logic";
+import { arrowRush } from "./arrow-rush/logic";
+import { numberHunt } from "./number-hunt/logic";
 
 /**
  * Server-side registry. To add a mini-game: create src/<id>/logic.ts implementing
@@ -37,5 +41,6 @@ export const MINIGAMES: MinigameRegistry = Object.fromEntries(
     redLight, musicalChairs, chicken, reactionTap, stacker, pumpIt, memoryFlip, stopTheBar, higherLowerCards,
     spotTheOdd, countIt, colorClash, whackAMole, perfectTiming, typeRace, quickMath, simon, minefield, thinIce,
     hotPotato, splitOrSteal, mysteryAuction, hotOrNot, duel, mostLikelyTo, speedSync, rankingGame,
+    loneWolfGame, tugOfWar, arrowRush, numberHunt,
   ].map((d) => [d.id, d]),
 );

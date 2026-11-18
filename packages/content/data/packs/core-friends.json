@@ -500,6 +500,469 @@
         "tile",
         "questionOnlyMinigame"
       ]
+    },
+    {
+      "id": "friends.organize",
+      "themes": [
+        "friends"
+      ],
+      "format": "tiles",
+      "prompt": "Who plans the hangouts? {target} is…",
+      "answers": [
+        "Always the planner",
+        "The one who says \"I'm in\"",
+        "The one who cancels",
+        "The one who never hears about it"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "friends.birthday-gift",
+      "themes": [
+        "friends"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s go-to birthday gift for a friend?",
+      "answers": [
+        "Something thoughtful",
+        "Gift card",
+        "Alcohol",
+        "A meme on the day"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "friends.fight",
+      "themes": [
+        "friends"
+      ],
+      "format": "tiles",
+      "prompt": "{target} is mad at a friend. They…",
+      "answers": [
+        "Talk it out right away",
+        "Go quiet for a week",
+        "Rant to someone else",
+        "Pretend nothing happened"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "friends.new-person",
+      "themes": [
+        "friends"
+      ],
+      "format": "tiles",
+      "prompt": "Someone new joins the group. {target}…",
+      "answers": [
+        "Becomes their best friend",
+        "Is suspicious",
+        "Grills them with questions",
+        "Doesn't notice for a month"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "friends.restaurant-bill",
+      "themes": [
+        "friends"
+      ],
+      "format": "tiles",
+      "prompt": "The bill arrives. {target}…",
+      "answers": [
+        "Calculates every cent",
+        "Splits it evenly",
+        "Pays for everyone",
+        "Goes to the bathroom"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "friends.moving",
+      "themes": [
+        "friends"
+      ],
+      "format": "tiles",
+      "prompt": "A friend is moving. {target}…",
+      "answers": [
+        "Shows up with a van",
+        "Brings pizza, doesn't lift",
+        "Is suddenly busy",
+        "Organizes everything"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "friends.inside-joke",
+      "themes": [
+        "friends"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s relationship with inside jokes?",
+      "answers": [
+        "Invents most of them",
+        "Repeats them for years",
+        "Doesn't get half of them",
+        "Explains them to strangers"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "friends.hosting",
+      "themes": [
+        "friends"
+      ],
+      "format": "tiles",
+      "prompt": "{target} hosts game night. Snacks?",
+      "answers": [
+        "Full buffet",
+        "One bag of chips",
+        "Everyone brings their own",
+        "Homemade everything"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "friends.group-chats",
+      "themes": [
+        "friends"
+      ],
+      "format": "number",
+      "prompt": "How many group chats is {target} in?",
+      "number": {
+        "min": 1,
+        "max": 100,
+        "step": 1,
+        "tolerance": {
+          "type": "relative",
+          "value": 0.3
+        },
+        "unit": "chats"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "friends.friendships",
+      "themes": [
+        "friends"
+      ],
+      "format": "number",
+      "prompt": "How many years old is {target}'s longest friendship?",
+      "number": {
+        "min": 0,
+        "max": 40,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 2
+        },
+        "unit": "years"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "friends.drama",
+      "themes": [
+        "friends"
+      ],
+      "format": "scale",
+      "prompt": "How much drama does {target} bring to the group, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "none, peacekeeper",
+        "max": "reality TV level"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "friends.hug",
+      "themes": [
+        "friends"
+      ],
+      "format": "scale",
+      "prompt": "How much of a hugger is {target}, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "handshake only",
+        "max": "bear hugs for everyone"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "friends.hangouts",
+      "themes": [
+        "friends"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} sees this group 4 times a month. Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 30,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "times"
+      },
+      "reference": 4,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "friends.voice-notes",
+      "themes": [
+        "friends"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} sends 5 voice messages a week. Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "messages"
+      },
+      "reference": 5,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "friends.roommate",
+      "themes": [
+        "friends"
+      ],
+      "format": "player",
+      "prompt": "Who here would {target} least want as a roommate?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "friends.karaoke",
+      "themes": [
+        "friends"
+      ],
+      "format": "player",
+      "prompt": "Who here would {target} drag to karaoke?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "friends.island",
+      "themes": [
+        "friends"
+      ],
+      "format": "player",
+      "prompt": "Who here would {target} want stranded on an island with them?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "friends.rank-hangout-food",
+      "themes": [
+        "friends"
+      ],
+      "format": "ranking",
+      "prompt": "Rank group dinners the way {target} would, best first:",
+      "answers": [
+        "Pizza night",
+        "Barbecue",
+        "Sushi",
+        "Cooking together"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "friends.rank-trips",
+      "themes": [
+        "friends"
+      ],
+      "format": "ranking",
+      "prompt": "Rank group trips the way {target} would, best first:",
+      "answers": [
+        "City trip",
+        "Beach holiday",
+        "Cabin in the woods",
+        "Festival"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "friends.reply-2",
+      "themes": [
+        "friends"
+      ],
+      "format": "tiles",
+      "prompt": "{target} sees a message in the group chat. They…",
+      "answers": [
+        "Reply instantly",
+        "Leave it on read",
+        "React with an emoji",
+        "Reply three days later"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "friends.secret-2",
+      "themes": [
+        "friends"
+      ],
+      "format": "tiles",
+      "prompt": "Someone tells {target} a secret. It stays secret for…",
+      "answers": [
+        "Forever",
+        "A week",
+        "Until the next party",
+        "About five minutes"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "friends.photo-2",
+      "themes": [
+        "friends"
+      ],
+      "format": "tiles",
+      "prompt": "{target} posts a group photo. They pick the one where…",
+      "answers": [
+        "They look best",
+        "Everyone looks good",
+        "Someone looks terrible",
+        "It's blurry but fun"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "friends.plans-2",
+      "themes": [
+        "friends"
+      ],
+      "format": "scale",
+      "prompt": "How likely is {target} to say yes to spontaneous plans, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "needs two weeks notice",
+        "max": "already in the car"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "friends.advice-2",
+      "themes": [
+        "friends"
+      ],
+      "format": "player",
+      "prompt": "Who here would {target} ask for advice on a big life decision?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
     }
   ]
 }

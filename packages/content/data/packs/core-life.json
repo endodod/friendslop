@@ -618,6 +618,512 @@
         "tile",
         "questionOnlyMinigame"
       ]
+    },
+    {
+      "id": "life.sunday-scaries",
+      "themes": [
+        "life"
+      ],
+      "format": "tiles",
+      "prompt": "Sunday evening, {target} is…",
+      "answers": [
+        "Prepping for the week",
+        "In denial on the couch",
+        "Already asleep",
+        "Still out from Saturday"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "life.dishes",
+      "themes": [
+        "life"
+      ],
+      "format": "tiles",
+      "prompt": "How long do dishes sit in {target}'s sink?",
+      "answers": [
+        "Washed right away",
+        "Until tomorrow",
+        "Until there are no clean ones left",
+        "What sink, it's all paper plates"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "life.nap",
+      "themes": [
+        "life"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s napping style?",
+      "answers": [
+        "Power nap, 20 minutes",
+        "Accidental 3-hour coma",
+        "Never naps",
+        "Naps anywhere, anytime"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "life.bed-time",
+      "themes": [
+        "life"
+      ],
+      "format": "tiles",
+      "prompt": "When does {target} actually go to sleep?",
+      "answers": [
+        "Before 22:00",
+        "Around midnight",
+        "2 AM, scrolling",
+        "Depends on the day"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "life.weather",
+      "themes": [
+        "life"
+      ],
+      "format": "tiles",
+      "prompt": "It's pouring rain. {target}…",
+      "answers": [
+        "Cancels all plans",
+        "Goes out anyway, no umbrella",
+        "Brought an umbrella, of course",
+        "Loves it"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "life.post",
+      "themes": [
+        "life"
+      ],
+      "format": "tiles",
+      "prompt": "How does {target} deal with mail?",
+      "answers": [
+        "Opens it right away",
+        "A growing pile",
+        "Photographs it and throws it away",
+        "Ignores it until it's urgent"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "life.diy",
+      "themes": [
+        "life"
+      ],
+      "format": "tiles",
+      "prompt": "Something breaks at home. {target}…",
+      "answers": [
+        "Fixes it themselves",
+        "Watches 3 tutorials and gives up",
+        "Calls a parent",
+        "Lives with it forever"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "life.groceries",
+      "themes": [
+        "life"
+      ],
+      "format": "tiles",
+      "prompt": "{target} goes grocery shopping. Do they bring a list?",
+      "answers": [
+        "Detailed list, sorted by aisle",
+        "A list they forget at home",
+        "No list, pure vibes",
+        "Orders online"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "life.morning-drink",
+      "themes": [
+        "life"
+      ],
+      "format": "tiles",
+      "prompt": "First drink of {target}'s day?",
+      "answers": [
+        "Coffee",
+        "Tea",
+        "Water, like a healthy person",
+        "An energy drink"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "life.alarm-type",
+      "themes": [
+        "life"
+      ],
+      "format": "tiles",
+      "prompt": "How does {target} wake up?",
+      "answers": [
+        "First alarm, instantly up",
+        "Snooze marathon",
+        "Without an alarm",
+        "Someone has to drag them out"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "life.wardrobe",
+      "themes": [
+        "life"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s floor chair (the chair with clothes on it) is…",
+      "answers": [
+        "Empty, everything's put away",
+        "A small mountain",
+        "Basically a second wardrobe",
+        "They don't have a chair, it's the floor"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "life.hobby",
+      "themes": [
+        "life"
+      ],
+      "format": "tiles",
+      "prompt": "{target} picks up a new hobby. It lasts…",
+      "answers": [
+        "A weekend",
+        "A month, then the gear collects dust",
+        "Years",
+        "Becomes their whole personality"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "life.birthday",
+      "themes": [
+        "life"
+      ],
+      "format": "tiles",
+      "prompt": "How does {target} want to spend their birthday?",
+      "answers": [
+        "Big party",
+        "Small dinner with friends",
+        "Alone, no fuss",
+        "A trip somewhere"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "life.sick",
+      "themes": [
+        "life"
+      ],
+      "format": "tiles",
+      "prompt": "{target} gets a cold. They…",
+      "answers": [
+        "Act like they're dying",
+        "Work through it",
+        "Google every symptom",
+        "Ask for soup"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "life.water-bottles",
+      "themes": [
+        "life"
+      ],
+      "format": "number",
+      "prompt": "How many reusable water bottles does {target} own?",
+      "number": {
+        "min": 0,
+        "max": 20,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        },
+        "unit": "bottles"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "life.sleep-hours",
+      "themes": [
+        "life"
+      ],
+      "format": "number",
+      "prompt": "How many hours does {target} sleep on a normal night?",
+      "number": {
+        "min": 3,
+        "max": 12,
+        "step": 0.5,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0.5
+        },
+        "unit": "hours"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "life.mugs",
+      "themes": [
+        "life"
+      ],
+      "format": "number",
+      "prompt": "How many mugs does {target} own?",
+      "number": {
+        "min": 0,
+        "max": 50,
+        "step": 1,
+        "tolerance": {
+          "type": "relative",
+          "value": 0.3
+        },
+        "unit": "mugs"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "life.organized",
+      "themes": [
+        "life"
+      ],
+      "format": "scale",
+      "prompt": "How organized is {target}'s life, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "total chaos",
+        "max": "color-coded calendar"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "life.homebody",
+      "themes": [
+        "life"
+      ],
+      "format": "scale",
+      "prompt": "How much of a homebody is {target}, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "never home",
+        "max": "never leaves"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "life.clean-freak",
+      "themes": [
+        "life"
+      ],
+      "format": "scale",
+      "prompt": "How much of a clean freak is {target}, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "the dust is decor",
+        "max": "cleans other people's homes"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "life.emergency-contact",
+      "themes": [
+        "life"
+      ],
+      "format": "player",
+      "prompt": "Who here is {target}'s emergency contact (or should be)?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "life.rank-chores",
+      "themes": [
+        "life"
+      ],
+      "format": "ranking",
+      "prompt": "Rank the chores the way {target} would, least hated first:",
+      "answers": [
+        "Vacuuming",
+        "Dishes",
+        "Laundry",
+        "Taking out the trash"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "life.rank-comfort",
+      "themes": [
+        "life"
+      ],
+      "format": "ranking",
+      "prompt": "Rank {target}'s favorite ways to relax, best first:",
+      "answers": [
+        "Long shower",
+        "Nap",
+        "Gaming or TV",
+        "Going for a walk"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "life.plants-2",
+      "themes": [
+        "life"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} owns 5 plants (alive or not). Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 60,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "plants"
+      },
+      "reference": 5,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "life.laundry-2",
+      "themes": [
+        "life"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} does laundry twice a week. Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 7,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "times"
+      },
+      "reference": 2,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
     }
   ]
 }

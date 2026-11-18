@@ -591,6 +591,467 @@
         "tile",
         "questionOnlyMinigame"
       ]
+    },
+    {
+      "id": "league.lane-opponent",
+      "themes": [
+        "league"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s lane opponent is fed. {target}…",
+      "answers": [
+        "Plays safe under tower",
+        "Blames the jungler",
+        "Tries to 1v1 anyway",
+        "Roams to help others"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "league.baron",
+      "themes": [
+        "league"
+      ],
+      "format": "tiles",
+      "prompt": "The enemy team is at Baron. {target}…",
+      "answers": [
+        "Steals it with a smite",
+        "Pings and backs off",
+        "Runs in alone",
+        "Takes towers somewhere else"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "league.pentakill",
+      "themes": [
+        "league"
+      ],
+      "format": "tiles",
+      "prompt": "{target} gets a pentakill. Reaction?",
+      "answers": [
+        "Screams",
+        "Types \"ez\"",
+        "Screenshots it",
+        "Plays it cool"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "league.dodge",
+      "themes": [
+        "league"
+      ],
+      "format": "tiles",
+      "prompt": "Champion select goes badly. {target}…",
+      "answers": [
+        "Dodges",
+        "Picks their comfort champ",
+        "Locks in a troll pick",
+        "Writes an essay in chat"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "league.honor",
+      "themes": [
+        "league"
+      ],
+      "format": "tiles",
+      "prompt": "Who does {target} honor after a game?",
+      "answers": [
+        "The best player",
+        "Their duo, always",
+        "Whoever was nice",
+        "Nobody"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "league.surrender",
+      "themes": [
+        "league"
+      ],
+      "format": "tiles",
+      "prompt": "When does {target} vote to surrender?",
+      "answers": [
+        "Never, comebacks happen",
+        "At 15 minutes, every time",
+        "Only when everyone else does",
+        "When they're behind in lane"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "league.esports",
+      "themes": [
+        "league"
+      ],
+      "format": "tiles",
+      "prompt": "How does {target} feel about pro League?",
+      "answers": [
+        "Watches every match",
+        "Only Worlds",
+        "Never watches",
+        "Thinks they could go pro"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "league.lore",
+      "themes": [
+        "league"
+      ],
+      "format": "tiles",
+      "prompt": "How much League lore does {target} know?",
+      "answers": [
+        "Every story",
+        "Just their mains",
+        "Nothing at all",
+        "Only from Arcane"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "league.aram",
+      "themes": [
+        "league"
+      ],
+      "format": "tiles",
+      "prompt": "{target} in ARAM?",
+      "answers": [
+        "Picks fights constantly",
+        "Farms like it's ranked",
+        "Rerolls every time",
+        "Dies first every fight"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "league.ward",
+      "themes": [
+        "league"
+      ],
+      "format": "tiles",
+      "prompt": "{target} buys control wards…",
+      "answers": [
+        "Every back",
+        "When reminded",
+        "Never",
+        "Only as support"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "league.flash",
+      "themes": [
+        "league"
+      ],
+      "format": "tiles",
+      "prompt": "Where does {target} put Flash?",
+      "answers": [
+        "D",
+        "F",
+        "Doesn't take it",
+        "Changes it every game"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "league.mastery",
+      "themes": [
+        "league"
+      ],
+      "format": "number",
+      "prompt": "How many mastery points does {target} have on their main?",
+      "number": {
+        "min": 0,
+        "max": 2000000,
+        "step": 10000,
+        "tolerance": {
+          "type": "relative",
+          "value": 0.3
+        },
+        "unit": "points"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "league.years",
+      "themes": [
+        "league"
+      ],
+      "format": "number",
+      "prompt": "How many years has {target} played League?",
+      "number": {
+        "min": 0,
+        "max": 16,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        },
+        "unit": "years"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "league.deaths",
+      "themes": [
+        "league"
+      ],
+      "format": "number",
+      "prompt": "How many deaths does {target} have in an average game?",
+      "number": {
+        "min": 0,
+        "max": 20,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        },
+        "unit": "deaths"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "league.mental",
+      "themes": [
+        "league"
+      ],
+      "format": "scale",
+      "prompt": "How strong is {target}'s mental in ranked, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "tilts after first blood",
+        "max": "unshakeable"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "league.pinging",
+      "themes": [
+        "league"
+      ],
+      "format": "scale",
+      "prompt": "How much does {target} spam pings, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "never pings",
+        "max": "question-mark spam"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "league.meta",
+      "themes": [
+        "league"
+      ],
+      "format": "scale",
+      "prompt": "How much does {target} follow the meta, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "plays whatever they like",
+        "max": "copies the pros"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "league.ranked-games",
+      "themes": [
+        "league"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} plays 200 ranked games a season. Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 1000,
+        "step": 10,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "games"
+      },
+      "reference": 200,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "league.skins-owned",
+      "themes": [
+        "league"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} owns 50 skins. Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 500,
+        "step": 5,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "skins"
+      },
+      "reference": 50,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "league.blame",
+      "themes": [
+        "league"
+      ],
+      "format": "player",
+      "prompt": "Who here does {target} blame when they lose?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "league.flex",
+      "themes": [
+        "league"
+      ],
+      "format": "player",
+      "prompt": "Who here would {target} want in their flex queue?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "league.rank-modes",
+      "themes": [
+        "league"
+      ],
+      "format": "ranking",
+      "prompt": "Rank the game modes the way {target} would, best first:",
+      "answers": [
+        "Ranked",
+        "Normals",
+        "ARAM",
+        "Rotating game modes"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "league.rank-items",
+      "themes": [
+        "league"
+      ],
+      "format": "ranking",
+      "prompt": "Rank what {target} buys first on a long back, most likely first:",
+      "answers": [
+        "Damage item",
+        "Boots",
+        "Control ward",
+        "Defensive item"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
     }
   ]
 }

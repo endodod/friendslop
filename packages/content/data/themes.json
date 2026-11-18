@@ -223,6 +223,84 @@
       }
     },
     {
+      "id": "sports",
+      "name": {
+        "en": "Sports & Fitness",
+        "de": "Sport & Fitness"
+      },
+      "icon": "sports",
+      "color": "#f97316",
+      "description": {
+        "en": "Gym habits, couch athletes and sore losers.",
+        "de": "Gym-Gewohnheiten, Couch-Athleten und schlechte Verlierer."
+      }
+    },
+    {
+      "id": "animals",
+      "name": {
+        "en": "Animals & Pets",
+        "de": "Tiere & Haustiere"
+      },
+      "icon": "animals",
+      "color": "#a3e635",
+      "description": {
+        "en": "Pet parents, spider fears and animal alter egos.",
+        "de": "Haustier-Eltern, Spinnenangst und tierische Alter Egos."
+      }
+    },
+    {
+      "id": "style",
+      "name": {
+        "en": "Style & Looks",
+        "de": "Style & Looks"
+      },
+      "icon": "style",
+      "color": "#f472b6",
+      "description": {
+        "en": "Outfits, hair disasters and fashion crimes.",
+        "de": "Outfits, Frisur-Katastrophen und Modeverbrechen."
+      }
+    },
+    {
+      "id": "tech",
+      "name": {
+        "en": "Tech & Gadgets",
+        "de": "Technik & Gadgets"
+      },
+      "icon": "tech",
+      "color": "#60a5fa",
+      "description": {
+        "en": "Gadgets, chargers and tech support for the family.",
+        "de": "Gadgets, Ladekabel und Tech-Support für die Familie."
+      }
+    },
+    {
+      "id": "confessions",
+      "name": {
+        "en": "Secrets & Confessions",
+        "de": "Geheimnisse & Geständnisse"
+      },
+      "icon": "confessions",
+      "color": "#c084fc",
+      "description": {
+        "en": "Little lies, guilty secrets and things nobody admits.",
+        "de": "Kleine Lügen, peinliche Geheimnisse und Dinge, die keiner zugibt."
+      }
+    },
+    {
+      "id": "would-you-rather",
+      "name": {
+        "en": "Would You Rather",
+        "de": "Würdest du lieber"
+      },
+      "icon": "would-you-rather",
+      "color": "#facc15",
+      "description": {
+        "en": "Two options, one choice. Which one would they pick?",
+        "de": "Zwei Optionen, eine Wahl. Was würden sie nehmen?"
+      }
+    },
+    {
       "id": "custom",
       "name": {
         "en": "Custom",

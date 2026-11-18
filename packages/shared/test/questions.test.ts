@@ -211,7 +211,7 @@ describe("scoring", () => {
 
 describe("selection", () => {
   const settings = { familyFriendly: false, language: "en" as const };
-  it("never repeats within a game until the pool is exhausted", () => {
+  it("never repeats within a game until the pool is exhausted", { timeout: 20000 }, () => {
     const rng = createRng(1);
     const history = { questionIds: [] as string[], lastThemeId: null as string | null };
     const seen = new Set<string>();

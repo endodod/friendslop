@@ -1322,6 +1322,780 @@
       "usage": [
         "questionOnlyMinigame"
       ]
+    },
+    {
+      "id": "party.mlt-sell-out",
+      "themes": [
+        "classics"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to sell out for a brand deal?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.mlt-stranger-pet",
+      "themes": [
+        "classics"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to pet a stranger's dog without asking?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.mlt-walk-into-glass",
+      "themes": [
+        "classics"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to walk into a glass door?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.mlt-text-ex",
+      "themes": [
+        "classics"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to text their ex at 2 AM?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.mlt-wedding-speech",
+      "themes": [
+        "classics"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to give an embarrassing wedding speech?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.mlt-lose-keys",
+      "themes": [
+        "classics"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to lose their keys twice in one day?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.mlt-reality-villain",
+      "themes": [
+        "classics"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to be the villain on a reality show?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.mlt-cult-leader",
+      "themes": [
+        "classics"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to get talked into a pyramid scheme?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.mlt-cry-sad-song",
+      "themes": [
+        "classics"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to cry to a sad song in public?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.mlt-guinness",
+      "themes": [
+        "classics"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to break a world record?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.mlt-free-food",
+      "themes": [
+        "classics"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to show up anywhere for free food?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.mlt-prank",
+      "themes": [
+        "classics"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to pull an elaborate prank?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.mlt-dance-tiktok",
+      "themes": [
+        "classics"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to learn a whole TikTok dance?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.mlt-sleep-anywhere",
+      "themes": [
+        "classics"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to fall asleep at a party?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.mlt-rich-spend",
+      "themes": [
+        "classics"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to spend all their money on one thing?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.mlt-hermit",
+      "themes": [
+        "classics"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to move to a cabin in the woods?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.mlt-hero",
+      "themes": [
+        "classics"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to save someone's life?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.mlt-loud-laugh",
+      "themes": [
+        "classics"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to have the loudest laugh in a cinema?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.mlt-forget-wallet",
+      "themes": [
+        "classics"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to forget their wallet at dinner?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.mlt-same-food",
+      "themes": [
+        "classics"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to order the same food every time?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.mlt-overshare",
+      "themes": [
+        "classics"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to overshare with a stranger?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.mlt-plant-parent",
+      "themes": [
+        "classics"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to own 50 plants?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.mlt-unicorn",
+      "themes": [
+        "classics"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to believe something they read on the internet?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.mlt-karaoke-king",
+      "themes": [
+        "classics"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to hog the karaoke mic?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.mlt-diy-disaster",
+      "themes": [
+        "classics"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to start a DIY project and never finish it?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.mlt-first-bed",
+      "themes": [
+        "classics"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to go to bed first on a group trip?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.mlt-cartoon",
+      "themes": [
+        "classics"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to still watch cartoons?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.mlt-wrong-answer",
+      "themes": [
+        "classics"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to answer a question confidently and be completely wrong?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.mlt-quiz-cheat",
+      "themes": [
+        "classics"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to google the answers during a quiz?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.mlt-old-soul",
+      "themes": [
+        "classics"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to be an old soul?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.mlt-ufo-abducted",
+      "themes": [
+        "classics"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to get abducted by aliens?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.mlt-marathon-binge",
+      "themes": [
+        "classics"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to binge a whole series in one weekend?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.mlt-blame-dog",
+      "themes": [
+        "classics"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to blame someone else for their mistake?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.mlt-gym-selfie",
+      "themes": [
+        "classics"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to post a gym selfie?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.mlt-hide-party",
+      "themes": [
+        "classics"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to hide in the bathroom at a party?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.mlt-group-leader",
+      "themes": [
+        "classics"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to take charge in an emergency?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.mlt-sweet-tooth",
+      "themes": [
+        "classics"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to eat dessert first?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.mlt-know-lyrics",
+      "themes": [
+        "classics"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to know every word of every song?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.mlt-hug-tree",
+      "themes": [
+        "classics"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to hug a tree?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.mlt-tattoo-name",
+      "themes": [
+        "classics"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to get someone's name tattooed?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.mlt-sabotage",
+      "themes": [
+        "classics"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to betray the group in a board game?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.mlt-midlife",
+      "themes": [
+        "classics"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to buy a sports car in their midlife crisis?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.mlt-cook-show",
+      "themes": [
+        "classics"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to have their own cooking show?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.mlt-apologize",
+      "themes": [
+        "classics"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to apologize to furniture after bumping into it?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.rank-superpower-2",
+      "themes": [
+        "classics"
+      ],
+      "format": "ranking",
+      "prompt": "{target} gets one: rank them, most wanted first:",
+      "answers": [
+        "Free food forever",
+        "Free travel forever",
+        "Never needing sleep",
+        "Never getting sick"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.rank-pets",
+      "themes": [
+        "classics"
+      ],
+      "format": "ranking",
+      "prompt": "Rank these pet ideas the way {target} would, best first:",
+      "answers": [
+        "Dog",
+        "Cat",
+        "Hamster",
+        "Parrot"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.rank-sports-watch",
+      "themes": [
+        "classics"
+      ],
+      "format": "ranking",
+      "prompt": "Rank these the way {target} would rather watch, favorite first:",
+      "answers": [
+        "Football",
+        "Tennis",
+        "Formula 1",
+        "Esports"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.rank-evening",
+      "themes": [
+        "classics"
+      ],
+      "format": "ranking",
+      "prompt": "Rank these evenings the way {target} would, best first:",
+      "answers": [
+        "Game night",
+        "Dinner out",
+        "Movie marathon",
+        "Clubbing"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.rank-transport",
+      "themes": [
+        "classics"
+      ],
+      "format": "ranking",
+      "prompt": "Rank these the way {target} would rather get around, favorite first:",
+      "answers": [
+        "Car",
+        "Bike",
+        "Train",
+        "Walking"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.rank-food-2",
+      "themes": [
+        "classics"
+      ],
+      "format": "ranking",
+      "prompt": "Rank these comfort foods the way {target} would, best first:",
+      "answers": [
+        "Mac and cheese",
+        "Ramen",
+        "Grilled cheese",
+        "Fried chicken"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.mlt-snack-bringer",
+      "themes": [
+        "classics"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to bring snacks for everyone?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.rank-fears-2",
+      "themes": [
+        "classics"
+      ],
+      "format": "ranking",
+      "prompt": "Rank these the way {target} would, scariest first:",
+      "answers": [
+        "Heights",
+        "Spiders",
+        "Public speaking",
+        "The dark"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "party.rank-saturday",
+      "themes": [
+        "classics"
+      ],
+      "format": "ranking",
+      "prompt": "Rank how {target} would spend a free Saturday, favorite first:",
+      "answers": [
+        "Sleeping in",
+        "Seeing friends",
+        "Being outdoors",
+        "Gaming or bingeing a show"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
     }
   ],
   "description": "\"Most likely to\" prompts, rankings and who-would-you-pick questions."

@@ -525,6 +525,445 @@
         "tile",
         "questionOnlyMinigame"
       ]
+    },
+    {
+      "id": "travel.plane-activity",
+      "themes": [
+        "travel"
+      ],
+      "format": "tiles",
+      "prompt": "On a long flight, {target}…",
+      "answers": [
+        "Sleeps the whole time",
+        "Watches 4 movies",
+        "Talks to the stranger next to them",
+        "Stares at the flight map"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "travel.hostel",
+      "themes": [
+        "travel"
+      ],
+      "format": "tiles",
+      "prompt": "{target} in a hostel dorm?",
+      "answers": [
+        "Makes friends with everyone",
+        "Earplugs and eye mask, no talking",
+        "Snores",
+        "Would never stay in a hostel"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "travel.tourist",
+      "themes": [
+        "travel"
+      ],
+      "format": "tiles",
+      "prompt": "{target} as a tourist is…",
+      "answers": [
+        "Museum after museum",
+        "Only eating",
+        "Hiking everywhere",
+        "Shopping"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "travel.road-trip",
+      "themes": [
+        "travel"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s road trip job?",
+      "answers": [
+        "Driving the whole way",
+        "DJ",
+        "Navigator who gets everyone lost",
+        "Asleep in the back"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "travel.carry-on",
+      "themes": [
+        "travel"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s carry-on contains…",
+      "answers": [
+        "Snacks for a week",
+        "Three chargers",
+        "A neck pillow",
+        "Everything, they don't check bags"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "travel.delay",
+      "themes": [
+        "travel"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s flight is delayed 5 hours. They…",
+      "answers": [
+        "Complain to everyone",
+        "Find the airport bar",
+        "Sleep on the floor",
+        "Already rebooked"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "travel.sunburn",
+      "themes": [
+        "travel"
+      ],
+      "format": "tiles",
+      "prompt": "{target} at the beach?",
+      "answers": [
+        "Burned on day one",
+        "Sunscreen every hour",
+        "Under the umbrella",
+        "In the water all day"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "travel.lost-luggage",
+      "themes": [
+        "travel"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s luggage gets lost. They…",
+      "answers": [
+        "Buy a whole new wardrobe",
+        "Wear the same outfit all week",
+        "Call the airline 40 times",
+        "Planned for it with a carry-on"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "travel.dream-trip",
+      "themes": [
+        "travel"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s dream trip?",
+      "answers": [
+        "Japan",
+        "A safari",
+        "Road trip through the US",
+        "Backpacking South America"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "travel.holiday-type",
+      "themes": [
+        "travel"
+      ],
+      "format": "tiles",
+      "prompt": "{target} on holiday is…",
+      "answers": [
+        "Up at 6 for sightseeing",
+        "Sleeping until noon",
+        "By the pool all day",
+        "Working, secretly"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "travel.local-food",
+      "themes": [
+        "travel"
+      ],
+      "format": "tiles",
+      "prompt": "{target} tries the local food. They pick…",
+      "answers": [
+        "The weirdest thing on the menu",
+        "Something safe",
+        "Pizza, it's everywhere",
+        "Whatever the locals eat"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "travel.cities",
+      "themes": [
+        "travel"
+      ],
+      "format": "number",
+      "prompt": "How many capital cities has {target} visited?",
+      "number": {
+        "min": 0,
+        "max": 60,
+        "step": 1,
+        "tolerance": {
+          "type": "relative",
+          "value": 0.3
+        },
+        "unit": "cities"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "travel.longest-trip",
+      "themes": [
+        "travel"
+      ],
+      "format": "number",
+      "prompt": "How many days was {target}'s longest trip?",
+      "number": {
+        "min": 1,
+        "max": 365,
+        "step": 1,
+        "tolerance": {
+          "type": "relative",
+          "value": 0.3
+        },
+        "unit": "days"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "travel.packing-light",
+      "themes": [
+        "travel"
+      ],
+      "format": "scale",
+      "prompt": "How light does {target} pack, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "three suitcases",
+        "max": "one backpack for a month"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "travel.homesick",
+      "themes": [
+        "travel"
+      ],
+      "format": "scale",
+      "prompt": "How fast does {target} get homesick, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "never",
+        "max": "after one night"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "travel.tourist-trap",
+      "themes": [
+        "travel"
+      ],
+      "format": "scale",
+      "prompt": "How much does {target} fall for tourist traps, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "only hidden gems",
+        "max": "buys every souvenir"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "travel.vacation-budget",
+      "themes": [
+        "travel"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} would spend 1000 € on a one-week holiday. Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 5000,
+        "step": 50,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "€"
+      },
+      "reference": 1000,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "travel.photos-trip",
+      "themes": [
+        "travel"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} takes 200 photos on a week-long trip. Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 3000,
+        "step": 10,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "photos"
+      },
+      "reference": 200,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "travel.lost-abroad",
+      "themes": [
+        "travel"
+      ],
+      "format": "player",
+      "prompt": "Who here would {target} want next to them when lost abroad?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "travel.never-travel",
+      "themes": [
+        "travel"
+      ],
+      "format": "player",
+      "prompt": "Who here would {target} never travel with again?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "travel.rank-holidays",
+      "themes": [
+        "travel"
+      ],
+      "format": "ranking",
+      "prompt": "Rank these holidays the way {target} would, best first:",
+      "answers": [
+        "Beach resort",
+        "City break",
+        "Hiking trip",
+        "Cruise"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "travel.rank-accommodation",
+      "themes": [
+        "travel"
+      ],
+      "format": "ranking",
+      "prompt": "Rank where {target} would rather sleep, favorite first:",
+      "answers": [
+        "Hotel",
+        "Camping",
+        "Holiday flat",
+        "Hostel"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
     }
   ]
 }

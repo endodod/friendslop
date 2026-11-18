@@ -583,6 +583,486 @@
         "tile",
         "questionOnlyMinigame"
       ]
+    },
+    {
+      "id": "movies.superhero",
+      "themes": [
+        "movies"
+      ],
+      "format": "tiles",
+      "prompt": "Which kind of superhero would {target} be?",
+      "answers": [
+        "The one with the tragic backstory",
+        "The funny sidekick",
+        "The billionaire",
+        "The one nobody takes seriously"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "movies.reality",
+      "themes": [
+        "movies"
+      ],
+      "format": "tiles",
+      "prompt": "Which reality show would {target} win?",
+      "answers": [
+        "A cooking show",
+        "A dating show",
+        "A survival show",
+        "A baking show"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "movies.cinema-seat",
+      "themes": [
+        "movies"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s cinema seat?",
+      "answers": [
+        "Back row",
+        "Dead center",
+        "Front row",
+        "The aisle, for bathroom breaks"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "movies.trailer",
+      "themes": [
+        "movies"
+      ],
+      "format": "tiles",
+      "prompt": "During the trailers, {target}…",
+      "answers": [
+        "Rates every one out loud",
+        "Arrives after they're over",
+        "Eats all the snacks already",
+        "Gets hyped for everything"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "movies.netflix-scroll",
+      "themes": [
+        "movies"
+      ],
+      "format": "tiles",
+      "prompt": "How long does {target} scroll before picking something?",
+      "answers": [
+        "Under a minute",
+        "10 minutes",
+        "45 minutes, then gives up",
+        "They rewatch the same thing"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "movies.sequel",
+      "themes": [
+        "movies"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s opinion on sequels?",
+      "answers": [
+        "Always worse",
+        "Sometimes better",
+        "Watches them all anyway",
+        "Only likes trilogies"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "movies.book",
+      "themes": [
+        "movies"
+      ],
+      "format": "tiles",
+      "prompt": "Book or movie, according to {target}?",
+      "answers": [
+        "The book was better",
+        "The movie was better",
+        "Never read the book",
+        "Prefers the audiobook"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "movies.character",
+      "themes": [
+        "movies"
+      ],
+      "format": "tiles",
+      "prompt": "{target} in a sitcom is…",
+      "answers": [
+        "The weird neighbor",
+        "The responsible one",
+        "The one with the catchphrase",
+        "The love interest"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "movies.binge-food",
+      "themes": [
+        "movies"
+      ],
+      "format": "tiles",
+      "prompt": "Binge-watching, {target} eats…",
+      "answers": [
+        "A family-size bag of chips",
+        "Proper dinner on the couch",
+        "Nothing, too focused",
+        "Takeaway, every time"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "movies.genre-secret",
+      "themes": [
+        "movies"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s secret favorite genre?",
+      "answers": [
+        "Romantic comedy",
+        "True crime",
+        "Anime",
+        "Reality TV"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "movies.marvel",
+      "themes": [
+        "movies"
+      ],
+      "format": "number",
+      "prompt": "How many superhero movies has {target} seen?",
+      "number": {
+        "min": 0,
+        "max": 50,
+        "step": 1,
+        "tolerance": {
+          "type": "relative",
+          "value": 0.3
+        },
+        "unit": "movies"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "movies.series-seasons",
+      "themes": [
+        "movies"
+      ],
+      "format": "number",
+      "prompt": "How many seasons will {target} give a bad show before quitting?",
+      "number": {
+        "min": 0,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        },
+        "unit": "seasons"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "movies.sleep-movie",
+      "themes": [
+        "movies"
+      ],
+      "format": "number",
+      "prompt": "How many minutes into a movie does {target} fall asleep at home?",
+      "number": {
+        "min": 5,
+        "max": 180,
+        "step": 5,
+        "tolerance": {
+          "type": "relative",
+          "value": 0.3
+        },
+        "unit": "min"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "movies.quotes",
+      "themes": [
+        "movies"
+      ],
+      "format": "scale",
+      "prompt": "How often does {target} quote movies, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "never",
+        "max": "every sentence"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "movies.horror-fan",
+      "themes": [
+        "movies"
+      ],
+      "format": "scale",
+      "prompt": "How much does {target} enjoy horror movies, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "can't even watch the trailer",
+        "max": "watches alone at 3 AM"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "movies.drama-queen",
+      "themes": [
+        "movies"
+      ],
+      "format": "scale",
+      "prompt": "How dramatic would {target}'s reality show episode be, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "boring",
+        "max": "season finale"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "movies.series-at-once",
+      "themes": [
+        "movies"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} watches 3 series at the same time. Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 15,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "series"
+      },
+      "reference": 3,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "movies.cinema-price",
+      "themes": [
+        "movies"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} thinks 12 € is fair for a cinema ticket. Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 40,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "€"
+      },
+      "reference": 12,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "movies.co-star",
+      "themes": [
+        "movies"
+      ],
+      "format": "player",
+      "prompt": "Who here would {target} want as their movie co-star?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "movies.spoiler",
+      "themes": [
+        "movies"
+      ],
+      "format": "player",
+      "prompt": "Who here is most likely to spoil a show for {target}?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "movies.rank-streaming",
+      "themes": [
+        "movies"
+      ],
+      "format": "ranking",
+      "prompt": "Rank what {target} watches, most first:",
+      "answers": [
+        "Series",
+        "Movies",
+        "YouTube",
+        "Live sports"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "movies.rank-roles",
+      "themes": [
+        "movies"
+      ],
+      "format": "ranking",
+      "prompt": "Which role would {target} rather play? Rank them, favorite first:",
+      "answers": [
+        "The hero",
+        "The villain",
+        "The comic relief",
+        "The mysterious stranger"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "movies.rewatch-2",
+      "themes": [
+        "movies"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s comfort rewatch is…",
+      "answers": [
+        "A sitcom",
+        "A fantasy saga",
+        "An animated movie",
+        "A crime documentary"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "movies.cry-2",
+      "themes": [
+        "movies"
+      ],
+      "format": "tiles",
+      "prompt": "What finally makes {target} cry in a movie?",
+      "answers": [
+        "A dog dying",
+        "A reunion",
+        "A wedding",
+        "Nothing, heart of stone"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
     }
   ]
 }

@@ -617,6 +617,512 @@
         "tile",
         "questionOnlyMinigame"
       ]
+    },
+    {
+      "id": "food.cereal-first",
+      "themes": [
+        "food"
+      ],
+      "format": "tiles",
+      "prompt": "How does {target} make a bowl of cereal?",
+      "answers": [
+        "Cereal first, obviously",
+        "Milk first, like a villain",
+        "Dry, straight from the box",
+        "With water (don't ask)"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "food.pasta-sauce",
+      "themes": [
+        "food"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s go-to pasta sauce?",
+      "answers": [
+        "Tomato",
+        "Pesto",
+        "Carbonara",
+        "Just butter and cheese"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "food.condiment",
+      "themes": [
+        "food"
+      ],
+      "format": "tiles",
+      "prompt": "Which condiment would {target} bring to a desert island?",
+      "answers": [
+        "Ketchup",
+        "Mayo",
+        "Hot sauce",
+        "Soy sauce"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "food.steak",
+      "themes": [
+        "food"
+      ],
+      "format": "tiles",
+      "prompt": "How does {target} order a steak?",
+      "answers": [
+        "Rare",
+        "Medium",
+        "Well done",
+        "They'd rather have the fries"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "food.bad-day",
+      "themes": [
+        "food"
+      ],
+      "format": "tiles",
+      "prompt": "{target} had a terrible day. Comfort food?",
+      "answers": [
+        "Pizza",
+        "Ice cream from the tub",
+        "Mom's recipe",
+        "Chips and dip"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "food.grocery",
+      "themes": [
+        "food"
+      ],
+      "format": "tiles",
+      "prompt": "What's always in {target}'s shopping cart?",
+      "answers": [
+        "Snacks they swore off",
+        "Fresh vegetables (aspirational)",
+        "Frozen pizza",
+        "Way too many drinks"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "food.diet",
+      "themes": [
+        "food"
+      ],
+      "format": "tiles",
+      "prompt": "{target} starts a new diet. How long does it last?",
+      "answers": [
+        "Until lunch",
+        "About a week",
+        "A whole month",
+        "They actually stick to it"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "food.dessert",
+      "themes": [
+        "food"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s dessert order?",
+      "answers": [
+        "Something chocolate",
+        "Cheesecake",
+        "Fruit, sadly",
+        "Two desserts"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "food.fast-food",
+      "themes": [
+        "food"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s fast food chain of choice?",
+      "answers": [
+        "Burger place",
+        "Fried chicken",
+        "Pizza chain",
+        "Kebab shop"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "food.weird-combo",
+      "themes": [
+        "food"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s weirdest food combo they swear by?",
+      "answers": [
+        "Fries dipped in milkshake",
+        "Pizza with honey",
+        "Cheese on apple pie",
+        "Peanut butter and pickles"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "food.potluck",
+      "themes": [
+        "food"
+      ],
+      "format": "tiles",
+      "prompt": "{target} brings what to a potluck?",
+      "answers": [
+        "A homemade dish",
+        "Store-bought, in a nice bowl",
+        "A bag of chips",
+        "Nothing, but eats the most"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "food.restaurant-menu",
+      "themes": [
+        "food"
+      ],
+      "format": "tiles",
+      "prompt": "{target} looks at a menu. They…",
+      "answers": [
+        "Order the same thing every time",
+        "Ask the waiter what's good",
+        "Order what someone else is having",
+        "Take 20 minutes to decide"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "food.spicy-reaction",
+      "themes": [
+        "food"
+      ],
+      "format": "tiles",
+      "prompt": "{target} takes a bite that's way too spicy. They…",
+      "answers": [
+        "Pretend it's fine",
+        "Chug water",
+        "Cry openly",
+        "Ask for more"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "food.kitchen",
+      "themes": [
+        "food"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s most-used kitchen gadget?",
+      "answers": [
+        "Microwave",
+        "Air fryer",
+        "Toaster",
+        "The takeaway app"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "food.chocolate",
+      "themes": [
+        "food"
+      ],
+      "format": "number",
+      "prompt": "How many bars of chocolate does {target} eat in a week?",
+      "number": {
+        "min": 0,
+        "max": 20,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        },
+        "unit": "bars"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "food.max-burger",
+      "themes": [
+        "food"
+      ],
+      "format": "number",
+      "prompt": "How many burgers could {target} eat in one go?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        },
+        "unit": "burgers"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "food.cook-week",
+      "themes": [
+        "food"
+      ],
+      "format": "number",
+      "prompt": "How many times does {target} actually cook in a week?",
+      "number": {
+        "min": 0,
+        "max": 21,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        },
+        "unit": "times"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "food.foodie",
+      "themes": [
+        "food"
+      ],
+      "format": "scale",
+      "prompt": "How much of a foodie is {target}, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "eats to survive",
+        "max": "plans trips around restaurants"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "food.healthy",
+      "themes": [
+        "food"
+      ],
+      "format": "scale",
+      "prompt": "How healthy does {target} eat, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "gas station diet",
+        "max": "nutritionist approved"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "food.coffee-cups",
+      "themes": [
+        "food"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} drinks 2 cups of coffee a day. Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 12,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "cups"
+      },
+      "reference": 2,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "food.spice-level",
+      "themes": [
+        "food"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} would rate their own spice tolerance a 6/10. Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "/10"
+      },
+      "reference": 6,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "food.food-thief",
+      "themes": [
+        "food"
+      ],
+      "format": "player",
+      "prompt": "Who here would {target} trust NOT to steal their fries?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "food.rank-breakfast",
+      "themes": [
+        "food"
+      ],
+      "format": "ranking",
+      "prompt": "Rank breakfast foods the way {target} would, best first:",
+      "answers": [
+        "Pancakes",
+        "Eggs and bacon",
+        "Croissant",
+        "Cereal"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "food.rank-snacks",
+      "themes": [
+        "food"
+      ],
+      "format": "ranking",
+      "prompt": "Rank these snacks the way {target} would, best first:",
+      "answers": [
+        "Chips",
+        "Chocolate",
+        "Gummy bears",
+        "Popcorn"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "food.leftovers-2",
+      "themes": [
+        "food"
+      ],
+      "format": "scale",
+      "prompt": "How much does {target} love leftovers, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "throws them out",
+        "max": "better the next day"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
     }
   ]
 }

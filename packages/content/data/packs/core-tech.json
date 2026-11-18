@@ -1,0 +1,534 @@
+{
+  "id": "core-tech",
+  "name": "Tech & Gadgets",
+  "language": "en",
+  "version": 1,
+  "description": "Gadgets, chargers and tech support for the whole family.",
+  "questions": [
+    {
+      "id": "tech.phone-brand",
+      "themes": [
+        "tech"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s phone?",
+      "answers": [
+        "iPhone",
+        "Android flagship",
+        "Cheapest that works",
+        "A phone from 2017"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "tech.broken",
+      "themes": [
+        "tech"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s laptop breaks. They…",
+      "answers": [
+        "Fix it themselves",
+        "Turn it off and on again",
+        "Hit it",
+        "Buy a new one immediately"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "tech.updates",
+      "themes": [
+        "tech"
+      ],
+      "format": "tiles",
+      "prompt": "{target} and software updates?",
+      "answers": [
+        "Install right away",
+        "\"Remind me tomorrow\", forever",
+        "Auto-updates",
+        "Disabled them"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "tech.gadget",
+      "themes": [
+        "tech"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s most useless gadget?",
+      "answers": [
+        "A smartwatch they never wear",
+        "A VR headset in the closet",
+        "A smart fridge",
+        "Too many cables"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "tech.smart-home",
+      "themes": [
+        "tech"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s smart home?",
+      "answers": [
+        "Everything voice-controlled",
+        "One smart bulb",
+        "Light switches, like it's 1990",
+        "Lights randomly turn off"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "tech.charger",
+      "themes": [
+        "tech"
+      ],
+      "format": "tiles",
+      "prompt": "{target} needs a charger. They…",
+      "answers": [
+        "Have three in their bag",
+        "Borrow one, never return it",
+        "Wait until it dies",
+        "Have the wrong cable, always"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "tech.desk-setup",
+      "themes": [
+        "tech"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s desk setup?",
+      "answers": [
+        "RGB everything",
+        "Minimal and clean",
+        "Laptop on the bed",
+        "Chaos of cables"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "tech.ai-future",
+      "themes": [
+        "tech"
+      ],
+      "format": "tiles",
+      "prompt": "{target} thinks robots will…",
+      "answers": [
+        "Take over the world",
+        "Do our chores",
+        "Be our best friends",
+        "Never work properly"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "tech.passwords",
+      "themes": [
+        "tech"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s password strategy?",
+      "answers": [
+        "Password manager",
+        "The same password everywhere",
+        "Pet's name plus 123",
+        "Forgets them all"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "tech.tech-support",
+      "themes": [
+        "tech"
+      ],
+      "format": "tiles",
+      "prompt": "{target} gets a call from their family about a tech problem. They…",
+      "answers": [
+        "Fix it patiently",
+        "Fix it, very impatiently",
+        "Pretend the call dropped",
+        "Make it worse"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "tech.headphones",
+      "themes": [
+        "tech"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s headphones?",
+      "answers": [
+        "Expensive noise-cancelling",
+        "Cheap earbuds",
+        "Tangled wired ones",
+        "Always lost"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "tech.pc-mac",
+      "themes": [
+        "tech"
+      ],
+      "format": "tiles",
+      "prompt": "{target} is team…",
+      "answers": [
+        "Windows",
+        "Mac",
+        "Linux",
+        "Whatever's in front of them"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "tech.devices",
+      "themes": [
+        "tech"
+      ],
+      "format": "number",
+      "prompt": "How many devices with a screen does {target} own?",
+      "number": {
+        "min": 1,
+        "max": 30,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 2
+        },
+        "unit": "devices"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "tech.cables",
+      "themes": [
+        "tech"
+      ],
+      "format": "number",
+      "prompt": "How many random cables are in {target}'s drawer?",
+      "number": {
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "tolerance": {
+          "type": "relative",
+          "value": 0.3
+        },
+        "unit": "cables"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "tech.phone-years",
+      "themes": [
+        "tech"
+      ],
+      "format": "number",
+      "prompt": "How many years does {target} keep a phone?",
+      "number": {
+        "min": 0,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        },
+        "unit": "years"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "tech.nerd",
+      "themes": [
+        "tech"
+      ],
+      "format": "scale",
+      "prompt": "How much of a tech nerd is {target}, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "can't find the power button",
+        "max": "builds their own PC"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "tech.early-adopter",
+      "themes": [
+        "tech"
+      ],
+      "format": "scale",
+      "prompt": "How fast does {target} buy new tech, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "waits until it's ancient",
+        "max": "preorders everything"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "tech.boomer",
+      "themes": [
+        "tech"
+      ],
+      "format": "scale",
+      "prompt": "How old-school is {target} with technology, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "futuristic",
+        "max": "prints out emails"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "tech.laptop-price",
+      "themes": [
+        "tech"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} would spend 1,000 € on a laptop. Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 4000,
+        "step": 50,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "€"
+      },
+      "reference": 1000,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "tech.tabs-laptop",
+      "themes": [
+        "tech"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} has 15 tabs open on their laptop right now. Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 200,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "tabs"
+      },
+      "reference": 15,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "tech.hacker",
+      "themes": [
+        "tech"
+      ],
+      "format": "player",
+      "prompt": "Who here would {target} trust to fix their computer?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "tech.gadget-gift",
+      "themes": [
+        "tech"
+      ],
+      "format": "player",
+      "prompt": "Who here would {target} buy a gadget for?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "tech.rank-gadgets",
+      "themes": [
+        "tech"
+      ],
+      "format": "ranking",
+      "prompt": "Rank these gadgets the way {target} would, most wanted first:",
+      "answers": [
+        "New phone",
+        "Gaming console",
+        "Smartwatch",
+        "Drone"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "tech.rank-inventions",
+      "themes": [
+        "tech"
+      ],
+      "format": "ranking",
+      "prompt": "Rank the inventions {target} would miss most, first = most:",
+      "answers": [
+        "Internet",
+        "Smartphone",
+        "Fridge",
+        "Washing machine"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "tech.robot",
+      "themes": [
+        "tech"
+      ],
+      "format": "tiles",
+      "prompt": "{target} gets a personal robot. Its first job?",
+      "answers": [
+        "Cleaning",
+        "Cooking",
+        "Answering messages",
+        "Being a friend"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "tech.screen-brightness",
+      "themes": [
+        "tech"
+      ],
+      "format": "scale",
+      "prompt": "How bright is {target}'s phone screen, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "barely visible",
+        "max": "blinding"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    }
+  ]
+}

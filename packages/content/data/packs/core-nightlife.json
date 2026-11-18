@@ -521,6 +521,464 @@
         "tile",
         "questionOnlyMinigame"
       ]
+    },
+    {
+      "id": "night.pregame",
+      "themes": [
+        "party"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s role at the pregame?",
+      "answers": [
+        "DJ",
+        "Mixologist",
+        "Still getting ready",
+        "Already too far gone"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "night.bouncer",
+      "themes": [
+        "party"
+      ],
+      "format": "tiles",
+      "prompt": "{target} gets turned away at the club. They…",
+      "answers": [
+        "Argue with the bouncer",
+        "Go home happily",
+        "Find a better bar",
+        "Try another door"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "night.phone",
+      "themes": [
+        "party"
+      ],
+      "format": "tiles",
+      "prompt": "Where's {target}'s phone at the end of the night?",
+      "answers": [
+        "In their hand at 3%",
+        "Lost forever",
+        "In someone else's bag",
+        "Safe at home, they never brought it"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "night.texts",
+      "themes": [
+        "party"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s late-night texts are…",
+      "answers": [
+        "Love confessions",
+        "Food orders",
+        "Voice messages to the group",
+        "Deleted the next morning"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "night.dance-style",
+      "themes": [
+        "party"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s dancing style?",
+      "answers": [
+        "The two-step shuffle",
+        "Full-body chaos",
+        "Arms only",
+        "Professional moves"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "night.drunk-type",
+      "themes": [
+        "party"
+      ],
+      "format": "tiles",
+      "prompt": "After a few drinks, {target} becomes…",
+      "answers": [
+        "The emotional one",
+        "The philosopher",
+        "The dancer",
+        "The one who wants to go home"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "night.house-party",
+      "themes": [
+        "party"
+      ],
+      "format": "tiles",
+      "prompt": "At a house party, {target} is usually…",
+      "answers": [
+        "In the kitchen",
+        "On the dance floor",
+        "Petting the host's cat",
+        "Leading a drinking game"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "night.costume",
+      "themes": [
+        "party"
+      ],
+      "format": "tiles",
+      "prompt": "Costume party! {target} shows up as…",
+      "answers": [
+        "Something super elaborate",
+        "A last-minute bedsheet ghost",
+        "Matching with a friend",
+        "No costume, \"it's ironic\""
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "night.round",
+      "themes": [
+        "party"
+      ],
+      "format": "tiles",
+      "prompt": "It's {target}'s round. They order…",
+      "answers": [
+        "Shots for everyone",
+        "Waters for everyone",
+        "The cheapest beer",
+        "Fancy cocktails"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "night.game",
+      "themes": [
+        "party"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s favorite party game?",
+      "answers": [
+        "Beer pong",
+        "Never have I ever",
+        "Charades",
+        "Karaoke"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "night.cleanup",
+      "themes": [
+        "party"
+      ],
+      "format": "tiles",
+      "prompt": "The party's over. {target}…",
+      "answers": [
+        "Cleans everything",
+        "Leaves before the cleanup",
+        "Sleeps on the couch",
+        "Eats the leftovers"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "night.photo",
+      "themes": [
+        "party"
+      ],
+      "format": "tiles",
+      "prompt": "{target} in party photos is…",
+      "answers": [
+        "Eyes closed",
+        "Doing the same pose",
+        "Hiding behind someone",
+        "The star of every photo"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "night.latest",
+      "themes": [
+        "party"
+      ],
+      "format": "number",
+      "prompt": "What's the latest time {target} has stayed out (hour of the morning)?",
+      "number": {
+        "min": 0,
+        "max": 12,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        },
+        "unit": "AM"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "night.shots",
+      "themes": [
+        "party"
+      ],
+      "format": "number",
+      "prompt": "How many shots can {target} handle before chaos?",
+      "number": {
+        "min": 0,
+        "max": 15,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        },
+        "unit": "shots"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "night.dancer",
+      "themes": [
+        "party"
+      ],
+      "format": "scale",
+      "prompt": "How confident is {target} on the dance floor, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "wallflower",
+        "max": "the floor is theirs"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "night.host",
+      "themes": [
+        "party"
+      ],
+      "format": "scale",
+      "prompt": "How good of a party host is {target}, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "no snacks, no music",
+        "max": "legendary"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "night.irish-exit",
+      "themes": [
+        "party"
+      ],
+      "format": "scale",
+      "prompt": "How likely is {target} to leave without saying goodbye, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "hugs everyone twice",
+        "max": "already gone"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "night.home-time",
+      "themes": [
+        "party"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} usually gets home at 2 AM after a night out. Later or earlier (higher or lower)?",
+      "number": {
+        "min": 0,
+        "max": 8,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "AM"
+      },
+      "reference": 2,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "night.parties-year",
+      "themes": [
+        "party"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} goes to 10 parties a year. Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "parties"
+      },
+      "reference": 10,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "night.dance-partner",
+      "themes": [
+        "party"
+      ],
+      "format": "player",
+      "prompt": "Who here would {target} pull onto the dance floor first?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "night.trouble",
+      "themes": [
+        "party"
+      ],
+      "format": "player",
+      "prompt": "Who here gets {target} into the most trouble on a night out?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "night.rank-drinks",
+      "themes": [
+        "party"
+      ],
+      "format": "ranking",
+      "prompt": "Rank party drinks the way {target} would, best first:",
+      "answers": [
+        "Beer",
+        "Cocktails",
+        "Wine",
+        "Soft drinks"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "night.rank-venues",
+      "themes": [
+        "party"
+      ],
+      "format": "ranking",
+      "prompt": "Rank the venues the way {target} would, best first:",
+      "answers": [
+        "Club",
+        "Bar",
+        "House party",
+        "Festival"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
     }
   ]
 }

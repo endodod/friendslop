@@ -379,6 +379,62 @@
       "rules": "Rank 4 things the way the target would. Points per correct position.",
       "controls": "Drag to reorder, then lock in.",
       "bonus": "—"
+    },
+    {
+      "id": "lone-wolf",
+      "name": "Lone Wolf",
+      "icon": "wolf",
+      "goal": "Pick the lowest number nobody else picks.",
+      "howTo": [
+        "Everyone secretly picks a number.",
+        "Numbers picked by two or more players cancel out.",
+        "The lowest number left standing wins the round. Best of 3."
+      ],
+      "rules": "Secretly pick a number. Duplicates cancel out. The lowest unique number wins the round. 3 rounds.",
+      "controls": "Tap a number.",
+      "bonus": "Your round wins count double."
+    },
+    {
+      "id": "tug-of-war",
+      "name": "Tug of War",
+      "icon": "rope",
+      "goal": "Pull the rope over to your team's side.",
+      "howTo": [
+        "You're split into two teams: Blue and Red.",
+        "Tap PULL as fast as you can when it says go.",
+        "Drag the rope past your line, or be ahead when time runs out."
+      ],
+      "rules": "Two teams mash to pull the rope. Smaller teams pull harder per person. The team the rope ends up with wins.",
+      "controls": "Tap PULL as fast as you can.",
+      "bonus": "Your pulls are 25% stronger."
+    },
+    {
+      "id": "arrow-rush",
+      "name": "Arrow Rush",
+      "icon": "arrows",
+      "goal": "Hit the most arrows in 20 seconds.",
+      "howTo": [
+        "Press the button matching the arrow's direction.",
+        "Red arrows are a trap: press the OPPOSITE way.",
+        "Wrong presses cost a point."
+      ],
+      "rules": "Press the direction the arrow points. Red arrows: press the opposite way. Wrong presses cost a point.",
+      "controls": "Tap the arrow buttons (or use arrow keys / WASD).",
+      "bonus": "Wrong presses don't cost points."
+    },
+    {
+      "id": "number-hunt",
+      "name": "Number Hunt",
+      "icon": "number-grid",
+      "goal": "Tap 1 to 25 in order, fastest wins.",
+      "howTo": [
+        "25 numbers are scattered over a grid.",
+        "Tap them in order: 1, 2, 3… up to 25.",
+        "Wrong taps add a second to your time."
+      ],
+      "rules": "Find and tap the numbers 1 to 25 in order. Fastest time wins; wrong taps add a second.",
+      "controls": "Tap the next number.",
+      "bonus": "Numbers 1–3 are already found."
     }
   ]
 }

@@ -26,6 +26,10 @@ import { StopTheBarClient } from "./stop-the-bar/Client";
 import { ThinIceClient } from "./thin-ice/Client";
 import { TypeRaceClient } from "./type-race/Client";
 import { WhackAMoleClient } from "./whack-a-mole/Client";
+import { LoneWolfClient } from "./lone-wolf/Client";
+import { TugOfWarClient } from "./tug-of-war/Client";
+import { ArrowRushClient } from "./arrow-rush/Client";
+import { NumberHuntClient } from "./number-hunt/Client";
 
 /**
  * Client-side registry: mini-game id → React component.
@@ -59,6 +63,10 @@ export const MINIGAME_CLIENTS: Record<string, ClientEntry> = {
   duel: { Component: DuelClient },
   "speed-sync": { Component: SeriesClient },
   ranking: { Component: SeriesClient },
+  "lone-wolf": { Component: LoneWolfClient },
+  "tug-of-war": { Component: TugOfWarClient },
+  "arrow-rush": { Component: ArrowRushClient },
+  "number-hunt": { Component: NumberHuntClient },
 };
 
 export type { MinigameClientProps, MinigameUiKit, KitPlayer, ClientEntry } from "./kit/types";

@@ -28,7 +28,7 @@ describe("registry completeness", () => {
       expect(MINIGAMES[m.id], `server ${m.id}`).toBeDefined();
       expect(MINIGAME_CLIENTS[m.id], `client ${m.id}`).toBeDefined();
     }
-    expect(Object.keys(MINIGAMES)).toHaveLength(27);
+    expect(Object.keys(MINIGAMES)).toHaveLength(31);
   });
 });
 

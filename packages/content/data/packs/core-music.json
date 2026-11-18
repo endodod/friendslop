@@ -584,6 +584,483 @@
         "tile",
         "questionOnlyMinigame"
       ]
+    },
+    {
+      "id": "music.shuffle",
+      "themes": [
+        "music"
+      ],
+      "format": "tiles",
+      "prompt": "{target} hits shuffle. What comes on first?",
+      "answers": [
+        "A sad song",
+        "Pure hype",
+        "Something from 2010",
+        "A podcast by accident"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "music.car",
+      "themes": [
+        "music"
+      ],
+      "format": "tiles",
+      "prompt": "{target} drives alone. The car is full of…",
+      "answers": [
+        "Screaming along to a ballad",
+        "Podcasts",
+        "Total silence",
+        "Bass so loud the mirrors shake"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "music.ringtone",
+      "themes": [
+        "music"
+      ],
+      "format": "tiles",
+      "prompt": "What's {target}'s phone on?",
+      "answers": [
+        "Always silent",
+        "Vibrate only",
+        "Default ringtone",
+        "A song they'll regret"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "music.festival-tent",
+      "themes": [
+        "music"
+      ],
+      "format": "tiles",
+      "prompt": "{target} at a festival campsite?",
+      "answers": [
+        "Has a gazebo and fairy lights",
+        "Sleeps in the car",
+        "Doesn't sleep at all",
+        "Booked a hotel"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "music.wedding-dance",
+      "themes": [
+        "music"
+      ],
+      "format": "tiles",
+      "prompt": "First dance at {target}'s wedding?",
+      "answers": [
+        "Slow and romantic",
+        "A choreographed surprise",
+        "Something ironic",
+        "They refuse to dance"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "music.sad",
+      "themes": [
+        "music"
+      ],
+      "format": "tiles",
+      "prompt": "{target} is heartbroken. The playlist?",
+      "answers": [
+        "Sad ballads on repeat",
+        "Angry breakup songs",
+        "Upbeat pop to cope",
+        "No music, just silence"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "music.concert-merch",
+      "themes": [
+        "music"
+      ],
+      "format": "tiles",
+      "prompt": "{target} at the merch stand?",
+      "answers": [
+        "Buys a shirt every time",
+        "Takes a photo instead",
+        "Buys everything",
+        "Walks right past it"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "music.alarm",
+      "themes": [
+        "music"
+      ],
+      "format": "tiles",
+      "prompt": "What does {target}'s alarm sound like?",
+      "answers": [
+        "Default beeping",
+        "A favorite song (now ruined)",
+        "Nature sounds",
+        "Something terrifying"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "music.instrument",
+      "themes": [
+        "music"
+      ],
+      "format": "tiles",
+      "prompt": "Which instrument should {target} learn?",
+      "answers": [
+        "Drums",
+        "Guitar",
+        "Piano",
+        "Triangle"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "music.genre-era",
+      "themes": [
+        "music"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s music taste is stuck in…",
+      "answers": [
+        "The 80s",
+        "The 2000s",
+        "Their teen years",
+        "It's always current"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "music.band-name",
+      "themes": [
+        "music"
+      ],
+      "format": "tiles",
+      "prompt": "{target} starts a band. The style?",
+      "answers": [
+        "Punk",
+        "Boy or girl band",
+        "Indie folk",
+        "Experimental noise"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "music.top-artist-hours",
+      "themes": [
+        "music"
+      ],
+      "format": "number",
+      "prompt": "How many hours did {target} listen to their top artist last year?",
+      "number": {
+        "min": 0,
+        "max": 500,
+        "step": 10,
+        "tolerance": {
+          "type": "relative",
+          "value": 0.3
+        },
+        "unit": "hours"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "music.vinyl",
+      "themes": [
+        "music"
+      ],
+      "format": "number",
+      "prompt": "How many records, CDs or tapes does {target} own?",
+      "number": {
+        "min": 0,
+        "max": 300,
+        "step": 1,
+        "tolerance": {
+          "type": "relative",
+          "value": 0.3
+        },
+        "unit": "items"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "music.hum",
+      "themes": [
+        "music"
+      ],
+      "format": "scale",
+      "prompt": "How annoying is {target}'s humming and whistling, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "silent",
+        "max": "constant soundtrack"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "music.snob",
+      "themes": [
+        "music"
+      ],
+      "format": "scale",
+      "prompt": "How much of a music snob is {target}, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "likes everything",
+        "max": "\"you've probably never heard of it\""
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "music.dance-crowd",
+      "themes": [
+        "music"
+      ],
+      "format": "scale",
+      "prompt": "How likely is {target} to dance with nobody else on the floor, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "never",
+        "max": "already dancing"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "music.festivals",
+      "themes": [
+        "music"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} has been to 3 music festivals. Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 50,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "festivals"
+      },
+      "reference": 3,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "music.concert-price",
+      "themes": [
+        "music"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} would pay 150 € for their dream concert. Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 1000,
+        "step": 10,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "€"
+      },
+      "reference": 150,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "music.karaoke-duet",
+      "themes": [
+        "music"
+      ],
+      "format": "player",
+      "prompt": "Who here would {target} pick as their karaoke duet partner?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "music.road-trip-dj",
+      "themes": [
+        "music"
+      ],
+      "format": "player",
+      "prompt": "Who here would {target} trust with the playlist on a road trip?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "music.rank-genres",
+      "themes": [
+        "music"
+      ],
+      "format": "ranking",
+      "prompt": "Rank these music genres the way {target} would, favorite first:",
+      "answers": [
+        "Pop",
+        "Rock",
+        "Hip-hop",
+        "Electronic"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "music.rank-moments",
+      "themes": [
+        "music"
+      ],
+      "format": "ranking",
+      "prompt": "Rank the moments {target} most needs music for, most first:",
+      "answers": [
+        "Working out",
+        "Commuting",
+        "Cleaning",
+        "Falling asleep"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "music.headliner",
+      "themes": [
+        "music"
+      ],
+      "format": "tiles",
+      "prompt": "{target} could headline any festival. Which genre?",
+      "answers": [
+        "Rap",
+        "Rock",
+        "Techno",
+        "Schlager"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "music.lyrics-2",
+      "themes": [
+        "music"
+      ],
+      "format": "tiles",
+      "prompt": "{target} doesn't know the lyrics. They…",
+      "answers": [
+        "Mumble confidently",
+        "Make up their own",
+        "Just hum",
+        "Stop singing in shame"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
     }
   ]
 }

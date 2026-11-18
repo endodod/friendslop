@@ -571,6 +571,505 @@
         "tile",
         "questionOnlyMinigame"
       ]
+    },
+    {
+      "id": "gaming.first-console",
+      "themes": [
+        "gaming"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s first console?",
+      "answers": [
+        "A Nintendo",
+        "A PlayStation",
+        "An Xbox",
+        "A PC from a relative"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "gaming.username",
+      "themes": [
+        "gaming"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s gamer tag sounds like…",
+      "answers": [
+        "xX_Edgy_Xx",
+        "Their real name",
+        "An inside joke",
+        "A random word plus numbers"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "gaming.open-world",
+      "themes": [
+        "gaming"
+      ],
+      "format": "tiles",
+      "prompt": "{target} in an open world game?",
+      "answers": [
+        "Main story only",
+        "Every side quest",
+        "Climbs every tower",
+        "Just rides around"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "gaming.horror",
+      "themes": [
+        "gaming"
+      ],
+      "format": "tiles",
+      "prompt": "{target} plays a horror game. They…",
+      "answers": [
+        "Play with the lights off",
+        "Watch someone else play",
+        "Quit after 10 minutes",
+        "Laugh at every jump scare"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "gaming.mmo-class",
+      "themes": [
+        "gaming"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s class in an MMO?",
+      "answers": [
+        "Tank",
+        "Healer",
+        "Damage",
+        "Crafter who never fights"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "gaming.speedrun",
+      "themes": [
+        "gaming"
+      ],
+      "format": "tiles",
+      "prompt": "Which game would {target} speedrun?",
+      "answers": [
+        "A platformer",
+        "A racing game",
+        "Something nobody's heard of",
+        "None, they play slowly"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "gaming.boss",
+      "themes": [
+        "gaming"
+      ],
+      "format": "tiles",
+      "prompt": "A boss beats {target} five times. They…",
+      "answers": [
+        "Grind levels",
+        "Look up a guide",
+        "Try 50 more times",
+        "Put the game down forever"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "gaming.board-game",
+      "themes": [
+        "gaming"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s favorite board game?",
+      "answers": [
+        "Monopoly",
+        "Chess",
+        "Something with 400 pieces",
+        "Uno"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "gaming.cheat",
+      "themes": [
+        "gaming"
+      ],
+      "format": "tiles",
+      "prompt": "Would {target} use cheat codes?",
+      "answers": [
+        "Never, it's dishonorable",
+        "Only when stuck",
+        "All the time",
+        "Only in single-player"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "gaming.mobile",
+      "themes": [
+        "gaming"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s phone game habit?",
+      "answers": [
+        "Candy-crush style puzzles",
+        "Competitive shooters",
+        "Idle games",
+        "No phone games"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "gaming.voice",
+      "themes": [
+        "gaming"
+      ],
+      "format": "tiles",
+      "prompt": "{target} in voice chat is…",
+      "answers": [
+        "Muted the whole time",
+        "The shot-caller",
+        "Eating loudly",
+        "Singing"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "gaming.genre-avoid",
+      "themes": [
+        "gaming"
+      ],
+      "format": "tiles",
+      "prompt": "Which genre does {target} avoid at all costs?",
+      "answers": [
+        "Horror",
+        "Sports",
+        "Strategy",
+        "Fighting games"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "gaming.inventory",
+      "themes": [
+        "gaming"
+      ],
+      "format": "tiles",
+      "prompt": "How does {target} manage their inventory?",
+      "answers": [
+        "Perfectly sorted",
+        "Hoards everything",
+        "Sells it all",
+        "Always full"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "gaming.achievements",
+      "themes": [
+        "gaming"
+      ],
+      "format": "number",
+      "prompt": "What percentage of achievements does {target} get in their favorite game?",
+      "number": {
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "tolerance": {
+          "type": "absolute",
+          "value": 10
+        },
+        "unit": "%"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "gaming.game-money",
+      "themes": [
+        "gaming"
+      ],
+      "format": "number",
+      "prompt": "How much has {target} spent on in-game purchases in total?",
+      "number": {
+        "min": 0,
+        "max": 2000,
+        "step": 10,
+        "tolerance": {
+          "type": "relative",
+          "value": 0.4
+        },
+        "unit": "€"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "gaming.retry",
+      "themes": [
+        "gaming"
+      ],
+      "format": "number",
+      "prompt": "How many tries does {target} need for a hard boss?",
+      "number": {
+        "min": 1,
+        "max": 100,
+        "step": 1,
+        "tolerance": {
+          "type": "relative",
+          "value": 0.3
+        },
+        "unit": "tries"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "gaming.skill",
+      "themes": [
+        "gaming"
+      ],
+      "format": "scale",
+      "prompt": "How good is {target} at video games, honestly, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "button masher",
+        "max": "secretly pro"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "gaming.backseat",
+      "themes": [
+        "gaming"
+      ],
+      "format": "scale",
+      "prompt": "How much of a backseat gamer is {target}, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "silent watcher",
+        "max": "\"no, go LEFT\""
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "gaming.nostalgia",
+      "themes": [
+        "gaming"
+      ],
+      "format": "scale",
+      "prompt": "How nostalgic is {target} about old games, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "only plays new stuff",
+        "max": "\"games were better back then\""
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "gaming.hours-favorite",
+      "themes": [
+        "gaming"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} has 500 hours in their most-played game. Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 10000,
+        "step": 50,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "hours"
+      },
+      "reference": 500,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "gaming.age-first",
+      "themes": [
+        "gaming"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} played their first video game at age 6. Higher or lower?",
+      "number": {
+        "min": 1,
+        "max": 30,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "years"
+      },
+      "reference": 6,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "gaming.trash-talk",
+      "themes": [
+        "gaming"
+      ],
+      "format": "player",
+      "prompt": "Who here would {target} trash-talk the most during a game?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "gaming.board-game-rival",
+      "themes": [
+        "gaming"
+      ],
+      "format": "player",
+      "prompt": "Who here is {target}'s biggest board game rival?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "gaming.rank-platforms",
+      "themes": [
+        "gaming"
+      ],
+      "format": "ranking",
+      "prompt": "Rank the platforms the way {target} would, favorite first:",
+      "answers": [
+        "PC",
+        "PlayStation",
+        "Nintendo",
+        "Phone"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "gaming.rank-party-games",
+      "themes": [
+        "gaming"
+      ],
+      "format": "ranking",
+      "prompt": "Rank these party games the way {target} would, best first:",
+      "answers": [
+        "Mario Kart",
+        "Charades",
+        "Card games",
+        "Trivia"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
     }
   ]
 }

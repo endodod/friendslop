@@ -1,0 +1,564 @@
+{
+  "id": "core-animals",
+  "name": "Animals & Pets",
+  "language": "en",
+  "version": 1,
+  "description": "Pet parents, spider fears and animal alter egos.",
+  "questions": [
+    {
+      "id": "animal.spirit",
+      "themes": [
+        "animals"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s spirit animal?",
+      "answers": [
+        "A sloth",
+        "A golden retriever",
+        "A cat",
+        "A raccoon"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "animal.pet",
+      "themes": [
+        "animals"
+      ],
+      "format": "tiles",
+      "prompt": "{target} can have any pet. Which one?",
+      "answers": [
+        "A dog",
+        "A cat",
+        "Something exotic",
+        "No pets, thanks"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "animal.spider",
+      "themes": [
+        "animals"
+      ],
+      "format": "tiles",
+      "prompt": "There's a spider in the room. {target}…",
+      "answers": [
+        "Catches it and puts it outside",
+        "Screams and leaves",
+        "Names it",
+        "Calls someone for help"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "animal.pet-name",
+      "themes": [
+        "animals"
+      ],
+      "format": "tiles",
+      "prompt": "{target} names their new pet…",
+      "answers": [
+        "A human name like Gary",
+        "After food",
+        "After a celebrity",
+        "Something very long and fancy"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "animal.zoo",
+      "themes": [
+        "animals"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s favorite zoo exhibit?",
+      "answers": [
+        "Penguins",
+        "Big cats",
+        "Monkeys",
+        "The gift shop"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "animal.dog-meet",
+      "themes": [
+        "animals"
+      ],
+      "format": "tiles",
+      "prompt": "{target} sees a dog on the street. They…",
+      "answers": [
+        "Say hi to the dog, not the owner",
+        "Ask to pet it",
+        "Cross the street",
+        "Take a photo"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "animal.fight",
+      "themes": [
+        "animals"
+      ],
+      "format": "tiles",
+      "prompt": "Which animal could {target} beat in a fight?",
+      "answers": [
+        "A goose",
+        "A house cat",
+        "A kangaroo",
+        "Nothing, not even a pigeon"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "animal.pet-clothes",
+      "themes": [
+        "animals"
+      ],
+      "format": "tiles",
+      "prompt": "Does {target} dress up their pet?",
+      "answers": [
+        "Full outfits",
+        "Only at Christmas",
+        "Never, it's undignified",
+        "They'd dress up a fish"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "animal.farm",
+      "themes": [
+        "animals"
+      ],
+      "format": "tiles",
+      "prompt": "{target} runs a farm. They're mostly…",
+      "answers": [
+        "Talking to the cows",
+        "Running away from the goats",
+        "Selling eggs",
+        "Napping in the hay"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "animal.wild",
+      "themes": [
+        "animals"
+      ],
+      "format": "tiles",
+      "prompt": "{target} goes on safari. They're hoping to see…",
+      "answers": [
+        "Lions",
+        "Elephants",
+        "Giraffes",
+        "The hotel pool"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "animal.bug",
+      "themes": [
+        "animals"
+      ],
+      "format": "tiles",
+      "prompt": "What's {target}'s biggest animal fear?",
+      "answers": [
+        "Spiders",
+        "Snakes",
+        "Sharks",
+        "Birds"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "animal.pet-bed",
+      "themes": [
+        "animals"
+      ],
+      "format": "tiles",
+      "prompt": "Does {target}'s pet sleep in their bed?",
+      "answers": [
+        "Every night",
+        "Only when it's cold",
+        "Never",
+        "The pet owns the bed"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "animal.transform",
+      "themes": [
+        "animals"
+      ],
+      "format": "tiles",
+      "prompt": "{target} turns into an animal for a day. What do they do?",
+      "answers": [
+        "Fly as a bird",
+        "Nap as a cat",
+        "Swim as a dolphin",
+        "Cause chaos as a monkey"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "animal.pets-owned",
+      "themes": [
+        "animals"
+      ],
+      "format": "number",
+      "prompt": "How many pets has {target} had in their life?",
+      "number": {
+        "min": 0,
+        "max": 30,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        },
+        "unit": "pets"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "animal.photos",
+      "themes": [
+        "animals"
+      ],
+      "format": "number",
+      "prompt": "How many pet photos are on {target}'s phone?",
+      "number": {
+        "min": 0,
+        "max": 5000,
+        "step": 10,
+        "tolerance": {
+          "type": "relative",
+          "value": 0.4
+        },
+        "unit": "photos"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "animal.dogs-pet",
+      "themes": [
+        "animals"
+      ],
+      "format": "number",
+      "prompt": "How many dogs would {target} own if space and money didn't matter?",
+      "number": {
+        "min": 0,
+        "max": 30,
+        "step": 1,
+        "tolerance": {
+          "type": "relative",
+          "value": 0.3
+        },
+        "unit": "dogs"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "animal.dog-cat",
+      "themes": [
+        "animals"
+      ],
+      "format": "scale",
+      "prompt": "Dog person or cat person? Where is {target}, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "total dog person",
+        "max": "total cat person"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "animal.animal-whisperer",
+      "themes": [
+        "animals"
+      ],
+      "format": "scale",
+      "prompt": "How good is {target} with animals, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "animals flee",
+        "max": "animal whisperer"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "animal.pet-parent",
+      "themes": [
+        "animals"
+      ],
+      "format": "scale",
+      "prompt": "How obsessed would {target} be with their pet, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "it's just an animal",
+        "max": "pet has its own Instagram"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "animal.pet-money",
+      "themes": [
+        "animals"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} would spend 100 € a month on a pet. Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 1000,
+        "step": 10,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "€"
+      },
+      "reference": 100,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "animal.cats-max",
+      "themes": [
+        "animals"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} would happily own 2 cats. Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 20,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "cats"
+      },
+      "reference": 2,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "animal.petsitter",
+      "themes": [
+        "animals"
+      ],
+      "format": "player",
+      "prompt": "Who here would {target} trust to pet-sit?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "animal.animal-like",
+      "themes": [
+        "animals"
+      ],
+      "format": "player",
+      "prompt": "Who here is most like {target}'s favorite animal?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "animal.rank-pets-2",
+      "themes": [
+        "animals"
+      ],
+      "format": "ranking",
+      "prompt": "Rank these pets the way {target} would, best first:",
+      "answers": [
+        "Rabbit",
+        "Snake",
+        "Fish",
+        "Guinea pig"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "animal.rank-wild",
+      "themes": [
+        "animals"
+      ],
+      "format": "ranking",
+      "prompt": "Rank these wild animals the way {target} would, coolest first:",
+      "answers": [
+        "Wolf",
+        "Eagle",
+        "Octopus",
+        "Bear"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "animal.rank-fears",
+      "themes": [
+        "animals"
+      ],
+      "format": "ranking",
+      "prompt": "Rank these creatures the way {target} would, scariest first:",
+      "answers": [
+        "Spiders",
+        "Snakes",
+        "Sharks",
+        "Wasps"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "animal.dog-breed",
+      "themes": [
+        "animals"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s dog breed (if they were a dog)?",
+      "answers": [
+        "Chihuahua",
+        "Labrador",
+        "Husky",
+        "Pug"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "animal.bird",
+      "themes": [
+        "animals"
+      ],
+      "format": "tiles",
+      "prompt": "A bird steals {target}'s sandwich. They…",
+      "answers": [
+        "Chase it",
+        "Accept their loss",
+        "Feed the bird the rest",
+        "Swear revenge on all birds"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    }
+  ]
+}

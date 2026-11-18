@@ -526,6 +526,486 @@
         "tile",
         "questionOnlyMinigame"
       ]
+    },
+    {
+      "id": "child.hiding",
+      "themes": [
+        "childhood"
+      ],
+      "format": "tiles",
+      "prompt": "Where did little {target} hide during hide and seek?",
+      "answers": [
+        "Under the bed",
+        "In a closet",
+        "In plain sight, somehow",
+        "They always forgot to hide"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "child.halloween",
+      "themes": [
+        "childhood"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s Halloween costume as a kid?",
+      "answers": [
+        "A ghost (a bedsheet)",
+        "A superhero",
+        "A princess or prince",
+        "Something homemade and weird"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "child.lie",
+      "themes": [
+        "childhood"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s go-to lie as a kid?",
+      "answers": [
+        "\"I already brushed my teeth\"",
+        "\"It was the dog\"",
+        "\"I did my homework\"",
+        "\"I'm not tired\""
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "child.haircut",
+      "themes": [
+        "childhood"
+      ],
+      "format": "tiles",
+      "prompt": "Little {target}'s worst haircut?",
+      "answers": [
+        "Bowl cut",
+        "They cut it themselves",
+        "Frosted tips",
+        "Always looked fine"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "child.vacation",
+      "themes": [
+        "childhood"
+      ],
+      "format": "tiles",
+      "prompt": "Family vacations for little {target} meant…",
+      "answers": [
+        "Camping",
+        "Long car rides",
+        "Beach holidays",
+        "Visiting relatives"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "child.sibling",
+      "themes": [
+        "childhood"
+      ],
+      "format": "tiles",
+      "prompt": "How did {target} treat their siblings (or cousins)?",
+      "answers": [
+        "Bossed them around",
+        "Best friends",
+        "Constant war",
+        "Ignored them completely"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "child.report-card",
+      "themes": [
+        "childhood"
+      ],
+      "format": "tiles",
+      "prompt": "What did {target}'s teachers write on their report card?",
+      "answers": [
+        "\"Talks too much\"",
+        "\"A pleasure to have in class\"",
+        "\"Needs to focus\"",
+        "\"Very creative\""
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "child.tv-time",
+      "themes": [
+        "childhood"
+      ],
+      "format": "tiles",
+      "prompt": "Little {target} sneaked extra TV by…",
+      "answers": [
+        "Watching with the volume on 1",
+        "Getting up super early",
+        "Sleeping over at friends",
+        "They didn't, total angel"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "child.snack",
+      "themes": [
+        "childhood"
+      ],
+      "format": "tiles",
+      "prompt": "Little {target}'s favorite after-school snack?",
+      "answers": [
+        "Toast",
+        "Fruit",
+        "Candy they weren't allowed",
+        "Whatever was in the fridge"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "child.games",
+      "themes": [
+        "childhood"
+      ],
+      "format": "tiles",
+      "prompt": "Little {target}'s favorite game?",
+      "answers": [
+        "Tag",
+        "Make-believe",
+        "Video games",
+        "Building forts"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "child.imaginary",
+      "themes": [
+        "childhood"
+      ],
+      "format": "tiles",
+      "prompt": "Did little {target} have an imaginary friend?",
+      "answers": [
+        "Yes, and it had a name",
+        "Several",
+        "No, real friends only",
+        "They WERE the imaginary friend"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "child.allowance",
+      "themes": [
+        "childhood"
+      ],
+      "format": "tiles",
+      "prompt": "How did little {target} spend their pocket money?",
+      "answers": [
+        "Candy, instantly",
+        "Saved every cent",
+        "Toys and cards",
+        "Gave it to siblings"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "child.swim",
+      "themes": [
+        "childhood"
+      ],
+      "format": "number",
+      "prompt": "At what age did {target} learn to swim?",
+      "number": {
+        "min": 1,
+        "max": 20,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        },
+        "unit": "years"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "child.bike",
+      "themes": [
+        "childhood"
+      ],
+      "format": "number",
+      "prompt": "At what age did {target} learn to ride a bike without training wheels?",
+      "number": {
+        "min": 2,
+        "max": 15,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        },
+        "unit": "years"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "child.schools",
+      "themes": [
+        "childhood"
+      ],
+      "format": "number",
+      "prompt": "How many schools did {target} go to in total?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        },
+        "unit": "schools"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "child.crybaby",
+      "themes": [
+        "childhood"
+      ],
+      "format": "scale",
+      "prompt": "How much of a crybaby was little {target}, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "never cried",
+        "max": "cried at everything"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "child.creative",
+      "themes": [
+        "childhood"
+      ],
+      "format": "scale",
+      "prompt": "How creative was little {target}, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "coloring inside the lines",
+        "max": "drew on the walls"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "child.teacher-pet",
+      "themes": [
+        "childhood"
+      ],
+      "format": "scale",
+      "prompt": "How much of a teacher's pet was {target}, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "class clown",
+        "max": "teacher's favorite"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "child.first-kiss",
+      "themes": [
+        "childhood"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} was 14 at their first kiss. Higher or lower?",
+      "number": {
+        "min": 5,
+        "max": 30,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "years"
+      },
+      "reference": 14,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "child.class-size",
+      "themes": [
+        "childhood"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} had 25 kids in their class. Higher or lower?",
+      "number": {
+        "min": 5,
+        "max": 40,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "kids"
+      },
+      "reference": 25,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "child.childhood-bully",
+      "themes": [
+        "childhood"
+      ],
+      "format": "player",
+      "prompt": "Who here would little {target} have been scared of?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "child.class-clown",
+      "themes": [
+        "childhood"
+      ],
+      "format": "player",
+      "prompt": "Who here would have been the class clown in {target}'s class?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "child.rank-toys",
+      "themes": [
+        "childhood"
+      ],
+      "format": "ranking",
+      "prompt": "Rank these toys the way little {target} would, best first:",
+      "answers": [
+        "LEGO",
+        "Dolls or action figures",
+        "Video games",
+        "A ball"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "child.rank-cartoons",
+      "themes": [
+        "childhood"
+      ],
+      "format": "ranking",
+      "prompt": "Rank these cartoon types the way little {target} would, best first:",
+      "answers": [
+        "Superhero cartoons",
+        "Animal cartoons",
+        "Anime",
+        "Disney movies"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
     }
   ]
 }

@@ -1,0 +1,604 @@
+{
+  "id": "core-confessions",
+  "name": "Secrets & Confessions",
+  "language": "en",
+  "version": 1,
+  "description": "Little lies, guilty secrets and things nobody admits. A few are spicy.",
+  "questions": [
+    {
+      "id": "confess.lie",
+      "themes": [
+        "confessions"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s most common white lie?",
+      "answers": [
+        "\"I'm on my way\"",
+        "\"I love it!\"",
+        "\"I'm fine\"",
+        "\"I didn't get your message\""
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "confess.snoop",
+      "themes": [
+        "confessions"
+      ],
+      "format": "tiles",
+      "prompt": "Would {target} read someone's diary if they found it open?",
+      "answers": [
+        "Never",
+        "Just one page",
+        "Every word",
+        "They'd write in it"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "confess.cry",
+      "themes": [
+        "confessions"
+      ],
+      "format": "tiles",
+      "prompt": "When did {target} last cry?",
+      "answers": [
+        "This week",
+        "Last month",
+        "A movie, last night",
+        "They can't remember"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "confess.stalk",
+      "themes": [
+        "confessions"
+      ],
+      "format": "tiles",
+      "prompt": "How far back would {target} scroll on a crush's profile?",
+      "answers": [
+        "Just the latest posts",
+        "A few months",
+        "2015",
+        "They accidentally liked an old photo"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "confess.pretend",
+      "themes": [
+        "confessions"
+      ],
+      "format": "tiles",
+      "prompt": "{target} pretends to like…",
+      "answers": [
+        "A friend's partner",
+        "Their gifts",
+        "A popular show",
+        "Their job"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "confess.regret",
+      "themes": [
+        "confessions"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s biggest regret?",
+      "answers": [
+        "Something they said",
+        "A haircut",
+        "Not taking a chance",
+        "A tattoo"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "confess.guilty",
+      "themes": [
+        "confessions"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s guiltiest pleasure?",
+      "answers": [
+        "Reality TV",
+        "Fast food at 3 AM",
+        "Cheesy pop songs",
+        "Online shopping"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "confess.cheat",
+      "themes": [
+        "confessions"
+      ],
+      "format": "tiles",
+      "prompt": "Has {target} ever cheated at a board game?",
+      "answers": [
+        "Never",
+        "Once, and they still feel bad",
+        "All the time",
+        "They make up the rules anyway"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "confess.excuse",
+      "themes": [
+        "confessions"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s go-to excuse to leave a party?",
+      "answers": [
+        "\"I have an early start\"",
+        "\"My pet needs me\"",
+        "Just disappears",
+        "\"I don't feel well\""
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "confess.secret-talent",
+      "themes": [
+        "confessions"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s secret talent?",
+      "answers": [
+        "Singing",
+        "Cooking",
+        "Accents",
+        "Remembering everyone's birthdays"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "confess.embarrassing",
+      "themes": [
+        "confessions"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s most embarrassing moment involved…",
+      "answers": [
+        "Falling in public",
+        "Waving at someone who wasn't waving at them",
+        "A text to the wrong person",
+        "Calling a teacher \"mom\""
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "confess.crush",
+      "themes": [
+        "confessions"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s embarrassing celebrity crush is…",
+      "answers": [
+        "A cartoon character",
+        "Someone way older",
+        "A villain",
+        "A YouTuber"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "confess.blame",
+      "themes": [
+        "confessions"
+      ],
+      "format": "tiles",
+      "prompt": "{target} broke something at a friend's place. They…",
+      "answers": [
+        "Confess immediately",
+        "Hide it",
+        "Blame the cat",
+        "Replace it secretly"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "confess.ghosted",
+      "themes": [
+        "confessions"
+      ],
+      "format": "tiles",
+      "prompt": "Has {target} ever ghosted someone?",
+      "answers": [
+        "Never",
+        "Once or twice",
+        "Professionally",
+        "They've been ghosted, not the ghoster"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "confess.lies-day",
+      "themes": [
+        "confessions"
+      ],
+      "format": "number",
+      "prompt": "How many white lies does {target} tell in a day?",
+      "number": {
+        "min": 0,
+        "max": 30,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        },
+        "unit": "lies"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "confess.unread",
+      "themes": [
+        "confessions"
+      ],
+      "format": "number",
+      "prompt": "How many messages is {target} ignoring right now?",
+      "number": {
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "tolerance": {
+          "type": "relative",
+          "value": 0.3
+        },
+        "unit": "messages"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "confess.nosy",
+      "themes": [
+        "confessions"
+      ],
+      "format": "scale",
+      "prompt": "How nosy is {target}, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "minds their own business",
+        "max": "knows everyone's business"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "confess.liar",
+      "themes": [
+        "confessions"
+      ],
+      "format": "scale",
+      "prompt": "How good is {target} at lying, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "face says everything",
+        "max": "poker face"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "confess.petty",
+      "themes": [
+        "confessions"
+      ],
+      "format": "scale",
+      "prompt": "How petty is {target}, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "lets everything go",
+        "max": "holds grudges for years"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "confess.gossip",
+      "themes": [
+        "confessions"
+      ],
+      "format": "scale",
+      "prompt": "How good is {target} at keeping their own secrets, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "tells everyone",
+        "max": "a vault"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "confess.secrets",
+      "themes": [
+        "confessions"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} keeps 3 big secrets from this group. Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 50,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "secrets"
+      },
+      "reference": 3,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "confess.snoop-phone",
+      "themes": [
+        "confessions"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} rates their urge to check a partner's phone a 3/10. Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "/10"
+      },
+      "reference": 3,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "confess.secret-keeper",
+      "themes": [
+        "confessions"
+      ],
+      "format": "player",
+      "prompt": "Who here knows {target}'s biggest secret?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "confess.trust-least",
+      "themes": [
+        "confessions"
+      ],
+      "format": "player",
+      "prompt": "Who here would {target} trust least with a secret?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "confess.rank-confess",
+      "themes": [
+        "confessions"
+      ],
+      "format": "ranking",
+      "prompt": "Rank what {target} would rather confess, easiest first:",
+      "answers": [
+        "Their search history",
+        "Their screen time",
+        "Their bank balance",
+        "Their last text"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "confess.rank-lies",
+      "themes": [
+        "confessions"
+      ],
+      "format": "ranking",
+      "prompt": "Rank these lies the way {target} tells them, most often first:",
+      "answers": [
+        "\"I'm almost there\"",
+        "\"I've read the terms and conditions\"",
+        "\"I'm not mad\"",
+        "\"I'll do it tomorrow\""
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "confess.date-lie",
+      "themes": [
+        "confessions"
+      ],
+      "format": "tiles",
+      "prompt": "{target} lies on a dating profile about…",
+      "answers": [
+        "Their height",
+        "Their age",
+        "Their hobbies",
+        "Nothing, brutally honest"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ],
+      "tags": [
+        "spicy"
+      ]
+    },
+    {
+      "id": "confess.kiss",
+      "themes": [
+        "confessions"
+      ],
+      "format": "tiles",
+      "prompt": "Where was {target}'s most awkward kiss?",
+      "answers": [
+        "At a party",
+        "In front of their parents",
+        "On a first date",
+        "They'll take it to the grave"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ],
+      "tags": [
+        "spicy"
+      ]
+    },
+    {
+      "id": "confess.flirt-taken",
+      "themes": [
+        "confessions"
+      ],
+      "format": "scale",
+      "prompt": "How likely is {target} to flirt their way out of a parking ticket, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "never",
+        "max": "already did it"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ],
+      "tags": [
+        "spicy"
+      ]
+    }
+  ]
+}
