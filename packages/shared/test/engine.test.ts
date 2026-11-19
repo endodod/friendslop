@@ -689,3 +689,27 @@ describe("full games", () => {
     });
   }
 });
+
+describe("top-bar log", () => {
+  it("item use says what it did; star and shop buys are tagged; other entries aren't", () => {
+    const h = new Harness(2);
+    toTurnStart(h);
+    const pid = h.active();
+    const other = h.g.order.find((p) => p !== pid)!;
+    h.room.game!.players[other].coins = 30;
+    h.room.game!.players[pid].items.push("steal");
+    h.act({ type: "useItem", playerId: pid, itemId: "steal", targetId: other });
+    const last = h.g.log[h.g.log.length - 1];
+    expect(last.kind).toBe("item");
+    expect(last.text).toMatch(/used Steal on .+: took \d+ coins\./);
+
+    h.room.game!.starTileId = "m1";
+    h.room.game!.players[pid].coins = 40;
+    rollExactly(h, 1);
+    h.timeout();
+    h.act({ type: "starBuy", playerId: pid, buy: true });
+    const star = h.g.log.filter((l) => l.kind === "star");
+    expect(star.at(-1)!.text).toMatch(/bought a star for \d+ coins/);
+    expect(h.g.log.filter((l) => !l.kind).every((l) => !/bought|used/.test(l.text))).toBe(true);
+  });
+});

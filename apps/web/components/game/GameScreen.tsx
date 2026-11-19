@@ -1,7 +1,8 @@
 "use client";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChatPanel } from "../ChatPanel";
-import { Flag, LogOut, Map as MapIcon, Pause, Play, X } from "lucide-react";
+import { ChevronDown, Flag, LogOut, Map as MapIcon, Pause, Play, Users, X } from "lucide-react";
+import type { PublicGameState } from "@party-game/shared";
 import { setGamePaused } from "@party-game/minigames/client";
 import { useEffect, useState } from "react";
 import { useStore } from "@/lib/store";
@@ -111,7 +112,9 @@ function TopBar({ compact }: { compact?: boolean }) {
   const me = playerId ? g.players[playerId] : null;
   const active = players[g.order[g.activeIndex]];
   return (
-    <header className="flex items-center gap-1 px-2 py-2 sm:gap-3 sm:px-3">
+    <header className="flex flex-col">
+    <div className={`grid items-center gap-1 px-2 py-2 sm:gap-3 sm:px-3 ${compact ? "grid-cols-[1fr_auto]" : "grid-cols-[1fr_minmax(0,auto)_1fr]"}`}>
+      <div className="flex min-w-0 items-center gap-1 sm:gap-3">
       <span className="min-w-0 truncate whitespace-nowrap rounded-xl bg-panel-2 px-2 py-1 font-display sm:px-3">
         {g.mode === "questionDebug" ? "Questions" : g.mode === "minigameDebug" ? "Mini-games" : g.turnCount > 0 ? `Round ${g.round}/${g.turnCount}` : `Round ${g.round}`}
       </span>
@@ -122,7 +125,9 @@ function TopBar({ compact }: { compact?: boolean }) {
         <span className="truncate font-display text-muted">{active.name}&apos;s turn</span>
       )}
       {g.mode === "board" && g.phase !== "podium" && <TurnOrder />}
-      <span className="flex-1" />
+      </div>
+      {!compact && <LastAction />}
+      <div className="flex items-center justify-end gap-1 sm:gap-3">
       {me && (
         <span className="flex items-center gap-2 rounded-xl bg-panel-2 px-2 py-1 sm:gap-3 sm:px-3">
           <StarCount value={me.stars} size={18} />
@@ -166,7 +171,64 @@ function TopBar({ compact }: { compact?: boolean }) {
           <LogOut size={20} />
         </button>
       )}
+      </div>
+    </div>
+    {compact && <LastAction className="mx-2 mb-2" />}
     </header>
+  );
+}
+
+/** The most recent item use, item buy or star buy, centered in the top bar. */
+function LastAction({ className = "" }: { className?: string }) {
+  const entry = useStore((s) => {
+    const log = s.pub?.game?.log ?? [];
+    for (let i = log.length - 1; i >= 0; i--) if (log[i].kind) return log[i];
+    return null;
+  });
+  const players = usePlayers();
+  if (!entry) return <span className={className} />;
+  const p = entry.playerId ? players[entry.playerId] : undefined;
+  return (
+    <div className={`flex min-w-0 justify-center ${className}`} aria-live="polite" data-testid="last-action">
+      <AnimatePresence mode="wait">
+        <motion.span
+          key={entry.at + entry.text}
+          initial={{ y: -10, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: 10, opacity: 0 }}
+          className="flex min-w-0 max-w-full items-center gap-2 rounded-xl bg-panel-2 px-3 py-1 text-sm"
+          title={entry.text}
+        >
+          {entry.kind === "star" ? (
+            <Icon id="star" size={16} className="shrink-0 text-[#ffe066]" />
+          ) : p ? (
+            <Avatar player={p} size={20} />
+          ) : null}
+          <span className="truncate">{entry.text}</span>
+        </motion.span>
+      </AnimatePresence>
+    </div>
+  );
+}
+
+/** Player list floating over the top-left of the map. Collapsible so it never hides tiles for long. */
+function BoardPlayers({ game }: { game: PublicGameState }) {
+  const [open, setOpen] = useState(true);
+  return (
+    <div className="pointer-events-none absolute left-2 top-2 z-10 flex max-h-[calc(100%-1rem)] w-56 flex-col gap-1">
+      <button
+        className="pointer-events-auto flex items-center gap-1 self-start rounded-xl bg-bg/80 px-2 py-1 font-display text-sm text-muted backdrop-blur"
+        aria-expanded={open}
+        onClick={() => setOpen(!open)}
+      >
+        <Users size={14} /> Players <ChevronDown size={14} className={`transition-transform ${open ? "rotate-180" : ""}`} />
+      </button>
+      {open && (
+        <div className="pointer-events-auto min-h-0 overflow-y-auto">
+          <Scoreboard game={game} overlay />
+        </div>
+      )}
+    </div>
   );
 }
 
@@ -272,6 +334,7 @@ function GameScreenInner() {
         <div className="grid min-h-0 flex-1 grid-cols-[1fr_340px] gap-4 px-4 pb-4">
           <div className="relative min-h-0 rounded-3xl bg-bg-2/60">
             {g.mode === "board" && boardEl}
+            {g.mode === "board" && !focus && <BoardPlayers game={g} />}
             <AnimatePresence>
               {focus && (
                 <motion.div
@@ -287,15 +350,11 @@ function GameScreenInner() {
               )}
             </AnimatePresence>
           </div>
-          <aside className="flex min-h-0 flex-col gap-4 overflow-y-auto">
-            <Scoreboard game={g} />
-            {!focus && (
-              <div className="card p-4">
-                <PhasePanel board={board} display />
-              </div>
-            )}
-            <Log />
-            <ChatPanel />
+          <aside className="grid min-h-0 grid-rows-[minmax(0,3fr)_minmax(0,2fr)] gap-4">
+            <section className="card min-h-0 overflow-y-auto p-4">
+              {focus || g.mode !== "board" ? <Scoreboard game={g} /> : <PhasePanel board={board} display />}
+            </section>
+            <ChatPanel height="h-full" />
           </aside>
         </div>
       </main>
@@ -317,7 +376,6 @@ function GameScreenInner() {
               <MapIcon size={18} /> Show board
             </button>
           )}
-          <Log />
           <ChatPanel />
         </div>
         <AnimatePresence>
@@ -351,14 +409,16 @@ function GameScreenInner() {
                 <FocusContent display={false} />
               </div>
             ) : (
-              boardEl
+              <>
+                {boardEl}
+                {g.mode === "board" && <BoardPlayers game={g} />}
+              </>
             )}
           </div>
-          <aside className="flex min-h-0 flex-col gap-4 overflow-y-auto pb-4">
-            {!focus && <section className="card p-4">{panel}</section>}
-            <Scoreboard game={g} compact />
-            <Log />
-            <ChatPanel />
+          {/* Fixed split: the turn panel (dice, shop, star…) never grows; it scrolls inside. */}
+          <aside className="grid min-h-0 grid-rows-[minmax(0,3fr)_minmax(0,2fr)] gap-4">
+            <section className="card min-h-0 overflow-y-auto p-4">{focus ? <Scoreboard game={g} compact /> : panel}</section>
+            <ChatPanel height="h-full" />
           </aside>
         </div>
       </main>
@@ -372,27 +432,8 @@ function GameScreenInner() {
       <div className="flex flex-1 flex-col gap-3 px-3 pb-6">
         <section className="card p-4">{panel}</section>
         {!focus && <Scoreboard game={g} compact />}
-        <Log />
         <ChatPanel />
       </div>
     </main>
-  );
-}
-
-function Log() {
-  const log = useStore((s) => s.pub?.game?.log ?? []);
-  if (!log.length) return null;
-  return (
-    <section className="card p-3">
-      <h3 className="mb-1 font-display text-muted">What happened</h3>
-      <ul className="flex flex-col gap-1 text-sm">
-        {log
-          .slice(-5)
-          .reverse()
-          .map((l) => (
-            <li key={l.at + l.text}>{l.text}</li>
-          ))}
-      </ul>
-    </section>
   );
 }

@@ -6,7 +6,7 @@ describe("star placement", () => {
   it("safe zone grows with the map size", () => {
     const zones = Object.fromEntries(content.boards.map((b) => [b.id, starSafeZone(b)]));
     expect(zones.heartbeat).toBe(3); // 25 tiles
-    expect(zones["island-hopper"]).toBe(5); // 53 tiles
+    expect(zones["island-hopper"]).toBe(4); // 37 tiles
     for (const z of Object.values(zones)) expect(z).toBeGreaterThanOrEqual(2);
   });
 

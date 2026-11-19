@@ -136,3 +136,9 @@ Defaults picked where the build prompt left room, or where the environment force
   `max(2, round(tiles / 10))` steps after it, and never goes back to a tile it already used this game until it has
   visited every allowed tile (then the history resets). Landing on it: buy/decline first, then the tile's effect.
   Walking past it on a Shop: star offer first, then the shop.
+- **Game screen layout (wide):** the player list floats over the top-left of the map (collapsible). The right
+  column is a fixed split: turn panel (dice, shop, star…) on top, scrolling inside so it never grows, chat below.
+  The "What happened" card is gone; the top bar shows just the latest item use (with what it did), item buy or
+  star buy, centered. Log entries carry a `kind` for this; others stay in the state but aren't shown.
+- **Junction highlight:** only the roads leaving the junction you stand on light up, not every road into the
+  option tiles.

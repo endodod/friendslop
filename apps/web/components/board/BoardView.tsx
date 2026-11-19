@@ -163,6 +163,9 @@ export function BoardView({ board, game, players, follow, selectable = [], onSel
     [board],
   );
   const activeTile = pos[activeId];
+  // Only the ways out of the junction the player stands on are highlighted, never other roads into those tiles.
+  const fork = selectable.length ? (game.junction?.tileId ?? null) : null;
+  const isChoice = (from: string, to: string) => from === fork && selectable.includes(to);
   const steppedOn = hopping ? pos[hopping] : null;
 
   return (
@@ -262,7 +265,7 @@ export function BoardView({ board, game, players, follow, selectable = [], onSel
           {edges.map(([a0, b0]) => {
             const a = xy(a0);
             const b = xy(b0);
-            const sel = selectable.includes(b0);
+            const sel = isChoice(a0, b0);
             return (
               <line key={`road-${a0}-${b0}`} x1={a.x} y1={a.y} x2={b.x} y2={b.y} stroke={sel ? "#ffc933" : "#433c72"} strokeWidth={sel ? 24 : 20} />
             );
@@ -292,7 +295,7 @@ export function BoardView({ board, game, players, follow, selectable = [], onSel
         {board.tiles.flatMap((t) =>
           t.next.map((n) => {
             if (t.next.length < 2) return null;
-            const sel = selectable.includes(n);
+            const sel = isChoice(t.id, n);
             const a = xy(t.id);
             const b = xy(n);
             const len = Math.hypot(b.x - a.x, b.y - a.y) || 1;

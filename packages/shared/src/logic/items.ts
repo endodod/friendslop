@@ -2,7 +2,7 @@ import { GAME_CONFIG } from "../config/game";
 import type { ContentBundle, Item } from "../content/schemas";
 import { emit, type Step } from "../engine/context";
 import { fail } from "../engine/errors";
-import type { GameState, PlayerId } from "../engine/types";
+import type { GameLogEntry, GameState, PlayerId } from "../engine/types";
 import { localize } from "../i18n";
 import { shuffle, weightedPick } from "../rng";
 import { changeCoins, changeStars, transferCoins } from "./economy";
@@ -54,36 +54,32 @@ export function tryShield(g: GameState, s: Step, playerId: PlayerId): boolean {
   return true;
 }
 
-export function log(g: GameState, s: Step, text: string, playerId?: PlayerId) {
-  g.log.push({ at: s.ctx.now, text, playerId });
+export function log(g: GameState, s: Step, text: string, playerId?: PlayerId, kind?: GameLogEntry["kind"]) {
+  g.log.push({ at: s.ctx.now, text, playerId, ...(kind ? { kind } : {}) });
   if (g.log.length > 30) g.log.splice(0, g.log.length - 30);
 }
 
 /**
  * Apply an item used at turn start. Question-time items (peek, wide tolerance) are applied by
  * the question round. Validation of phase/ownership happens in the engine.
+ * Returns a short description of what it did (for the game log).
  */
-export function applyTurnStartItem(g: GameState, s: Step, playerId: PlayerId, item: Item, targetId?: PlayerId) {
-  const names = (id: PlayerId) => id;
-  void names;
+export function applyTurnStartItem(g: GameState, s: Step, playerId: PlayerId, item: Item, targetId?: PlayerId): string {
   const p = g.players[playerId];
   switch (item.effect) {
     case "doubleDice":
     case "customDice":
       if (g.pendingDice) fail("INVALID_INPUT", "You already changed your dice this turn.");
       g.pendingDice = item.effect === "doubleDice" ? { kind: "double", count: item.params.dice ?? 2 } : { kind: "custom" };
-      break;
+      return item.effect === "doubleDice" ? `rolls ${item.params.dice ?? 2} dice this turn` : "picks their own roll";
     case "steal": {
       if (!targetId || targetId === playerId || !g.players[targetId]) fail("INVALID_INPUT", "Pick another player.");
-      if (tryShield(g, s, targetId)) {
-        log(g, s, `A shield blocked the steal!`, targetId);
-        break;
-      }
+      if (tryShield(g, s, targetId)) return "a Shield blocked it";
       const taken = transferCoins(g, s, targetId, playerId, item.params.amount ?? GAME_CONFIG.items.stealCoins, "steal");
       p.stats.steals += taken > 0 ? 1 : 0;
       g.players[targetId].stats.stolenFrom += taken > 0 ? 1 : 0;
       emit(s, { type: "sfx", id: "steal" });
-      break;
+      return `took ${taken} coins`;
     }
     case "warpToStar": {
       // Land right in front of the star; your roll then (very likely) passes it.
@@ -93,7 +89,7 @@ export function applyTurnStartItem(g: GameState, s: Step, playerId: PlayerId, it
       p.tileId = before[Math.floor(s.ctx.rng() * before.length)];
       emit(s, { type: "tokenTeleported", playerId, tileId: p.tileId });
       emit(s, { type: "sfx", id: "star" });
-      break;
+      return "warped right in front of the star";
     }
     case "coinMagnet": {
       // Pull coins from everyone else (Shields block it for their owner).
@@ -103,22 +99,18 @@ export function applyTurnStartItem(g: GameState, s: Step, playerId: PlayerId, it
         total += transferCoins(g, s, other, playerId, item.params.amount ?? 3, "steal");
       }
       emit(s, { type: "sfx", id: "steal" });
-      log(g, s, `Coin Magnet pulled ${total} coins!`, playerId);
-      break;
+      return `pulled ${total} coins from everyone`;
     }
     case "stealStar": {
       if (!targetId || targetId === playerId || !g.players[targetId]) fail("INVALID_INPUT", "Pick another player.");
       if (g.players[targetId].stars < 1) fail("INVALID_INPUT", "They don't have a star to steal.");
-      if (tryShield(g, s, targetId)) {
-        log(g, s, "A shield saved their star!", targetId);
-        break;
-      }
+      if (tryShield(g, s, targetId)) return "a Shield saved their star";
       changeStars(g, s, targetId, -1, "stolen");
       changeStars(g, s, playerId, 1, "stolen");
       p.stats.steals++;
       g.players[targetId].stats.stolenFrom++;
       emit(s, { type: "sfx", id: "star" });
-      break;
+      return "stole a star";
     }
     case "bankHeist": {
       if (!Object.values(g.tileTypes).includes("bank")) fail("INVALID_INPUT", "There's no Piggy Bank on this map.");
@@ -127,23 +119,19 @@ export function applyTurnStartItem(g: GameState, s: Step, playerId: PlayerId, it
       g.bank = 0;
       changeCoins(g, s, playerId, pot, "tile:bank");
       emit(s, { type: "sfx", id: "fanfare" });
-      log(g, s, `Bank Heist! ${pot} coins grabbed from the Piggy Bank.`, playerId);
-      break;
+      return `grabbed ${pot} coins from the Piggy Bank`;
     }
     case "sprint": {
       if (g.diceBonus) fail("INVALID_INPUT", "You're already sprinting this turn.");
       g.diceBonus = item.params.bonus ?? 3;
-      break;
+      return `+${g.diceBonus} steps this turn`;
     }
     case "pushBack":
     case "freeze":
     case "swapPlaces": {
       if (!targetId || targetId === playerId || !g.players[targetId]) fail("INVALID_INPUT", "Pick another player.");
       const victim = g.players[targetId];
-      if (tryShield(g, s, targetId)) {
-        log(g, s, "A shield blocked it!", targetId);
-        break;
-      }
+      if (tryShield(g, s, targetId)) return "a Shield blocked it";
       const board = getBoard(s.ctx.content, g.boardId);
       if (item.effect === "pushBack") {
         const path = walkBack(board, victim.tileId, item.params.steps ?? 4, s.ctx.rng);
@@ -152,23 +140,25 @@ export function applyTurnStartItem(g: GameState, s: Step, playerId: PlayerId, it
           emit(s, { type: "tokenMoved", playerId: targetId, path });
         }
         emit(s, { type: "sfx", id: "bad" });
+        return `pushed them back ${path.length} ${path.length === 1 ? "tile" : "tiles"}`;
       } else if (item.effect === "freeze") {
         if (victim.effects.frozen) fail("INVALID_INPUT", "They're already frozen.");
         victim.effects.frozen = true;
         emit(s, { type: "sfx", id: "shield" });
+        return "they skip their next turn";
       } else {
         [p.tileId, victim.tileId] = [victim.tileId, p.tileId];
         emit(s, { type: "tokenTeleported", playerId, tileId: p.tileId });
         emit(s, { type: "tokenTeleported", playerId: targetId, tileId: victim.tileId });
         emit(s, { type: "sfx", id: "whoosh" });
+        return "swapped places";
       }
-      break;
     }
     case "pickTarget":
       if (!targetId || !g.players[targetId]) fail("INVALID_INPUT", "Pick a player.");
       g.targetOverride = { by: playerId, targetId };
-      break;
+      return "the next question will be about them";
     default:
-      fail("INVALID_INPUT", `${localize(item.name)} can't be used now.`);
+      return fail("INVALID_INPUT", `${localize(item.name)} can't be used now.`);
   }
 }

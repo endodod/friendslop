@@ -10,7 +10,18 @@ import { Avatar, CoinCount, CursedBadge, Icon, StarCount, useIsHost, usePlayers 
 import { CoinDelta } from "../fx";
 
 /** Player chips: stars, coins, items held. Ordered by current standing. */
-export function Scoreboard({ game, compact, highlight }: { game: PublicGameState; compact?: boolean; highlight?: string | null }) {
+export function Scoreboard({
+  game,
+  compact,
+  highlight,
+  overlay,
+}: {
+  game: PublicGameState;
+  compact?: boolean;
+  highlight?: string | null;
+  /** Small single-column version floating over the map. */
+  overlay?: boolean;
+}) {
   const players = usePlayers();
   const isHost = useIsHost();
   const me = useStore((s) => s.playerId);
@@ -18,7 +29,7 @@ export function Scoreboard({ game, compact, highlight }: { game: PublicGameState
   const activeId = game.order[game.activeIndex];
   const [openId, setOpenId] = useState<string | null>(null);
   return (
-    <ol className={`grid gap-2 ${compact ? "grid-cols-2" : "grid-cols-2 lg:grid-cols-1"}`} aria-label="Scoreboard">
+    <ol className={`grid ${overlay ? "grid-cols-1 gap-1" : compact ? "grid-cols-2 gap-2" : "grid-cols-2 gap-2 lg:grid-cols-1"}`} aria-label="Scoreboard">
       {ranking.map(({ playerId, rank }) => {
         const p = players[playerId];
         const gp = game.players[playerId];
@@ -28,12 +39,14 @@ export function Scoreboard({ game, compact, highlight }: { game: PublicGameState
           <motion.li
             layout
             key={playerId}
-            className={`relative flex flex-wrap items-center gap-2 rounded-2xl p-2 ${active ? "bg-panel-2" : "bg-bg-2"} ${openId === playerId ? "col-span-full" : ""}`}
+            className={`relative flex flex-wrap items-center rounded-2xl ${overlay ? "gap-1.5 p-1.5 text-sm backdrop-blur" : "gap-2 p-2"} ${
+              active ? (overlay ? "bg-panel-2/90" : "bg-panel-2") : overlay ? "bg-bg/80" : "bg-bg-2"
+            } ${openId === playerId ? "col-span-full" : ""}`}
             style={{ boxShadow: active || highlight === playerId ? `inset 0 0 0 3px ${colorHex(p.color)}` : undefined }}
           >
             <span className="w-5 text-center font-display text-muted">{rank}</span>
             <span className="relative">
-              <Avatar player={p} size={compact ? 32 : 40} dim={!p.connected} />
+              <Avatar player={p} size={overlay ? 26 : compact ? 32 : 40} dim={!p.connected} />
               {!p.connected && <WifiOff size={14} className="absolute -bottom-1 -right-1 text-bad" aria-label="disconnected" />}
             </span>
             <button
@@ -82,7 +95,7 @@ export function Scoreboard({ game, compact, highlight }: { game: PublicGameState
                 <UserX size={18} />
               </button>
             )}
-            <CoinDelta playerId={playerId} />
+            <CoinDelta playerId={playerId} inline={overlay} />
             <AnimatePresence initial={false}>
               {openId === playerId && (
                 <motion.div

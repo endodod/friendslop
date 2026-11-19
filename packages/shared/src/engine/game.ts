@@ -758,7 +758,7 @@ function resolveStar(d: Draft, buy: boolean) {
     changeCoins(g, s, pid, -cost, "star");
     changeStars(g, s, pid, 1, "bought");
     p.stats.starsBought++;
-    log(g, s, `${playerName(d, pid)} bought a star!`, pid);
+    log(g, s, `${playerName(d, pid)} bought a star for ${cost} coins!`, pid, "star");
     emit(s, { type: "sfx", id: "star" });
     placeStar(getBoard(s.ctx.content, g.boardId), g, s.ctx.rng);
     emit(s, { type: "starMoved", tileId: g.starTileId });
@@ -816,6 +816,7 @@ function shopBuy(d: Draft, pid: PlayerId, itemId: string) {
   changeCoins(g, s, pid, -price, "shop");
   p.items.push(itemId);
   g.shop.bought.push(itemId);
+  log(g, s, `${playerName(d, pid)} bought ${localize(item.name)} for ${price} coins.`, pid, "shop");
   emit(s, { type: "itemBought", playerId: pid, itemId });
   emit(s, { type: "sfx", id: "buy" });
 }
@@ -831,7 +832,8 @@ function useItem(d: Draft, pid: PlayerId, itemId: string, targetId?: PlayerId) {
   if (item.useTiming === "turnStart") {
     requirePhase(d, "turnStart");
     requireActive(d, pid);
-    applyTurnStartItem(g, s, pid, item, targetId);
+    const did = applyTurnStartItem(g, s, pid, item, targetId);
+    logItemUse(d, pid, localize(item.name), targetId, did);
     if (checkStarGoal(d, pid)) {
       p.items.splice(p.items.indexOf(itemId), 1);
       return;
@@ -844,21 +846,30 @@ function useItem(d: Draft, pid: PlayerId, itemId: string, targetId?: PlayerId) {
     if (!q.participants.includes(pid) || q.targetId === pid) fail("INVALID_INPUT", "Only guessers can use this.");
     if (q.answers[pid]) fail("INVALID_INPUT", "You already locked in.");
     const boost = (q.boosts[pid] ??= {});
+    let did: string;
     if (item.effect === "peek") {
       if (!getFormat(q.question.format).discrete) fail("INVALID_INPUT", "Peek only works on multiple-choice questions.");
       boost.peek = true;
+      did = "ruled out wrong answers";
     } else if (item.effect === "luckyCharm") {
       if (!q.payCoins) fail("INVALID_INPUT", "No coins in this question to double.");
       boost.double = true;
+      did = "doubles their coins for this question";
     } else if (item.effect === "wideTolerance") {
       if (!getFormat(q.question.format).usesTolerance) fail("INVALID_INPUT", "Only works on number questions.");
       boost.wide = true;
+      did = "gets a wider margin on this guess";
     } else fail("INVALID_INPUT", "Can't use that now.");
+    logItemUse(d, pid, localize(item.name), undefined, did);
   }
   p.items.splice(idx, 1);
   p.stats.itemsUsed++;
   emit(s, { type: "itemUsed", playerId: pid, itemId, targetId });
-  log(g, s, `${playerName(d, pid)} used ${localize(item.name)}${targetId ? ` on ${playerName(d, targetId)}` : ""}.`, pid);
+}
+
+function logItemUse(d: Draft, pid: PlayerId, itemName: string, targetId: PlayerId | undefined, did: string) {
+  const on = targetId ? ` on ${playerName(d, targetId)}` : "";
+  log(d.g, d.s, `${playerName(d, pid)} used ${itemName}${on}: ${did}.`, pid, "item");
 }
 
 function turnEnd(d: Draft) {

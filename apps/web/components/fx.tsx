@@ -108,7 +108,8 @@ export function useScreenShake(myId: string | null) {
 }
 
 /** Floating +N / −N coin deltas next to a player chip. */
-export function CoinDelta({ playerId }: { playerId: string }) {
+/** `inline`: stays inside its own row (tight lists, e.g. the player list over the map). */
+export function CoinDelta({ playerId, inline }: { playerId: string; inline?: boolean }) {
   const [items, setItems] = useState<{ id: number; delta: number }[]>([]);
   useEffect(
     () =>
@@ -123,14 +124,14 @@ export function CoinDelta({ playerId }: { playerId: string }) {
     [playerId],
   );
   return (
-    <span className="pointer-events-none absolute -top-2 right-1 z-10" aria-live="polite">
+    <span className={`pointer-events-none absolute right-1 z-10 ${inline ? "top-1/2" : "-top-2"}`} aria-live="polite">
       <AnimatePresence>
         {items.map((i) => (
           <motion.span
             key={i.id}
-            initial={{ y: 10, opacity: 0, scale: 0.6 }}
-            animate={{ y: -26, opacity: 1, scale: 1.2 }}
-            exit={{ y: -46, opacity: 0 }}
+            initial={inline ? { y: -6, opacity: 0, scale: 0.6 } : { y: 10, opacity: 0, scale: 0.6 }}
+            animate={inline ? { y: -14, opacity: 1, scale: 1.1 } : { y: -26, opacity: 1, scale: 1.2 }}
+            exit={inline ? { y: -20, opacity: 0 } : { y: -46, opacity: 0 }}
             transition={{ duration: 0.6 }}
             className={`absolute right-0 whitespace-nowrap font-display text-xl drop-shadow-[0_2px_0_#000] ${
               i.delta > 0 ? "text-accent" : "text-bad"

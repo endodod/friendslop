@@ -277,6 +277,8 @@ export interface GameLogEntry {
   at: number;
   text: string;
   playerId?: PlayerId;
+  /** Entries with a kind are shown in the top bar: items used/bought and stars bought. */
+  kind?: "item" | "shop" | "star";
 }
 
 export interface BonusStarAward {
