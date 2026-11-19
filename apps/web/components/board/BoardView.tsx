@@ -14,8 +14,8 @@ const TILE_R = 34;
 /** Each map gets its own accent so boards feel distinct (like the mini-game arenas). */
 const BOARD_TONES: Record<string, string> = {
   classic: "#7b5cff",
-  "figure-eight": "#3d8bff",
-  ladder: "#2fd27a",
+  heartbeat: "#ff5c8a",
+  "island-hopper": "#22c3c9",
   metropolis: "#ff8a3d",
   orbit: "#b26bff",
 };

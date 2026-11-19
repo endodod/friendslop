@@ -7,6 +7,10 @@
  "description": "A loop with two shortcuts. Choose wisely.",
  "startTileId": "m0",
  "aspect": 1.6,
+ "recommendedPlayers": {
+  "min": 2,
+  "max": 6
+ },
  "tiles": [
   {
    "id": "m0",

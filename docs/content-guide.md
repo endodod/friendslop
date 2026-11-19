@@ -165,8 +165,8 @@ SVG with the board's `aspect` ratio (width / height).
 - The lint check requires every tile to be reachable from the start and to lead back to it, at
   least 3 star-eligible tiles, and only known tile types.
 - Every board in the folder shows up in the lobby's map picker (with a preview). The first board is the default.
-- Shipped maps: Friendship Loop (classic), Figure Eight, The Ladder, Metropolis (4–8 players), Orbit. The lobby also offers **Random**, which picks one of them when the game starts.
-- Optional `recommendedPlayers: { "min": 4, "max": 8 }` is shown on the map card.
+- Shipped maps: Heartbeat (2–4 players), Friendship Loop (classic, 2–6), Orbit (3–8), Metropolis (4–8), Island Hopper (5–8). The lobby also offers **Random**, which picks one of them when the game starts.
+- `recommendedPlayers: { "min": 4, "max": 8 }` is shown on the map card. Every shipped map sets it.
 - Players can tune how often each tile type appears (lobby → Tile mix: Off / Few / Normal / Many).
   "Normal" is the board as designed; extra tiles are taken from blue tiles, and at least
   `GAME_CONFIG.tiles.minFillerTiles` blue tiles always stay for the star.

@@ -1,0 +1,245 @@
+{
+  "id": "heartbeat",
+  "name": {
+    "en": "Heartbeat",
+    "de": "Herzschlag"
+  },
+  "description": {
+    "en": "A small heart-shaped loop. At the top you can cut straight through the middle, past a thief. Made for 2–4 players.",
+    "de": "Eine kleine Schleife in Herzform. Oben kannst du mitten hindurch abkürzen, vorbei an einem Dieb. Für 2–4 Spieler."
+  },
+  "startTileId": "h0",
+  "aspect": 1.6,
+  "recommendedPlayers": {
+    "min": 2,
+    "max": 4
+  },
+  "tiles": [
+    {
+      "id": "h0",
+      "type": "start",
+      "x": 0.5,
+      "y": 0.9244,
+      "next": [
+        "h1"
+      ]
+    },
+    {
+      "id": "h1",
+      "type": "blue",
+      "x": 0.5533,
+      "y": 0.8054,
+      "next": [
+        "h2"
+      ]
+    },
+    {
+      "id": "h2",
+      "type": "question",
+      "x": 0.6268,
+      "y": 0.7144,
+      "next": [
+        "h3"
+      ]
+    },
+    {
+      "id": "h3",
+      "type": "red",
+      "x": 0.7037,
+      "y": 0.6307,
+      "next": [
+        "h4"
+      ]
+    },
+    {
+      "id": "h4",
+      "type": "blue",
+      "x": 0.7781,
+      "y": 0.5416,
+      "next": [
+        "h5"
+      ]
+    },
+    {
+      "id": "h5",
+      "type": "item",
+      "x": 0.84,
+      "y": 0.4314,
+      "next": [
+        "h6"
+      ]
+    },
+    {
+      "id": "h6",
+      "type": "question",
+      "x": 0.8574,
+      "y": 0.2891,
+      "next": [
+        "h7"
+      ]
+    },
+    {
+      "id": "h7",
+      "type": "shop",
+      "x": 0.8062,
+      "y": 0.1685,
+      "next": [
+        "h8"
+      ]
+    },
+    {
+      "id": "h8",
+      "type": "blue",
+      "x": 0.7221,
+      "y": 0.1078,
+      "next": [
+        "h9"
+      ]
+    },
+    {
+      "id": "h9",
+      "type": "lucky",
+      "x": 0.6298,
+      "y": 0.1083,
+      "next": [
+        "h10"
+      ]
+    },
+    {
+      "id": "h10",
+      "type": "question",
+      "x": 0.5472,
+      "y": 0.1731,
+      "next": [
+        "h11"
+      ]
+    },
+    {
+      "id": "h11",
+      "type": "blue",
+      "x": 0.5,
+      "y": 0.2974,
+      "next": [
+        "h12",
+        "c0"
+      ]
+    },
+    {
+      "id": "h12",
+      "type": "event",
+      "x": 0.4527,
+      "y": 0.173,
+      "next": [
+        "h13"
+      ]
+    },
+    {
+      "id": "h13",
+      "type": "blue",
+      "x": 0.37,
+      "y": 0.1083,
+      "next": [
+        "h14"
+      ]
+    },
+    {
+      "id": "h14",
+      "type": "question",
+      "x": 0.2777,
+      "y": 0.1079,
+      "next": [
+        "h15"
+      ]
+    },
+    {
+      "id": "h15",
+      "type": "duel",
+      "x": 0.1937,
+      "y": 0.1686,
+      "next": [
+        "h16"
+      ]
+    },
+    {
+      "id": "h16",
+      "type": "blue",
+      "x": 0.1426,
+      "y": 0.2893,
+      "next": [
+        "h17"
+      ]
+    },
+    {
+      "id": "h17",
+      "type": "red",
+      "x": 0.1601,
+      "y": 0.4316,
+      "next": [
+        "h18"
+      ]
+    },
+    {
+      "id": "h18",
+      "type": "question",
+      "x": 0.222,
+      "y": 0.5418,
+      "next": [
+        "h19"
+      ]
+    },
+    {
+      "id": "h19",
+      "type": "bank",
+      "x": 0.2964,
+      "y": 0.6308,
+      "next": [
+        "h20"
+      ]
+    },
+    {
+      "id": "h20",
+      "type": "blue",
+      "x": 0.3733,
+      "y": 0.7145,
+      "next": [
+        "h21"
+      ]
+    },
+    {
+      "id": "h21",
+      "type": "mind-reader",
+      "x": 0.4468,
+      "y": 0.8056,
+      "next": [
+        "h0"
+      ]
+    },
+    {
+      "id": "c0",
+      "type": "thief",
+      "x": 0.5,
+      "y": 0.4541,
+      "next": [
+        "c1"
+      ]
+    },
+    {
+      "id": "c1",
+      "type": "question",
+      "x": 0.5,
+      "y": 0.6109,
+      "next": [
+        "c2"
+      ]
+    },
+    {
+      "id": "c2",
+      "type": "lucky",
+      "x": 0.5,
+      "y": 0.7676,
+      "next": [
+        "h0"
+      ]
+    }
+  ]
+}
