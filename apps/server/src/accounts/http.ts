@@ -4,6 +4,7 @@ import {
   CredentialsSchema,
   CustomQuestionDraftSchema,
   GameError,
+  PasswordSchema,
   SAVED_QUESTIONS_MAX,
   UsernameSchema,
   buildCustomQuestion,
@@ -15,6 +16,7 @@ import type { User } from "../generated/prisma/client";
 import {
   createSession,
   deleteSession,
+  sessionId,
   hashPassword,
   publicUserSelect,
   toPublicUser,
@@ -174,6 +176,35 @@ export async function handleApi(req: IncomingMessage, res: ServerResponse): Prom
     if (path === "/api/me" && method === "GET") {
       const u = await requireUser(req);
       return send(req, res, 200, { user: toPublicUser(u) }), true;
+    }
+    if (path === "/api/me/username" && method === "PUT") {
+      const u = await requireUser(req);
+      const body = (await readJson(req)) as { username?: unknown };
+      const username = parse(UsernameSchema, body.username);
+      const key = username.toLowerCase();
+      if (key !== u.usernameKey && (await c.user.findUnique({ where: { usernameKey: key }, select: { id: true } })))
+        throw new HttpError(409, "That username is taken.");
+      let updated;
+      try {
+        updated = await c.user.update({ where: { id: u.id }, data: { username, usernameKey: key }, select: publicUserSelect });
+      } catch (e) {
+        if ((e as { code?: string }).code === "P2002") throw new HttpError(409, "That username is taken.");
+        throw e;
+      }
+      void notifyFriends(u.id);
+      return send(req, res, 200, { user: toPublicUser(updated) }), true;
+    }
+    if (path === "/api/me/password" && method === "PUT") {
+      limitAuth(req);
+      const u = await requireUser(req);
+      const body = (await readJson(req)) as { currentPassword?: unknown; newPassword?: unknown };
+      const current = typeof body.currentPassword === "string" ? body.currentPassword : "";
+      if (!(await verifyPassword(current, u.passwordHash))) throw new HttpError(403, "Your current password is wrong.");
+      const next = parse(PasswordSchema, body.newPassword);
+      await c.user.update({ where: { id: u.id }, data: { passwordHash: await hashPassword(next) } });
+      // Sign out every other device; keep this one.
+      await c.session.deleteMany({ where: { userId: u.id, NOT: { id: sessionId(bearer(req)!) } } });
+      return send(req, res, 200, { ok: true }), true;
     }
     if (path === "/api/me/avatar" && method === "PUT") {
       const u = await requireUser(req);

@@ -21,7 +21,7 @@ export async function verifyPassword(password: string, stored: string): Promise<
   return timingSafeEqual(expected, actual);
 }
 
-const sessionId = (token: string) => createHash("sha256").update(token).digest("hex");
+export const sessionId = (token: string) => createHash("sha256").update(token).digest("hex");
 
 /** Create a session and return the bearer token (only its hash is stored). */
 export async function createSession(userId: string): Promise<string> {

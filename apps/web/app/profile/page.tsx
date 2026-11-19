@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { AVATAR_SIZE, type PublicUser } from "@party-game/shared";
 import { api, loadAccount, resizeImage, signOut, useAccount } from "@/lib/account";
+import { AccountSettings } from "@/components/account/AccountSettings";
 import { FriendsManager } from "@/components/account/FriendsManager";
 import { MyQuestions } from "@/components/account/MyQuestions";
 import { StatsGrid } from "@/components/account/StatsGrid";
@@ -130,6 +131,8 @@ export default function ProfilePage() {
       <FriendsManager />
 
       <MyQuestions />
+
+      <AccountSettings user={user} />
     </main>
   );
 }
