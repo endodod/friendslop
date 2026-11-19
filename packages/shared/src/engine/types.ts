@@ -303,6 +303,8 @@ export interface GameState {
   /** Tile types for this game after applying the tile mix setting — tileId → tile type id */
   tileTypes: Record<string, string>;
   starTileId: string;
+  /** Tiles the star has appeared on this game (it never returns to one until it has been everywhere). */
+  starVisited?: string[];
   /** Piggy Bank pot (coins dropped by players walking past). */
   bank: number;
 

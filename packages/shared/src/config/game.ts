@@ -29,12 +29,20 @@ export const GAME_CONFIG = {
     perCycle: { off: 0, few: 1, normal: 1, many: 2 } as Record<string, number>,
   },
 
+  /** Where the star may appear. */
+  star: {
+    /** The star never appears within this many steps of Start: one step per this many tiles on the map… */
+    safeZonePerTiles: 10,
+    /** …but at least this many. */
+    minSafeZone: 2,
+  },
+
   /** Tile mix setting: how often each tile type appears compared to the board's design. */
   tiles: {
     frequency: { off: 0, few: 0.5, normal: 1, many: 1.6 } as Record<string, number>,
     /** Extra tiles for a type the board doesn't have at all, on "many". */
     addWhenAbsent: 2,
-    /** Never turn the board's last filler (blue) tiles into something else: the star needs room. */
+    /** Never turn the board's last filler (blue) tiles into something else. */
     minFillerTiles: 4,
     /** Tile types players can't tune (start/filler) or that do nothing without account linking. */
     notTunable: ["start", "blue", "data"] as string[],

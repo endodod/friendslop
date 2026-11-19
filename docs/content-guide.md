@@ -143,7 +143,10 @@ Effects: `none`, `coins` (`params.amount`, negative to lose), `question`, `data`
 `lucky` (roll a die, win roll × `params.multiplier` coins), `bank` (walking past pays `params.passCost`
 into a shared pot, landing takes the pot), `thief` (steal `params.amount` from a random player; Shield blocks),
 `mindReader` (only the lander guesses about a random other player, coins × `params.multiplier`).
-`starEligible` tiles can host the star. `pacingGroup: "question"` tiles are thinned out on low
+The star can appear on any tile type (`starEligible` is no longer used). It skips Start and the first
+few steps after it (`GAME_CONFIG.star`: one step per 10 tiles, at least 2), and never returns to a tile
+until it has been on every allowed one. Landing on the star offers it first, then the tile's own effect runs.
+`pacingGroup: "question"` tiles are thinned out on low
 question pacing; `"filler"` tiles are turned into question tiles on high pacing.
 
 ## Boards
@@ -162,8 +165,8 @@ SVG with the board's `aspect` ratio (width / height).
 ```
 
 - `next` lists where a token can go; two or more entries make a junction (the player chooses).
-- The lint check requires every tile to be reachable from the start and to lead back to it, at
-  least 3 star-eligible tiles, and only known tile types.
+- The lint check requires every tile to be reachable from the start and to lead back to it, and only
+  known tile types.
 - Every board in the folder shows up in the lobby's map picker (with a preview). The first board is the default.
 - Shipped maps: Heartbeat (2–4 players), Friendship Loop (classic, 2–6), Orbit (3–8), Metropolis (4–8), Island Hopper (5–8). The lobby also offers **Random**, which picks one of them when the game starts.
 - `recommendedPlayers: { "min": 4, "max": 8 }` is shown on the map card. Every shipped map sets it.

@@ -3,7 +3,7 @@ import { GAME_CONFIG } from "../config/game";
 import type { ContentBundle } from "../content/schemas";
 import { getFormat, validateAnswer } from "../formats";
 import { localize } from "../i18n";
-import { getBoard, resolveBoardId, getTile, nextTiles, pickStarTile, tileDef, computeTileTypes } from "../logic/board";
+import { getBoard, resolveBoardId, getTile, nextTiles, placeStar, tileDef, computeTileTypes } from "../logic/board";
 import { changeCoins, itemPrice, changeStars, placementCoins, standings, transferCoins } from "../logic/economy";
 import { applyEvent, drawEvent } from "../logic/events";
 import { applyTurnStartItem, availableItems, getItem, itemDropWeight, log, shopStock, tryShield } from "../logic/items";
@@ -148,6 +148,7 @@ export function createGame(room: RoomState, ctx: EngineContext, mode: GameMode):
     tileTypes,
     bank: 0,
     starTileId: "",
+    starVisited: [],
     dice: null,
     pendingDice: null,
     movement: null,
@@ -166,7 +167,7 @@ export function createGame(room: RoomState, ctx: EngineContext, mode: GameMode):
     log: [],
     ready: [],
   };
-  g.starTileId = pickStarTile(board, content, g, ctx.rng);
+  placeStar(board, g, ctx.rng);
   return g;
 }
 
@@ -612,7 +613,7 @@ function afterMovement(d: Draft) {
 
 function isShopTile(d: Draft, tileId: string): boolean {
   const type = d.g.tileTypes[tileId];
-  return !!type && tileDef(d.s.ctx.content, type).effect === "shop" && tileId !== d.g.starTileId;
+  return !!type && tileDef(d.s.ctx.content, type).effect === "shop";
 }
 
 function canShop(d: Draft, pid: PlayerId): boolean {
@@ -637,11 +638,12 @@ function takeDirection(d: Draft, tileId: string) {
   advanceMovement(d);
 }
 
-function land(d: Draft) {
+/** `starDone`: the star on this tile was already offered; go on with the tile's own effect. */
+function land(d: Draft, starDone = false) {
   const { g, s } = d;
   const pid = activeId(g);
   const p = g.players[pid];
-  if (p.tileId === g.starTileId) {
+  if (p.tileId === g.starTileId && !starDone) {
     g.star = { passing: false };
     return goto(d, "starPurchase", T.starPurchaseMs);
   }
@@ -758,14 +760,22 @@ function resolveStar(d: Draft, buy: boolean) {
     p.stats.starsBought++;
     log(g, s, `${playerName(d, pid)} bought a star!`, pid);
     emit(s, { type: "sfx", id: "star" });
-    g.starTileId = pickStarTile(getBoard(s.ctx.content, g.boardId), s.ctx.content, g, s.ctx.rng);
+    placeStar(getBoard(s.ctx.content, g.boardId), g, s.ctx.rng);
     emit(s, { type: "starMoved", tileId: g.starTileId });
     if (checkStarGoal(d, pid)) return;
   }
   const passing = g.star?.passing;
   g.star = null;
-  if (passing && g.movement && g.movement.remaining > 0) return advanceMovement(d);
-  return turnEnd(d);
+  if (passing && g.movement && g.movement.remaining > 0) {
+    // The star sat on a Shop we're walking past: offer the shop too.
+    if (isShopTile(d, p.tileId) && canShop(d, pid)) {
+      g.shop = { stock: shopStock(s.ctx.content, s, g), bought: [], passing: true };
+      return goto(d, "shop", T.shopMs);
+    }
+    return advanceMovement(d);
+  }
+  // Landed on the star: the tile's own effect still happens afterwards.
+  return land(d, true);
 }
 
 /** Star race: reaching the goal ends the game on the spot. */

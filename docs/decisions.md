@@ -132,3 +132,7 @@ Defaults picked where the build prompt left room, or where the environment force
   Dice included. Matching undoes leetspeak, accents and stretched letters; short/ambiguous words only count as whole
   words, plus a small allowlist (Scunthorpe, Ashkenazi, Shiitake…). Renaming to a clean name in the lobby lifts it.
   Chat is not filtered.
+- **Star placement:** the star can sit on any tile type. It never appears on Start or within
+  `max(2, round(tiles / 10))` steps after it, and never goes back to a tile it already used this game until it has
+  visited every allowed tile (then the history resets). Landing on it: buy/decline first, then the tile's effect.
+  Walking past it on a Shop: star offer first, then the shop.

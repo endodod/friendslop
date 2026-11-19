@@ -76,8 +76,6 @@ export function lintContent(c: ContentBundle): string[] {
       if (!fwd.has(t.id)) problems.push(`board ${b.id}: tile ${t.id} unreachable from start`);
       if (!back.has(t.id)) problems.push(`board ${b.id}: tile ${t.id} is a dead end`);
     }
-    const eligible = b.tiles.filter((t) => c.tiles.find((d) => d.id === t.type)?.starEligible);
-    if (eligible.length < 3) problems.push(`board ${b.id}: needs at least 3 star-eligible tiles`);
   }
   return problems;
 }

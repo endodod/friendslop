@@ -122,7 +122,9 @@ describe("turn flow & movement", () => {
     rollExactly(h, 1);
     h.timeout();
     h.act({ type: "starBuy", playerId: pid, buy: true });
-    expect(h.g.phase).toBe("turnEnd");
+    // The tile under the star still does its thing (blue: +3).
+    expect(h.g.phase).toBe("tileEffect");
+    expect(h.g.players[pid].coins).toBe(30 - 20 + 3);
   });
 
   it("landing on the star without enough coins: nothing bought", () => {
@@ -135,7 +137,8 @@ describe("turn flow & movement", () => {
     expect(h.g.phase).toBe("starPurchase");
     h.timeout();
     expect(h.g.players[pid].stars).toBe(0);
-    expect(h.g.phase).toBe("turnEnd");
+    expect(h.g.phase).toBe("tileEffect");
+    expect(h.g.starTileId).toBe("m1");
   });
 
   it("only the active player can roll", () => {
@@ -374,7 +377,7 @@ describe("items", () => {
     h.timeout();
     h.act({ type: "starBuy", playerId: pid, buy: true });
     expect(h.g.players[pid].stars).toBe(1);
-    expect(h.g.players[pid].coins).toBe(2);
+    expect(h.g.players[pid].coins).toBe(2 + 3); // + the blue tile under the star
     expect(h.g.players[pid].items).not.toContain("star-coupon");
   });
 

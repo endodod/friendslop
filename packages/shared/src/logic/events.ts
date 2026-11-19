@@ -4,7 +4,7 @@ import { emit, type Step } from "../engine/context";
 import type { GameState, PlayerId } from "../engine/types";
 import { localize } from "../i18n";
 import { pick, weightedPick } from "../rng";
-import { getBoard, pickStarTile, walkBack } from "./board";
+import { getBoard, placeStar, walkBack } from "./board";
 import { changeCoins, transferCoins } from "./economy";
 import { tryShield } from "./items";
 
@@ -89,7 +89,7 @@ export function applyEvent(
       return { text: `${n(playerId)} dropped ${lost} coins down a drain.`, affected: [playerId], blocked };
     }
     case "moveStar": {
-      g.starTileId = pickStarTile(board, s.ctx.content, g, rng);
+      placeStar(board, g, rng);
       emit(s, { type: "starMoved", tileId: g.starTileId });
       return { text: `The star flew away to a new spot!`, affected: [], blocked };
     }

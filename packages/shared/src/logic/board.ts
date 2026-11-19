@@ -97,19 +97,50 @@ export function computeTileTypes(
   return types;
 }
 
-export function starEligibleTiles(board: Board, content: ContentBundle, types: Record<string, string>): string[] {
-  return board.tiles
-    .filter((t) => t.id !== board.startTileId && content.tiles.find((d) => d.id === types[t.id])?.starEligible)
-    .map((t) => t.id);
+/** Shortest number of steps from Start to every tile. */
+export function stepsFromStart(board: Board): Map<string, number> {
+  const dist = new Map<string, number>([[board.startTileId, 0]]);
+  const queue = [board.startTileId];
+  while (queue.length) {
+    const cur = queue.shift()!;
+    for (const n of nextTiles(board, cur)) {
+      if (dist.has(n)) continue;
+      dist.set(n, dist.get(cur)! + 1);
+      queue.push(n);
+    }
+  }
+  return dist;
 }
 
-export function pickStarTile(
-  board: Board,
-  content: ContentBundle,
-  game: Pick<GameState, "tileTypes" | "starTileId"> | null,
-  rng: Rng,
-): string {
-  const types = game?.tileTypes ?? Object.fromEntries(board.tiles.map((t) => [t.id, t.type]));
-  const eligible = starEligibleTiles(board, content, types).filter((id) => id !== game?.starTileId);
-  return pick(rng, eligible.length ? eligible : board.tiles.map((t) => t.id));
+/** The star stays out of the first few steps after Start; bigger maps keep a bigger gap. */
+export function starSafeZone(board: Board): number {
+  const cfg = GAME_CONFIG.star;
+  return Math.max(cfg.minSafeZone, Math.round(board.tiles.length / cfg.safeZonePerTiles));
+}
+
+/**
+ * Tiles the star may appear on: any tile type, but not Start, not within the safe zone after Start,
+ * not where it is now and not anywhere it has already been this game. Once it has been everywhere,
+ * the history starts over.
+ */
+export function starCandidates(board: Board, game: Pick<GameState, "starTileId" | "starVisited"> | null): string[] {
+  const dist = stepsFromStart(board);
+  const zone = starSafeZone(board);
+  const open = board.tiles.map((t) => t.id).filter((id) => id !== board.startTileId && (dist.get(id) ?? Infinity) > zone);
+  const notHere = open.filter((id) => id !== game?.starTileId);
+  const fresh = notHere.filter((id) => !game?.starVisited?.includes(id));
+  if (fresh.length) return fresh;
+  if (notHere.length) return notHere;
+  return board.tiles.map((t) => t.id).filter((id) => id !== board.startTileId && id !== game?.starTileId);
+}
+
+/** Move the star to a new tile and remember it, so it never comes back to the same tile. */
+export function placeStar(board: Board, game: Pick<GameState, "starTileId" | "starVisited">, rng: Rng): string {
+  const candidates = starCandidates(board, game);
+  // History exhausted: start a new round of tiles.
+  if (candidates.some((id) => game.starVisited?.includes(id))) game.starVisited = [];
+  const tile = pick(rng, candidates);
+  game.starTileId = tile;
+  game.starVisited = [...(game.starVisited ?? []), tile];
+  return tile;
 }
