@@ -36,8 +36,6 @@ export interface PlayerLike {
   avatar?: string | null;
   /** Server path of a custom profile picture (signed-in players). Shown instead of the icon. */
   photo?: string | null;
-  /** Offensive name: dice only roll 1–3. */
-  cursed?: boolean;
 }
 
 /** Avatar = the player's icon (or initials) in a colored circle. Meaning never by color alone. */
@@ -259,15 +257,3 @@ export function useIsHost(): boolean {
 }
 
 export type { PublicRoomState };
-
-/** Shown next to players with an offensive name: their dice only roll 1–3. */
-export function CursedBadge({ className = "" }: { className?: string }) {
-  return (
-    <span
-      className={`inline-flex shrink-0 items-center gap-1 rounded-full bg-[#8b5cf6]/25 px-2 py-0.5 font-display text-xs text-[#c4b5fd] ${className}`}
-      title="Cursed for an offensive name: dice only roll 1–3"
-    >
-      <Icon id="skull" size={12} /> cursed
-    </span>
-  );
-}

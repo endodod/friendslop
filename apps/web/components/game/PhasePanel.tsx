@@ -2,7 +2,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowRight, Dices, FastForward, ShoppingBag } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { CURSED_DICE_MAX, GAME_CONFIG, itemPrice, localize, starPrice, type Board, type PublicGameState } from "@party-game/shared";
+import { GAME_CONFIG, itemPrice, localize, starPrice, type Board, type PublicGameState } from "@party-game/shared";
 import { clientContent } from "@party-game/content";
 import { useStore } from "@/lib/store";
 import { act } from "@/lib/useRoom";
@@ -134,10 +134,6 @@ function TurnStartPanel({ display }: { display?: boolean }) {
   const { g, isActive, active, players, playerId } = useGameCtx();
   const priv = useStore((s) => s.priv);
   const [customValue, setCustomValue] = useState(6);
-  // Cursed players can only pick up to 3: keep the default in range.
-  useEffect(() => {
-    if (active?.cursed && customValue > CURSED_DICE_MAX) setCustomValue(CURSED_DICE_MAX);
-  }, [active?.cursed, customValue]);
   const [targeting, setTargeting] = useState<string | null>(null);
   // Desktop: Space rolls the dice on your turn.
   const canRoll = isActive && !display && !targeting;
@@ -228,9 +224,8 @@ function TurnStartPanel({ display }: { display?: boolean }) {
       {pending === "custom" ? (
         <div className="flex flex-col gap-2">
           <p className="font-display text-lg">Custom dice: pick your roll</p>
-          {active?.cursed && <p className="text-sm text-[#c4b5fd]">Cursed for your name: only 1–3.</p>}
           <div className="grid grid-cols-6 gap-2">
-            {[1, 2, 3, 4, 5, 6].filter((n) => !active?.cursed || n <= CURSED_DICE_MAX).map((n) => (
+            {[1, 2, 3, 4, 5, 6].map((n) => (
               <button
                 key={n}
                 aria-pressed={customValue === n}

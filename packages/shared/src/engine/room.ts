@@ -1,4 +1,3 @@
-import { isOffensiveName } from "../logic/names";
 import { GAME_CONFIG, PLAYER_COLORS, isPlayerAvatar } from "../config/game";
 import type { ContentBundle } from "../content/schemas";
 import type { Rng } from "../rng";
@@ -87,7 +86,6 @@ export function addPlayer(
     userId: args.account?.userId ?? null,
     username: args.account?.username ?? null,
     photo: args.account?.photo ?? null,
-    cursed: isOffensiveName(name) || isOffensiveName(args.account?.username),
     ready: false,
     connected: true,
     joinedAt: args.now,
@@ -115,8 +113,6 @@ export function setPlayerProfile(
     if (room.players.some((p) => p.id !== playerId && p.name.toLowerCase() === name.toLowerCase()))
       fail("NAME_TAKEN", "That name is taken.");
     out.name = name;
-    const player = room.players.find((p) => p.id === playerId);
-    out.cursed = isOffensiveName(name) || isOffensiveName(player?.username);
   }
   if (patch.color !== undefined) {
     if (!PLAYER_COLORS.some((c) => c.id === patch.color)) fail("INVALID_INPUT", "Unknown color.");

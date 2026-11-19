@@ -1,4 +1,3 @@
-import { CURSED_DICE_MAX } from "../logic/names";
 import { GAME_CONFIG } from "../config/game";
 import type { ContentBundle } from "../content/schemas";
 import { getFormat, validateAnswer } from "../formats";
@@ -522,8 +521,7 @@ function doRoll(d: Draft, value?: number) {
   const pid = activeId(g);
   let values: number[];
   let kind: "normal" | "double" | "custom" = "normal";
-  // Cursed (offensive name): every die only goes up to 3, Custom Dice included.
-  const sides = d.room.players.find((p) => p.id === pid)?.cursed ? CURSED_DICE_MAX : GAME_CONFIG.dice.sides;
+  const sides = GAME_CONFIG.dice.sides;
   if (g.pendingDice?.kind === "custom") {
     kind = "custom";
     values = [Math.min(sides, Math.max(1, value ?? randInt(rng, 1, sides)))];

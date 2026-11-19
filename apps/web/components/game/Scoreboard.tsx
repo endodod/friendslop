@@ -6,7 +6,7 @@ import { clientContent } from "@party-game/content";
 import { useStore } from "@/lib/store";
 import { act } from "@/lib/useRoom";
 import { colorHex, localize, standings, type PublicGameState } from "@party-game/shared";
-import { Avatar, CoinCount, CursedBadge, Icon, StarCount, useIsHost, usePlayers } from "../ui";
+import { Avatar, CoinCount, Icon, StarCount, useIsHost, usePlayers } from "../ui";
 import { CoinDelta } from "../fx";
 
 /** Player chips: stars, coins, items held. Ordered by current standing. */
@@ -45,7 +45,6 @@ export function Scoreboard({ game, compact, highlight }: { game: PublicGameState
             >
               <span className="flex items-center gap-1 truncate font-display">
                 {p.name}
-                {p.cursed && <CursedBadge />}
                 <ChevronDown size={14} className={`shrink-0 text-muted transition-transform ${openId === playerId ? "rotate-180" : ""}`} />
               </span>
               <span className="flex flex-wrap items-center gap-x-3 text-sm">
@@ -156,7 +155,6 @@ export function ScoreStrip({ game }: { game: PublicGameState }) {
                 {!p.connected && <WifiOff size={12} className="absolute -bottom-1 -right-1 text-bad" aria-label="disconnected" />}
               </span>
               <span className="max-w-24 truncate font-display">{p.name}</span>
-              {p.cursed && <CursedBadge />}
               <StarCount value={gp.stars} size={14} />
               <CoinCount value={gp.coins} size={14} />
               {gp.effects.frozen && <Icon id="ice" size={14} className="text-[#7fd3ff]" title="Frozen: skips next turn" />}
