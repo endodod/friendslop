@@ -5,20 +5,20 @@
     "de": "Inselhüpfer"
   },
   "description": {
-    "en": "A coastal ring with four islands to hop over and a volcano in the middle where three bridges split off. Made for 5–8 players.",
-    "de": "Ein Küstenring mit vier Inseln zum Rüberhüpfen und einem Vulkan in der Mitte, von dem drei Brücken abgehen. Für 5–8 Spieler."
+    "en": "A small coastal ring inside a ring of four islands. Ferries link the islands, every island has a way back, and two bridges cross the volcano in the middle. Made for 4–8 players.",
+    "de": "Ein kleiner Küstenring, umgeben von vier Inseln. Fähren verbinden die Inseln, jede Insel hat einen Rückweg, und zwei Brücken kreuzen den Vulkan in der Mitte. Für 4–8 Spieler."
   },
   "startTileId": "r0",
   "aspect": 1.6,
   "recommendedPlayers": {
-    "min": 5,
+    "min": 4,
     "max": 8
   },
   "tiles": [
     {
       "id": "r0",
       "type": "start",
-      "x": 0.2062,
+      "x": 0.2938,
       "y": 0.5,
       "next": [
         "r1"
@@ -27,211 +27,158 @@
     {
       "id": "r1",
       "type": "blue",
-      "x": 0.2246,
-      "y": 0.4079,
+      "x": 0.3139,
+      "y": 0.4137,
       "next": [
         "r2",
-        "w0"
+        "nw0"
       ]
     },
     {
       "id": "r2",
       "type": "question",
-      "x": 0.2673,
-      "y": 0.3383,
+      "x": 0.3588,
+      "y": 0.3542,
       "next": [
         "r3",
-        "nw0"
+        "w0"
       ]
     },
     {
       "id": "r3",
       "type": "red",
-      "x": 0.3206,
-      "y": 0.2902,
+      "x": 0.413,
+      "y": 0.3187,
       "next": [
         "r4"
       ]
     },
     {
       "id": "r4",
-      "type": "blue",
-      "x": 0.3786,
-      "y": 0.2587,
+      "type": "question",
+      "x": 0.4707,
+      "y": 0.302,
       "next": [
         "r5"
       ]
     },
     {
       "id": "r5",
-      "type": "question",
-      "x": 0.4388,
-      "y": 0.2408,
+      "type": "event",
+      "x": 0.5293,
+      "y": 0.302,
       "next": [
         "r6"
       ]
     },
     {
       "id": "r6",
-      "type": "event",
-      "x": 0.5,
-      "y": 0.235,
+      "type": "blue",
+      "x": 0.587,
+      "y": 0.3187,
       "next": [
-        "r7"
+        "r7",
+        "ne0"
       ]
     },
     {
       "id": "r7",
-      "type": "blue",
-      "x": 0.5612,
-      "y": 0.2408,
+      "type": "question",
+      "x": 0.6412,
+      "y": 0.3542,
       "next": [
         "r8"
       ]
     },
     {
       "id": "r8",
-      "type": "question",
-      "x": 0.6214,
-      "y": 0.2587,
+      "type": "shop",
+      "x": 0.6861,
+      "y": 0.4137,
       "next": [
-        "r9",
-        "ne0"
+        "r9"
       ]
     },
     {
       "id": "r9",
-      "type": "shop",
-      "x": 0.6794,
-      "y": 0.2902,
+      "type": "blue",
+      "x": 0.7063,
+      "y": 0.5,
       "next": [
         "r10"
       ]
     },
     {
       "id": "r10",
-      "type": "blue",
-      "x": 0.7327,
-      "y": 0.3383,
+      "type": "question",
+      "x": 0.6861,
+      "y": 0.5863,
       "next": [
-        "r11"
+        "r11",
+        "se0"
       ]
     },
     {
       "id": "r11",
       "type": "red",
-      "x": 0.7754,
-      "y": 0.4079,
+      "x": 0.6412,
+      "y": 0.6458,
       "next": [
-        "r12"
+        "r12",
+        "e0"
       ]
     },
     {
       "id": "r12",
-      "type": "question",
-      "x": 0.7937,
-      "y": 0.5,
+      "type": "blue",
+      "x": 0.587,
+      "y": 0.6813,
       "next": [
         "r13"
       ]
     },
     {
       "id": "r13",
-      "type": "blue",
-      "x": 0.7754,
-      "y": 0.5921,
+      "type": "question",
+      "x": 0.5293,
+      "y": 0.698,
       "next": [
         "r14"
       ]
     },
     {
       "id": "r14",
-      "type": "item",
-      "x": 0.7327,
-      "y": 0.6617,
+      "type": "event",
+      "x": 0.4707,
+      "y": 0.698,
       "next": [
-        "r15",
-        "se0"
+        "r15"
       ]
     },
     {
       "id": "r15",
-      "type": "question",
-      "x": 0.6794,
-      "y": 0.7098,
+      "type": "red",
+      "x": 0.413,
+      "y": 0.6813,
       "next": [
-        "r16"
+        "r16",
+        "sw0"
       ]
     },
     {
       "id": "r16",
-      "type": "red",
-      "x": 0.6214,
-      "y": 0.7413,
+      "type": "shop",
+      "x": 0.3588,
+      "y": 0.6458,
       "next": [
         "r17"
       ]
     },
     {
       "id": "r17",
-      "type": "blue",
-      "x": 0.5612,
-      "y": 0.7592,
-      "next": [
-        "r18"
-      ]
-    },
-    {
-      "id": "r18",
-      "type": "event",
-      "x": 0.5,
-      "y": 0.765,
-      "next": [
-        "r19"
-      ]
-    },
-    {
-      "id": "r19",
       "type": "question",
-      "x": 0.4388,
-      "y": 0.7592,
-      "next": [
-        "r20"
-      ]
-    },
-    {
-      "id": "r20",
-      "type": "shop",
-      "x": 0.3786,
-      "y": 0.7413,
-      "next": [
-        "r21",
-        "sw0"
-      ]
-    },
-    {
-      "id": "r21",
-      "type": "blue",
-      "x": 0.3206,
-      "y": 0.7098,
-      "next": [
-        "r22"
-      ]
-    },
-    {
-      "id": "r22",
-      "type": "red",
-      "x": 0.2673,
-      "y": 0.6617,
-      "next": [
-        "r23"
-      ]
-    },
-    {
-      "id": "r23",
-      "type": "question",
-      "x": 0.2246,
-      "y": 0.5921,
+      "x": 0.3139,
+      "y": 0.5863,
       "next": [
         "r0"
       ]
@@ -239,8 +186,8 @@
     {
       "id": "nw0",
       "type": "lucky",
-      "x": 0.1762,
-      "y": 0.2316,
+      "x": 0.1626,
+      "y": 0.3978,
       "next": [
         "nw1"
       ]
@@ -248,8 +195,8 @@
     {
       "id": "nw1",
       "type": "blue",
-      "x": 0.2223,
-      "y": 0.1848,
+      "x": 0.2061,
+      "y": 0.3084,
       "next": [
         "nw2"
       ]
@@ -257,35 +204,37 @@
     {
       "id": "nw2",
       "type": "bank",
-      "x": 0.2752,
-      "y": 0.1457,
+      "x": 0.2736,
+      "y": 0.2347,
       "next": [
-        "nw3"
+        "nw3",
+        "r3"
       ]
     },
     {
       "id": "nw3",
-      "type": "blue",
-      "x": 0.3336,
-      "y": 0.1152,
+      "type": "item",
+      "x": 0.3598,
+      "y": 0.1827,
       "next": [
         "nw4"
       ]
     },
     {
       "id": "nw4",
-      "type": "lucky",
-      "x": 0.3961,
-      "y": 0.0942,
+      "type": "blue",
+      "x": 0.4574,
+      "y": 0.1568,
       "next": [
-        "r5"
+        "r5",
+        "ne0"
       ]
     },
     {
       "id": "ne0",
       "type": "blue",
-      "x": 0.691,
-      "y": 0.1266,
+      "x": 0.5455,
+      "y": 0.1572,
       "next": [
         "ne1"
       ]
@@ -293,26 +242,27 @@
     {
       "id": "ne1",
       "type": "duel",
-      "x": 0.7538,
-      "y": 0.1655,
+      "x": 0.6429,
+      "y": 0.1839,
       "next": [
         "ne2"
       ]
     },
     {
       "id": "ne2",
-      "type": "item",
-      "x": 0.8087,
-      "y": 0.2146,
+      "type": "mind-reader",
+      "x": 0.7286,
+      "y": 0.2365,
       "next": [
-        "ne3"
+        "ne3",
+        "r8"
       ]
     },
     {
       "id": "ne3",
-      "type": "mind-reader",
-      "x": 0.8542,
-      "y": 0.2725,
+      "type": "item",
+      "x": 0.7956,
+      "y": 0.3108,
       "next": [
         "ne4"
       ]
@@ -320,17 +270,18 @@
     {
       "id": "ne4",
       "type": "blue",
-      "x": 0.8887,
-      "y": 0.3373,
+      "x": 0.8382,
+      "y": 0.4006,
       "next": [
-        "r11"
+        "r10",
+        "se0"
       ]
     },
     {
       "id": "se0",
       "type": "lucky",
-      "x": 0.8238,
-      "y": 0.7684,
+      "x": 0.8365,
+      "y": 0.6049,
       "next": [
         "se1"
       ]
@@ -338,8 +289,8 @@
     {
       "id": "se1",
       "type": "blue",
-      "x": 0.7777,
-      "y": 0.8152,
+      "x": 0.7923,
+      "y": 0.694,
       "next": [
         "se2"
       ]
@@ -347,62 +298,65 @@
     {
       "id": "se2",
       "type": "bank",
-      "x": 0.7248,
-      "y": 0.8543,
+      "x": 0.7241,
+      "y": 0.7672,
       "next": [
-        "se3"
+        "se3",
+        "r12"
       ]
     },
     {
       "id": "se3",
-      "type": "blue",
-      "x": 0.6664,
-      "y": 0.8848,
+      "type": "thief",
+      "x": 0.6375,
+      "y": 0.8184,
       "next": [
         "se4"
       ]
     },
     {
       "id": "se4",
-      "type": "lucky",
-      "x": 0.6039,
-      "y": 0.9058,
+      "type": "blue",
+      "x": 0.5396,
+      "y": 0.8435,
       "next": [
-        "r17"
+        "r14",
+        "sw0"
       ]
     },
     {
       "id": "sw0",
       "type": "blue",
-      "x": 0.309,
-      "y": 0.8734,
+      "x": 0.4516,
+      "y": 0.8424,
       "next": [
         "sw1"
       ]
     },
     {
       "id": "sw1",
-      "type": "thief",
-      "x": 0.2462,
-      "y": 0.8345,
+      "type": "duel",
+      "x": 0.3544,
+      "y": 0.8149,
       "next": [
         "sw2"
       ]
     },
     {
       "id": "sw2",
-      "type": "item",
-      "x": 0.1913,
-      "y": 0.7854,
+      "type": "lucky",
+      "x": 0.2691,
+      "y": 0.7616,
       "next": [
-        "sw3"
+        "sw3",
+        "r16"
       ]
     },
     {
       "id": "sw3",
-      "type": "duel",
-      "x": 0.1458,
-      "y": 0.7275,
+      "type": "item",
+      "x": 0.2028,
+      "y": 0.6868,
       "next": [
         "sw4"
       ]
@@ -410,37 +364,11 @@
     {
       "id": "sw4",
       "type": "blue",
-      "x": 0.1113,
-      "y": 0.6627,
+      "x": 0.1609,
+      "y": 0.5966,
       "next": [
-        "r23"
-      ]
-    },
-    {
-      "id": "w0",
-      "type": "question",
-      "x": 0.2934,
-      "y": 0.4309,
-      "next": [
-        "w1"
-      ]
-    },
-    {
-      "id": "w1",
-      "type": "red",
-      "x": 0.3623,
-      "y": 0.4539,
-      "next": [
-        "w2"
-      ]
-    },
-    {
-      "id": "w2",
-      "type": "blue",
-      "x": 0.4311,
-      "y": 0.477,
-      "next": [
-        "hub"
+        "r0",
+        "nw0"
       ]
     },
     {
@@ -450,24 +378,32 @@
       "y": 0.5,
       "next": [
         "u0",
-        "e0",
         "d0"
       ]
     },
     {
-      "id": "u0",
-      "type": "blue",
-      "x": 0.5,
-      "y": 0.3675,
+      "id": "w0",
+      "type": "question",
+      "x": 0.4059,
+      "y": 0.4028,
       "next": [
-        "r6"
+        "w1"
+      ]
+    },
+    {
+      "id": "w1",
+      "type": "red",
+      "x": 0.4529,
+      "y": 0.4514,
+      "next": [
+        "hub"
       ]
     },
     {
       "id": "e0",
-      "type": "blue",
-      "x": 0.5734,
-      "y": 0.5,
+      "type": "question",
+      "x": 0.5941,
+      "y": 0.5972,
       "next": [
         "e1"
       ]
@@ -475,28 +411,46 @@
     {
       "id": "e1",
       "type": "red",
-      "x": 0.6469,
-      "y": 0.5,
+      "x": 0.5471,
+      "y": 0.5486,
       "next": [
-        "e2"
+        "hub"
       ]
     },
     {
-      "id": "e2",
-      "type": "question",
-      "x": 0.7203,
-      "y": 0.5,
+      "id": "u0",
+      "type": "blue",
+      "x": 0.5471,
+      "y": 0.4514,
       "next": [
-        "r12"
+        "u1"
+      ]
+    },
+    {
+      "id": "u1",
+      "type": "lucky",
+      "x": 0.5941,
+      "y": 0.4028,
+      "next": [
+        "r7"
       ]
     },
     {
       "id": "d0",
-      "type": "shop",
-      "x": 0.5,
-      "y": 0.6325,
+      "type": "blue",
+      "x": 0.4529,
+      "y": 0.5486,
       "next": [
-        "r18"
+        "d1"
+      ]
+    },
+    {
+      "id": "d1",
+      "type": "lucky",
+      "x": 0.4059,
+      "y": 0.5972,
+      "next": [
+        "r16"
       ]
     }
   ]
