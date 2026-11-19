@@ -23,7 +23,7 @@ export function defaultSettings(content: ContentBundle): RoomSettings {
     tileFrequency: {},
     minigameMix: {},
     starGoal: GAME_CONFIG.starGoals.default,
-    packs: [...selectablePacks(content).map((p) => p.id), CUSTOM_PACK_ID],
+    packs: [...selectablePacks(content).filter((p) => p.defaultEnabled).map((p) => p.id), CUSTOM_PACK_ID],
     dataQuestions: true,
     familyFriendly: false,
     language: "en",

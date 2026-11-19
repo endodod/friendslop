@@ -100,6 +100,8 @@ export const PackSchema = z.object({
   language: LanguageSchema,
   version: z.number().int().default(1),
   description: z.string().optional(),
+  /** false: niche pack that new rooms start with switched off (the host can turn it on). */
+  defaultEnabled: z.boolean().default(true),
   questions: z.array(QuestionSchema).min(1),
 });
 export type Pack = z.infer<typeof PackSchema>;

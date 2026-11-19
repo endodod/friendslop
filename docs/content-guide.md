@@ -117,6 +117,8 @@ content folder.
 Every pack file shows up as a toggle in the lobby (with its question count). Packs are the only
 switch: themes are just tags (colour, icon, variety) and can't be turned off separately. Packs that only contain data questions are hidden until account linking exists.
 
+Niche packs can set `"defaultEnabled": false`: new rooms start with them switched off and the host turns them on in the lobby (League does this).
+
 ## Themes
 
 `themes.json`: `{ "id", "name", "icon", "color", "description" }`. Add a theme, then tag questions

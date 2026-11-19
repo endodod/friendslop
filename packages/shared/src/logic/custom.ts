@@ -95,7 +95,7 @@ export function withCustomPack(content: ContentBundle, room: Pick<RoomState, "cu
     ...content,
     packs: [
       ...content.packs,
-      { id: CUSTOM_PACK_ID, name: "Custom", language: room.settings.language, version: 1, questions: qs.map((c) => c.question) },
+      { id: CUSTOM_PACK_ID, name: "Custom", language: room.settings.language, version: 1, defaultEnabled: true, questions: qs.map((c) => c.question) },
     ],
   };
 }

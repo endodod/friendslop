@@ -4,6 +4,7 @@
   "language": "en",
   "version": 1,
   "description": "For groups that play League together.",
+  "defaultEnabled": false,
   "questions": [
     {
       "id": "lol.role",
