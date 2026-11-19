@@ -1,6 +1,6 @@
 "use client";
 import { motion, useReducedMotion } from "framer-motion";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { GAME_CONFIG, colorHex, type Board, type PublicGameState } from "@party-game/shared";
 import { clientContent } from "@party-game/content";
 import { onGameEvent, useStore } from "@/lib/store";
@@ -58,6 +58,8 @@ interface Props {
   selectable?: string[];
   onSelect?: (tileId: string) => void;
   className?: string;
+  /** Shown along the top edge inside the map frame; the board is fitted into the space below, so it never covers tiles. */
+  header?: ReactNode;
 }
 
 const LANDING_BEAT_MS = 450;
@@ -129,7 +131,7 @@ function useDisplayedPositions(game: PublicGameState) {
   return { pos, hopping };
 }
 
-export function BoardView({ board, game, players, follow, selectable = [], onSelect, className = "" }: Props) {
+export function BoardView({ board, game, players, follow, selectable = [], onSelect, className = "", header }: Props) {
   const H = W / board.aspect;
   const reduced = useReducedMotion();
   const tiles = useMemo(() => new Map(board.tiles.map((t) => [t.id, t])), [board]);
@@ -170,7 +172,7 @@ export function BoardView({ board, game, players, follow, selectable = [], onSel
 
   return (
     <div
-      className={`relative h-full w-full overflow-hidden rounded-[28px] ${className}`}
+      className={`relative flex h-full w-full flex-col overflow-hidden rounded-[28px] ${className}`}
       style={{
         background: `radial-gradient(120% 90% at 50% 0%, ${tone}38 0%, transparent 60%), radial-gradient(80% 60% at 50% 110%, ${tone}22 0%, transparent 70%), radial-gradient(#ffffff10 1.2px, transparent 1.3px) 0 0 / 22px 22px, linear-gradient(180deg, #1d1838 0%, #120f24 100%)`,
         boxShadow: `inset 0 0 0 2px ${tone}55, inset 0 -18px 40px #00000055, 0 10px 30px #00000066`,
@@ -181,9 +183,10 @@ export function BoardView({ board, game, players, follow, selectable = [], onSel
       className="anim-drift pointer-events-none absolute -inset-[20%]"
       style={{ background: `radial-gradient(35% 30% at 30% 35%, ${tone}26, transparent 70%), radial-gradient(30% 25% at 72% 70%, #ff6bc61a, transparent 70%)` }}
     />
+    {header && <div className="relative z-10 shrink-0 px-2 pt-2">{header}</div>}
     <svg
       viewBox={`0 0 ${W} ${H}`}
-      className="relative h-full w-full select-none"
+      className="relative min-h-0 w-full flex-1 select-none"
       role="img"
       aria-label="Game board"
       preserveAspectRatio="xMidYMid meet"
@@ -331,6 +334,7 @@ export function BoardView({ board, game, players, follow, selectable = [], onSel
           return (
             <g
               key={t.id}
+              data-tile={t.id}
               transform={`translate(${x} ${y})`}
               onClick={isSel ? () => onSelect?.(t.id) : undefined}
               style={{ cursor: isSel ? "pointer" : undefined }}

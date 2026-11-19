@@ -10,18 +10,7 @@ import { Avatar, CoinCount, CursedBadge, Icon, StarCount, useIsHost, usePlayers 
 import { CoinDelta } from "../fx";
 
 /** Player chips: stars, coins, items held. Ordered by current standing. */
-export function Scoreboard({
-  game,
-  compact,
-  highlight,
-  overlay,
-}: {
-  game: PublicGameState;
-  compact?: boolean;
-  highlight?: string | null;
-  /** Small single-column version floating over the map. */
-  overlay?: boolean;
-}) {
+export function Scoreboard({ game, compact, highlight }: { game: PublicGameState; compact?: boolean; highlight?: string | null }) {
   const players = usePlayers();
   const isHost = useIsHost();
   const me = useStore((s) => s.playerId);
@@ -29,7 +18,7 @@ export function Scoreboard({
   const activeId = game.order[game.activeIndex];
   const [openId, setOpenId] = useState<string | null>(null);
   return (
-    <ol className={`grid ${overlay ? "grid-cols-1 gap-1" : compact ? "grid-cols-2 gap-2" : "grid-cols-2 gap-2 lg:grid-cols-1"}`} aria-label="Scoreboard">
+    <ol className={`grid gap-2 ${compact ? "grid-cols-2" : "grid-cols-2 lg:grid-cols-1"}`} aria-label="Scoreboard">
       {ranking.map(({ playerId, rank }) => {
         const p = players[playerId];
         const gp = game.players[playerId];
@@ -39,14 +28,12 @@ export function Scoreboard({
           <motion.li
             layout
             key={playerId}
-            className={`relative flex flex-wrap items-center rounded-2xl ${overlay ? "gap-1.5 p-1.5 text-sm backdrop-blur" : "gap-2 p-2"} ${
-              active ? (overlay ? "bg-panel-2/90" : "bg-panel-2") : overlay ? "bg-bg/80" : "bg-bg-2"
-            } ${openId === playerId ? "col-span-full" : ""}`}
+            className={`relative flex flex-wrap items-center gap-2 rounded-2xl p-2 ${active ? "bg-panel-2" : "bg-bg-2"} ${openId === playerId ? "col-span-full" : ""}`}
             style={{ boxShadow: active || highlight === playerId ? `inset 0 0 0 3px ${colorHex(p.color)}` : undefined }}
           >
             <span className="w-5 text-center font-display text-muted">{rank}</span>
             <span className="relative">
-              <Avatar player={p} size={overlay ? 26 : compact ? 32 : 40} dim={!p.connected} />
+              <Avatar player={p} size={compact ? 32 : 40} dim={!p.connected} />
               {!p.connected && <WifiOff size={14} className="absolute -bottom-1 -right-1 text-bad" aria-label="disconnected" />}
             </span>
             <button
@@ -95,7 +82,7 @@ export function Scoreboard({
                 <UserX size={18} />
               </button>
             )}
-            <CoinDelta playerId={playerId} inline={overlay} />
+            <CoinDelta playerId={playerId} />
             <AnimatePresence initial={false}>
               {openId === playerId && (
                 <motion.div
@@ -134,5 +121,70 @@ function PlayerItems({ items, name }: { items: string[]; name: string }) {
         );
       })}
     </ul>
+  );
+}
+
+/**
+ * One row of small player chips for the top edge of the map (wraps for big groups). Tap a chip to see
+ * that player's items in a popover, so the strip itself never changes height.
+ */
+export function ScoreStrip({ game }: { game: PublicGameState }) {
+  const players = usePlayers();
+  const ranking = standings(game as never);
+  const activeId = game.order[game.activeIndex];
+  const [openId, setOpenId] = useState<string | null>(null);
+  return (
+    <ol className="flex flex-wrap gap-1.5" aria-label="Scoreboard" data-testid="board-players">
+      {ranking.map(({ playerId, rank }) => {
+        const p = players[playerId];
+        const gp = game.players[playerId];
+        if (!p || !gp) return null;
+        const active = playerId === activeId && game.phase !== "podium";
+        const open = openId === playerId;
+        return (
+          <li key={playerId} className="relative">
+            <button
+              type="button"
+              className={`flex items-center gap-1.5 rounded-xl py-1 pl-1 pr-2 text-sm backdrop-blur ${active ? "bg-panel-2/95" : "bg-bg/75"}`}
+              style={{ boxShadow: active ? `inset 0 0 0 2px ${colorHex(p.color)}` : undefined }}
+              aria-expanded={open}
+              aria-label={`${p.name}, rank ${rank}: show items`}
+              onClick={() => setOpenId(open ? null : playerId)}
+            >
+              <span className="relative">
+                <Avatar player={p} size={26} dim={!p.connected} />
+                {!p.connected && <WifiOff size={12} className="absolute -bottom-1 -right-1 text-bad" aria-label="disconnected" />}
+              </span>
+              <span className="max-w-24 truncate font-display">{p.name}</span>
+              {p.cursed && <CursedBadge />}
+              <StarCount value={gp.stars} size={14} />
+              <CoinCount value={gp.coins} size={14} />
+              {gp.effects.frozen && <Icon id="ice" size={14} className="text-[#7fd3ff]" title="Frozen: skips next turn" />}
+              {(gp.items ?? []).length > 0 && (
+                <span className="flex items-center gap-0.5">
+                  {gp.items.map((id, i) => {
+                    const it = clientContent.items.find((x) => x.id === id);
+                    return <Icon key={`${id}-${i}`} id={it?.icon ?? "backpack"} size={14} className="text-accent" title={it ? localize(it.name) : id} />;
+                  })}
+                </span>
+              )}
+            </button>
+            <CoinDelta playerId={playerId} inline />
+            <AnimatePresence>
+              {open && (
+                <motion.div
+                  initial={{ opacity: 0, y: -4 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -4 }}
+                  className="card absolute left-0 top-full z-20 mt-1 w-64 p-2"
+                >
+                  <PlayerItems items={gp.items ?? []} name={p.name} />
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </li>
+        );
+      })}
+    </ol>
   );
 }

@@ -1,8 +1,7 @@
 "use client";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChatPanel } from "../ChatPanel";
-import { ChevronDown, Flag, LogOut, Map as MapIcon, Pause, Play, Users, X } from "lucide-react";
-import type { PublicGameState } from "@party-game/shared";
+import { Flag, LogOut, Map as MapIcon, Pause, Play, X } from "lucide-react";
 import { setGamePaused } from "@party-game/minigames/client";
 import { useEffect, useState } from "react";
 import { useStore } from "@/lib/store";
@@ -16,7 +15,7 @@ import { Avatar, CoinCount, Icon, MuteButton, StarCount, useIsHost, usePlayers }
 import { BonusStarsView, GameEndBanner, Podium } from "./EndScreens";
 import { GameStartPanel, PhasePanel, SkipButton } from "./PhasePanel";
 import { HelpButton } from "./HowToPlay";
-import { Scoreboard } from "./Scoreboard";
+import { Scoreboard, ScoreStrip } from "./Scoreboard";
 
 const FOCUS_PHASES = new Set([
   "gameStart",
@@ -211,27 +210,6 @@ function LastAction({ className = "" }: { className?: string }) {
   );
 }
 
-/** Player list floating over the top-left of the map. Collapsible so it never hides tiles for long. */
-function BoardPlayers({ game }: { game: PublicGameState }) {
-  const [open, setOpen] = useState(true);
-  return (
-    <div className="pointer-events-none absolute left-2 top-2 z-10 flex max-h-[calc(100%-1rem)] w-56 flex-col gap-1">
-      <button
-        className="pointer-events-auto flex items-center gap-1 self-start rounded-xl bg-bg/80 px-2 py-1 font-display text-sm text-muted backdrop-blur"
-        aria-expanded={open}
-        onClick={() => setOpen(!open)}
-      >
-        <Users size={14} /> Players <ChevronDown size={14} className={`transition-transform ${open ? "rotate-180" : ""}`} />
-      </button>
-      {open && (
-        <div className="pointer-events-auto min-h-0 overflow-y-auto">
-          <Scoreboard game={game} overlay />
-        </div>
-      )}
-    </div>
-  );
-}
-
 /** Everyone sees this while the host has paused; the host can resume from it. */
 function PauseOverlay() {
   const pause = useStore((s) => s.pub?.game?.pause ?? null);
@@ -313,18 +291,21 @@ function GameScreenInner() {
   const myTurn = playerId === g.order[g.activeIndex];
   const selectable = g.phase === "junctionChoice" && myTurn && !display ? (g.junction?.options ?? []) : [];
 
-  const boardEl = board ? (
-    <BoardView
-      board={board}
-      game={g}
-      players={players}
-      follow={!display && !wide}
-      selectable={selectable}
-      onSelect={(tileId) => act("turn:chooseDirection", { tileId })}
-    />
-  ) : (
-    <div className="flex h-full items-center justify-center text-muted">Loading board…</div>
-  );
+  const makeBoard = (withPlayers: boolean) =>
+    board ? (
+      <BoardView
+        board={board}
+        game={g}
+        players={players}
+        follow={!display && !wide}
+        selectable={selectable}
+        onSelect={(tileId) => act("turn:chooseDirection", { tileId })}
+        header={withPlayers && g.mode === "board" ? <ScoreStrip game={g} /> : undefined}
+      />
+    ) : (
+      <div className="flex h-full items-center justify-center text-muted">Loading board…</div>
+    );
+  const boardEl = makeBoard(false);
 
   // ---------------- Shared display (TV): board always visible, focus content as an overlay
   if (display) {
@@ -333,8 +314,7 @@ function GameScreenInner() {
         <TopBar />
         <div className="grid min-h-0 flex-1 grid-cols-[1fr_340px] gap-4 px-4 pb-4">
           <div className="relative min-h-0 rounded-3xl bg-bg-2/60">
-            {g.mode === "board" && boardEl}
-            {g.mode === "board" && !focus && <BoardPlayers game={g} />}
+            {g.mode === "board" && makeBoard(!focus)}
             <AnimatePresence>
               {focus && (
                 <motion.div
@@ -409,10 +389,7 @@ function GameScreenInner() {
                 <FocusContent display={false} />
               </div>
             ) : (
-              <>
-                {boardEl}
-                {g.mode === "board" && <BoardPlayers game={g} />}
-              </>
+              makeBoard(true)
             )}
           </div>
           {/* Fixed split: the turn panel (dice, shop, star…) never grows; it scrolls inside. */}
