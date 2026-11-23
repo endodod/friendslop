@@ -457,7 +457,9 @@ function onTimeout(d: Draft) {
     case "junctionChoice":
       return takeDirection(d, pick(s.ctx.rng, g.junction!.options));
     case "tileEffect":
+      return turnEnd(d);
     case "event":
+      if (offerDroppedStar(d, "turnEnd")) return;
       return turnEnd(d);
     case "questionRound":
     case "minigameQuestion":
@@ -522,7 +524,36 @@ function turnStart(d: Draft) {
     log(g, d.s, g.tileResult.text!, p.id);
     return goto(d, "tileEffect", T.tileEffectMs + 800);
   }
+  if (offerDroppedStar(d, "turnStart")) return;
   goto(d, "turnStart", T.turnStartMs);
+}
+
+/** Remember who a teleport/swap/push put on the star tile (or moved off it), compared to `before`. */
+function noteDroppedOnStar(g: GameState, before: Record<PlayerId, string>) {
+  for (const p of Object.values(g.players)) {
+    if (before[p.id] === undefined || before[p.id] === p.tileId) continue;
+    if (p.tileId === g.starTileId) p.effects.onStar = true;
+    else delete p.effects.onStar;
+  }
+}
+
+function tilesNow(g: GameState): Record<PlayerId, string> {
+  return Object.fromEntries(Object.values(g.players).map((p) => [p.id, p.tileId]));
+}
+
+/**
+ * The active player was put on the star without walking there: offer it (if they can afford it)
+ * before they move on. `resume` is where the turn continues afterwards. Returns true if offered.
+ */
+function offerDroppedStar(d: Draft, resume: "turnStart" | "turnEnd"): boolean {
+  const { g } = d;
+  const p = g.players[activeId(g)];
+  if (!p?.effects.onStar) return false;
+  delete p.effects.onStar;
+  if (p.tileId !== g.starTileId || p.coins < starPriceFor(d, p.id)) return false;
+  g.star = { passing: false, dropped: resume };
+  goto(d, "starPurchase", T.starPurchaseMs);
+  return true;
 }
 
 function doRoll(d: Draft, value?: number) {
@@ -570,6 +601,7 @@ function advanceMovement(d: Draft) {
       delete mv.chosen;
     } else to = options[0];
     p.tileId = to;
+    delete p.effects.onStar;
     mv.remaining--;
     path.push(to);
     p.stats.stepsMoved++;
@@ -734,7 +766,9 @@ function land(d: Draft, starDone = false) {
     case "event": {
       const card = drawEvent(s);
       p.stats.eventsDrawn++;
+      const before = tilesNow(g);
       const res = applyEvent(g, s, card, pid, names(d.room));
+      noteDroppedOnStar(g, before);
       g.event = { cardId: card.id, ...res };
       log(g, s, res.text, pid);
       emit(s, { type: "eventDrawn", cardId: card.id });
@@ -774,7 +808,11 @@ function resolveStar(d: Draft, buy: boolean) {
     if (checkStarGoal(d, pid)) return;
   }
   const passing = g.star?.passing;
+  const dropped = g.star?.dropped;
   g.star = null;
+  delete p.effects.onStar;
+  if (dropped === "turnStart") return goto(d, "turnStart", T.turnStartMs);
+  if (dropped === "turnEnd") return turnEnd(d);
   if (passing && g.movement && g.movement.remaining > 0) {
     // The star sat on a Shop we're walking past: offer the shop too.
     if (isShopTile(d, p.tileId) && canShop(d, pid)) {
@@ -841,7 +879,9 @@ function useItem(d: Draft, pid: PlayerId, itemId: string, targetId?: PlayerId) {
   if (item.useTiming === "turnStart") {
     requirePhase(d, "turnStart");
     requireActive(d, pid);
+    const before = tilesNow(g);
     const did = applyTurnStartItem(g, s, pid, item, targetId);
+    noteDroppedOnStar(g, before);
     logItemUse(d, pid, localize(item.name), targetId, did);
     if (checkStarGoal(d, pid)) {
       p.items.splice(p.items.indexOf(itemId), 1);
@@ -874,6 +914,8 @@ function useItem(d: Draft, pid: PlayerId, itemId: string, targetId?: PlayerId) {
   p.items.splice(idx, 1);
   p.stats.itemsUsed++;
   emit(s, { type: "itemUsed", playerId: pid, itemId, targetId });
+  // A swap put you on the star: buy it before you roll.
+  if (item.useTiming === "turnStart") offerDroppedStar(d, "turnStart");
 }
 
 function logItemUse(d: Draft, pid: PlayerId, itemName: string, targetId: PlayerId | undefined, did: string) {

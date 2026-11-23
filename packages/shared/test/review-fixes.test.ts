@@ -80,3 +80,75 @@ describe("review fixes", () => {
     expect(h.g.movement!.next).not.toBe("starPass");
   });
 });
+
+describe("dropped on the star by a teleport, swap or push", () => {
+  const swapItem = () => {
+    const { content } = new Harness(2).ctx();
+    return content.items.find((i) => i.effect === "swapPlaces")!.id;
+  };
+
+  it("swapping onto the star offers it right away, then you still roll", () => {
+    const h = new Harness(3);
+    h.advanceTo("turnStart");
+    const g = h.room.game!;
+    const me = h.active();
+    const other = g.order.find((p) => p !== me)!;
+    g.players[me].coins = 50;
+    g.players[me].items = [swapItem()];
+    // The other player stands on the star.
+    const board = h.ctx().content.boards.find((b) => b.id === g.boardId)!;
+    const tile = board.tiles.find((t) => t.id !== g.players[me].tileId)!.id;
+    g.players[other].tileId = tile;
+    g.starTileId = tile;
+    h.act({ type: "useItem", playerId: me, itemId: g.players[me].items[0], targetId: other });
+    expect(h.g.phase).toBe("starPurchase");
+    expect(h.g.star?.dropped).toBe("turnStart");
+    h.act({ type: "starBuy", playerId: me, buy: true });
+    expect(h.g.players[me].stars).toBe(1);
+    expect(h.g.phase).toBe("turnStart");
+    expect(h.active()).toBe(me);
+  });
+
+  it("the swapped victim landing on the star gets it at the start of their turn, before rolling", () => {
+    const h = new Harness(2);
+    h.advanceTo("turnStart");
+    const g = h.room.game!;
+    const [me, other] = g.order;
+    g.players[other].coins = 50;
+    g.players[me].items = [swapItem()];
+    const board = h.ctx().content.boards.find((b) => b.id === g.boardId)!;
+    const tile = board.tiles.find((t) => t.id !== g.players[other].tileId)!.id;
+    g.players[me].tileId = tile;
+    g.starTileId = tile;
+    h.act({ type: "useItem", playerId: me, itemId: g.players[me].items[0], targetId: other });
+    expect(h.g.players[other].tileId).toBe(tile);
+    expect(h.g.phase).toBe("turnStart"); // the swapper isn't on the star
+    h.room.game!.players[me].effects.onStar = undefined;
+    // Skip the rest of my turn.
+    h.room.game!.phase = "turnEnd";
+    h.timeout();
+    expect(h.active()).toBe(other);
+    expect(h.g.phase).toBe("starPurchase");
+    expect(h.g.star?.dropped).toBe("turnStart");
+    h.act({ type: "starBuy", playerId: other, buy: false });
+    expect(h.g.phase).toBe("turnStart");
+    expect(h.g.players[other].effects.onStar).toBeUndefined();
+  });
+
+  it("ending your turn on the star by walking doesn't offer it again next turn", () => {
+    const h = new Harness(2);
+    h.advanceTo("turnStart");
+    const g = h.room.game!;
+    const me = h.active();
+    g.players[me].coins = 50;
+    g.starTileId = g.players[me].tileId; // standing on it, got there by walking
+    g.phase = "turnEnd";
+    h.timeout(); // the other player's turn
+    h.events = [];
+    h.room.game!.phase = "turnEnd";
+    h.timeout(); // round end → mini-game (none registered) → my next turn
+    h.advanceTo("turnStart");
+    expect(h.active()).toBe(me);
+    expect(h.events.some((e) => e.type === "phase" && e.phase === "starPurchase")).toBe(false);
+  });
+});

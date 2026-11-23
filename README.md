@@ -15,7 +15,7 @@ earns a bonus.
   link or the 4-letter code. Everyone sees the board and their controls on their own device.
 
 Each round every player rolls and moves; tiles give coins, start question rounds, events, shops
-or duels. Buy stars for 20 coins when you reach (or pass) the star. After every round there's a
+or duels. Buy stars for 20 coins when you reach (or pass) the star, or get teleported, swapped or pushed onto it. After every round there's a
 mini-game. Most stars after the last round wins (coins break ties), after 2–3 bonus stars.
 
 Refreshing or losing connection is fine: you get your seat back automatically. If you're gone

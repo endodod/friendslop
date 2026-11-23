@@ -243,7 +243,8 @@ export interface GamePlayer {
   tileId: string;
   items: string[];
   /** frozen: skips their next turn (Freeze item). */
-  effects: { shield: boolean; frozen?: boolean };
+  /** `onStar`: put on the star tile by a teleport, swap or push (not by walking); offered the star before their next roll. */
+  effects: { shield: boolean; frozen?: boolean; onStar?: boolean };
   stats: PlayerStats;
 }
 
@@ -321,7 +322,8 @@ export interface GameState {
   /** `passing`: stopped at a Shop while walking past it; movement continues afterwards. */
   shop: { stock: string[]; bought: string[]; passing?: boolean } | null;
   event: { cardId: string; text: string; affected: PlayerId[]; blocked: PlayerId[] } | null;
-  star: { passing: boolean } | null;
+  /** `dropped`: offered because a teleport/swap/push put the player on the star; where the turn resumes after. */
+  star: { passing: boolean; dropped?: "turnStart" | "turnEnd" } | null;
   duel: { challengerId: PlayerId; opponentId: PlayerId | null } | null;
   minigame: MinigameRuntime | null;
   /** Pick the Target item. */

@@ -35,7 +35,7 @@ export function BoardRules({ compact }: { compact?: boolean }) {
             pays <CoinCount value={Q.guesserMatchCoins} size={14} />, the target earns <CoinCount value={Q.targetCoinsPerMatch} size={14} /> per match.
           </>,
           <>
-            <b>Spend coins:</b> a star costs <CoinCount value={E.starCost} size={14} /> when you reach or pass it. Items are sold
+            <b>Spend coins:</b> a star costs <CoinCount value={E.starCost} size={14} /> when you reach or pass it (or get teleported, swapped or pushed onto it). Items are sold
             at green Shop tiles (also when you walk past one). Pink Item tiles give you one for free.
           </>,
           <>After everyone moved: a mini-game. Winners get the most coins.</>,

@@ -487,7 +487,7 @@ function StarPanel({ display }: { display?: boolean }) {
         <Icon id="star" size={90} className="text-[#ffe066] drop-shadow-[0_4px_0_#b38a12]" />
       </motion.div>
       <h2 className="text-center font-display text-3xl">
-        {g.star?.passing ? "Passing the star!" : "You found the star!"}
+        {g.star?.passing ? "Passing the star!" : g.star?.dropped ? "Dropped right on the star!" : "You found the star!"}
       </h2>
       <p className="text-center text-lg">
         A star costs <CoinCount value={cost} size={18} />
