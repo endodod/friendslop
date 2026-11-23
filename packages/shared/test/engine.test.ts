@@ -196,7 +196,12 @@ describe("question tiles", () => {
       return { kind: "order" as const, optionIds: qq.options!.map((o) => o.id) };
     };
     const coinsBefore = Object.fromEntries(h.g.order.map((p) => [p, h.g.players[p].coins]));
-    for (const p of h.g.order) h.act({ type: "answer", playerId: p, answer: answerFor() });
+    // The target can't answer before everyone else has.
+    expect(() => h.act({ type: "answer", playerId: pid, answer: answerFor() })).toThrow(/everyone else/);
+    for (const p of h.g.order.filter((x) => x !== pid)) h.act({ type: "answer", playerId: p, answer: answerFor() });
+    expect(h.g.question!.stage).toBe("targetAnswering"); // all guessers in → the target's turn
+    expect(() => h.act({ type: "answer", playerId: h.g.order.find((x) => x !== pid)!, answer: answerFor() })).toThrow();
+    h.act({ type: "answer", playerId: pid, answer: answerFor() });
     expect(h.g.question!.stage).toBe("reveal"); // everyone answered → reveal early
     h.timeout();
     expect(h.g.question!.stage).toBe("results");
@@ -620,8 +625,8 @@ describe("special tiles", () => {
       : { kind: "number" as const, value: qq.number!.min };
     expect(() => h.act({ type: "answer", playerId: outsider, answer: ans })).toThrow();
     const before = h.g.players[pid].coins;
-    h.act({ type: "answer", playerId: q.targetId, answer: ans });
     h.act({ type: "answer", playerId: pid, answer: ans });
+    h.act({ type: "answer", playerId: q.targetId, answer: ans });
     h.timeout(); // reveal → results
     const extra = qq.format === "number" ? 2 : qq.format === "scale" ? 2 : 0;
     expect(h.g.players[pid].coins).toBe(before + (3 + extra) * 2);
@@ -665,9 +670,9 @@ describe("full games", () => {
       while (h.g.phase !== "podium" && guard++ < 3000) {
         // Answer questions randomly so scoring runs.
         const q = h.g.question;
-        if (q?.stage === "answering") {
+        if (q?.stage === "answering" || q?.stage === "targetAnswering") {
           for (const p of q.participants) {
-            if (q.answers[p]) continue;
+            if (q.answers[p] || (p === q.targetId) !== (q.stage === "targetAnswering")) continue;
             const qq = q.question;
             const ans =
               qq.format === "tiles" ? { kind: "option" as const, optionId: qq.options![Math.floor(h.rng() * qq.options!.length)].id }

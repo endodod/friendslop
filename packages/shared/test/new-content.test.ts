@@ -98,6 +98,7 @@ describe("Toll Booth", () => {
     const prev = board(h).tiles.find((t) => t.next.length === 1 && t.next[0] !== board(h).startTileId && t.id !== board(h).startTileId)!;
     const tile = prev.next[0];
     g.players[me].tileId = tile;
+    g.tileTypes[tile] = "blue"; // a plain tile, so the landing doesn't start a question
     h.act({ type: "useItem", playerId: me, itemId: "toll-booth" });
     expect(h.g.tolls).toEqual([{ tileId: tile, ownerId: me, amount: 3, untilRound: h.g.round + 1 }]);
     expect(() => h.act({ type: "useItem", playerId: me, itemId: "toll-booth" })).toThrow();

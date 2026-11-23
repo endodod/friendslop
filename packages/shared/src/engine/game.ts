@@ -306,7 +306,7 @@ export function removePlayerFromGame(room: RoomState, playerId: PlayerId, ctx: E
         delete q.answers[playerId];
         delete q.drafts?.[playerId];
         if (q.result) delete q.result.perPlayer[playerId];
-        if (q.stage === "answering") maybeEndAnswering(d);
+        if (q.stage === "answering" || q.stage === "targetAnswering") maybeEndAnswering(d);
       }
     }
     if (g.phase === "duel" && g.duel?.challengerId === playerId) {
@@ -327,7 +327,7 @@ export function removePlayerFromGame(room: RoomState, playerId: PlayerId, ctx: E
 /** Re-evaluate after a connection change (e.g. everyone left answered → reveal early). */
 export function onConnectionChange(room: RoomState, ctx: EngineContext): EngineResult | null {
   const g = room.game;
-  if (!g?.question || g.question.stage !== "answering") return null;
+  if (!g?.question || (g.question.stage !== "answering" && g.question.stage !== "targetAnswering")) return null;
   return withDraft(room, ctx, (d) => maybeEndAnswering(d));
 }
 
@@ -396,7 +396,9 @@ function handleAction(d: Draft, a: GameAction, isHost: boolean): void {
     case "draft": {
       // Remember what a player has selected but not locked in; used when the timer runs out.
       const q = g.question;
-      if (!q || q.stage !== "answering" || (g.phase !== "questionRound" && g.phase !== "minigameQuestion")) return;
+      if (!q || (g.phase !== "questionRound" && g.phase !== "minigameQuestion")) return;
+      // Guessers draft while guessing, the target while it's their turn.
+      if (q.stage !== (a.playerId === q.targetId ? "targetAnswering" : "answering")) return;
       if (!q.participants.includes(a.playerId) || q.answers[a.playerId]) return;
       if (!validateAnswer(q.question, a.answer)) fail("INVALID_INPUT", "Invalid answer.");
       (q.drafts ??= {})[a.playerId] = a.answer;
@@ -432,7 +434,7 @@ function handleAction(d: Draft, a: GameAction, isHost: boolean): void {
       if (d.s.ctx.now - g.phaseStartedAt < grace) return;
       const skippable: Phase[] = ["gameStart", "tileEffect", "event", "roundEnd", "minigameIntro", "minigameResults", "gameEnd", "bonusStars", "turnEnd"];
       if (skippable.includes(g.phase)) return onTimeout(d);
-      if ((g.phase === "questionRound" || g.phase === "minigameQuestion") && g.question?.stage !== "answering")
+      if ((g.phase === "questionRound" || g.phase === "minigameQuestion") && g.question?.stage !== "answering" && g.question?.stage !== "targetAnswering")
         return onTimeout(d);
       fail("WRONG_PHASE", "Nothing to skip.");
     }
@@ -1196,8 +1198,10 @@ function answerQuestion(d: Draft, pid: PlayerId, answer: Answer): void {
     if (g.phase === "minigamePlaying") return handleAction(d, { type: "minigameInput", playerId: pid, input: { answer } }, false);
     fail("WRONG_PHASE", "No question right now.");
   }
-  if (q.stage !== "answering") fail("WRONG_PHASE", "Answers are closed.");
   if (!q.participants.includes(pid)) fail("INVALID_INPUT", "You're not answering this one.");
+  if (q.stage === "answering" && pid === q.targetId) fail("WRONG_PHASE", "Wait until everyone else has answered.");
+  if (q.stage === "targetAnswering" && pid !== q.targetId) fail("WRONG_PHASE", "Answers are closed.");
+  if (q.stage !== "answering" && q.stage !== "targetAnswering") fail("WRONG_PHASE", "Answers are closed.");
   if (q.answers[pid]) fail("INVALID_INPUT", "Already locked in.");
   if (q.boosts[pid]?.copy) fail("INVALID_INPUT", "You're copying someone this round.");
   if (!validateAnswer(q.question, answer)) fail("INVALID_INPUT", "Invalid answer.");
@@ -1207,10 +1211,36 @@ function answerQuestion(d: Draft, pid: PlayerId, answer: Answer): void {
   maybeEndAnswering(d);
 }
 
+/** Guessers first; once they're all in (or time's up) the target answers; then the reveal. */
 function maybeEndAnswering(d: Draft) {
   const q = d.g.question!;
-  const waiting = q.participants.filter((p) => !q.answers[p] && !q.boosts[p]?.copy && isConnected(d.room, p));
-  if (waiting.length === 0) enterReveal(d);
+  if (q.stage === "answering") {
+    const waiting = q.participants.filter((p) => p !== q.targetId && !q.answers[p] && !q.boosts[p]?.copy && isConnected(d.room, p));
+    if (waiting.length === 0) enterTargetAnswering(d);
+  } else if (q.stage === "targetAnswering") {
+    if (q.answers[q.targetId] || !isConnected(d.room, q.targetId)) enterReveal(d);
+  }
+}
+
+/** Whatever these players had selected (but not locked in) counts as their answer. */
+function commitDrafts(d: Draft, who: PlayerId[]) {
+  const q = d.g.question!;
+  for (const pid of who) {
+    const draft = q.drafts?.[pid];
+    if (draft && !q.answers[pid] && q.participants.includes(pid)) {
+      q.answers[pid] = draft;
+      q.answeredAt[pid] = d.s.ctx.now;
+    }
+    if (q.drafts) delete q.drafts[pid];
+  }
+}
+
+function enterTargetAnswering(d: Draft) {
+  const q = d.g.question!;
+  commitDrafts(d, q.participants.filter((p) => p !== q.targetId));
+  if (!q.participants.includes(q.targetId) || q.answers[q.targetId] || !isConnected(d.room, q.targetId)) return enterReveal(d);
+  setStage(d, "targetAnswering", Q.targetAnswerMs);
+  emit(d.s, { type: "sfx", id: "drumroll" });
 }
 
 function advanceQuestionStage(d: Draft) {
@@ -1219,6 +1249,8 @@ function advanceQuestionStage(d: Draft) {
     case "intro":
       return setStage(d, "answering", Q.answerMs);
     case "answering":
+      return enterTargetAnswering(d);
+    case "targetAnswering":
       return enterReveal(d);
     case "reveal":
       return enterResults(d);
@@ -1231,12 +1263,7 @@ function enterReveal(d: Draft) {
   const { g, s } = d;
   const q = g.question!;
   // Time's up: whatever someone had selected counts as their answer.
-  for (const [pid, draft] of Object.entries(q.drafts ?? {})) {
-    if (!q.answers[pid] && q.participants.includes(pid)) {
-      q.answers[pid] = draft;
-      q.answeredAt[pid] = s.ctx.now;
-    }
-  }
+  commitDrafts(d, q.participants);
   q.drafts = {};
   // Copycat: take the copied player's answer (copies of copies work; a loop gets nothing).
   for (let pass = 0; pass < q.participants.length; pass++) {
@@ -1255,6 +1282,8 @@ function enterReveal(d: Draft) {
     boosts: q.boosts,
     multiplier: q.multiplier,
     payCoins: q.payCoins,
+    // No answer at all costs coins, unless you dropped out.
+    penalize: q.participants.filter((p) => isConnected(d.room, p)),
   });
   const guessers = q.participants.length - 1;
   setStage(d, "reveal", guessers * Q.revealPerAnswerMs + Q.targetRevealMs + 600);

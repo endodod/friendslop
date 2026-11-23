@@ -31,8 +31,9 @@ export function BoardRules({ compact }: { compact?: boolean }) {
         steps={[
           <>Roll and move. Where you land matters: check the tile colors below.</>,
           <>
-            <b>Question tiles:</b> a question about someone. Everyone answers. Pick what <i>they</i> would pick: matching
-            pays <CoinCount value={Q.guesserMatchCoins} size={14} />, the target earns <CoinCount value={Q.targetCoinsPerMatch} size={14} /> per match.
+            <b>Question tiles:</b> a question about someone. Everyone guesses what <i>they</i> would pick, then they answer
+            themselves. Matching pays <CoinCount value={Q.guesserMatchCoins} size={14} />, the target earns <CoinCount value={Q.targetCoinsPerMatch} size={14} /> per
+            match. No answer costs coins.
           </>,
           <>
             <b>Spend coins:</b> a star costs <CoinCount value={E.starCost} size={14} /> when you reach or pass it (or get teleported, swapped or pushed onto it). Items are sold

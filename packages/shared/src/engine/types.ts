@@ -117,7 +117,8 @@ export interface ResolvedQuestion {
 
 /** mindReader: only the landing player guesses, double coins. */
 export type QuestionContext = "tile" | "dataTile" | "mindReader" | "minigameIntro" | "debug" | "minigame";
-export type QuestionStage = "intro" | "answering" | "reveal" | "results";
+/** `answering`: the guessers answer. `targetAnswering`: then the target does (nobody can copy their screen). */
+export type QuestionStage = "intro" | "answering" | "targetAnswering" | "reveal" | "results";
 
 export interface PlayerQuestionResult {
   answer: Answer | null;
@@ -129,6 +130,8 @@ export interface PlayerQuestionResult {
   /** 0..1 closeness, used for ranking/duel ordering */
   score: number;
   coins: number;
+  /** Gave no answer at all and lost coins for it. */
+  penalized?: boolean;
 }
 
 export interface QuestionResult {
@@ -139,6 +142,8 @@ export interface QuestionResult {
   guesserCount: number;
   /** Data questions: was the target right about themselves? */
   targetSelfCorrect?: boolean;
+  /** The target never answered (not a data question): guessers who answered get a consolation. */
+  targetMissing?: boolean;
 }
 
 export interface QuestionRound {

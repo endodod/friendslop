@@ -89,7 +89,23 @@ export function QuestionView({ round, display, onSubmit, myAnswerOverride, rewar
             {q.number && (q.number.minLabel || q.number.maxLabel) && (
               <ScaleEnds min={q.number.min} max={q.number.max} minLabel={q.number.minLabel} maxLabel={q.number.maxLabel} />
             )}
-            {round.stage === "answering" && (
+            {/* Board rounds: the guessers answer first, then the target (so nobody can peek at their screen).
+                Mini-game rounds (onSubmit) still answer all at once. */}
+            {round.stage === "answering" && isTarget && !onSubmit ? (
+              <WaitingTurn
+                round={round}
+                display={display}
+                text="Everyone is guessing what you'll answer. Your turn comes right after, so keep your screen to yourself!"
+                totalMs={Q.answerMs}
+              />
+            ) : round.stage === "targetAnswering" && !isTarget ? (
+              <WaitingTurn
+                round={round}
+                display={display}
+                text={`Answers are in. Now ${target?.name ?? "the target"} answers…`}
+                totalMs={Q.targetAnswerMs}
+              />
+            ) : round.stage === "answering" || round.stage === "targetAnswering" ? (
               <Answering
                 round={round}
                 display={display}
@@ -97,9 +113,9 @@ export function QuestionView({ round, display, onSubmit, myAnswerOverride, rewar
                 isTarget={isTarget}
                 myAnswer={myAnswer}
                 onSubmit={onSubmit}
-                totalAnswerMs={totalAnswerMs}
+                totalAnswerMs={round.stage === "targetAnswering" ? Q.targetAnswerMs : totalAnswerMs}
               />
-            )}
+            ) : null}
             {(round.stage === "reveal" || round.stage === "results") && (
               <Reveal round={round} display={display} rewardLabel={rewardLabel} />
             )}
@@ -344,6 +360,7 @@ function Reveal({ round, display, rewardLabel }: { round: PublicQuestionRound; d
               </div>
               {targetShown && r && <MatchBadge match={r.match} close={r.close} perfect={r.perfect && (q.format === "number" || q.format === "scale")} score={q.format === "ranking" ? r.score : undefined} />}
               {isResults && r && r.coins > 0 && <CoinCount value={r.coins} className="text-xl text-accent" />}
+              {isResults && r?.penalized && <span className="font-display text-lg text-bad" title="No answer">−{-r.coins}</span>}
             </motion.li>
           );
         })}
@@ -389,6 +406,7 @@ function Reveal({ round, display, rewardLabel }: { round: PublicQuestionRound; d
               {isResults && targetRes && targetRes.coins > 0 && (
                 <CoinCount value={targetRes.coins} className="text-2xl text-accent" />
               )}
+              {isResults && targetRes?.penalized && <span className="font-display text-xl text-bad">No answer: −{-targetRes.coins} coins</span>}
             </motion.div>
           )}
         </AnimatePresence>
@@ -396,12 +414,31 @@ function Reveal({ round, display, rewardLabel }: { round: PublicQuestionRound; d
 
       {isResults && result && (
         <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center font-display text-xl">
-          {result.matchedCount === 0
-            ? `Nobody matched ${players[round.targetId]?.name}!`
-            : `${result.matchedCount} of ${result.guesserCount} matched!`}
+          {result.targetMissing
+            ? `${players[round.targetId]?.name} didn't answer, so everyone who did still gets coins.`
+            : result.matchedCount === 0
+              ? `Nobody matched ${players[round.targetId]?.name}!`
+              : `${result.matchedCount} of ${result.guesserCount} matched!`}
           {rewardLabel && <span className="block text-base text-accent">{rewardLabel}</span>}
         </motion.p>
       )}
+    </div>
+  );
+}
+
+/** Someone else's turn to answer: the timer and who's locked in. */
+function WaitingTurn({ round, display, text, totalMs }: { round: PublicQuestionRound; display?: boolean; text: string; totalMs: number }) {
+  const players = usePlayers();
+  return (
+    <div className="flex flex-col gap-3" data-testid="question-waiting">
+      <Timer endsAt={round.stageEndsAt} totalMs={totalMs} silent />
+      <div className="flex flex-wrap items-center gap-2" aria-label="Answered">
+        {round.participants.map((pid) => {
+          const done = round.answered.includes(pid);
+          return <Avatar key={pid} player={players[pid]} size={display ? 52 : 32} dim={!done} ring={pid === round.targetId && round.stage === "targetAnswering"} />;
+        })}
+      </div>
+      <p className="rounded-2xl bg-bg-2 p-4 text-center font-display text-lg text-muted">{text}</p>
     </div>
   );
 }

@@ -56,9 +56,11 @@ describe("removing a player mid-game", () => {
       : qq.format === "higherLower" ? { kind: "hl" as const, dir: "higher" as const }
       : qq.format === "ranking" ? { kind: "order" as const, optionIds: qq.options!.map((o) => o.id) }
       : { kind: "number" as const, value: qq.number!.min };
-    h.act({ type: "answer", playerId: q.targetId, answer: ans });
     h.act({ type: "answer", playerId: guessers[0], answer: ans });
     kick(h, guessers[1]);
+    expect(h.g.question!.stage).toBe("targetAnswering"); // the last guesser left: the target's turn
+    expect(h.g.question!.participants).not.toContain(guessers[1]);
+    h.act({ type: "answer", playerId: q.targetId, answer: ans });
     expect(h.g.question!.stage).toBe("reveal");
     expect(h.g.question!.participants).not.toContain(guessers[1]);
   });

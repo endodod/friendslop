@@ -152,3 +152,62 @@ describe("dropped on the star by a teleport, swap or push", () => {
     expect(h.events.some((e) => e.type === "phase" && e.phase === "starPurchase")).toBe(false);
   });
 });
+
+describe("question order and missing answers", () => {
+  function questionRound(n = 3) {
+    const h = new Harness(n, { mode: "questionDebug" });
+    h.timeout(); // game start → intro
+    h.timeout(); // intro → answering
+    const q = h.g.question!;
+    const qq = q.question;
+    const ans =
+      qq.format === "tiles" ? { kind: "option" as const, optionId: qq.options![0].id }
+      : qq.format === "player" ? { kind: "player" as const, playerId: qq.playerChoices![0] }
+      : qq.format === "higherLower" ? { kind: "hl" as const, dir: "higher" as const }
+      : qq.format === "ranking" ? { kind: "order" as const, optionIds: qq.options!.map((o) => o.id) }
+      : { kind: "number" as const, value: qq.number!.min };
+    const guessers = q.participants.filter((p) => p !== q.targetId);
+    // questionDebug rounds pay nothing; make this one a paying board round.
+    h.room.game!.question!.payCoins = true;
+    return { h, q, ans, guessers, target: q.targetId };
+  }
+
+  it("the target answers only after the guessers; the guessers' time running out hands over to the target", () => {
+    const { h, ans, guessers, target } = questionRound();
+    h.act({ type: "answer", playerId: guessers[0], answer: ans });
+    expect(h.g.question!.stage).toBe("answering");
+    h.timeout();
+    expect(h.g.question!.stage).toBe("targetAnswering");
+    expect(() => h.act({ type: "answer", playerId: guessers[1], answer: ans })).toThrow();
+    h.act({ type: "answer", playerId: target, answer: ans });
+    expect(h.g.question!.stage).toBe("reveal");
+  });
+
+  it("the target doesn't answer: guessers who answered still get coins, the target and silent guessers lose some", () => {
+    const { h, ans, guessers, target } = questionRound(4);
+    for (const p of h.g.order) h.room.game!.players[p].coins = 10;
+    h.act({ type: "answer", playerId: guessers[0], answer: ans });
+    h.act({ type: "answer", playerId: guessers[1], answer: ans });
+    h.timeout(); // guessers' time is up (guessers[2] never answered)
+    h.timeout(); // the target's time is up
+    expect(h.g.question!.stage).toBe("reveal");
+    expect(h.g.question!.result!.targetMissing).toBe(true);
+    h.timeout(); // results
+    expect(h.g.players[guessers[0]].coins).toBe(12);
+    expect(h.g.players[guessers[1]].coins).toBe(12);
+    expect(h.g.players[guessers[2]].coins).toBe(8);
+    expect(h.g.players[target].coins).toBe(5);
+    expect(h.g.question!.result!.perPlayer[target].penalized).toBe(true);
+  });
+
+  it("a player who dropped out isn't penalized", () => {
+    const { h, ans, guessers, target } = questionRound(3);
+    for (const p of h.g.order) h.room.game!.players[p].coins = 10;
+    h.room.players = h.room.players.map((p) => (p.id === target ? { ...p, connected: false } : p));
+    for (const g of guessers) h.act({ type: "answer", playerId: g, answer: ans });
+    expect(h.g.question!.stage).toBe("reveal"); // target gone: straight to the reveal
+    h.timeout();
+    expect(h.g.players[target].coins).toBe(10);
+    expect(h.g.players[guessers[0]].coins).toBe(12);
+  });
+});

@@ -52,7 +52,7 @@ function FocusContent({ display }: { display: boolean }) {
       return g.question ? (
         <>
           <QuestionView round={g.question} display={display} />
-          {g.question.stage !== "answering" && <SkipButton />}
+          {g.question.stage !== "answering" && g.question.stage !== "targetAnswering" && <SkipButton />}
         </>
       ) : null;
     case "minigameIntro":

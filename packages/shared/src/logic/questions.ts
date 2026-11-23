@@ -220,6 +220,8 @@ export function scoreQuestion(args: {
   boosts?: Record<PlayerId, { wide?: boolean; double?: boolean }>;
   multiplier?: number;
   payCoins?: boolean;
+  /** Players who lose coins if they gave no answer (connected ones; disconnected players are spared). */
+  penalize?: PlayerId[];
 }): QuestionResult {
   const { question: q, targetId, participants, answers } = args;
   const cfg = GAME_CONFIG.question;
@@ -231,8 +233,18 @@ export function scoreQuestion(args: {
   const perPlayer: Record<PlayerId, PlayerQuestionResult> = {};
   let matchedCount = 0;
   const guessers = participants.filter((p) => p !== targetId);
+  const targetMissing = !q.isData && !answers[targetId];
+  const penalize = new Set(args.penalize ?? []);
 
   for (const pid of guessers) {
+    if (targetMissing) {
+      // Nothing to match against, and that's not the guessers' fault.
+      const ans = answers[pid] ?? null;
+      const charm = args.boosts?.[pid]?.double ? 2 : 1;
+      const coins = ans ? cfg.noTargetAnswerCoins * charm : penalize.has(pid) ? -cfg.noAnswerPenalty : 0;
+      perPlayer[pid] = { answer: ans, isTarget: false, match: false, perfect: false, score: 0, coins: pay ? coins : 0, penalized: pay && !ans && penalize.has(pid) };
+      continue;
+    }
     const ans = answers[pid] ?? null;
     let r = { match: false, perfect: false, score: 0 };
     if (ans && truth) {
@@ -254,7 +266,8 @@ export function scoreQuestion(args: {
       if (r.perfect && q.format === "number") coins += cfg.perfectBonusCoins;
     }
     const charm = args.boosts?.[pid]?.double ? 2 : 1;
-    perPlayer[pid] = { answer: ans, isTarget: false, ...r, close, coins: pay ? coins * mult * charm : 0 };
+    const penalized = !ans && penalize.has(pid);
+    perPlayer[pid] = { answer: ans, isTarget: false, ...r, close, coins: pay ? (penalized ? -cfg.noAnswerPenalty : coins * mult * charm) : 0, penalized: pay && penalized };
   }
 
   const targetAnswer = answers[targetId] ?? null;
@@ -268,14 +281,17 @@ export function scoreQuestion(args: {
   } else if (targetAnswer) {
     targetCmp = { match: true, perfect: true, score: 1 };
   }
+  const targetPenalized = !targetAnswer && penalize.has(targetId);
+  if (targetPenalized) targetCoins = -cfg.targetNoAnswerPenalty;
   perPlayer[targetId] = {
     answer: targetAnswer,
     isTarget: true,
     ...targetCmp,
     coins: pay ? targetCoins : 0,
+    penalized: pay && targetPenalized,
   };
 
-  return { truth, truthFrom, perPlayer, matchedCount, guesserCount: guessers.length, targetSelfCorrect };
+  return { truth, truthFrom, perPlayer, matchedCount, guesserCount: guessers.length, targetSelfCorrect, ...(targetMissing ? { targetMissing } : {}) };
 }
 
 /** Prefer whoever has been target least; random among ties. */
@@ -287,7 +303,8 @@ export function leastTargeted(rng: Rng, candidates: PlayerId[], counts: Record<P
 /** Mini-game intro bonus rule: matchers get it; the target if at least half the guessers matched. */
 export function bonusRecipients(result: QuestionResult, targetId: PlayerId): PlayerId[] {
   const out = Object.entries(result.perPlayer)
-    .filter(([pid, r]) => pid !== targetId && r.match)
+    // The target didn't answer: everyone who did gets the bonus.
+    .filter(([pid, r]) => pid !== targetId && (r.match || (result.targetMissing && r.answer)))
     .map(([pid]) => pid);
   const needed = Math.max(1, Math.ceil(result.guesserCount / 2));
   if (result.truthFrom === "data") {

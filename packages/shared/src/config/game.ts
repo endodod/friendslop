@@ -77,6 +77,13 @@ export const GAME_CONFIG = {
   question: {
     introMs: 3200,
     answerMs: 20000,
+    /** The target answers after everyone else has (so nobody can peek at their screen). */
+    targetAnswerMs: 12000,
+    /** Board questions: no answer at all (not even a selection) costs coins. Disconnected players are spared. */
+    noAnswerPenalty: 2,
+    targetNoAnswerPenalty: 5,
+    /** The target didn't answer: everyone who did gets this instead of nothing (it wasn't their fault). */
+    noTargetAnswerCoins: 2,
     /** Reveal timing: per guesser answer, then the target's answer with suspense. */
     revealPerAnswerMs: 900,
     targetRevealMs: 2600,

@@ -183,9 +183,11 @@ export function botActions(
     case "questionRound":
     case "minigameQuestion": {
       const q = g.question;
-      if (!q || q.stage !== "answering" || now - q.stageStartedAt < BOT_DELAY_MS) break;
+      if (!q || (q.stage !== "answering" && q.stage !== "targetAnswering") || now - q.stageStartedAt < BOT_DELAY_MS) break;
       for (const b of bots) {
         if (!q.participants.includes(b) || q.answers[b] || q.boosts[b]?.copy) continue;
+        // Guessers answer first, the target after them.
+        if ((b === q.targetId) !== (q.stage === "targetAnswering")) continue;
         const answer = randomAnswer(q.question, rng);
         if (answer) out.push({ type: "answer", playerId: b, answer });
       }

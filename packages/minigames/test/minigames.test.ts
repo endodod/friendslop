@@ -179,7 +179,8 @@ describe("mini-game flow in a real game", () => {
       : qq.format === "higherLower" ? { kind: "hl" as const, dir: "higher" as const }
       : qq.format === "ranking" ? { kind: "order" as const, optionIds: qq.options!.map((o) => o.id) }
       : { kind: "number" as const, value: qq.number!.min };
-    for (const p of q.participants) h.act({ type: "answer", playerId: p, answer: same });
+    for (const p of q.participants) if (p !== q.targetId) h.act({ type: "answer", playerId: p, answer: same });
+    h.act({ type: "answer", playerId: q.targetId, answer: same });
     h.advanceTo("minigameCountdown");
     expect(h.g.minigame!.bonuses.sort()).toEqual([...q.participants].sort());
   });
