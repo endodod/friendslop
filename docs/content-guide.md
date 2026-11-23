@@ -172,7 +172,7 @@ SVG with the board's `aspect` ratio (width / height).
 - `warpTo` (on a `warp` tile) names the tile a Warp Pipe sends you to. Pipes usually come in pairs that point at
   each other. Warp tiles can't be tuned in the tile mix.
 - Every board in the folder shows up in the lobby's map picker (with a preview). Friendship Loop (classic) is the default.
-- Shipped maps: Heartbeat (2–4 players), Friendship Loop (classic, 2–6), Island Hopper (4–8, 37 tiles), Orbit (3–8), Metropolis (4–8). Each has a Gamble, Rest Stops and a pair of Warp Pipes (Orbit: two pairs, linking the corner islands). The lobby also offers **Random**, which picks one of them when the game starts.
+- Shipped maps: Heartbeat (2–4 players), Friendship Loop (classic, 2–6), Island Hopper (4–8, 37 tiles), Orbit (3–8), Metropolis (4–8). Each has a Gamble, Rest Stops and Warp Pipes that link two neighbouring branches (a shortcut between paths that are close on screen but far apart on foot). The lobby also offers **Random**, which picks one of them when the game starts.
 - `recommendedPlayers: { "min": 4, "max": 8 }` is shown on the map card. Every shipped map sets it.
 - To try a map without enough friends, the host can **Add a bot** in the lobby. Bots play randomly (see `packages/shared/src/engine/bots.ts`).
 - Players can tune how often each tile type appears (lobby → Tile mix: Off / Few / Normal / Many).

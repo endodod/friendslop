@@ -74,12 +74,13 @@
   },
   {
    "id": "o7",
-   "type": "red",
+   "type": "warp",
    "x": 0.4109,
    "y": 0.08,
    "next": [
     "o8"
-   ]
+   ],
+   "warpTo": "a1"
   },
   {
    "id": "o8",
@@ -120,13 +121,12 @@
   },
   {
    "id": "o12",
-   "type": "warp",
+   "type": "event",
    "x": 0.8563,
    "y": 0.08,
    "next": [
     "o13"
-   ],
-   "warpTo": "o26"
+   ]
   },
   {
    "id": "o13",
@@ -158,12 +158,13 @@
   },
   {
    "id": "o16",
-   "type": "event",
+   "type": "warp",
    "x": 0.95,
    "y": 0.5,
    "next": [
     "o17"
-   ]
+   ],
+   "warpTo": "e1"
   },
   {
    "id": "o17",
@@ -254,7 +255,7 @@
    "next": [
     "o27"
    ],
-   "warpTo": "o12"
+   "warpTo": "d1"
   },
   {
    "id": "o27",
@@ -322,12 +323,13 @@
   },
   {
    "id": "a1",
-   "type": "red",
+   "type": "warp",
    "x": 0.2915,
    "y": 0.2694,
    "next": [
     "a2"
-   ]
+   ],
+   "warpTo": "o7"
   },
   {
    "id": "a2",
@@ -430,12 +432,13 @@
   },
   {
    "id": "d1",
-   "type": "question",
+   "type": "warp",
    "x": 0.3664,
    "y": 0.71,
    "next": [
     "d2"
-   ]
+   ],
+   "warpTo": "o26"
   },
   {
    "id": "d2",
@@ -457,12 +460,13 @@
   },
   {
    "id": "e1",
-   "type": "item",
+   "type": "warp",
    "x": 0.8634,
    "y": 0.5475,
    "next": [
     "o17"
-   ]
+   ],
+   "warpTo": "o16"
   }
  ],
  "recommendedPlayers": {

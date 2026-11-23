@@ -35,13 +35,14 @@
     },
     {
       "id": "r2",
-      "type": "blue",
+      "type": "warp",
       "x": 0.6466,
       "y": 0.313,
       "next": [
         "r3",
         "ne-in"
-      ]
+      ],
+      "warpTo": "ne-out"
     },
     {
       "id": "r3",
@@ -110,12 +111,13 @@
     },
     {
       "id": "r10",
-      "type": "question",
+      "type": "warp",
       "x": 0.3172,
       "y": 0.5668,
       "next": [
         "r11"
-      ]
+      ],
+      "warpTo": "sw-in"
     },
     {
       "id": "r11",
@@ -192,13 +194,12 @@
     },
     {
       "id": "ne4",
-      "type": "warp",
+      "type": "blue",
       "x": 0.9138,
       "y": 0.2925,
       "next": [
         "ne5"
-      ],
-      "warpTo": "sw4"
+      ]
     },
     {
       "id": "ne5",
@@ -211,12 +212,13 @@
     },
     {
       "id": "ne-out",
-      "type": "red",
+      "type": "warp",
       "x": 0.7624,
       "y": 0.3598,
       "next": [
         "r3"
-      ]
+      ],
+      "warpTo": "r2"
     },
     {
       "id": "se-in",
@@ -265,13 +267,12 @@
     },
     {
       "id": "se4",
-      "type": "warp",
+      "type": "blue",
       "x": 0.8487,
       "y": 0.9125,
       "next": [
         "se5"
-      ],
-      "warpTo": "nw4"
+      ]
     },
     {
       "id": "se5",
@@ -293,12 +294,13 @@
     },
     {
       "id": "sw-in",
-      "type": "blue",
+      "type": "warp",
       "x": 0.272,
       "y": 0.7516,
       "next": [
         "sw0"
-      ]
+      ],
+      "warpTo": "r10"
     },
     {
       "id": "sw0",
@@ -338,13 +340,12 @@
     },
     {
       "id": "sw4",
-      "type": "warp",
+      "type": "blue",
       "x": 0.0862,
       "y": 0.7075,
       "next": [
         "sw5"
-      ],
-      "warpTo": "ne4"
+      ]
     },
     {
       "id": "sw5",
@@ -411,13 +412,12 @@
     },
     {
       "id": "nw4",
-      "type": "warp",
+      "type": "blue",
       "x": 0.1513,
       "y": 0.0875,
       "next": [
         "nw5"
-      ],
-      "warpTo": "se4"
+      ]
     },
     {
       "id": "nw5",
