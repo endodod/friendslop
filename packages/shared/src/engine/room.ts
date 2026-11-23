@@ -26,7 +26,8 @@ export function defaultSettings(content: ContentBundle): RoomSettings {
     dataQuestions: true,
     familyFriendly: false,
     language: "en",
-    boardId: content.boards[0]?.id ?? "classic",
+    // Board files load in alphabetical order; the default map stays Friendship Loop.
+    boardId: content.boards.find((b) => b.id === "classic")?.id ?? content.boards[0]?.id ?? "classic",
   };
 }
 

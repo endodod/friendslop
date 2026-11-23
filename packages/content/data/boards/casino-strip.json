@@ -1,0 +1,356 @@
+{
+  "id": "casino-strip",
+  "name": {
+    "en": "Casino Strip",
+    "de": "Casino-Meile"
+  },
+  "description": {
+    "en": "The house always wins… unless you do. Gambles, rest stops and a pipe across town.",
+    "de": "Die Bank gewinnt immer… außer du. Zocken, Raststätten und eine Röhre quer durch die Stadt."
+  },
+  "startTileId": "c0",
+  "recommendedPlayers": {
+    "min": 3,
+    "max": 6
+  },
+  "aspect": 1.6,
+  "tiles": [
+    {
+      "id": "c0",
+      "type": "start",
+      "x": 0.06,
+      "y": 0.5,
+      "next": [
+        "c1"
+      ]
+    },
+    {
+      "id": "c1",
+      "type": "blue",
+      "x": 0.0756,
+      "y": 0.3918,
+      "next": [
+        "c2"
+      ]
+    },
+    {
+      "id": "c2",
+      "type": "shop",
+      "x": 0.1151,
+      "y": 0.3014,
+      "next": [
+        "c3"
+      ]
+    },
+    {
+      "id": "c3",
+      "type": "question",
+      "x": 0.1686,
+      "y": 0.2303,
+      "next": [
+        "c4"
+      ]
+    },
+    {
+      "id": "c4",
+      "type": "rest-stop",
+      "x": 0.2292,
+      "y": 0.1768,
+      "next": [
+        "c5"
+      ]
+    },
+    {
+      "id": "c5",
+      "type": "blue",
+      "x": 0.2947,
+      "y": 0.1374,
+      "next": [
+        "c6"
+      ]
+    },
+    {
+      "id": "c6",
+      "type": "item",
+      "x": 0.3621,
+      "y": 0.1107,
+      "next": [
+        "c7"
+      ]
+    },
+    {
+      "id": "c7",
+      "type": "red",
+      "x": 0.4312,
+      "y": 0.095,
+      "next": [
+        "c8"
+      ]
+    },
+    {
+      "id": "c8",
+      "type": "question",
+      "x": 0.5007,
+      "y": 0.09,
+      "next": [
+        "c9",
+        "a1"
+      ]
+    },
+    {
+      "id": "c9",
+      "type": "event",
+      "x": 0.5695,
+      "y": 0.0951,
+      "next": [
+        "c10"
+      ]
+    },
+    {
+      "id": "c10",
+      "type": "duel",
+      "x": 0.6386,
+      "y": 0.1109,
+      "next": [
+        "c11"
+      ]
+    },
+    {
+      "id": "c11",
+      "type": "blue",
+      "x": 0.7059,
+      "y": 0.1377,
+      "next": [
+        "c12"
+      ]
+    },
+    {
+      "id": "c12",
+      "type": "warp",
+      "x": 0.7713,
+      "y": 0.1772,
+      "next": [
+        "c13"
+      ],
+      "warpTo": "c28"
+    },
+    {
+      "id": "c13",
+      "type": "event",
+      "x": 0.8319,
+      "y": 0.2308,
+      "next": [
+        "c14"
+      ]
+    },
+    {
+      "id": "c14",
+      "type": "shop",
+      "x": 0.8852,
+      "y": 0.3019,
+      "next": [
+        "c15"
+      ]
+    },
+    {
+      "id": "c15",
+      "type": "blue",
+      "x": 0.9246,
+      "y": 0.3924,
+      "next": [
+        "c16"
+      ]
+    },
+    {
+      "id": "c16",
+      "type": "event",
+      "x": 0.94,
+      "y": 0.5,
+      "next": [
+        "c17"
+      ]
+    },
+    {
+      "id": "c17",
+      "type": "question",
+      "x": 0.9244,
+      "y": 0.6082,
+      "next": [
+        "c18"
+      ]
+    },
+    {
+      "id": "c18",
+      "type": "bank",
+      "x": 0.8849,
+      "y": 0.6986,
+      "next": [
+        "c19"
+      ]
+    },
+    {
+      "id": "c19",
+      "type": "red",
+      "x": 0.8314,
+      "y": 0.7697,
+      "next": [
+        "c20"
+      ]
+    },
+    {
+      "id": "c20",
+      "type": "gamble",
+      "x": 0.7708,
+      "y": 0.8232,
+      "next": [
+        "c21"
+      ]
+    },
+    {
+      "id": "c21",
+      "type": "blue",
+      "x": 0.7053,
+      "y": 0.8626,
+      "next": [
+        "c22"
+      ]
+    },
+    {
+      "id": "c22",
+      "type": "item",
+      "x": 0.6379,
+      "y": 0.8893,
+      "next": [
+        "c23"
+      ]
+    },
+    {
+      "id": "c23",
+      "type": "question",
+      "x": 0.5688,
+      "y": 0.905,
+      "next": [
+        "c24"
+      ]
+    },
+    {
+      "id": "c24",
+      "type": "thief",
+      "x": 0.5,
+      "y": 0.91,
+      "next": [
+        "c25"
+      ]
+    },
+    {
+      "id": "c25",
+      "type": "blue",
+      "x": 0.4305,
+      "y": 0.9049,
+      "next": [
+        "c26"
+      ]
+    },
+    {
+      "id": "c26",
+      "type": "shop",
+      "x": 0.3614,
+      "y": 0.8891,
+      "next": [
+        "c27"
+      ]
+    },
+    {
+      "id": "c27",
+      "type": "red",
+      "x": 0.2941,
+      "y": 0.8623,
+      "next": [
+        "c28"
+      ]
+    },
+    {
+      "id": "c28",
+      "type": "warp",
+      "x": 0.2287,
+      "y": 0.8228,
+      "next": [
+        "c29"
+      ],
+      "warpTo": "c12"
+    },
+    {
+      "id": "c29",
+      "type": "question",
+      "x": 0.1681,
+      "y": 0.7692,
+      "next": [
+        "c30"
+      ]
+    },
+    {
+      "id": "c30",
+      "type": "mind-reader",
+      "x": 0.1148,
+      "y": 0.6981,
+      "next": [
+        "c31"
+      ]
+    },
+    {
+      "id": "c31",
+      "type": "blue",
+      "x": 0.0754,
+      "y": 0.6076,
+      "next": [
+        "c0"
+      ]
+    },
+    {
+      "id": "a1",
+      "type": "question",
+      "x": 0.5,
+      "y": 0.29,
+      "next": [
+        "hub"
+      ]
+    },
+    {
+      "id": "hub",
+      "type": "gamble",
+      "x": 0.5,
+      "y": 0.5,
+      "next": [
+        "b1",
+        "d1"
+      ]
+    },
+    {
+      "id": "b1",
+      "type": "red",
+      "x": 0.64,
+      "y": 0.5,
+      "next": [
+        "b2"
+      ]
+    },
+    {
+      "id": "b2",
+      "type": "rest-stop",
+      "x": 0.79,
+      "y": 0.5,
+      "next": [
+        "c16"
+      ]
+    },
+    {
+      "id": "d1",
+      "type": "lucky",
+      "x": 0.5,
+      "y": 0.71,
+      "next": [
+        "c24"
+      ]
+    }
+  ]
+}

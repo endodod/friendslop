@@ -1,0 +1,229 @@
+{
+  "id": "pit-stop",
+  "name": {
+    "en": "Pit Stop",
+    "de": "Boxenstopp"
+  },
+  "description": {
+    "en": "Small and quick. A gamble in the middle, a pipe across.",
+    "de": "Klein und schnell. In der Mitte wird gezockt, quer durch geht's per Röhre."
+  },
+  "startTileId": "p0",
+  "recommendedPlayers": {
+    "min": 2,
+    "max": 4
+  },
+  "aspect": 1.6,
+  "tiles": [
+    {
+      "id": "p0",
+      "type": "start",
+      "x": 0.09,
+      "y": 0.5,
+      "next": [
+        "p1"
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "blue",
+      "x": 0.124,
+      "y": 0.3446,
+      "next": [
+        "p2"
+      ]
+    },
+    {
+      "id": "p2",
+      "type": "mind-reader",
+      "x": 0.2007,
+      "y": 0.2335,
+      "next": [
+        "p3"
+      ]
+    },
+    {
+      "id": "p3",
+      "type": "shop",
+      "x": 0.2952,
+      "y": 0.1621,
+      "next": [
+        "p4"
+      ]
+    },
+    {
+      "id": "p4",
+      "type": "question",
+      "x": 0.3962,
+      "y": 0.1227,
+      "next": [
+        "p5"
+      ]
+    },
+    {
+      "id": "p5",
+      "type": "blue",
+      "x": 0.5,
+      "y": 0.11,
+      "next": [
+        "p6",
+        "s0"
+      ]
+    },
+    {
+      "id": "p6",
+      "type": "lucky",
+      "x": 0.6045,
+      "y": 0.1229,
+      "next": [
+        "p7"
+      ]
+    },
+    {
+      "id": "p7",
+      "type": "red",
+      "x": 0.7054,
+      "y": 0.1625,
+      "next": [
+        "p8"
+      ]
+    },
+    {
+      "id": "p8",
+      "type": "warp",
+      "x": 0.7998,
+      "y": 0.2339,
+      "next": [
+        "p9"
+      ],
+      "warpTo": "p18"
+    },
+    {
+      "id": "p9",
+      "type": "question",
+      "x": 0.8763,
+      "y": 0.3451,
+      "next": [
+        "p10"
+      ]
+    },
+    {
+      "id": "p10",
+      "type": "item",
+      "x": 0.91,
+      "y": 0.5,
+      "next": [
+        "p11"
+      ]
+    },
+    {
+      "id": "p11",
+      "type": "duel",
+      "x": 0.876,
+      "y": 0.6554,
+      "next": [
+        "p12"
+      ]
+    },
+    {
+      "id": "p12",
+      "type": "rest-stop",
+      "x": 0.7993,
+      "y": 0.7665,
+      "next": [
+        "p13"
+      ]
+    },
+    {
+      "id": "p13",
+      "type": "shop",
+      "x": 0.7048,
+      "y": 0.8379,
+      "next": [
+        "p14"
+      ]
+    },
+    {
+      "id": "p14",
+      "type": "bank",
+      "x": 0.6038,
+      "y": 0.8773,
+      "next": [
+        "p15"
+      ]
+    },
+    {
+      "id": "p15",
+      "type": "blue",
+      "x": 0.5,
+      "y": 0.89,
+      "next": [
+        "p16"
+      ]
+    },
+    {
+      "id": "p16",
+      "type": "event",
+      "x": 0.3955,
+      "y": 0.8771,
+      "next": [
+        "p17"
+      ]
+    },
+    {
+      "id": "p17",
+      "type": "event",
+      "x": 0.2946,
+      "y": 0.8375,
+      "next": [
+        "p18"
+      ]
+    },
+    {
+      "id": "p18",
+      "type": "warp",
+      "x": 0.2002,
+      "y": 0.7661,
+      "next": [
+        "p19"
+      ],
+      "warpTo": "p8"
+    },
+    {
+      "id": "p19",
+      "type": "thief",
+      "x": 0.1237,
+      "y": 0.6549,
+      "next": [
+        "p0"
+      ]
+    },
+    {
+      "id": "s0",
+      "type": "question",
+      "x": 0.5,
+      "y": 0.31,
+      "next": [
+        "s1"
+      ]
+    },
+    {
+      "id": "s1",
+      "type": "gamble",
+      "x": 0.5,
+      "y": 0.5,
+      "next": [
+        "s2"
+      ]
+    },
+    {
+      "id": "s2",
+      "type": "red",
+      "x": 0.5,
+      "y": 0.69,
+      "next": [
+        "p15"
+      ]
+    }
+  ]
+}
