@@ -87,9 +87,7 @@ function Intro() {
         </div>
       )}
       <MinigameTutorial id={mg.id} showBonus={mg.kind !== "questionOnly"} />
-      {mg.kind !== "questionOnly" && (
-        <p className="text-center text-sm text-muted">First a quick question. Match the target to get the bonus!</p>
-      )}
+      {mg.kind !== "questionOnly" && <BonusWinners />}
       <Timer endsAt={g.phaseEndsAt} totalMs={mg.origin === "duel" ? 20000 : M.introMs} silent />
       <ReadyUp who={mg.participants} />
       <SkipButton />
@@ -115,6 +113,28 @@ function GoalBanner({ id }: { id: string }) {
   );
 }
 
+/** Who won the bonus in the question before this mini-game. */
+function BonusWinners() {
+  const g = useStore((s) => s.pub!.game!);
+  const players = usePlayers();
+  const playerId = useStore((s) => s.playerId);
+  const mg = g.minigame!;
+  const iHaveBonus = playerId && mg.bonuses.includes(playerId);
+  return (
+    <div className="flex flex-col items-center gap-2 text-center">
+      <p className="font-display text-xl text-muted">Bonus</p>
+      <div className="flex flex-wrap justify-center gap-2">
+        {mg.bonuses.length === 0 ? (
+          <span className="text-muted">Nobody got the bonus</span>
+        ) : (
+          mg.bonuses.map((pid) => <Avatar key={pid} player={players[pid]} size={44} ring />)
+        )}
+      </div>
+      {iHaveBonus && <p className="font-display text-xl text-accent">You got the bonus!</p>}
+    </div>
+  );
+}
+
 function Countdown() {
   const g = useStore((s) => s.pub!.game!);
   const players = usePlayers();
@@ -130,22 +150,9 @@ function Countdown() {
       if (n === 0) play("go");
     }
   }, [n, last]);
-  const iHaveBonus = playerId && mg.bonuses.includes(playerId);
   return (
     <div className="flex flex-col items-center gap-6 py-8 text-center">
-      {mg.kind !== "questionOnly" && (
-        <div className="flex flex-col items-center gap-2">
-          <p className="font-display text-xl text-muted">Bonus</p>
-          <div className="flex flex-wrap justify-center gap-2">
-            {mg.bonuses.length === 0 ? (
-              <span className="text-muted">Nobody got the bonus</span>
-            ) : (
-              mg.bonuses.map((pid) => <Avatar key={pid} player={players[pid]} size={44} ring />)
-            )}
-          </div>
-          {iHaveBonus && <p className="font-display text-xl text-accent">You got the bonus!</p>}
-        </div>
-      )}
+      {mg.kind !== "questionOnly" && <BonusWinners />}
       <motion.p
         key={n}
         initial={{ scale: 2.5, opacity: 0 }}

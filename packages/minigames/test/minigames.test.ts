@@ -7,7 +7,7 @@ import { simulate, stacker, sliderX, towerScore } from "../src/stacker/logic";
 import { layout, memoryFlip, replay } from "../src/memory-flip/logic";
 import { pumpIt } from "../src/pump-it/logic";
 import { redLight, RED_GRACE_MS } from "../src/red-light/logic";
-import { chicken, JOIN_MS } from "../src/chicken/logic";
+import { chicken, ALL_IN_MS, JOIN_MS } from "../src/chicken/logic";
 import { majorityOf } from "../src/most-likely-to/logic";
 
 const services = {} as MinigameServices;
@@ -144,13 +144,29 @@ describe("chicken", () => {
     let s = init(chicken);
     s = chicken.onInput!(s, "a", { hold: true }, ctx(10));
     s = chicken.onInput!(s, "b", { hold: true }, ctx(10));
-    s = chicken.tick!(s, ctx(JOIN_MS + 10));
-    s = chicken.onInput!(s, "a", { hold: false }, ctx(JOIN_MS + 2000));
+    // Everyone grabbed: it starts shortly instead of waiting out the join window.
+    expect(s.growStartsAt).toBe(10 + ALL_IN_MS);
+    s = chicken.tick!(s, ctx(s.growStartsAt + 10));
+    s = chicken.onInput!(s, "a", { hold: false }, ctx(s.growStartsAt + 1000));
     s = chicken.tick!(s, ctx(s.crashAt + 1));
     expect(s.status.a).toBe("cashed");
     expect(s.status.b).toBe("busted");
     expect(chicken.results(s)[0].playerId).toBe("a");
-    expect(JSON.stringify(chicken.publicState(init(chicken), 0))).not.toContain("crashAt");
+    expect(JSON.stringify(chicken.publicState(init(chicken), 0))).not.toMatch(/crashAt|crashMs/);
+  });
+
+  it("waits for stragglers; someone who never holds is out without ending it for the rest", () => {
+    let s = init(chicken, ["a", "b", "c"]);
+    s = chicken.onInput!(s, "a", { hold: true }, ctx(10));
+    s = chicken.onInput!(s, "b", { hold: true }, ctx(10));
+    s = chicken.tick!(s, ctx(3000));
+    expect(chicken.isFinished(s, 3000)).toBe(false);
+    expect(s.status.c).toBe("waiting");
+    s = chicken.tick!(s, ctx(JOIN_MS + 10));
+    expect(s.status.c).toBe("out");
+    expect(chicken.isFinished(s, JOIN_MS + 10)).toBe(false);
+    s = chicken.tick!(s, ctx(s.crashAt + 1));
+    expect(chicken.results(s).find((p) => p.playerId === "c")!.label).toBe("never held");
   });
 });
 
@@ -163,12 +179,12 @@ describe("most-likely-to", () => {
 });
 
 describe("mini-game flow in a real game", () => {
-  it("intro question awards the bonus to matchers", () => {
+  it("bonus question comes first and awards the bonus to matchers; then the rules, then the countdown", () => {
     const h = new Harness(3, { minigames: MINIGAMES, seed: 11 });
-    h.advanceTo("minigameIntro");
-    const mg = h.g.minigame!;
-    if (mg.kind === "questionOnly") return; // no intro question for these
+    h.advanceTo("roundEnd");
     h.timeout();
+    const mg = h.g.minigame!;
+    if (mg.kind === "questionOnly") return expect(h.g.phase).toBe("minigameIntro"); // no bonus question for these
     expect(h.g.phase).toBe("minigameQuestion");
     h.timeout(); // intro → answering
     const q = h.g.question!;
@@ -181,8 +197,10 @@ describe("mini-game flow in a real game", () => {
       : { kind: "number" as const, value: qq.number!.min };
     for (const p of q.participants) if (p !== q.targetId) h.act({ type: "answer", playerId: p, answer: same });
     h.act({ type: "answer", playerId: q.targetId, answer: same });
-    h.advanceTo("minigameCountdown");
+    h.advanceTo("minigameIntro");
     expect(h.g.minigame!.bonuses.sort()).toEqual([...q.participants].sort());
+    h.timeout();
+    expect(h.g.phase).toBe("minigameCountdown");
   });
 
   for (const n of [2, 3, 4, 6, 8]) {

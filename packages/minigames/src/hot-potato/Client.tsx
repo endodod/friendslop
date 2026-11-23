@@ -31,7 +31,7 @@ export function HotPotatoClient(p: MinigameClientProps<Pub>) {
     <div className="flex flex-col items-center gap-4">
       <Arena
         tone={mine ? "#ff4d5e" : "#ff8a3d"}
-        className={`relative aspect-square w-full transition-[max-width] duration-300 ${mine ? "max-w-[min(100%,30dvh)]" : "max-w-[min(100%,42dvh)]"}`}
+        className="relative aspect-square w-full max-w-[min(100%,34dvh)]"
         bg={`radial-gradient(60% 60% at 50% 50%, ${p.pub.boom ? "#ff4d5e55" : "#ff8a3d33"} 0%, transparent 70%), linear-gradient(180deg, #1d1838, #120f24)`}
       >
         {/* circle */}
@@ -95,6 +95,8 @@ export function HotPotatoClient(p: MinigameClientProps<Pub>) {
           </motion.span>
         )}
       </Arena>
+      {/* Fixed height, so the answer buttons never jump around between prompts or turns. */}
+      <div className="flex h-[19rem] w-full flex-col items-center">
       {p.pub.boom ? (
         p.pub.revive ? (
           <p className="font-display text-3xl text-good">{p.players[p.pub.boom]?.name} used their revive!</p>
@@ -102,8 +104,8 @@ export function HotPotatoClient(p: MinigameClientProps<Pub>) {
           <p className="font-display text-3xl text-bad">{p.players[p.pub.boom]?.name} is out!</p>
         )
       ) : mine ? (
-        <div className="flex w-full flex-col items-center gap-3">
-          <p className="font-display text-2xl text-bad">You have the bomb! Quick, pass it:</p>
+        <div className="flex w-full flex-col items-center gap-2">
+          <p className="font-display text-2xl leading-tight text-bad">You have the bomb! Quick, pass it:</p>
           {p.pub.prompt && (
             <Challenge
               prompt={p.pub.prompt}
@@ -119,6 +121,7 @@ export function HotPotatoClient(p: MinigameClientProps<Pub>) {
       ) : (
         <p className="font-display text-2xl">{p.players[p.pub.holder]?.name} has the bomb…</p>
       )}
+      </div>
     </div>
   );
 }
@@ -143,15 +146,17 @@ function Challenge({
   Icon: MinigameClientProps["ui"]["Icon"];
 }) {
   return (
-    <motion.div key={JSON.stringify(prompt)} initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="flex w-full flex-col items-center gap-3">
-      <p className="font-display text-xl text-muted">{INSTRUCTION[prompt.kind]}</p>
+    <div className="flex w-full flex-col items-center gap-2">
+      <p className="h-7 font-display text-xl leading-7 text-muted">{INSTRUCTION[prompt.kind]}</p>
+      {/* Same height for every kind of prompt; only this part animates, never the buttons. */}
+      <motion.div key={JSON.stringify(prompt)} initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="flex h-24 w-full items-center justify-center">
       {prompt.kind === "match" && (
         <span className="flex h-24 w-24 items-center justify-center rounded-3xl bg-accent/20 text-accent ring-2 ring-accent">
           <Icon id={prompt.icon} size={64} />
         </span>
       )}
       {prompt.kind === "ink" && (
-        <p className="font-display text-6xl drop-shadow-[0_3px_0_#000a]" style={{ color: prompt.ink }}>
+        <p className="font-display text-6xl leading-none drop-shadow-[0_3px_0_#000a]" style={{ color: prompt.ink }}>
           {prompt.word}
         </p>
       )}
@@ -162,6 +167,7 @@ function Challenge({
           ))}
         </div>
       )}
+      </motion.div>
       <div className="grid w-full grid-cols-3 gap-2">
         {prompt.choices.map((c, i) => (
           <ChunkyButton
@@ -170,13 +176,13 @@ function Challenge({
             disabled={locked}
             color={prompt.kind === "ink" ? c : "#3a3462"}
             textColor="#f4f1ff"
-            className="flex min-h-16 items-center justify-center text-3xl"
+            className="flex h-16 items-center justify-center text-3xl"
             onClick={() => onPick(i)}
           >
             {prompt.kind === "count" ? c : prompt.kind === "ink" ? "" : <Icon id={c} size={44} />}
           </ChunkyButton>
         ))}
       </div>
-    </motion.div>
+    </div>
   );
 }

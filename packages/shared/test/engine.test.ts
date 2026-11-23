@@ -31,7 +31,7 @@ describe("turn flow & movement", () => {
     expect(h.events.some((e) => e.type === "tokenMoved" && e.path.join() === "m1")).toBe(true);
   });
 
-  it("red tile: −3 coins, never below 0", () => {
+  it("red tile: −5 coins, never below 0", () => {
     const h = new Harness(2);
     toTurnStart(h);
     const pid = h.active();
@@ -549,18 +549,18 @@ describe("special tiles", () => {
     h.room.game!.starTileId = "m20";
     h.room.game!.players[pid].tileId = "m11";
     h.room.game!.tileTypes.m13 = "red";
-    rollExactly(h, 2); // past m12 (bank, free) → m13 (red: −3 into the bank)
+    rollExactly(h, 2); // past m12 (bank, free) → m13 (red: −5 into the bank)
     h.timeout();
-    expect(h.g.bank).toBe(3);
-    expect(h.g.players[pid].coins).toBe(7);
+    expect(h.g.bank).toBe(5);
+    expect(h.g.players[pid].coins).toBe(5);
     h.advanceTo("turnStart");
     const other = h.active();
     h.room.game!.players[other].tileId = "m11";
     const before = h.g.players[other].coins;
     rollExactly(h, 1); // lands on m12
     h.timeout();
-    expect(h.g.tileResult!.coinsDelta).toBe(3);
-    expect(h.g.players[other].coins).toBe(before + 3);
+    expect(h.g.tileResult!.coinsDelta).toBe(5);
+    expect(h.g.players[other].coins).toBe(before + 5);
     expect(h.g.bank).toBe(0);
   });
 

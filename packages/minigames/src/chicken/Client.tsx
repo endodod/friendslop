@@ -21,6 +21,7 @@ export function ChickenClient(p: MinigameClientProps<ChickenPublic, { bonus: boo
     }
   }, [p.pub.crashed, p.ui]);
   const startsIn = Math.ceil((p.pub.growStartsAt - now) / 1000);
+  const holdingCount = p.participants.filter((pid) => p.pub.status[pid] === "holding").length;
 
   // Gauge: 0..1 over a typical crash range; colour runs yellow → orange → red.
   const heat = Math.min(1, pot / 300);
@@ -83,9 +84,27 @@ export function ChickenClient(p: MinigameClientProps<ChickenPublic, { bonus: boo
               />
             ))}
         </motion.div>
-        {!growing && !p.pub.crashed && <p className="font-display text-2xl">Grab the button! Starts in {Math.max(0, startsIn)}…</p>}
+        {!growing && !p.pub.crashed && (
+          <div className="flex flex-col items-center gap-1 px-3 text-center">
+            <p className="font-display text-2xl">
+              {holdingCount === p.participants.length ? `Everyone's in! ${Math.max(0, startsIn)}…` : "Everyone press & hold the button!"}
+            </p>
+            <p className="text-sm text-muted">
+              {holdingCount}/{p.participants.length} holding · starts when all are in (max {Math.max(0, startsIn)}s) · not holding = out
+            </p>
+          </div>
+        )}
         {p.priv?.range && !p.pub.crashed && <Pill tone="#ffc933">Bonus: crashes between {p.priv.range.lo} and {p.priv.range.hi}</Pill>}
       </Arena>
+      {p.isParticipant && (myStatus === "waiting" || myStatus === "holding") && !p.pub.crashed && (
+        <HoldButton
+          label={growing ? "Hold!" : "Press & hold"}
+          holdingLabel={growing ? "Let go to cash out!" : "Holding — get ready"}
+          color={growing ? gaugeColor : "#ffc933"}
+          onChange={(hold) => p.input({ hold })}
+        />
+      )}
+      {myStatus === "out" && !p.pub.crashed && <p className="font-display text-2xl text-bad">You didn&apos;t grab the button in time.</p>}
       <ul className="grid w-full grid-cols-2 gap-2">
         {p.participants.map((pid) => {
           const st = p.pub.status[pid];
@@ -102,14 +121,6 @@ export function ChickenClient(p: MinigameClientProps<ChickenPublic, { bonus: boo
           );
         })}
       </ul>
-      {p.isParticipant && (myStatus === "waiting" || myStatus === "holding") && !p.pub.crashed && (
-        <HoldButton
-          label={growing ? "Hold!" : "Press & hold"}
-          holdingLabel={growing ? "Let go to cash out!" : "Holding — get ready"}
-          color={growing ? gaugeColor : "#ffc933"}
-          onChange={(hold) => p.input({ hold })}
-        />
-      )}
       {myStatus === "cashed" && (
         <motion.p initial={{ scale: 0.6 }} animate={{ scale: 1 }} className="font-display text-3xl text-good">
           Cashed out at {p.pub.cashed[p.me!]}!

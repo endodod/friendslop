@@ -35,9 +35,9 @@
       "icon": "chicken",
       "goal": "Cash out the biggest pot without crashing.",
       "howTo": [
-        "Press and hold the button before the pot starts.",
+        "Everyone presses and holds the button. The pot starts once all are holding.",
         "The pot grows while you hold. Let go to cash out that amount.",
-        "It crashes at a secret moment: still holding = 0."
+        "It crashes at a secret moment: still holding = 0. Never held = 0 too."
       ],
       "rules": "Everyone holds while the pot grows. Let go to cash out. If it crashes while you hold, you get nothing.",
       "controls": "Hold the button. Release to cash out.",

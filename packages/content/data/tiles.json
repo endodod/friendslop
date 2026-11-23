@@ -28,12 +28,12 @@
     {
       "id": "red",
       "name": "Red",
-      "description": "−3 coins (they go into the Piggy Bank)",
+      "description": "−5 coins (they go into the Piggy Bank)",
       "icon": "skull",
       "color": "#ff4d5e",
       "effect": "coins",
       "params": {
-        "amount": -3
+        "amount": -5
       }
     },
     {

@@ -298,7 +298,7 @@ export function removePlayerFromGame(room: RoomState, playerId: PlayerId, ctx: E
       if (q.targetId === playerId) {
         // The question was about them: drop it.
         g.question = null;
-        if (g.phase === "minigameQuestion") return goto(d, "minigameCountdown", M.countdownMs);
+        if (g.phase === "minigameQuestion") return gotoMinigameIntro(d);
         if (g.phase === "questionRound" && !wasActive) return turnEnd(d);
       } else {
         q.participants = q.participants.filter((p) => p !== playerId);
@@ -1156,7 +1156,7 @@ function startQuestionRound(
   if (!question) {
     // No content available at all: skip gracefully.
     log(g, s, "No questions available for the enabled themes.");
-    return context === "minigameIntro" ? goto(d, "minigameCountdown", M.countdownMs) : turnEnd(d);
+    return context === "minigameIntro" ? gotoMinigameIntro(d) : turnEnd(d);
   }
   services.noteTargeted(targetId);
   g.players[targetId].stats.timesTarget++;
@@ -1329,7 +1329,8 @@ function questionDone(d: Draft) {
       return startQuestionRound(d, "debug", pickDebugTarget(d));
     case "minigameIntro": {
       g.minigame!.bonuses = bonusRecipients(q.result!, q.targetId).filter((p) => g.minigame!.participants.includes(p));
-      return goto(d, "minigameCountdown", M.countdownMs);
+      g.question = null;
+      return gotoMinigameIntro(d);
     }
     default:
       return turnEnd(d);
@@ -1416,18 +1417,22 @@ function setupMinigame(d: Draft, id: string, origin: "round" | "duel", participa
     payout: null,
     introTargetId: null,
   };
-  goto(d, "minigameIntro", origin === "duel" ? Math.min(M.introMs, 20000) : M.introMs);
+  // The bonus question comes first, so the rules are fresh in mind right before playing.
+  if (def.kind === "questionOnly") return gotoMinigameIntro(d);
+  const target = g.targetOverride?.targetId ?? leastTargeted(s.ctx.rng, participants, g.history.targetCounts);
+  g.minigame.introTargetId = target;
+  startQuestionRound(d, "minigameIntro", target);
+  // Pick the Target / Spotlight may have changed who it's about.
+  if (g.question && d.g.phase === "minigameQuestion") g.minigame.introTargetId = g.question.targetId;
+}
+
+/** The tutorial screen, shown right before the countdown. */
+function gotoMinigameIntro(d: Draft) {
+  goto(d, "minigameIntro", d.g.minigame?.origin === "duel" ? Math.min(M.introMs, 20000) : M.introMs);
 }
 
 function afterMinigameIntro(d: Draft) {
-  const { g, s } = d;
-  const mg = g.minigame!;
-  if (mg.kind === "questionOnly") return goto(d, "minigameCountdown", M.countdownMs);
-  const target = g.targetOverride?.targetId ?? leastTargeted(s.ctx.rng, mg.participants, g.history.targetCounts);
-  mg.introTargetId = target;
-  startQuestionRound(d, "minigameIntro", target);
-  // Pick the Target / Spotlight may have changed who it's about.
-  if (g.question) mg.introTargetId = g.question.targetId;
+  goto(d, "minigameCountdown", M.countdownMs);
 }
 
 function startMinigamePlay(d: Draft) {

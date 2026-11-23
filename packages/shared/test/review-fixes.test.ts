@@ -60,7 +60,7 @@ describe("review fixes", () => {
     g.question = { targetId: g.order[1], participants: [...g.order], stage: "answering", answers: {}, revealOrder: [] } as never;
     const gone = g.order[1];
     h.room = removePlayerFromGame(h.room, gone, h.ctx()).room;
-    expect(h.g.phase).toBe("minigameCountdown");
+    expect(h.g.phase).toBe("minigameIntro");
     expect(h.g.minigame!.participants).not.toContain(gone);
   });
 
