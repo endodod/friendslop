@@ -45,7 +45,7 @@ export const GAME_CONFIG = {
     /** Never turn the board's last filler (blue) tiles into something else. */
     minFillerTiles: 4,
     /** Tile types players can't tune (start/filler) or that do nothing without account linking. */
-    notTunable: ["start", "blue", "data"] as string[],
+    notTunable: ["start", "blue", "data", "warp"] as string[],
   },
 
   /** Phase timers in milliseconds. Every phase that waits for input has one. */
@@ -60,6 +60,7 @@ export const GAME_CONFIG = {
     tileEffectMs: 2600,
     shopMs: 20000,
     starPurchaseMs: 12000,
+    tileChoiceMs: 12000,
     eventMs: 4500,
     duelPickMs: 12000,
     turnEndMs: 900,

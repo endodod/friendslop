@@ -109,7 +109,7 @@ export type Pack = z.infer<typeof PackSchema>;
 // ---------------------------------------------------------------------------
 // Tiles & boards
 // ---------------------------------------------------------------------------
-export const TILE_EFFECTS = ["none", "coins", "question", "data", "event", "shop", "duel", "item", "lucky", "bank", "mindReader", "thief"] as const;
+export const TILE_EFFECTS = ["none", "coins", "question", "data", "event", "shop", "duel", "item", "lucky", "bank", "mindReader", "thief", "gamble", "warp", "restStop"] as const;
 export const TileDefSchema = z.object({
   id,
   name: LocalizedStringSchema,
@@ -134,6 +134,8 @@ export const BoardTileSchema = z.object({
   x: z.number().min(0).max(1),
   y: z.number().min(0).max(1),
   next: z.array(z.string()).min(1).max(3),
+  /** Warp pipe tiles: landing here moves you to this tile. */
+  warpTo: z.string().optional(),
 });
 export type BoardTile = z.infer<typeof BoardTileSchema>;
 
@@ -156,6 +158,9 @@ export const BoardSchema = z
     for (const t of b.tiles)
       for (const n of t.next)
         if (!ids.has(n)) ctx.addIssue({ code: "custom", message: `tile ${t.id} links to unknown ${n}` });
+    for (const t of b.tiles)
+      if (t.warpTo !== undefined && (!ids.has(t.warpTo) || t.warpTo === t.id))
+        ctx.addIssue({ code: "custom", message: `tile ${t.id} warps to unknown ${t.warpTo}` });
   });
 export type Board = z.infer<typeof BoardSchema>;
 
@@ -180,6 +185,11 @@ export const ITEM_EFFECTS = [
   "luckyCharm",
   "starCoupon",
   "bankHeist",
+  "copycat",
+  "mirror",
+  "tollBooth",
+  "starRadar",
+  "swapper",
 ] as const;
 export const ItemSchema = z.object({
   id,
@@ -210,6 +220,9 @@ export const EVENT_EFFECTS = [
   "moveStar",
   "teleportRandom",
   "shareWealth",
+  "starSurge",
+  "itemAmnesty",
+  "spotlight",
 ] as const;
 export const EventCardSchema = z.object({
   id,

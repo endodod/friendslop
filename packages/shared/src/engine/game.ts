@@ -45,6 +45,8 @@ export type GameAction =
   | { type: "shopBuy"; playerId: PlayerId; itemId: string }
   | { type: "shopLeave"; playerId: PlayerId }
   | { type: "starBuy"; playerId: PlayerId; buy: boolean }
+  /** Gamble / Rest Stop tile: take the offer or not. */
+  | { type: "tileChoice"; playerId: PlayerId; accept: boolean }
   | { type: "duelPick"; playerId: PlayerId; opponentId: PlayerId }
   | { type: "answer"; playerId: PlayerId; answer: Answer }
   | { type: "draft"; playerId: PlayerId; answer: Answer }
@@ -158,6 +160,12 @@ export function createGame(room: RoomState, ctx: EngineContext, mode: GameMode):
     event: null,
     star: null,
     duel: null,
+    tileChoice: null,
+    tolls: [],
+    starSurge: null,
+    spotlight: null,
+    starNext: null,
+    starRadar: [],
     minigame: null,
     targetOverride: null,
     history: { questionIds: [], lastThemeId: null, minigamesPlayed: [], targetCounts: {} },
@@ -225,7 +233,7 @@ export function tickGame(room: RoomState, ctx: EngineContext): EngineResult | nu
 
 /** Phases that wait for one specific player (the active one). */
 function awaitingActive(phase: Phase): boolean {
-  return ["turnStart", "junctionChoice", "shop", "starPurchase", "duel"].includes(phase);
+  return ["turnStart", "junctionChoice", "shop", "starPurchase", "tileChoice", "duel"].includes(phase);
 }
 
 function shouldAutoplay(room: RoomState, g: GameState, now: number): boolean {
@@ -256,6 +264,10 @@ export function removePlayerFromGame(room: RoomState, playerId: PlayerId, ctx: E
     g.ready = g.ready.filter((p) => p !== playerId);
     if (g.targetOverride && (g.targetOverride.targetId === playerId || g.targetOverride.by === playerId)) g.targetOverride = null;
     if (idx < g.activeIndex) g.activeIndex--;
+    g.tolls = (g.tolls ?? []).filter((t) => t.ownerId !== playerId);
+    if (g.spotlight?.targetId === playerId) g.spotlight = null;
+    g.starRadar = (g.starRadar ?? []).filter((p) => p !== playerId);
+    for (const b of Object.values(g.question?.boosts ?? {})) if (b.copy === playerId) delete b.copy;
     log(g, s, `${name} was removed from the game.`);
 
     if (g.order.length < 2) {
@@ -368,6 +380,11 @@ function handleAction(d: Draft, a: GameAction, isHost: boolean): void {
       requireActive(d, a.playerId);
       return resolveStar(d, a.buy);
     }
+    case "tileChoice": {
+      requirePhase(d, "tileChoice");
+      requireActive(d, a.playerId);
+      return resolveTileChoice(d, a.accept);
+    }
     case "duelPick": {
       requirePhase(d, "duel");
       if (g.duel?.challengerId !== a.playerId) fail("NOT_YOUR_TURN", "Not your duel.");
@@ -457,7 +474,11 @@ function onTimeout(d: Draft) {
     case "junctionChoice":
       return takeDirection(d, pick(s.ctx.rng, g.junction!.options));
     case "tileEffect":
+      // A Warp Pipe (or a frozen turn) may have left you on the star.
+      if (offerDroppedStar(d, "turnEnd")) return;
       return turnEnd(d);
+    case "tileChoice":
+      return resolveTileChoice(d, false);
     case "event":
       if (offerDroppedStar(d, "turnEnd")) return;
       return turnEnd(d);
@@ -513,6 +534,7 @@ function turnStart(d: Draft) {
   g.event = null;
   g.star = null;
   g.duel = null;
+  g.tileChoice = null;
   g.question = null;
   g.diceBonus = 0;
   const p = g.players[activeId(g)];
@@ -603,6 +625,7 @@ function advanceMovement(d: Draft) {
     p.tileId = to;
     delete p.effects.onStar;
     mv.remaining--;
+    payToll(d, pid, to);
     path.push(to);
     p.stats.stepsMoved++;
     // Passing (or landing on) Start pays a lap bonus.
@@ -679,11 +702,29 @@ function takeDirection(d: Draft, tileId: string) {
   advanceMovement(d);
 }
 
+/** Toll Booth on this tile (someone else's): pay up. */
+function payToll(d: Draft, pid: PlayerId, tileId: string) {
+  const { g, s } = d;
+  const toll = g.tolls?.find((t) => t.tileId === tileId && t.ownerId !== pid && g.players[t.ownerId]);
+  if (!toll) return;
+  const paid = transferCoins(g, s, pid, toll.ownerId, toll.amount, "toll");
+  if (paid > 0) {
+    emit(s, { type: "sfx", id: "coin" });
+    log(g, s, `${playerName(d, pid)} paid ${paid} coins at ${playerName(d, toll.ownerId)}'s Toll Booth.`, pid);
+  }
+}
+
 /** `starDone`: the star on this tile was already offered; go on with the tile's own effect. */
 function land(d: Draft, starDone = false) {
   const { g, s } = d;
   const pid = activeId(g);
   const p = g.players[pid];
+  // Landing on someone else's Toll Booth (after paying) tears it down.
+  const torn = g.tolls?.filter((t) => t.tileId === p.tileId && t.ownerId !== pid) ?? [];
+  if (torn.length) {
+    g.tolls = g.tolls!.filter((t) => !torn.includes(t));
+    log(g, s, `${playerName(d, pid)} tore down ${playerName(d, torn[0].ownerId)}'s Toll Booth.`, pid);
+  }
   if (p.tileId === g.starTileId && !starDone) {
     g.star = { passing: false };
     return goto(d, "starPurchase", T.starPurchaseMs);
@@ -784,10 +825,69 @@ function land(d: Draft, starDone = false) {
       if (others.length === 1) return startDuel(d, others[0]);
       return goto(d, "duel", T.duelPickMs);
     }
+    case "gamble": {
+      const stake = Math.min(def.params.max ?? 20, Math.floor(p.coins / 2));
+      if (stake < 1) {
+        g.tileResult.text = `${playerName(d, pid)} has nothing to bet.`;
+        return goto(d, "tileEffect", T.tileEffectMs);
+      }
+      g.tileChoice = { kind: "gamble", amount: stake };
+      return goto(d, "tileChoice", T.tileChoiceMs);
+    }
+    case "restStop": {
+      const cost = def.params.cost ?? 3;
+      if (p.coins < cost) {
+        g.tileResult.text = `${playerName(d, pid)} can't afford the Rest Stop (${cost} coins).`;
+        return goto(d, "tileEffect", T.tileEffectMs);
+      }
+      g.tileChoice = { kind: "restStop", amount: cost };
+      return goto(d, "tileChoice", T.tileChoiceMs);
+    }
+    case "warp": {
+      const dest = getTile(getBoard(s.ctx.content, g.boardId), p.tileId).warpTo;
+      if (!dest) return goto(d, "tileEffect", 900);
+      const before = tilesNow(g);
+      p.tileId = dest;
+      noteDroppedOnStar(g, before);
+      emit(s, { type: "tokenTeleported", playerId: pid, tileId: dest });
+      emit(s, { type: "sfx", id: "whoosh" });
+      g.tileResult.text = `${playerName(d, pid)} went down the Warp Pipe!`;
+      log(g, s, g.tileResult.text, pid);
+      return goto(d, "tileEffect", T.tileEffectMs);
+    }
     case "none":
     default:
       return goto(d, "tileEffect", 900);
   }
+}
+
+/** Gamble: double or nothing on the stake. Rest Stop: pay and roll again right away. */
+function resolveTileChoice(d: Draft, accept: boolean) {
+  const { g, s } = d;
+  const pid = activeId(g);
+  const choice = g.tileChoice;
+  g.tileChoice = null;
+  if (!choice || !g.tileResult) return turnEnd(d);
+  const name = playerName(d, pid);
+  if (choice.kind === "gamble") {
+    if (!accept) {
+      g.tileResult.text = `${name} walked away from the table.`;
+      return goto(d, "tileEffect", 1400);
+    }
+    const won = s.ctx.rng() < 0.5;
+    const delta = changeCoins(g, s, pid, won ? choice.amount : -choice.amount, "tile:gamble");
+    if (delta < 0 && Object.values(g.tileTypes).some((t) => tileDef(s.ctx.content, t)?.effect === "bank")) g.bank += -delta;
+    g.tileResult.coinsDelta = delta;
+    g.tileResult.text = won ? `${name} doubled up: +${delta} coins!` : `${name} lost the bet: ${delta} coins.`;
+    emit(s, { type: "sfx", id: won ? "fanfare" : "bad" });
+    log(g, s, g.tileResult.text, pid);
+    return goto(d, "tileEffect", T.tileEffectMs);
+  }
+  if (!accept) return turnEnd(d);
+  changeCoins(g, s, pid, -choice.amount, "tile:restStop");
+  log(g, s, `${name} paid ${choice.amount} coins at the Rest Stop to roll again.`, pid);
+  g.tileResult = null;
+  return doRoll(d);
 }
 
 function resolveStar(d: Draft, buy: boolean) {
@@ -843,13 +943,19 @@ function couponFor(d: Draft, pid: PlayerId): string | undefined {
   return d.g.players[pid].items.find((i) => ids.includes(i));
 }
 
-export function starPrice(content: Pick<ContentBundle, "items">, items: string[]): number {
+/** Star price with a Star Coupon in `items` and an active Star Surge (see `starSurcharge`). */
+export function starPrice(content: Pick<ContentBundle, "items">, items: string[], surcharge = 0): number {
   const coupon = content.items.find((i) => i.effect === "starCoupon" && items.includes(i.id));
-  return Math.max(0, GAME_CONFIG.economy.starCost - (coupon?.params.discount ?? 0));
+  return Math.max(0, GAME_CONFIG.economy.starCost + surcharge - (coupon?.params.discount ?? 0));
+}
+
+/** Extra star cost from a Star Surge event this round. */
+export function starSurcharge(g: Pick<GameState, "starSurge" | "round">): number {
+  return g.starSurge && g.starSurge.round === g.round ? g.starSurge.extra : 0;
 }
 
 function starPriceFor(d: Draft, pid: PlayerId): number {
-  return starPrice(d.s.ctx.content, d.g.players[pid].items);
+  return starPrice(d.s.ctx.content, d.g.players[pid].items, starSurcharge(d.g));
 }
 
 function shopBuy(d: Draft, pid: PlayerId, itemId: string) {
@@ -880,7 +986,7 @@ function useItem(d: Draft, pid: PlayerId, itemId: string, targetId?: PlayerId) {
     requirePhase(d, "turnStart");
     requireActive(d, pid);
     const before = tilesNow(g);
-    const did = applyTurnStartItem(g, s, pid, item, targetId);
+    const did = applyTurnStartItem(g, s, pid, item, targetId, names(d.room));
     noteDroppedOnStar(g, before);
     logItemUse(d, pid, localize(item.name), targetId, did);
     if (checkStarGoal(d, pid)) {
@@ -904,6 +1010,12 @@ function useItem(d: Draft, pid: PlayerId, itemId: string, targetId?: PlayerId) {
       if (!q.payCoins) fail("INVALID_INPUT", "No coins in this question to double.");
       boost.double = true;
       did = "doubles their coins for this question";
+    } else if (item.effect === "copycat") {
+      if (!targetId || targetId === pid || targetId === q.targetId || !q.participants.includes(targetId))
+        fail("INVALID_INPUT", "Pick another guesser to copy.");
+      boost.copy = targetId;
+      delete q.drafts?.[pid];
+      did = `copies ${playerName(d, targetId)}'s answer`;
     } else if (item.effect === "wideTolerance") {
       if (!getFormat(q.question.format).usesTolerance) fail("INVALID_INPUT", "Only works on number questions.");
       boost.wide = true;
@@ -911,7 +1023,8 @@ function useItem(d: Draft, pid: PlayerId, itemId: string, targetId?: PlayerId) {
     } else fail("INVALID_INPUT", "Can't use that now.");
     logItemUse(d, pid, localize(item.name), undefined, did);
   }
-  p.items.splice(idx, 1);
+  // Some items change the bag (Swapper), so look the item up again.
+  p.items.splice(p.items.includes(itemId) ? p.items.indexOf(itemId) : idx, 1);
   p.stats.itemsUsed++;
   emit(s, { type: "itemUsed", playerId: pid, itemId, targetId });
   // A swap put you on the star: buy it before you roll.
@@ -1024,6 +1137,10 @@ function startQuestionRound(
   if (g.targetOverride && context !== "debug" && context !== "mindReader") {
     targetId = g.targetOverride.targetId;
     g.targetOverride = null;
+  } else if (g.spotlight && context !== "debug" && context !== "mindReader" && g.players[g.spotlight.targetId]) {
+    // Spotlight event: the next questions are about this player.
+    targetId = g.spotlight.targetId;
+    g.spotlight = --g.spotlight.left > 0 ? g.spotlight : null;
   }
   const services = questionServices(d);
   const usage = context === "minigameIntro" ? "minigameIntro" : "tile";
@@ -1082,6 +1199,7 @@ function answerQuestion(d: Draft, pid: PlayerId, answer: Answer): void {
   if (q.stage !== "answering") fail("WRONG_PHASE", "Answers are closed.");
   if (!q.participants.includes(pid)) fail("INVALID_INPUT", "You're not answering this one.");
   if (q.answers[pid]) fail("INVALID_INPUT", "Already locked in.");
+  if (q.boosts[pid]?.copy) fail("INVALID_INPUT", "You're copying someone this round.");
   if (!validateAnswer(q.question, answer)) fail("INVALID_INPUT", "Invalid answer.");
   q.answers[pid] = answer;
   q.answeredAt[pid] = s.ctx.now;
@@ -1091,7 +1209,7 @@ function answerQuestion(d: Draft, pid: PlayerId, answer: Answer): void {
 
 function maybeEndAnswering(d: Draft) {
   const q = d.g.question!;
-  const waiting = q.participants.filter((p) => !q.answers[p] && isConnected(d.room, p));
+  const waiting = q.participants.filter((p) => !q.answers[p] && !q.boosts[p]?.copy && isConnected(d.room, p));
   if (waiting.length === 0) enterReveal(d);
 }
 
@@ -1120,6 +1238,15 @@ function enterReveal(d: Draft) {
     }
   }
   q.drafts = {};
+  // Copycat: take the copied player's answer (copies of copies work; a loop gets nothing).
+  for (let pass = 0; pass < q.participants.length; pass++) {
+    for (const [pid, b] of Object.entries(q.boosts)) {
+      if (b.copy && !q.answers[pid] && q.answers[b.copy]) {
+        q.answers[pid] = q.answers[b.copy];
+        q.answeredAt[pid] = s.ctx.now;
+      }
+    }
+  }
   q.result = scoreQuestion({
     question: q.question,
     targetId: q.targetId,
@@ -1269,6 +1396,8 @@ function afterMinigameIntro(d: Draft) {
   const target = g.targetOverride?.targetId ?? leastTargeted(s.ctx.rng, mg.participants, g.history.targetCounts);
   mg.introTargetId = target;
   startQuestionRound(d, "minigameIntro", target);
+  // Pick the Target / Spotlight may have changed who it's about.
+  if (g.question) mg.introTargetId = g.question.targetId;
 }
 
 function startMinigamePlay(d: Draft) {
@@ -1335,6 +1464,8 @@ function afterMinigameResults(d: Draft): void {
   if (origin === "duel") return turnEnd(d);
   if (g.mode === "minigameDebug") return startRoundMinigame(d);
   g.round++;
+  g.tolls = (g.tolls ?? []).filter((t) => t.untilRound >= g.round);
+  if (g.starSurge && g.starSurge.round < g.round) g.starSurge = null;
   if (g.turnCount > 0 && g.round > g.turnCount) {
     g.round = g.turnCount;
     return goto(d, "gameEnd", T.gameEndMs);

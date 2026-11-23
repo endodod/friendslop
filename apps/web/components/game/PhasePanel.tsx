@@ -2,7 +2,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowRight, Dices, FastForward, ShoppingBag } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { GAME_CONFIG, itemPrice, localize, starPrice, type Board, type PublicGameState } from "@party-game/shared";
+import { GAME_CONFIG, itemPrice, localize, starPrice, starSurcharge, type Board, type PublicGameState } from "@party-game/shared";
 import { clientContent } from "@party-game/content";
 import { useStore } from "@/lib/store";
 import { act } from "@/lib/useRoom";
@@ -85,6 +85,8 @@ export function PhasePanel({ board, display }: { board: Board | null; display?: 
               return <ShopPanel display={display} />;
             case "starPurchase":
               return <StarPanel display={display} />;
+            case "tileChoice":
+              return <TileChoicePanel display={display} />;
             case "event":
               return <EventPanel />;
             case "duel":
@@ -473,8 +475,9 @@ function StarPanel({ display }: { display?: boolean }) {
   const coins = activePlayer?.coins ?? 0;
   const priv = useStore((st) => st.priv);
   // Items are public, so everyone sees the active player's coupon price.
-  const cost = starPrice(clientContent, (isActive ? priv?.items : activePlayer?.items) ?? []);
-  const discounted = cost < GAME_CONFIG.economy.starCost;
+  const surcharge = starSurcharge(g);
+  const cost = starPrice(clientContent, (isActive ? priv?.items : activePlayer?.items) ?? [], surcharge);
+  const discounted = cost < GAME_CONFIG.economy.starCost + surcharge;
   const afford = coins >= cost;
   void playerId;
   return (
@@ -491,7 +494,8 @@ function StarPanel({ display }: { display?: boolean }) {
       </h2>
       <p className="text-center text-lg">
         A star costs <CoinCount value={cost} size={18} />
-        {discounted && <span className="text-good"> (Star Coupon!)</span>}.{" "}
+        {discounted && <span className="text-good"> (Star Coupon!)</span>}
+        {surcharge > 0 && <span className="text-bad"> (Star Surge: +{surcharge})</span>}.{" "}
         {isActive ? (afford ? "Buy it?" : "You can't afford it…") : `${active?.name} has ${coins} coins.`}
       </p>
       <Timer endsAt={g.phaseEndsAt} totalMs={T.starPurchaseMs} silent={!isActive} />
@@ -504,6 +508,47 @@ function StarPanel({ display }: { display?: boolean }) {
             {afford ? "No thanks" : "Continue"}
           </button>
         </div>
+      )}
+    </Panel>
+  );
+}
+
+/** Gamble (double or nothing) and Rest Stop (pay to roll again): the lander says yes or no. */
+function TileChoicePanel({ display }: { display?: boolean }) {
+  const { g, isActive, active } = useGameCtx();
+  const c = g.tileChoice;
+  const def = clientContent.tiles.find((d) => d.id === g.tileResult?.type);
+  if (!c) return null;
+  const gamble = c.kind === "gamble";
+  return (
+    <Panel testId="tile-choice">
+      <motion.div
+        initial={{ scale: 0.4, rotate: -20 }}
+        animate={{ scale: 1, rotate: 0 }}
+        transition={{ type: "spring", stiffness: 260, damping: 12 }}
+        className="flex items-center gap-4 rounded-3xl p-4 text-[#14112a]"
+        style={{ background: def?.color }}
+      >
+        <Icon id={def?.icon ?? "question"} size={56} />
+        <div>
+          <p className="font-display text-3xl">{def ? fmtName(def.name) : ""}</p>
+          <p className="font-semibold">
+            {gamble ? <>Bet {c.amount} coins: 50/50 to win {c.amount} or lose {c.amount}.</> : <>Pay {c.amount} coins to roll again right now?</>}
+          </p>
+        </div>
+      </motion.div>
+      <Timer endsAt={g.phaseEndsAt} totalMs={T.tileChoiceMs} silent={!isActive} />
+      {isActive && !display ? (
+        <div className="grid grid-cols-2 gap-3">
+          <button className="btn-primary min-h-14 text-2xl" onClick={() => act("tile:choose", { accept: true })} data-testid="tile-choice-yes">
+            {gamble ? <>Bet <CoinCount value={c.amount} size={18} /></> : <>Roll again (−{c.amount})</>}
+          </button>
+          <button className="btn-secondary min-h-14" onClick={() => act("tile:choose", { accept: false })}>
+            {gamble ? "Walk away" : "Move on"}
+          </button>
+        </div>
+      ) : (
+        <Waiting text={<>{active?.name} is deciding…</>} />
       )}
     </Panel>
   );

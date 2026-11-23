@@ -158,6 +158,9 @@ export function BoardView({ board, game, players, follow, selectable = [], onSel
   }
 
   const star = xy(game.starTileId);
+  // Star Radar: only the player who used it gets this from the server.
+  const starNext = useStore((st) => st.priv?.starNext ?? null);
+  const warps = useMemo(() => board.tiles.filter((t) => t.warpTo).map((t) => [t.id, t.warpTo!] as const), [board]);
   const tone = toneOf(board.id);
   const decor = useMemo(() => scenery(board, H), [board, H]);
   const edges = useMemo(
@@ -324,6 +327,26 @@ export function BoardView({ board, game, players, follow, selectable = [], onSel
             );
           }),
         )}
+        {/* warp pipes: dashed link between the paired pipes */}
+        {warps.map(([a0, b0]) => {
+          const a = xy(a0);
+          const b = xy(b0);
+          return (
+            <line
+              key={`warp-${a0}-${b0}`}
+              x1={a.x}
+              y1={a.y}
+              x2={b.x}
+              y2={b.y}
+              stroke="#27b36a"
+              strokeOpacity={0.55}
+              strokeWidth={6}
+              strokeDasharray="4 14"
+              strokeLinecap="round"
+              pointerEvents="none"
+            />
+          );
+        })}
         {/* tiles */}
         {board.tiles.map((t, idx) => {
           const type = game.tileTypes[t.id] ?? t.type;
@@ -386,6 +409,32 @@ export function BoardView({ board, game, players, follow, selectable = [], onSel
             </g>
           );
         })}
+        {/* toll booths: a coin badge in the owner's colour */}
+        {(game.tolls ?? []).map((t) => {
+          const { x, y } = xy(t.tileId);
+          const owner = players[t.ownerId];
+          return (
+            <g key={`toll-${t.tileId}`} transform={`translate(${x + TILE_R - 4} ${y - TILE_R + 4})`} pointerEvents="none">
+              <title>{`${owner?.name ?? "?"}'s Toll Booth: ${t.amount} coins`}</title>
+              <circle r={17} fill="#14112a" stroke={colorHex(owner?.color ?? "")} strokeWidth={4} />
+              <image href="/icons/toll-booth.svg" x={-11} y={-11} width={22} height={22} style={{ filter: "invert(1)" }} />
+            </g>
+          );
+        })}
+        {/* Star Radar: ghost of where the star goes next */}
+        {starNext && starNext !== game.starTileId && (
+          <g transform={`translate(${xy(starNext).x} ${xy(starNext).y - 6})`} pointerEvents="none" data-testid="star-radar">
+            <path
+              d="M0 -80 l20.9 45.6 49.9 5.6 -37.1 33.8 10.3 49.1 -44 -24.9 -44 24.9 10.3 -49.1 -37.1 -33.8 49.9 -5.6z"
+              transform="scale(0.5)"
+              fill="#ffe066"
+              fillOpacity={0.25}
+              stroke="#ffe066"
+              strokeWidth={6}
+              strokeDasharray="10 8"
+            />
+          </g>
+        )}
         {/* star */}
         {game.starTileId && (
           <motion.g

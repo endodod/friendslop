@@ -105,6 +105,34 @@ export function applyEvent(
       for (const pid of ids) changeCoins(g, s, pid, each - g.players[pid].coins, "event");
       return { text: `Communism tile! Coins are split evenly: ${each} each.`, affected: ids, blocked };
     }
+    case "starSurge": {
+      const extra = card.params.amount ?? 10;
+      g.starSurge = { round: g.round, extra };
+      return { text: `Star Surge! Stars cost ${extra} more coins for the rest of this round.`, affected: [], blocked };
+    }
+    case "itemAmnesty": {
+      const affected: PlayerId[] = [];
+      for (const pid of ids) {
+        const p = g.players[pid];
+        if (!p.items.length) continue;
+        p.items.splice(Math.floor(rng() * p.items.length), 1);
+        changeCoins(g, s, pid, amount, "event");
+        affected.push(pid);
+      }
+      return {
+        text: affected.length
+          ? `Item Amnesty! ${affected.map(n).join(", ")} handed in a random item for ${amount} coins.`
+          : "Item Amnesty! …but nobody had anything to hand in.",
+        affected,
+        blocked,
+      };
+    }
+    case "spotlight": {
+      const who = pick(rng, ids);
+      const count = card.params.questions ?? 2;
+      g.spotlight = { targetId: who, left: count };
+      return { text: `Spotlight on ${n(who)}! The next ${count} questions are all about them.`, affected: [who], blocked };
+    }
   }
   void GAME_CONFIG;
   return { text: localize(card.description), affected: [], blocked };

@@ -135,11 +135,19 @@ export function starCandidates(board: Board, game: Pick<GameState, "starTileId" 
 }
 
 /** Move the star to a new tile and remember it, so it never comes back to the same tile. */
-export function placeStar(board: Board, game: Pick<GameState, "starTileId" | "starVisited">, rng: Rng): string {
+export function placeStar(
+  board: Board,
+  game: Pick<GameState, "starTileId" | "starVisited" | "starNext" | "starRadar">,
+  rng: Rng,
+): string {
+  // Star Radar locked in the next spot in advance.
+  const planned = game.starNext;
+  game.starNext = null;
+  game.starRadar = [];
   const candidates = starCandidates(board, game);
   // History exhausted: start a new round of tiles.
   if (candidates.some((id) => game.starVisited?.includes(id))) game.starVisited = [];
-  const tile = pick(rng, candidates);
+  const tile = planned && planned !== game.starTileId && board.tiles.some((t) => t.id === planned) ? planned : pick(rng, candidates);
   game.starTileId = tile;
   game.starVisited = [...(game.starVisited ?? []), tile];
   return tile;

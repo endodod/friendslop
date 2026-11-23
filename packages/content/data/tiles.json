@@ -129,6 +129,36 @@
       "params": {
         "amount": 4
       }
+    },
+    {
+      "id": "gamble",
+      "name": "Gamble",
+      "description": "Double or nothing on half your coins (up to 20). You can walk away.",
+      "icon": "gamble",
+      "color": "#e0b040",
+      "effect": "gamble",
+      "params": {
+        "max": 20
+      }
+    },
+    {
+      "id": "warp",
+      "name": "Warp Pipe",
+      "description": "Land here to pop out at the linked pipe somewhere else on the map.",
+      "icon": "warp-pipe",
+      "color": "#27b36a",
+      "effect": "warp"
+    },
+    {
+      "id": "rest-stop",
+      "name": "Rest Stop",
+      "description": "Pay 3 coins to roll again right away, or move on.",
+      "icon": "rest-stop",
+      "color": "#b07a50",
+      "effect": "restStop",
+      "params": {
+        "cost": 3
+      }
     }
   ]
 }

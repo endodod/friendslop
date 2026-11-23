@@ -87,6 +87,7 @@ export const ClientEvents = {
   "shop:buy": z.object({ itemId: z.string().max(64) }),
   "shop:leave": z.object({}),
   "star:buy": z.object({ buy: z.boolean() }),
+  "tile:choose": z.object({ accept: z.boolean() }),
   "duel:pick": z.object({ opponentId: PlayerIdSchema }),
   "question:answer": z.object({ answer: AnswerSchema }),
   /** Current (not locked in) selection. Counts if the timer runs out. */

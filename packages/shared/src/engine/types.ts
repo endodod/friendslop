@@ -154,7 +154,7 @@ export interface QuestionRound {
   /** Current selection of players who haven't locked in yet (secret). Used if time runs out. */
   drafts?: Record<PlayerId, Answer>;
   /** Item boosts active for this round (double: Lucky Charm doubles that player's coins). */
-  boosts: Record<PlayerId, { peek?: boolean; wide?: boolean; double?: boolean }>;
+  boosts: Record<PlayerId, { peek?: boolean; wide?: boolean; double?: boolean; copy?: PlayerId }>;
   result: QuestionResult | null;
   /** Reveal order: guessers first, target last. */
   revealOrder: PlayerId[];
@@ -178,6 +178,7 @@ export type Phase =
   | "shop"
   | "event"
   | "starPurchase"
+  | "tileChoice"
   | "duel"
   | "turnEnd"
   | "roundEnd"
@@ -325,6 +326,17 @@ export interface GameState {
   /** `dropped`: offered because a teleport/swap/push put the player on the star; where the turn resumes after. */
   star: { passing: boolean; dropped?: "turnStart" | "turnEnd" } | null;
   duel: { challengerId: PlayerId; opponentId: PlayerId | null } | null;
+  /** A tile that asks the lander yes/no: Gamble (bet `amount` coins) or Rest Stop (pay `amount` to roll again). */
+  tileChoice: { kind: "gamble" | "restStop"; amount: number } | null;
+  /** Toll Booths: anyone else passing or landing here pays the owner. Gone when someone lands on it or the round passes `untilRound`. */
+  tolls?: { tileId: string; ownerId: PlayerId; amount: number; untilRound: number }[];
+  /** Star Surge event: the star costs `extra` more until the end of `round`. */
+  starSurge?: { round: number; extra: number } | null;
+  /** Spotlight event: the next `left` questions are about this player. */
+  spotlight?: { targetId: PlayerId; left: number } | null;
+  /** Star Radar (secret, never sent to clients): where the star goes next, and who may see it. */
+  starNext?: string | null;
+  starRadar?: PlayerId[];
   minigame: MinigameRuntime | null;
   /** Pick the Target item. */
   targetOverride: { by: PlayerId; targetId: PlayerId } | null;

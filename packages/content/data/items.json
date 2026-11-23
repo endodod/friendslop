@@ -191,6 +191,57 @@
       "useTiming": "turnStart",
       "effect": "bankHeist",
       "weight": 0.6
+    },
+    {
+      "id": "copycat",
+      "name": "Copycat",
+      "description": "In a question: pick another guesser. You lock in whatever they lock in.",
+      "icon": "copycat",
+      "price": 7,
+      "useTiming": "onQuestion",
+      "effect": "copycat",
+      "needsTarget": true
+    },
+    {
+      "id": "mirror",
+      "name": "Mirror",
+      "description": "Bounces the next item used on you (steal, push, freeze, swap…) back at whoever used it.",
+      "icon": "mirror",
+      "price": 16,
+      "useTiming": "passive",
+      "effect": "mirror",
+      "weight": 0.7
+    },
+    {
+      "id": "toll-booth",
+      "name": "Toll Booth",
+      "description": "Build a toll on your tile: everyone else who passes or lands there pays you 3 coins. Torn down when someone lands on it, or after next round.",
+      "icon": "toll-booth",
+      "price": 10,
+      "useTiming": "turnStart",
+      "effect": "tollBooth",
+      "params": {
+        "amount": 3
+      }
+    },
+    {
+      "id": "star-radar",
+      "name": "Star Radar",
+      "description": "See where the star goes next after someone buys it. Only you see it.",
+      "icon": "star-radar",
+      "price": 8,
+      "useTiming": "turnStart",
+      "effect": "starRadar"
+    },
+    {
+      "id": "swapper",
+      "name": "Swapper",
+      "description": "Take a random item from a player. They get a random item from the shop instead.",
+      "icon": "swapper",
+      "price": 9,
+      "useTiming": "turnStart",
+      "effect": "swapper",
+      "needsTarget": true
     }
   ]
 }

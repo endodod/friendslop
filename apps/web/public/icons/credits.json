@@ -600,5 +600,82 @@
   "author": "delapouite",
   "name": "dice-fire",
   "license": "CC BY 3.0"
+ },
+ {
+  "id": "copycat",
+  "source": "https://game-icons.net/1x1/lorc/cat.html",
+  "author": "lorc",
+  "name": "cat",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "mirror",
+  "source": "https://game-icons.net/1x1/lorc/mirror-mirror.html",
+  "author": "lorc",
+  "name": "mirror-mirror",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "toll-booth",
+  "source": "https://game-icons.net/1x1/delapouite/barrier.html",
+  "author": "delapouite",
+  "name": "barrier",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "star-radar",
+  "source": "https://game-icons.net/1x1/lorc/radar-sweep.html",
+  "author": "lorc",
+  "name": "radar-sweep",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "swapper",
+  "source": "https://game-icons.net/1x1/lorc/swap-bag.html",
+  "author": "lorc",
+  "name": "swap-bag",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "gamble",
+  "source": "https://game-icons.net/1x1/delapouite/rolling-dices.html",
+  "author": "delapouite",
+  "name": "rolling-dices",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "warp-pipe",
+  "source": "https://game-icons.net/1x1/delapouite/warp-pipe.html",
+  "author": "delapouite",
+  "name": "warp-pipe",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "rest-stop",
+  "source": "https://game-icons.net/1x1/delapouite/coffee-cup.html",
+  "author": "delapouite",
+  "name": "coffee-cup",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "star-surge",
+  "source": "https://game-icons.net/1x1/delapouite/growth.html",
+  "author": "delapouite",
+  "name": "growth",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "amnesty",
+  "source": "https://game-icons.net/1x1/delapouite/receive-money.html",
+  "author": "delapouite",
+  "name": "receive-money",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "spotlight",
+  "source": "https://game-icons.net/1x1/delapouite/flashlight.html",
+  "author": "delapouite",
+  "name": "flashlight",
+  "license": "CC BY 3.0"
  }
 ]

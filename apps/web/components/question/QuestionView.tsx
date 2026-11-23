@@ -131,6 +131,8 @@ function Answering({
   const priv = useStore((s) => s.priv);
   const [draft, setDraftState] = useState<Answer | null>(null);
   const [sending, setSending] = useState(false);
+  /** Copycat: picking who to copy. */
+  const [copyPicking, setCopyPicking] = useState<string | null>(null);
   const q = round.question;
   const Input = FORMAT_INPUTS[q.format];
 
@@ -161,7 +163,9 @@ function Answering({
 
   const items = (priv?.items ?? [])
     .map((id) => clientContent.items.find((i) => i.id === id))
-    .filter((i) => i && i.useTiming === "onQuestion" && !isTarget && !myAnswer && !onSubmit);
+    .filter((i) => i && i.useTiming === "onQuestion" && !isTarget && !myAnswer && !onSubmit)
+    // Copycat needs someone else to copy.
+    .filter((i) => i!.effect !== "copycat" || round.participants.some((p) => p !== round.targetId && p !== priv?.playerId));
 
   const lockIn = async () => {
     if (!draft) return;
@@ -198,7 +202,12 @@ function Answering({
         </span>
       </div>
 
-      {participant && !display && !myAnswer && (
+      {participant && !display && !myAnswer && priv?.boosts.copy && (
+        <p className="flex items-center justify-center gap-2 rounded-2xl bg-accent/15 p-4 text-center font-display text-xl text-accent">
+          <Icon id="copycat" size={24} /> Copying {players[priv.boosts.copy]?.name}: you get whatever they lock in.
+        </p>
+      )}
+      {participant && !display && !myAnswer && !priv?.boosts.copy && (
         <div className="flex flex-col gap-3">
           <p className="font-display text-lg text-accent">
             {isTarget
@@ -216,11 +225,35 @@ function Answering({
                 <button
                   key={it!.id}
                   className="btn-secondary min-h-11 text-sm"
-                  onClick={() => act("turn:useItem", { itemId: it!.id })}
+                  onClick={() => (it!.needsTarget ? setCopyPicking(it!.id) : act("turn:useItem", { itemId: it!.id }))}
                 >
                   <Icon id={it!.icon} size={18} /> Use {localize(it!.name)}
                 </button>
               ))}
+            </div>
+          )}
+          {copyPicking && (
+            <div className="card flex flex-col gap-2 p-3">
+              <p className="font-display">Copy whose answer?</p>
+              <div className="flex flex-wrap gap-2">
+                {round.participants
+                  .filter((pid) => pid !== round.targetId && pid !== priv?.playerId)
+                  .map((pid) => (
+                    <button
+                      key={pid}
+                      className="btn-secondary"
+                      onClick={async () => {
+                        await act("turn:useItem", { itemId: copyPicking, targetId: pid });
+                        setCopyPicking(null);
+                      }}
+                    >
+                      <Avatar player={players[pid]} size={28} /> {players[pid]?.name}
+                    </button>
+                  ))}
+                <button className="btn-ghost" onClick={() => setCopyPicking(null)}>
+                  Cancel
+                </button>
+              </div>
             </div>
           )}
           {(priv?.boosts.wide || priv?.boosts.peek || priv?.boosts.double) && (

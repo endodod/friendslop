@@ -33,7 +33,7 @@ export type PublicMinigame = Omit<MinigameRuntime, "state" | "seed"> & {
 
 export type PublicGamePlayer = GameState["players"][string] & { itemCount: number };
 
-export type PublicGameState = Omit<GameState, "question" | "minigame" | "players" | "history"> & {
+export type PublicGameState = Omit<GameState, "question" | "minigame" | "players" | "history" | "starNext" | "starRadar"> & {
   question: PublicQuestionRound | null;
   minigame: PublicMinigame | null;
   players: Record<PlayerId, PublicGamePlayer>;
@@ -50,7 +50,9 @@ export interface PrivateState {
   items: string[];
   /** Own answer in the current question round. */
   myAnswer: Answer | null;
-  boosts: { peek?: boolean; wide?: boolean; double?: boolean };
+  boosts: { peek?: boolean; wide?: boolean; double?: boolean; copy?: PlayerId };
+  /** Star Radar: where the star goes next (only for players who used one). */
+  starNext: string | null;
   /** Peek item: answer counts so far, excluding the target's pick. */
   peekCounts: Record<string, number> | null;
   minigame: unknown;
@@ -73,7 +75,8 @@ function publicQuestion(q: QuestionRound): PublicQuestionRound {
     multiplier: q.multiplier,
     payCoins: q.payCoins,
     question: revealed ? { ...question, ...(q.question.truth ? { truth: q.question.truth } : {}) } : question,
-    answered: Object.keys(q.answers),
+    // Copycats count as locked in.
+    answered: [...new Set([...Object.keys(q.answers), ...Object.entries(q.boosts).filter(([, b]) => b.copy).map(([p]) => p)])],
     answers: revealed ? q.answers : null,
     result: revealed ? q.result : null,
     boosted: Object.keys(q.boosts),
@@ -83,7 +86,7 @@ function publicQuestion(q: QuestionRound): PublicQuestionRound {
 export function toPublicState(room: RoomState, registry: MinigameRegistry, now: number): PublicRoomState {
   const { game, askedQuestionIds: _asked, ...rest } = room;
   if (!game) return { ...rest, game: null, serverNow: now };
-  const { question, minigame, players, history, ...g } = game;
+  const { question, minigame, players, history, starNext: _next, starRadar: _radar, ...g } = game;
   let mg: PublicMinigame | null = null;
   if (minigame) {
     const { state, seed: _seed, ...m } = minigame;
@@ -121,9 +124,11 @@ export function toPrivateState(
     peekCounts: null,
     minigame: null,
     minigameSeed: null,
+    starNext: null,
   };
   if (!g || !playerId) return out;
   out.items = [...(g.players[playerId]?.items ?? [])];
+  if (g.starNext && g.starRadar?.includes(playerId)) out.starNext = g.starNext;
   const q = g.question;
   if (q) {
     out.myAnswer = q.answers[playerId] ?? null;
