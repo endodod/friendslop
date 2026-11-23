@@ -28,7 +28,7 @@ describe("registry completeness", () => {
       expect(MINIGAMES[m.id], `server ${m.id}`).toBeDefined();
       expect(MINIGAME_CLIENTS[m.id], `client ${m.id}`).toBeDefined();
     }
-    expect(Object.keys(MINIGAMES)).toHaveLength(31);
+    expect(Object.keys(MINIGAMES)).toHaveLength(34);
   });
 });
 
@@ -161,5 +161,28 @@ describe("turn-based & realtime", () => {
     const victim = s.holder;
     s = hotPotato.tick!(s, ctx(s.explodeAt));
     expect(s.out).toEqual([victim]);
+  });
+});
+
+describe("voting games", () => {
+  it("Judge's Call: matching the judge scores 2, the judge 1 per match", async () => {
+    const { scoreJudge } = await import("../src/kit/voteGame");
+    const r = scoreJudge({ j: "a", a: "a", b: "a", c: "b" }, ["j", "a", "b", "c"], "j");
+    expect(r.winners).toEqual(["a"]);
+    expect(r.gained).toEqual({ a: 2, b: 2, j: 2 });
+    expect(scoreJudge({ a: "a" }, ["j", "a"], "j").gained).toEqual({});
+  });
+  it("Underdog: the least-voted pick scores; all tied scores nobody", async () => {
+    const { scoreUnderdog } = await import("../src/kit/voteGame");
+    expect(scoreUnderdog({ a: "x", b: "x", c: "y" })).toEqual({ winners: ["y"], gained: { c: 2 } });
+    expect(scoreUnderdog({ a: "x", b: "y" }).winners).toEqual([]);
+  });
+  it("Hall of Fame: votes received are points, backing the winner is a bonus; no self votes", async () => {
+    const { scoreHallOfFame } = await import("../src/kit/voteGame");
+    expect(scoreHallOfFame({ a: "b", c: "b", b: "a" }).gained).toEqual({ b: 2, a: 2, c: 1 });
+    const { hallOfFame } = await import("../src/hall-of-fame/logic");
+    const s0 = { players: ["a", "b", "c"], index: 0, round: { question: {} as never, stage: "vote" as const, stageEndsAt: 1e12, votes: {}, winners: [], gained: {}, judge: null }, points: { a: 0, b: 0, c: 0 }, done: false };
+    const s1 = hallOfFame.onInput!(s0, "a", { answer: { kind: "player", playerId: "a" } }, {} as never);
+    expect(s1.round!.votes).toEqual({});
   });
 });

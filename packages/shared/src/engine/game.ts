@@ -1329,9 +1329,10 @@ export function eligibleMinigames(content: ContentBundle, registry: Record<strin
 }
 
 /**
- * Next round mini-game. Within a cycle each game comes up at most `perCycle` times (Many: twice),
- * weighted by content weight × mix weight; "off" games never come up. When the cycle is used up a
- * new one starts (never repeating the very last game). Mutates `history.minigamesPlayed`.
+ * Next round mini-game. Within a cycle every enabled game comes up exactly once before any repeats;
+ * the weights (content weight × mix weight) only decide which comes first, so "Many" games and the
+ * voting games show up early and "Few" ones late. "Off" games never come up. When the cycle is used
+ * up a new one starts (never repeating the very last game). Mutates `history.minigamesPlayed`.
  */
 export function pickRoundMinigame<M extends { id: string; weight: number }>(
   eligible: M[],

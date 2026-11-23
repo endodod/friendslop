@@ -9,6 +9,9 @@ import { hotPotato } from "./hot-potato/logic";
 import { memoryFlip } from "./memory-flip/logic";
 import { minefield } from "./minefield/logic";
 import { mostLikelyTo } from "./most-likely-to/logic";
+import { judgesCall } from "./judges-call/logic";
+import { underdog } from "./underdog/logic";
+import { hallOfFame } from "./hall-of-fame/logic";
 import { musicalChairs } from "./musical-chairs/logic";
 import { mysteryAuction } from "./mystery-auction/logic";
 import { perfectTiming } from "./perfect-timing/logic";
@@ -41,6 +44,6 @@ export const MINIGAMES: MinigameRegistry = Object.fromEntries(
     redLight, musicalChairs, chicken, reactionTap, stacker, pumpIt, memoryFlip, stopTheBar, higherLowerCards,
     spotTheOdd, countIt, colorClash, whackAMole, perfectTiming, typeRace, quickMath, simon, minefield, thinIce,
     hotPotato, splitOrSteal, mysteryAuction, hotOrNot, duel, mostLikelyTo, speedSync, rankingGame,
-    loneWolfGame, tugOfWar, arrowRush, numberHunt,
+    loneWolfGame, tugOfWar, arrowRush, numberHunt, judgesCall, underdog, hallOfFame,
   ].map((d) => [d.id, d]),
 );

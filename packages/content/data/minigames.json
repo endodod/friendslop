@@ -350,6 +350,52 @@
       ],
       "rules": "Who's most likely to…? Vote for a player. Being in the majority scores.",
       "controls": "Tap a player.",
+      "bonus": "—",
+      "weight": 2
+    },
+    {
+      "id": "judges-call",
+      "name": "Judge's Call",
+      "icon": "podium",
+      "weight": 2,
+      "goal": "Pick the same player as the judge.",
+      "howTo": [
+        "Each round a different player is the judge.",
+        "Read the 'Who's most likely to…' prompt and vote for a player.",
+        "Match the judge's pick for 2 points. The judge gets a point for everyone who matched."
+      ],
+      "rules": "A new judge every round. Vote for who you think the judge will pick.",
+      "controls": "Tap a player.",
+      "bonus": "—"
+    },
+    {
+      "id": "underdog",
+      "name": "Underdog",
+      "icon": "wolf",
+      "weight": 2,
+      "goal": "Back the player with the fewest votes.",
+      "howTo": [
+        "Read the 'Who's most likely to…' prompt.",
+        "Vote for a player, but think about what the others pick.",
+        "Everyone who picked the least-voted player scores 2."
+      ],
+      "rules": "Who's most likely to…? Score by picking the player with the fewest votes.",
+      "controls": "Tap a player.",
+      "bonus": "—"
+    },
+    {
+      "id": "hall-of-fame",
+      "name": "Hall of Fame",
+      "icon": "crown",
+      "weight": 2,
+      "goal": "Collect votes and back the winner.",
+      "howTo": [
+        "Read the 'Who's most likely to…' prompt.",
+        "Vote for someone else (not yourself).",
+        "Every vote you get is a point, and picking the top-voted player is another."
+      ],
+      "rules": "Vote for anyone but yourself. Votes you get are points; backing the winner is a bonus point.",
+      "controls": "Tap a player.",
       "bonus": "—"
     },
     {

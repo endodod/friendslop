@@ -127,16 +127,25 @@ describe("maps", () => {
 
 describe("mini-game mix", () => {
   const pool = ["a", "b", "c", "d"].map((id) => ({ id, weight: 1 }));
-  it("never picks games set to off and repeats 'many' games within a cycle", () => {
+  it("never picks games set to off; every game once per cycle; 'many' games come first", () => {
     const rng = createRng(4);
     const history = { minigamesPlayed: [] as string[] };
     const seen: string[] = [];
-    for (let i = 0; i < 400; i++) seen.push(pickRoundMinigame(pool, { a: "off", b: "many", c: "few" }, history, rng)!.id);
+    for (let i = 0; i < 300; i++) seen.push(pickRoundMinigame(pool, { a: "off", b: "many", c: "few" }, history, rng)!.id);
     expect(seen).not.toContain("a");
-    const n = (id: string) => seen.filter((x) => x === id).length;
-    expect(n("b")).toBeGreaterThan(n("d"));
-    expect(n("d")).toBeGreaterThan(n("c") * 0.9);
+    // Cycles of 3 (b, c, d): no repeats inside a cycle.
+    for (let i = 0; i + 3 <= seen.length; i += 3) expect(new Set(seen.slice(i, i + 3)).size).toBe(3);
+    // "many" usually opens a cycle, "few" usually closes it.
+    const firsts = Array.from({ length: 100 }, (_, k) => seen[k * 3]);
+    expect(firsts.filter((x) => x === "b").length).toBeGreaterThan(firsts.filter((x) => x === "c").length);
     for (let i = 1; i < seen.length; i++) expect(seen[i]).not.toBe(seen[i - 1]);
+  });
+  it("in a real game every mini-game comes up once before any repeats", () => {
+    const rng = createRng(9);
+    const pool = Array.from({ length: 30 }, (_, i) => ({ id: `g${i}`, weight: i < 4 ? 2 : 1 }));
+    const history = { minigamesPlayed: [] as string[] };
+    const first30 = Array.from({ length: 30 }, () => pickRoundMinigame(pool, {}, history, rng)!.id);
+    expect(new Set(first30).size).toBe(30);
   });
   it("settings drop unknown games and refuse turning everything off", () => {
     const room = makeRoom(2);

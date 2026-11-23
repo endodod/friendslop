@@ -11,6 +11,9 @@ import { HotPotatoClient } from "./hot-potato/Client";
 import { MemoryFlipClient } from "./memory-flip/Client";
 import { MinefieldClient } from "./minefield/Client";
 import { MostLikelyToClient } from "./most-likely-to/Client";
+import { JudgesCallClient } from "./judges-call/Client";
+import { UnderdogClient } from "./underdog/Client";
+import { HallOfFameClient } from "./hall-of-fame/Client";
 import { MusicalChairsClient } from "./musical-chairs/Client";
 import { MysteryAuctionClient } from "./mystery-auction/Client";
 import { PerfectTimingClient } from "./perfect-timing/Client";
@@ -60,6 +63,9 @@ export const MINIGAME_CLIENTS: Record<string, ClientEntry> = {
   "mystery-auction": { Component: MysteryAuctionClient },
   "hot-or-not": { Component: HotOrNotClient },
   "most-likely-to": { Component: MostLikelyToClient },
+  "judges-call": { Component: JudgesCallClient },
+  underdog: { Component: UnderdogClient },
+  "hall-of-fame": { Component: HallOfFameClient },
   duel: { Component: DuelClient },
   "speed-sync": { Component: SeriesClient },
   ranking: { Component: SeriesClient },
