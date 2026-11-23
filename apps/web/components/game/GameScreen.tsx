@@ -1,7 +1,7 @@
 "use client";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChatPanel } from "../ChatPanel";
-import { Flag, LogOut, Map as MapIcon, Pause, Play, X } from "lucide-react";
+import { Flag, LogOut, Map as MapIcon, MoreHorizontal, Pause, Play, X } from "lucide-react";
 import { setGamePaused } from "@party-game/minigames/client";
 import { useEffect, useState } from "react";
 import { useStore } from "@/lib/store";
@@ -115,7 +115,7 @@ function TopBar({ compact }: { compact?: boolean }) {
     <div className={`grid items-center gap-1 px-2 py-2 sm:gap-3 sm:px-3 ${compact ? "grid-cols-[1fr_auto]" : "grid-cols-[1fr_minmax(0,auto)_1fr]"}`}>
       <div className="flex min-w-0 items-center gap-1 sm:gap-3">
       <span className="min-w-0 truncate whitespace-nowrap rounded-xl bg-panel-2 px-2 py-1 font-display sm:px-3">
-        {g.mode === "questionDebug" ? "Questions" : g.mode === "minigameDebug" ? "Mini-games" : g.turnCount > 0 ? `Round ${g.round}/${g.turnCount}` : `Round ${g.round}`}
+        {g.mode === "questionDebug" ? "Questions" : g.mode === "minigameDebug" ? "Practice" : g.turnCount > 0 ? `Round ${g.round}/${g.turnCount}` : `Round ${g.round}`}
       </span>
       {g.mode === "board" && (pub.settings.starGoal ?? 0) > 0 && (
         <span className="rounded-xl bg-[#ffe066]/15 px-2 py-1 font-display text-sm text-[#ffe066]">First to {pub.settings.starGoal} ★</span>
@@ -123,7 +123,7 @@ function TopBar({ compact }: { compact?: boolean }) {
       {!compact && g.mode === "board" && active && !FOCUS_PHASES.has(g.phase) && (
         <span className="truncate font-display text-muted">{active.name}&apos;s turn</span>
       )}
-      {g.mode === "board" && g.phase !== "podium" && <TurnOrder />}
+      {!compact && g.mode === "board" && g.phase !== "podium" && <TurnOrder />}
       </div>
       {!compact && <LastAction />}
       <div className="flex items-center justify-end gap-1 sm:gap-3">
@@ -135,7 +135,7 @@ function TopBar({ compact }: { compact?: boolean }) {
       )}
       <HelpButton minigameId={g.minigame?.id ?? null} />
       <MuteButton />
-      {isHost && g.mode === "board" && !["gameEnd", "bonusStars", "podium"].includes(g.phase) && (
+      {!compact && isHost && g.mode === "board" && !["gameEnd", "bonusStars", "podium"].includes(g.phase) && (
         <button
           className="btn-ghost min-h-11 min-w-9 px-1 sm:min-w-11 sm:px-2"
           aria-label="Finish the game now and show the results"
@@ -159,7 +159,8 @@ function TopBar({ compact }: { compact?: boolean }) {
           {g.pause ? <Play size={20} /> : <Pause size={20} />}
         </button>
       )}
-      {isHost && g.phase !== "podium" && (
+      {compact && isHost && g.phase !== "podium" && <HostMenu canFinish={g.mode === "board" && !["gameEnd", "bonusStars"].includes(g.phase)} />}
+      {!compact && isHost && g.phase !== "podium" && (
         <button
           className="btn-ghost min-h-11 min-w-9 px-1 sm:min-w-11 sm:px-2"
           aria-label="End game and return to lobby"
@@ -172,8 +173,61 @@ function TopBar({ compact }: { compact?: boolean }) {
       )}
       </div>
     </div>
-    {compact && <LastAction className="mx-2 mb-2" />}
+    {compact && (
+      <div className="mx-2 mb-2 flex min-w-0 items-center gap-2">
+        {g.mode === "board" && g.phase !== "podium" && <TurnOrder />}
+        <LastAction className="min-w-0 flex-1" />
+      </div>
+    )}
     </header>
+  );
+}
+
+/** Phones: the host's rarely used buttons (finish now, end the game) live in a small menu. */
+function HostMenu({ canFinish }: { canFinish: boolean }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="relative">
+      <button
+        className="btn-ghost min-h-11 min-w-9 px-1"
+        aria-label="More host options"
+        aria-expanded={open}
+        data-testid="host-menu"
+        onClick={() => setOpen((o) => !o)}
+      >
+        <MoreHorizontal size={20} />
+      </button>
+      {open && (
+        <>
+          <button className="fixed inset-0 z-[60] cursor-default" aria-label="Close menu" onClick={() => setOpen(false)} />
+          <div className="card absolute right-0 top-12 z-[61] flex w-64 flex-col gap-1 p-2 shadow-xl" role="menu">
+            {canFinish && (
+              <button
+                role="menuitem"
+                className="btn-ghost min-h-11 justify-start"
+                data-testid="finish-button"
+                onClick={() => {
+                  setOpen(false);
+                  if (confirm("Finish the game now? Bonus stars are handed out and the winner is crowned.")) act("game:finish", {});
+                }}
+              >
+                <Flag size={18} /> Finish game now
+              </button>
+            )}
+            <button
+              role="menuitem"
+              className="btn-ghost min-h-11 justify-start"
+              onClick={() => {
+                setOpen(false);
+                if (confirm("End the game for everyone and go back to the lobby?")) act("game:abort", {});
+              }}
+            >
+              <LogOut size={18} /> End game (back to lobby)
+            </button>
+          </div>
+        </>
+      )}
+    </div>
   );
 }
 
@@ -287,6 +341,12 @@ function GameScreenInner() {
   // Let a token finish walking (and land) before a full-screen phase hides the board.
   const boardBusy = useStore((s) => s.boardBusy);
   const focus = g.mode !== "board" || (FOCUS_PHASES.has(g.phase) && !boardBusy);
+  // Phones: the page keeps its scroll position. Coming from a scrolled-down lobby, or when a question or
+  // mini-game takes over, jump back to the top so the top bar and the new content are in view.
+  const focusPhase = focus ? g.phase : null;
+  useEffect(() => {
+    window.scrollTo({ top: 0 });
+  }, [focus, focusPhase]);
   const controllerMode = !display && pub.displays > 0; // same room: phones are controllers
   const myTurn = playerId === g.order[g.activeIndex];
   const selectable = g.phase === "junctionChoice" && myTurn && !display ? (g.junction?.options ?? []) : [];

@@ -31,7 +31,7 @@ export function AvatarPicker({
   const src = photoUrl(photo);
   const photoOn = !!src && !!usePhoto;
   return (
-    <div className="grid grid-cols-8 gap-1.5 p-1.5 sm:gap-2" role="radiogroup" aria-label="Icon">
+    <div className="grid grid-cols-6 gap-1.5 p-1.5 min-[380px]:grid-cols-8 sm:gap-2" role="radiogroup" aria-label="Icon">
       {src && (
         <button
           type="button"

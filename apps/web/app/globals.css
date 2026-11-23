@@ -28,6 +28,8 @@ body {
   font-family: var(--font-sans);
   -webkit-tap-highlight-color: transparent;
   overscroll-behavior: none;
+  /* Never scroll sideways on phones (animations that scale in from big can poke out). */
+  overflow-x: clip;
 }
 
 body {

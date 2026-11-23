@@ -4,7 +4,7 @@ import { PLAYER_COLORS } from "@party-game/shared";
 
 export function ColorPicker({ value, taken = [], onChange }: { value?: string; taken?: string[]; onChange: (c: string) => void }) {
   return (
-    <div className="grid grid-cols-8 gap-1.5 p-1.5 sm:gap-2" role="radiogroup" aria-label="Color">
+    <div className="grid grid-cols-8 gap-1 p-1 min-[380px]:gap-1.5 min-[380px]:p-1.5 sm:gap-2" role="radiogroup" aria-label="Color">
       {PLAYER_COLORS.map((c) => {
         const isTaken = taken.includes(c.id) && c.id !== value;
         const selected = value === c.id;

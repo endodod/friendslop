@@ -40,6 +40,10 @@ export function Lobby({ code, onLeave }: { code: string; onLeave: () => Promise<
   const [practice, setPractice] = useState("red-light");
   const accountPhoto = useAccount((s) => s.user?.photo ?? null);
   const accountUserId = useAccount((s) => s.user?.id ?? null);
+  // Back from a (long, scrolled) results screen: start at the top of the lobby.
+  useEffect(() => {
+    window.scrollTo({ top: 0 });
+  }, []);
 
   return (
     <main className={`mx-auto flex min-h-dvh flex-col gap-4 px-4 py-5 ${isDisplay ? "max-w-6xl" : "max-w-2xl"}`}>
@@ -62,7 +66,7 @@ export function Lobby({ code, onLeave }: { code: string; onLeave: () => Promise<
         </div>
       </header>
 
-      <div className={`grid gap-4 ${isDisplay ? "lg:grid-cols-[1fr_1.2fr]" : ""}`}>
+      <div className={`grid grid-cols-[minmax(0,1fr)] gap-4 ${isDisplay ? "lg:grid-cols-[1fr_1.2fr]" : ""}`}>
         <section className="card flex flex-col items-center gap-3 p-5 text-center">
           <p className="text-muted">Room code</p>
           <p className="font-display text-6xl tracking-[0.25em] text-accent" data-testid="room-code">
