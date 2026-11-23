@@ -53,7 +53,7 @@
     },
     {
       "id": "h4",
-      "type": "blue",
+      "type": "rest-stop",
       "x": 0.7781,
       "y": 0.5416,
       "next": [
@@ -71,12 +71,13 @@
     },
     {
       "id": "h6",
-      "type": "question",
+      "type": "warp",
       "x": 0.8574,
       "y": 0.2891,
       "next": [
         "h7"
-      ]
+      ],
+      "warpTo": "h16"
     },
     {
       "id": "h7",
@@ -162,12 +163,13 @@
     },
     {
       "id": "h16",
-      "type": "blue",
+      "type": "warp",
       "x": 0.1426,
       "y": 0.2893,
       "next": [
         "h17"
-      ]
+      ],
+      "warpTo": "h6"
     },
     {
       "id": "h17",
@@ -225,7 +227,7 @@
     },
     {
       "id": "c1",
-      "type": "question",
+      "type": "gamble",
       "x": 0.5,
       "y": 0.6109,
       "next": [

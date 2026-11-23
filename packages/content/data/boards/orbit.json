@@ -17,7 +17,7 @@
   "tiles": [
     {
       "id": "r0",
-      "type": "question",
+      "type": "gamble",
       "x": 0.5,
       "y": 0.2,
       "next": [
@@ -26,7 +26,7 @@
     },
     {
       "id": "r1",
-      "type": "blue",
+      "type": "rest-stop",
       "x": 0.5814,
       "y": 0.2297,
       "next": [
@@ -192,12 +192,13 @@
     },
     {
       "id": "ne4",
-      "type": "blue",
+      "type": "warp",
       "x": 0.9138,
       "y": 0.2925,
       "next": [
         "ne5"
-      ]
+      ],
+      "warpTo": "sw4"
     },
     {
       "id": "ne5",
@@ -264,12 +265,13 @@
     },
     {
       "id": "se4",
-      "type": "blue",
+      "type": "warp",
       "x": 0.8487,
       "y": 0.9125,
       "next": [
         "se5"
-      ]
+      ],
+      "warpTo": "nw4"
     },
     {
       "id": "se5",
@@ -336,12 +338,13 @@
     },
     {
       "id": "sw4",
-      "type": "blue",
+      "type": "warp",
       "x": 0.0862,
       "y": 0.7075,
       "next": [
         "sw5"
-      ]
+      ],
+      "warpTo": "ne4"
     },
     {
       "id": "sw5",
@@ -408,12 +411,13 @@
     },
     {
       "id": "nw4",
-      "type": "blue",
+      "type": "warp",
       "x": 0.1513,
       "y": 0.0875,
       "next": [
         "nw5"
-      ]
+      ],
+      "warpTo": "se4"
     },
     {
       "id": "nw5",

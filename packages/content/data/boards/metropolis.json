@@ -4,7 +4,7 @@
   "en": "Metropolis",
   "de": "Metropole"
  },
- "description": "A big city loop with a central hub and five routes. Made for 4\u20138 players.",
+ "description": "A big city loop with a central hub and five routes. Made for 4–8 players.",
  "startTileId": "o0",
  "aspect": 1.6,
  "tiles": [
@@ -46,7 +46,7 @@
   },
   {
    "id": "o4",
-   "type": "blue",
+   "type": "rest-stop",
    "x": 0.1438,
    "y": 0.08,
    "next": [
@@ -120,12 +120,13 @@
   },
   {
    "id": "o12",
-   "type": "event",
+   "type": "warp",
    "x": 0.8563,
    "y": 0.08,
    "next": [
     "o13"
-   ]
+   ],
+   "warpTo": "o26"
   },
   {
    "id": "o13",
@@ -166,7 +167,7 @@
   },
   {
    "id": "o17",
-   "type": "blue",
+   "type": "rest-stop",
    "x": 0.95,
    "y": 0.6425,
    "next": [
@@ -247,12 +248,13 @@
   },
   {
    "id": "o26",
-   "type": "red",
+   "type": "warp",
    "x": 0.3219,
    "y": 0.92,
    "next": [
     "o27"
-   ]
+   ],
+   "warpTo": "o12"
   },
   {
    "id": "o27",
@@ -301,7 +303,7 @@
   },
   {
    "id": "hub",
-   "type": "red",
+   "type": "gamble",
    "x": 0.5,
    "y": 0.5,
    "next": [

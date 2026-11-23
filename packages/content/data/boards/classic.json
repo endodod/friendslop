@@ -114,7 +114,7 @@
   },
   {
    "id": "m11",
-   "type": "red",
+   "type": "rest-stop",
    "x": 0.925,
    "y": 0.325,
    "next": [
@@ -132,12 +132,13 @@
   },
   {
    "id": "m13",
-   "type": "question",
+   "type": "warp",
    "x": 0.925,
    "y": 0.675,
    "next": [
     "m14"
-   ]
+   ],
+   "warpTo": "m21"
   },
   {
    "id": "m14",
@@ -187,7 +188,7 @@
   },
   {
    "id": "m19",
-   "type": "question",
+   "type": "gamble",
    "x": 0.3906,
    "y": 0.87,
    "next": [
@@ -205,12 +206,13 @@
   },
   {
    "id": "m21",
-   "type": "event",
+   "type": "warp",
    "x": 0.1719,
    "y": 0.87,
    "next": [
     "m22"
-   ]
+   ],
+   "warpTo": "m13"
   },
   {
    "id": "m22",

@@ -195,13 +195,14 @@
     },
     {
       "id": "nw3",
-      "type": "blue",
+      "type": "warp",
       "x": 0.3997,
       "y": 0.1405,
       "next": [
         "r4",
         "ne0"
-      ]
+      ],
+      "warpTo": "se3"
     },
     {
       "id": "ne0",
@@ -271,17 +272,18 @@
     },
     {
       "id": "se3",
-      "type": "blue",
+      "type": "warp",
       "x": 0.5973,
       "y": 0.8603,
       "next": [
         "r12",
         "sw0"
-      ]
+      ],
+      "warpTo": "nw3"
     },
     {
       "id": "sw0",
-      "type": "blue",
+      "type": "rest-stop",
       "x": 0.3936,
       "y": 0.8578,
       "next": [
@@ -319,7 +321,7 @@
     },
     {
       "id": "hub",
-      "type": "event",
+      "type": "gamble",
       "x": 0.5,
       "y": 0.5,
       "next": [

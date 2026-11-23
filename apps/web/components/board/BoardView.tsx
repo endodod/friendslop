@@ -18,9 +18,6 @@ const BOARD_TONES: Record<string, string> = {
   "island-hopper": "#22c3c9",
   metropolis: "#ff8a3d",
   orbit: "#b26bff",
-  "pit-stop": "#ff4d5e",
-  "casino-strip": "#e0b040",
-  "twin-islands": "#27b36a",
 };
 const toneOf = (id: string) => BOARD_TONES[id] ?? "#7b5cff";
 

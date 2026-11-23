@@ -45,7 +45,7 @@ function botGame(opts: { bots: number; seed: number; boardId?: string; mode?: "b
 
 describe("bots", () => {
   it("a game with only bots plays all the way to the podium", () => {
-    for (const [seed, boardId] of [[1, "pit-stop"], [2, "casino-strip"], [3, "twin-islands"], [4, "classic"]] as const) {
+    for (const [seed, boardId] of [[1, "heartbeat"], [2, "classic"], [3, "island-hopper"], [4, "orbit"], [5, "metropolis"]] as const) {
       const g = botGame({ bots: 4, seed, boardId });
       for (let i = 0; i < 200_000 && g.room.game!.phase !== "podium"; i++) g.step();
       expect(g.room.game!.phase, `seed ${seed}`).toBe("podium");
