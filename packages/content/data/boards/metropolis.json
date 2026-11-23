@@ -74,13 +74,12 @@
   },
   {
    "id": "o7",
-   "type": "warp",
+   "type": "red",
    "x": 0.4109,
    "y": 0.08,
    "next": [
     "o8"
-   ],
-   "warpTo": "a1"
+   ]
   },
   {
    "id": "o8",
@@ -158,13 +157,12 @@
   },
   {
    "id": "o16",
-   "type": "warp",
+   "type": "event",
    "x": 0.95,
    "y": 0.5,
    "next": [
     "o17"
-   ],
-   "warpTo": "e1"
+   ]
   },
   {
    "id": "o17",
@@ -249,13 +247,12 @@
   },
   {
    "id": "o26",
-   "type": "warp",
+   "type": "red",
    "x": 0.3219,
    "y": 0.92,
    "next": [
     "o27"
-   ],
-   "warpTo": "d1"
+   ]
   },
   {
    "id": "o27",
@@ -295,12 +292,13 @@
   },
   {
    "id": "o31",
-   "type": "question",
+   "type": "warp",
    "x": 0.05,
    "y": 0.6425,
    "next": [
     "o0"
-   ]
+   ],
+   "warpTo": "a3"
   },
   {
    "id": "hub",
@@ -323,13 +321,12 @@
   },
   {
    "id": "a1",
-   "type": "warp",
+   "type": "red",
    "x": 0.2915,
    "y": 0.2694,
    "next": [
     "a2"
-   ],
-   "warpTo": "o7"
+   ]
   },
   {
    "id": "a2",
@@ -342,12 +339,13 @@
   },
   {
    "id": "a3",
-   "type": "mind-reader",
+   "type": "warp",
    "x": 0.3806,
    "y": 0.4094,
    "next": [
     "a4"
-   ]
+   ],
+   "warpTo": "o31"
   },
   {
    "id": "a4",
@@ -414,12 +412,13 @@
   },
   {
    "id": "c2",
-   "type": "shop",
+   "type": "warp",
    "x": 0.6336,
    "y": 0.815,
    "next": [
     "o22"
-   ]
+   ],
+   "warpTo": "e1"
   },
   {
    "id": "d0",
@@ -432,13 +431,12 @@
   },
   {
    "id": "d1",
-   "type": "warp",
+   "type": "question",
    "x": 0.3664,
    "y": 0.71,
    "next": [
     "d2"
-   ],
-   "warpTo": "o26"
+   ]
   },
   {
    "id": "d2",
@@ -466,7 +464,7 @@
    "next": [
     "o17"
    ],
-   "warpTo": "o16"
+   "warpTo": "c2"
   }
  ],
  "recommendedPlayers": {
