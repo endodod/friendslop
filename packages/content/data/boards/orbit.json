@@ -35,14 +35,13 @@
     },
     {
       "id": "r2",
-      "type": "warp",
+      "type": "blue",
       "x": 0.6466,
       "y": 0.313,
       "next": [
         "r3",
         "ne-in"
-      ],
-      "warpTo": "ne-out"
+      ]
     },
     {
       "id": "r3",
@@ -111,13 +110,12 @@
     },
     {
       "id": "r10",
-      "type": "warp",
+      "type": "question",
       "x": 0.3172,
       "y": 0.5668,
       "next": [
         "r11"
-      ],
-      "warpTo": "sw-in"
+      ]
     },
     {
       "id": "r11",
@@ -194,12 +192,13 @@
     },
     {
       "id": "ne4",
-      "type": "blue",
+      "type": "warp",
       "x": 0.9138,
       "y": 0.2925,
       "next": [
         "ne5"
-      ]
+      ],
+      "warpTo": "se1"
     },
     {
       "id": "ne5",
@@ -212,13 +211,12 @@
     },
     {
       "id": "ne-out",
-      "type": "warp",
+      "type": "red",
       "x": 0.7624,
       "y": 0.3598,
       "next": [
         "r3"
-      ],
-      "warpTo": "r2"
+      ]
     },
     {
       "id": "se-in",
@@ -240,12 +238,13 @@
     },
     {
       "id": "se1",
-      "type": "question",
+      "type": "warp",
       "x": 0.9138,
       "y": 0.7075,
       "next": [
         "se2"
-      ]
+      ],
+      "warpTo": "ne4"
     },
     {
       "id": "se2",
@@ -294,13 +293,12 @@
     },
     {
       "id": "sw-in",
-      "type": "warp",
+      "type": "blue",
       "x": 0.272,
       "y": 0.7516,
       "next": [
         "sw0"
-      ],
-      "warpTo": "r10"
+      ]
     },
     {
       "id": "sw0",
@@ -349,12 +347,13 @@
     },
     {
       "id": "sw5",
-      "type": "item",
+      "type": "warp",
       "x": 0.158,
       "y": 0.7136,
       "next": [
         "sw-out"
-      ]
+      ],
+      "warpTo": "nw1"
     },
     {
       "id": "sw-out",
@@ -385,12 +384,13 @@
     },
     {
       "id": "nw1",
-      "type": "question",
+      "type": "warp",
       "x": 0.0862,
       "y": 0.2925,
       "next": [
         "nw2"
-      ]
+      ],
+      "warpTo": "sw5"
     },
     {
       "id": "nw2",
