@@ -69,7 +69,7 @@ export function Scoreboard({ game, compact, highlight }: { game: PublicGameState
                 </span>
               )}
             </button>
-            {isHost && !p.connected && playerId !== me && game.phase !== "podium" && (
+            {isHost && (!p.connected || p.bot) && playerId !== me && game.phase !== "podium" && (
               <button
                 className="btn-ghost min-h-11 min-w-11 shrink-0 px-1 text-bad"
                 aria-label={`Remove ${p.name} from the game`}

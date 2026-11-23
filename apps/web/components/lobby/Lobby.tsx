@@ -1,6 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
-import { Copy, Crown, LogOut, Play, Settings2, UserX, Wifi, WifiOff } from "lucide-react";
+import { Bot, Copy, Crown, LogOut, Play, Settings2, UserX, Wifi, WifiOff } from "lucide-react";
 import { QRCodeSVG } from "qrcode.react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -103,6 +103,7 @@ export function Lobby({ code, onLeave }: { code: string; onLeave: () => Promise<
                     <span className="truncate">{p.name}</span>
                     {pub.hostId === p.id && <Crown size={16} className="text-accent" aria-label="Host" />}
                     {p.id === me?.id && <span className="text-sm text-muted">(you)</span>}
+                    {p.bot && <span className="rounded-full bg-panel-2 px-2 text-xs text-muted">bot</span>}
                   </span>
                   {p.username && !isDisplay && (
                     <Link href={`/u/${encodeURIComponent(p.username)}`} target="_blank" className="w-fit truncate text-xs text-muted hover:underline">
@@ -136,6 +137,16 @@ export function Lobby({ code, onLeave }: { code: string; onLeave: () => Promise<
             ))}
             {players.length === 0 && <li className="text-muted">Waiting for players to join…</li>}
           </ul>
+          {isHost && players.length < GAME_CONFIG.players.max && (
+            <button
+              className="btn-secondary w-fit"
+              data-testid="add-bot"
+              title="Bots play randomly. Handy for testing the game with fewer people."
+              onClick={() => act("room:addBot", {})}
+            >
+              <Bot size={18} /> Add a bot
+            </button>
+          )}
           {pub.displays > 0 && (
             <p className="text-sm text-muted">
               <Icon id="life" size={14} className="mr-1 align-[-2px]" />

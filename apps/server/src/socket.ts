@@ -169,6 +169,7 @@ export function registerSocketHandlers(io: Server<any, ServerToClientEvents, any
       rooms.setProfile(rec, pid, { ...patch, photo });
     });
     on("room:kick", (p) => rooms.kick(current(), socket.data, p.playerId));
+    on("room:addBot", () => rooms.addBot(current(), socket.data));
     on("player:ready", (p) => rooms.setReady(current(), me(), p.ready));
     on("game:start", (p) => rooms.start(current(), socket.data, p.mode, p.minigameId));
     on("game:abort", () => rooms.abort(current(), socket.data));

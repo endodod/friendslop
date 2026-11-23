@@ -96,6 +96,19 @@ export function addPlayer(
   return { ...room, players: [...room.players, player], hostId: room.hostId ?? player.id };
 }
 
+/** Host: add a test bot (lobby only). Bots are always ready and are played by the server. */
+export function addBot(room: RoomState, id: string, now: number): RoomState {
+  let n = 1;
+  while (room.players.some((p) => p.name.toLowerCase() === `bot ${n}`)) n++;
+  const next = addPlayer(room, { id, name: `Bot ${n}`, avatar: "🤖", now });
+  return { ...next, players: next.players.map((p) => (p.id === id ? { ...p, bot: true, ready: true } : p)) };
+}
+
+/** Everyone has to confirm "ready" again (settings changed, back in the lobby); bots stay ready. */
+export function resetReady(room: RoomState): RoomState {
+  return { ...room, players: room.players.map((p) => ({ ...p, ready: !!p.bot })) };
+}
+
 export function updatePlayer(room: RoomState, playerId: string, patch: Partial<RoomPlayer>): RoomState {
   if (!room.players.some((p) => p.id === playerId)) fail("UNKNOWN_PLAYER", "Unknown player.");
   return { ...room, players: room.players.map((p) => (p.id === playerId ? { ...p, ...patch } : p)) };
@@ -164,7 +177,7 @@ export function updateSettings(room: RoomState, patch: Partial<RoomSettings>, co
     Object.entries(s.minigameMix ?? {}).filter(([k, v]) => mgIds.has(k) && freqs.has(v) && v !== "normal"),
   ) as RoomSettings["tileFrequency"];
   if ([...mgIds].every((id) => s.minigameMix![id] === "off")) fail("INVALID_INPUT", "Keep at least one mini-game on.");
-  return { ...room, settings: s, players: room.players.map((p) => ({ ...p, ready: false })) };
+  return resetReady({ ...room, settings: s });
 }
 
 /** Data questions only make sense if at least one player linked an account with usable data. */

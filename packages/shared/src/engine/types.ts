@@ -46,6 +46,8 @@ export interface RoomPlayer {
   /** Server path of the account's custom profile picture, e.g. /api/users/<id>/avatar?v=3. */
   photo?: string | null;
   ready: boolean;
+  /** Test bot added by the host: played by the server, always "connected" and ready. */
+  bot?: boolean;
   connected: boolean;
   joinedAt: number;
   disconnectedAt: number | null;

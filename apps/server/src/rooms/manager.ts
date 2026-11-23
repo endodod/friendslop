@@ -11,7 +11,12 @@ import {
   removeCustomQuestion,
   type CustomQuestionDraft,
   applyGameAction,
+  addBot,
   assertHost,
+  botActions,
+  newBotMemory,
+  resetReady,
+  type BotMemory,
   canStart,
   createRng,
   createRoom,
@@ -63,6 +68,8 @@ interface LiveRoom extends RoomRecord {
   /** Recent chat (not part of the game state, never persisted). */
   chat?: ChatMessage[];
   lastChatAt?: Map<string, number>;
+  /** Test bots: what they already did this mini-game. */
+  bots?: BotMemory;
   /** Real time the host was first seen disconnected (for the host handover). */
   hostAwaySince?: number;
 }
@@ -231,7 +238,7 @@ export class RoomManager {
     if (!target) fail("UNKNOWN_PLAYER", "That player isn't in the room.");
     if (rec.room.game) {
       // Mid-game only players who dropped out can be removed; the game goes on without them.
-      if (target.connected) fail("INVALID_INPUT", "During a game you can only remove disconnected players.");
+      if (target.connected && !target.bot) fail("INVALID_INPUT", "During a game you can only remove disconnected players (or bots).");
       this.apply(rec, removePlayerFromGame(rec.room, playerId, this.ctx(rec)));
     } else {
       rec.room = removePlayer(rec.room, playerId);
@@ -251,6 +258,27 @@ export class RoomManager {
   // -------------------------------------------------------------------------
   // Lobby
   // -------------------------------------------------------------------------
+  addBot(rec: LiveRoom, actor: SocketData) {
+    assertHost(rec.room, { playerId: actor.playerId ?? undefined, isDisplay: actor.role === "display" });
+    if (rec.room.stage !== "lobby") fail("GAME_IN_PROGRESS", "Add bots in the lobby.");
+    rec.room = addBot(rec.room, "bot_" + randomBytes(6).toString("base64url"), Date.now());
+    this.broadcast(rec, []);
+  }
+
+  /** Let the bots in this room make their moves (errors, e.g. a move that's no longer valid, are ignored). */
+  private runBots(rec: LiveRoom) {
+    if (!rec.room.game || !rec.room.players.some((p) => p.bot)) return;
+    rec.bots ??= newBotMemory();
+    const ctx = this.ctx(rec);
+    for (const action of botActions(rec.room, this.content, this.minigames, rec.rng, ctx.now, rec.bots)) {
+      try {
+        this.apply(rec, applyGameAction(rec.room, action, this.ctx(rec)));
+      } catch {
+        // not valid anymore (the phase moved on): skip
+      }
+    }
+  }
+
   setReady(rec: LiveRoom, playerId: string, ready: boolean) {
     if (rec.room.stage !== "lobby") fail("GAME_IN_PROGRESS", "Game already running.");
     rec.room = updatePlayer(rec.room, playerId, { ready });
@@ -306,8 +334,9 @@ export class RoomManager {
       ...rec.room,
       stage: "lobby",
       game: null,
-      players: rec.room.players.map((p) => ({ ...p, ready: false, disconnectedAt: p.connected ? null : now })),
+      players: rec.room.players.map((p) => ({ ...p, disconnectedAt: p.connected ? null : now })),
     };
+    rec.room = resetReady(rec.room);
     this.broadcast(rec, []);
   }
 
@@ -350,6 +379,7 @@ export class RoomManager {
       const rec = r as LiveRoom;
       try {
         if (rec.room.game) this.apply(rec, tickGame(rec.room, this.ctx(rec)));
+        this.runBots(rec);
         this.handOverHost(rec);
         // Lobby: drop players who left long ago so "everyone ready" isn't blocked forever.
         if (rec.room.stage === "lobby") {
@@ -360,7 +390,7 @@ export class RoomManager {
           }
           if (stale.length) this.broadcast(rec, []);
         }
-        const anyoneHere = rec.room.players.some((p) => p.connected) || rec.room.displays > 0;
+        const anyoneHere = rec.room.players.some((p) => p.connected && !p.bot) || rec.room.displays > 0;
         if (!anyoneHere && now - rec.lastActivity > GAME_CONFIG.room.emptyRoomTtlMs) {
           console.log(`[room ${rec.room.code}] expired`);
           this.store.delete(rec.room.code);
@@ -382,7 +412,7 @@ export class RoomManager {
     const now = Date.now();
     rec.hostAwaySince ??= now;
     if (host && now - rec.hostAwaySince < HOST_HANDOVER_MS) return;
-    const next = rec.room.players.find((p) => p.connected);
+    const next = rec.room.players.find((p) => p.connected && !p.bot);
     if (!next) return;
     rec.room = { ...rec.room, hostId: next.id };
     rec.hostAwaySince = undefined;

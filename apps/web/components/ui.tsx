@@ -103,9 +103,9 @@ export function PlayerName({ player, className = "" }: { player: PlayerLike | un
   );
 }
 
-export function usePlayers(): Record<string, PlayerLike & { connected: boolean }> {
+export function usePlayers(): Record<string, PlayerLike & { connected: boolean; bot?: boolean }> {
   const players = useStore((s) => s.pub?.players);
-  const out: Record<string, PlayerLike & { connected: boolean }> = {};
+  const out: Record<string, PlayerLike & { connected: boolean; bot?: boolean }> = {};
   for (const p of players ?? []) out[p.id] = p;
   return out;
 }

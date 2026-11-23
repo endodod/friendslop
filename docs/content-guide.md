@@ -174,6 +174,7 @@ SVG with the board's `aspect` ratio (width / height).
 - Every board in the folder shows up in the lobby's map picker (with a preview). Friendship Loop (classic) is the default.
 - Shipped maps: Heartbeat (2–4 players), Pit Stop (2–4, 23 tiles), Friendship Loop (classic, 2–6), Casino Strip (3–6, 37 tiles), Island Hopper (4–8, 37 tiles), Orbit (3–8), Metropolis (4–8), Twin Islands (4–8, 56 tiles). The lobby also offers **Random**, which picks one of them when the game starts.
 - `recommendedPlayers: { "min": 4, "max": 8 }` is shown on the map card. Every shipped map sets it.
+- To try a map without enough friends, the host can **Add a bot** in the lobby. Bots play randomly (see `packages/shared/src/engine/bots.ts`).
 - Players can tune how often each tile type appears (lobby → Tile mix: Off / Few / Normal / Many).
   "Normal" is the board as designed; extra tiles are taken from blue tiles, and at least
   `GAME_CONFIG.tiles.minFillerTiles` blue tiles always stay for the star.
