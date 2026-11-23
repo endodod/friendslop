@@ -1,0 +1,529 @@
+{
+  "id": "core-superpowers",
+  "name": "Superpowers & Fantasy",
+  "language": "en",
+  "version": 1,
+  "description": "Hero names, useless powers, wizards, dragons and wishes.",
+  "questions": [
+    {
+      "id": "super.useless",
+      "themes": [
+        "superpowers"
+      ],
+      "format": "tiles",
+      "prompt": "Which useless superpower would {target} get?",
+      "answers": [
+        "Always finds the TV remote",
+        "Perfect toast every time",
+        "Knows the time without a clock",
+        "Can make anyone sneeze"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "super.hero-name",
+      "themes": [
+        "superpowers"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s superhero name would be…",
+      "answers": [
+        "Captain Snack",
+        "The Procrastinator",
+        "Night Owl",
+        "Something with 'Ultra' in it"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "super.weakness",
+      "themes": [
+        "superpowers"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s superhero weakness?",
+      "answers": [
+        "Cute animals",
+        "Being hungry",
+        "Phone at 1%",
+        "Compliments"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "super.costume",
+      "themes": [
+        "superpowers"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s superhero costume?",
+      "answers": [
+        "All black, very serious",
+        "Bright colours and a cape",
+        "A hoodie, honestly",
+        "Full armour"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "super.role",
+      "themes": [
+        "superpowers"
+      ],
+      "format": "tiles",
+      "prompt": "In a superhero movie, {target} is…",
+      "answers": [
+        "The hero",
+        "The sidekick",
+        "The one doing the paperwork",
+        "Secretly the villain"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "super.class",
+      "themes": [
+        "superpowers"
+      ],
+      "format": "tiles",
+      "prompt": "In a fantasy game, {target} plays…",
+      "answers": [
+        "The wizard",
+        "The rogue",
+        "The bard",
+        "The tank who charges in first",
+        "The healer"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "super.genie",
+      "themes": [
+        "superpowers"
+      ],
+      "format": "tiles",
+      "prompt": "A genie grants {target} one wish. They wish for…",
+      "answers": [
+        "Endless money",
+        "More wishes",
+        "Health for everyone",
+        "Something incredibly petty"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "super.potion",
+      "themes": [
+        "superpowers"
+      ],
+      "format": "tiles",
+      "prompt": "{target} brews a magic potion. It…",
+      "answers": [
+        "Makes them irresistible",
+        "Cures hangovers",
+        "Turns enemies into frogs",
+        "Explodes"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "super.dragon",
+      "themes": [
+        "superpowers"
+      ],
+      "format": "tiles",
+      "prompt": "{target} meets a dragon. They…",
+      "answers": [
+        "Try to tame it",
+        "Offer it snacks",
+        "Run",
+        "Ask for a selfie"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "super.kingdom-job",
+      "themes": [
+        "superpowers"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s job in a magical kingdom?",
+      "answers": [
+        "Royal wizard",
+        "Potion seller",
+        "Dragon vet",
+        "Tavern owner"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "super.curse",
+      "themes": [
+        "superpowers"
+      ],
+      "format": "tiles",
+      "prompt": "{target} gets cursed. The curse?",
+      "answers": [
+        "Phone always at 1%",
+        "A song stuck in their head forever",
+        "Socks never match",
+        "Everyone gets their name wrong"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "super.origin",
+      "themes": [
+        "superpowers"
+      ],
+      "format": "tiles",
+      "prompt": "How does {target} get their powers?",
+      "answers": [
+        "Bitten by something",
+        "A lab accident",
+        "Born with them",
+        "Bought them online"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "super.identity",
+      "themes": [
+        "superpowers"
+      ],
+      "format": "tiles",
+      "prompt": "Could {target} keep a secret identity?",
+      "answers": [
+        "Perfectly",
+        "For about a day",
+        "They'd tell everyone at the next party",
+        "They'd post about it"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "super.retire",
+      "themes": [
+        "superpowers"
+      ],
+      "format": "number",
+      "prompt": "At what age would {target} retire from being a superhero?",
+      "number": {
+        "min": 20,
+        "max": 90,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 5
+        },
+        "unit": "years"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "super.save-world",
+      "themes": [
+        "superpowers"
+      ],
+      "format": "number",
+      "prompt": "How many times would {target} save the world before asking to get paid?",
+      "number": {
+        "min": 0,
+        "max": 20,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 2
+        },
+        "unit": "times"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "super.abuse",
+      "themes": [
+        "superpowers"
+      ],
+      "format": "scale",
+      "prompt": "How much would {target} abuse their powers, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "only for good",
+        "max": "ruling the world by Tuesday"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "super.hero-skill",
+      "themes": [
+        "superpowers"
+      ],
+      "format": "scale",
+      "prompt": "How good a superhero would {target} be, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "gets stuck in their own cape",
+        "max": "saves the city before breakfast"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "super.fantasy-fan",
+      "themes": [
+        "superpowers"
+      ],
+      "format": "scale",
+      "prompt": "How much does {target} love fantasy stuff, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "dragons are silly",
+        "max": "has a favourite elvish word"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "super.fly-height",
+      "themes": [
+        "superpowers"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} would happily fly 100 m high. Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 10000,
+        "step": 50,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "m"
+      },
+      "reference": 100,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "super.villain-days",
+      "themes": [
+        "superpowers"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} would last 7 days as a villain before switching sides. Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "days"
+      },
+      "reference": 7,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "super.secret",
+      "themes": [
+        "superpowers"
+      ],
+      "format": "player",
+      "prompt": "Who here would {target} trust with their secret identity?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "super.nemesis",
+      "themes": [
+        "superpowers"
+      ],
+      "format": "player",
+      "prompt": "Who here would be {target}'s arch-nemesis?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "super.rank-jobs",
+      "themes": [
+        "superpowers"
+      ],
+      "format": "ranking",
+      "prompt": "Rank these fantasy jobs the way {target} would, best first:",
+      "answers": [
+        "Wizard",
+        "Knight",
+        "Thief",
+        "Dragon rider"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "super.rank-useless",
+      "themes": [
+        "superpowers"
+      ],
+      "format": "ranking",
+      "prompt": "Rank these small powers the way {target} would, most wanted first:",
+      "answers": [
+        "Never stub a toe",
+        "Always find parking",
+        "Pause music with your mind",
+        "Never get a sunburn"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "super.mlt-secret-hero",
+      "themes": [
+        "superpowers"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to secretly be a superhero?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "super.mlt-villain",
+      "themes": [
+        "superpowers"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to become a supervillain over something tiny?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "super.mlt-wand",
+      "themes": [
+        "superpowers"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to own a real wand?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    }
+  ]
+}

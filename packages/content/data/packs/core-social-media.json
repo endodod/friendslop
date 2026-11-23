@@ -1,0 +1,513 @@
+{
+  "id": "core-social-media",
+  "name": "Social Media",
+  "language": "en",
+  "version": 1,
+  "description": "Captions, close friends, unfollows and the art of the photo dump.",
+  "questions": [
+    {
+      "id": "social.caption",
+      "themes": [
+        "social-media"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s caption style?",
+      "answers": [
+        "Song lyrics",
+        "One emoji",
+        "A whole paragraph",
+        "No caption, just vibes",
+        "A pun"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "social.close-friends",
+      "themes": [
+        "social-media"
+      ],
+      "format": "tiles",
+      "prompt": "What's on {target}'s close friends story?",
+      "answers": [
+        "Unfiltered rants",
+        "Their pet",
+        "Nothing, nobody's on the list",
+        "The same as their normal story"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "social.unfollow",
+      "themes": [
+        "social-media"
+      ],
+      "format": "tiles",
+      "prompt": "{target} unfollows someone when…",
+      "answers": [
+        "They post too much",
+        "They become an ex",
+        "Never, they just mute",
+        "Right after an argument"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "social.ex-profile",
+      "themes": [
+        "social-media"
+      ],
+      "format": "tiles",
+      "prompt": "{target} and their ex's profile?",
+      "answers": [
+        "Blocked",
+        "Muted",
+        "Checks it every week",
+        "Still likes their posts"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "social.birthday-post",
+      "themes": [
+        "social-media"
+      ],
+      "format": "tiles",
+      "prompt": "It's a friend's birthday. {target} posts…",
+      "answers": [
+        "A long heartfelt post",
+        "The ugliest photo of them",
+        "A story with a gif",
+        "Nothing, they text instead"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "social.filters",
+      "themes": [
+        "social-media"
+      ],
+      "format": "tiles",
+      "prompt": "How does {target} use filters?",
+      "answers": [
+        "Never",
+        "Just a little",
+        "On every photo",
+        "They've forgotten their real face"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "social.delete",
+      "themes": [
+        "social-media"
+      ],
+      "format": "tiles",
+      "prompt": "{target} deletes a post when…",
+      "answers": [
+        "It gets fewer than 10 likes",
+        "They look bad in it",
+        "Never, the internet is forever",
+        "They regret it the next morning"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "social.post-time",
+      "themes": [
+        "social-media"
+      ],
+      "format": "tiles",
+      "prompt": "When does {target} post?",
+      "answers": [
+        "At the perfect time for the algorithm",
+        "3 AM",
+        "Whenever",
+        "Only on holiday"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "social.linkedin",
+      "themes": [
+        "social-media"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s LinkedIn is…",
+      "answers": [
+        "Fully optimised",
+        "Last updated at school",
+        "Full of motivational posts",
+        "Non-existent"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "social.photo-dump",
+      "themes": [
+        "social-media"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s photo dumps are…",
+      "answers": [
+        "Carefully curated chaos",
+        "Random blurry pictures",
+        "Weekly, like clockwork",
+        "Never, one perfect post only"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "social.tagged",
+      "themes": [
+        "social-media"
+      ],
+      "format": "tiles",
+      "prompt": "Someone tags {target} in an ugly photo. They…",
+      "answers": [
+        "Untag immediately",
+        "Comment something funny",
+        "Ask for it to be deleted",
+        "Repost it proudly"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "social.posts",
+      "themes": [
+        "social-media"
+      ],
+      "format": "number",
+      "prompt": "How many posts are on {target}'s main profile?",
+      "number": {
+        "min": 0,
+        "max": 1000,
+        "step": 5,
+        "tolerance": {
+          "type": "absolute",
+          "value": 20
+        },
+        "unit": "posts"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "social.drafts",
+      "themes": [
+        "social-media"
+      ],
+      "format": "number",
+      "prompt": "How many unposted drafts does {target} have?",
+      "number": {
+        "min": 0,
+        "max": 50,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 3
+        },
+        "unit": "drafts"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "social.caption-time",
+      "themes": [
+        "social-media"
+      ],
+      "format": "number",
+      "prompt": "How many minutes does {target} spend on one caption?",
+      "number": {
+        "min": 0,
+        "max": 60,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 3
+        },
+        "unit": "minutes"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "social.curated",
+      "themes": [
+        "social-media"
+      ],
+      "format": "scale",
+      "prompt": "How curated is {target}'s feed, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "random photos of nothing",
+        "max": "a colour-coded art gallery"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "social.overshare",
+      "themes": [
+        "social-media"
+      ],
+      "format": "scale",
+      "prompt": "How much does {target} overshare online, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "posts once a year",
+        "max": "we know what they had for breakfast"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "social.likes",
+      "themes": [
+        "social-media"
+      ],
+      "format": "scale",
+      "prompt": "How much does {target} care about likes, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "never looks",
+        "max": "refreshes every minute"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "social.story-views",
+      "themes": [
+        "social-media"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} checks who viewed their story 5 times. Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 50,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "times"
+      },
+      "reference": 5,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "social.accounts",
+      "themes": [
+        "social-media"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} has 3 accounts on the same app. Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "accounts"
+      },
+      "reference": 3,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "social.story-replies",
+      "themes": [
+        "social-media"
+      ],
+      "format": "player",
+      "prompt": "Whose stories does {target} reply to the most?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "social.profile-pic",
+      "themes": [
+        "social-media"
+      ],
+      "format": "player",
+      "prompt": "Who here would {target} trust to take their profile picture?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "social.rank-content",
+      "themes": [
+        "social-media"
+      ],
+      "format": "ranking",
+      "prompt": "Rank what {target} would post about, most likely first:",
+      "answers": [
+        "Food",
+        "Travel",
+        "Pets",
+        "Achievements"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "social.rank-reactions",
+      "themes": [
+        "social-media"
+      ],
+      "format": "ranking",
+      "prompt": "Rank the reactions the way {target} uses them, most first:",
+      "answers": [
+        "Like",
+        "Laughing",
+        "Heart eyes",
+        "Angry"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "social.mlt-break",
+      "themes": [
+        "social-media"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to announce a social media break and be back the next day?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "social.mlt-second-account",
+      "themes": [
+        "social-media"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to have a secret second account?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "social.mlt-hashtags",
+      "themes": [
+        "social-media"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to use 30 hashtags on one post?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    }
+  ]
+}

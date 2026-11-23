@@ -1,0 +1,512 @@
+{
+  "id": "core-road-trip",
+  "name": "Road Trip",
+  "language": "en",
+  "version": 1,
+  "description": "Gas station snacks, car karaoke, detours and getting lost.",
+  "questions": [
+    {
+      "id": "road.gas-station",
+      "themes": [
+        "road-trip"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s gas station haul?",
+      "answers": [
+        "Chips and energy drinks",
+        "Healthy snacks they brought from home",
+        "A sad hot dog",
+        "Sunglasses they'll lose by tomorrow"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "road.car-audio",
+      "themes": [
+        "road-trip"
+      ],
+      "format": "tiles",
+      "prompt": "What's playing in {target}'s car?",
+      "answers": [
+        "Their own playlist, no discussion",
+        "Whatever's on the radio",
+        "A true-crime podcast",
+        "Requests from everyone"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "road.karaoke",
+      "themes": [
+        "road-trip"
+      ],
+      "format": "tiles",
+      "prompt": "Car karaoke with {target}?",
+      "answers": [
+        "Sings every word",
+        "Mumbles along",
+        "Turns the music down",
+        "Full performance with choreography"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "road.gps-dies",
+      "themes": [
+        "road-trip"
+      ],
+      "format": "tiles",
+      "prompt": "The GPS dies. {target}…",
+      "answers": [
+        "Navigates by the sun",
+        "Asks at a gas station",
+        "Drives confidently the wrong way",
+        "Hands the problem to someone else"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "road.car-state",
+      "themes": [
+        "road-trip"
+      ],
+      "format": "tiles",
+      "prompt": "The inside of {target}'s car?",
+      "answers": [
+        "Spotless",
+        "Wrappers in the footwell",
+        "A second wardrobe",
+        "A small ecosystem"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "road.overnight",
+      "themes": [
+        "road-trip"
+      ],
+      "format": "tiles",
+      "prompt": "Where does {target} sleep on a road trip?",
+      "answers": [
+        "A fancy hotel",
+        "A cheap motel",
+        "The back seat",
+        "They don't, they drive through"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "road.motorway",
+      "themes": [
+        "road-trip"
+      ],
+      "format": "tiles",
+      "prompt": "{target} on the motorway?",
+      "answers": [
+        "Exactly the speed limit",
+        "Left lane, always",
+        "Behind a truck for hours",
+        "Pretending it's a racetrack"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "road.passenger",
+      "themes": [
+        "road-trip"
+      ],
+      "format": "tiles",
+      "prompt": "{target} as a passenger?",
+      "answers": [
+        "Asleep in five minutes",
+        "Back-seat driver",
+        "Snack distributor",
+        "Guardian of the aux cable"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "road.car-game",
+      "themes": [
+        "road-trip"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s favourite car game?",
+      "answers": [
+        "I spy",
+        "Counting red cars",
+        "20 questions",
+        "Staring out of the window, thinking"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "road.detour",
+      "themes": [
+        "road-trip"
+      ],
+      "format": "tiles",
+      "prompt": "{target} sees a sign for the world's biggest ball of yarn. They…",
+      "answers": [
+        "Take the detour immediately",
+        "Save it for next time",
+        "Keep driving",
+        "Talk everyone else into it"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "road.flat-tyre",
+      "themes": [
+        "road-trip"
+      ],
+      "format": "tiles",
+      "prompt": "Flat tyre in the middle of nowhere. {target}…",
+      "answers": [
+        "Changes it in ten minutes",
+        "Calls roadside assistance",
+        "Looks for a tutorial with no signal",
+        "Starts walking"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "road.drive-hours",
+      "themes": [
+        "road-trip"
+      ],
+      "format": "number",
+      "prompt": "How many hours could {target} drive without a break?",
+      "number": {
+        "min": 0,
+        "max": 12,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        },
+        "unit": "hours"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "road.stops",
+      "themes": [
+        "road-trip"
+      ],
+      "format": "number",
+      "prompt": "How many stops would {target} make on a 6-hour drive?",
+      "number": {
+        "min": 0,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        },
+        "unit": "stops"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "road.yearly-km",
+      "themes": [
+        "road-trip"
+      ],
+      "format": "number",
+      "prompt": "How many km does {target} drive in a typical year?",
+      "number": {
+        "min": 0,
+        "max": 40000,
+        "step": 500,
+        "tolerance": {
+          "type": "absolute",
+          "value": 2000
+        },
+        "unit": "km"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "road.map-reading",
+      "themes": [
+        "road-trip"
+      ],
+      "format": "scale",
+      "prompt": "How good is {target} at reading a map, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "lost in a car park",
+        "max": "a human GPS"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "road.car-sick",
+      "themes": [
+        "road-trip"
+      ],
+      "format": "scale",
+      "prompt": "How quickly does {target} get car sick, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "reads a book in the back",
+        "max": "sick at the first roundabout"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "road.spontaneous",
+      "themes": [
+        "road-trip"
+      ],
+      "format": "scale",
+      "prompt": "How spontaneous is {target} on a road trip, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "every stop is planned",
+        "max": "turns left because it looks fun"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "road.snack-budget",
+      "themes": [
+        "road-trip"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} spends 20 € on snacks for a road trip. Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 150,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "€"
+      },
+      "reference": 20,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "road.playlist",
+      "themes": [
+        "road-trip"
+      ],
+      "format": "higherLower",
+      "prompt": "{target}'s road trip playlist is 3 hours long. Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 30,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "hours"
+      },
+      "reference": 3,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "road.dj",
+      "themes": [
+        "road-trip"
+      ],
+      "format": "player",
+      "prompt": "Who here would {target} let control the music on a 10-hour drive?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "road.no-navigating",
+      "themes": [
+        "road-trip"
+      ],
+      "format": "player",
+      "prompt": "Who here would {target} never let navigate?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "road.rank-stops",
+      "themes": [
+        "road-trip"
+      ],
+      "format": "ranking",
+      "prompt": "Rank road trip stops the way {target} would, best first:",
+      "answers": [
+        "Fast food",
+        "Scenic viewpoint",
+        "Weird roadside attraction",
+        "Gas station shop"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "road.rank-vehicles",
+      "themes": [
+        "road-trip"
+      ],
+      "format": "ranking",
+      "prompt": "Rank road trip vehicles the way {target} would, best first:",
+      "answers": [
+        "Camper van",
+        "Convertible",
+        "Motorbike",
+        "Old family car"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "road.mlt-fuel",
+      "themes": [
+        "road-trip"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to run out of fuel on a road trip?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "road.mlt-left-behind",
+      "themes": [
+        "road-trip"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to get left behind at a gas station?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "road.mlt-sing",
+      "themes": [
+        "road-trip"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to sing the whole drive?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    }
+  ]
+}

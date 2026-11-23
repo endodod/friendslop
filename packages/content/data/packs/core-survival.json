@@ -1,0 +1,531 @@
+{
+  "id": "core-survival",
+  "name": "Survival",
+  "language": "en",
+  "version": 1,
+  "description": "Campfires, bears, storms, blackouts and getting lost on a hike.",
+  "questions": [
+    {
+      "id": "surv.fire",
+      "themes": [
+        "survival"
+      ],
+      "format": "tiles",
+      "prompt": "Can {target} start a fire without a lighter?",
+      "answers": [
+        "Yes, with two sticks",
+        "With a tutorial",
+        "They'd set the forest on fire",
+        "They'd wait to be rescued"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "surv.lost-hike",
+      "themes": [
+        "survival"
+      ],
+      "format": "tiles",
+      "prompt": "{target} gets lost on a hike. They…",
+      "answers": [
+        "Follow the river",
+        "Climb a tree to look around",
+        "Sit down and cry",
+        "Keep walking and blame the map"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "surv.blackout",
+      "themes": [
+        "survival"
+      ],
+      "format": "tiles",
+      "prompt": "A three-day blackout. {target}…",
+      "answers": [
+        "Has a full emergency kit",
+        "Eats the freezer empty first",
+        "Panics about their phone battery",
+        "Throws a candlelit party"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "surv.food",
+      "themes": [
+        "survival"
+      ],
+      "format": "tiles",
+      "prompt": "{target} has to find food in the wild. They…",
+      "answers": [
+        "Go fishing",
+        "Pick berries and hope",
+        "Try to hunt",
+        "Eat their emergency snacks first"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "surv.shelter",
+      "themes": [
+        "survival"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s shelter in the woods?",
+      "answers": [
+        "A sturdy log hut",
+        "A sad pile of branches",
+        "A tent they can't set up",
+        "A cave that's already taken by a bear"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "surv.storm",
+      "themes": [
+        "survival"
+      ],
+      "format": "tiles",
+      "prompt": "A huge storm is coming. {target}…",
+      "answers": [
+        "Boards up the windows",
+        "Stocks up on snacks",
+        "Goes outside to film it",
+        "Sleeps through it"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "surv.skill",
+      "themes": [
+        "survival"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s survival skill?",
+      "answers": [
+        "Building things",
+        "Navigation",
+        "Finding food",
+        "Keeping spirits up with jokes"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "surv.camping",
+      "themes": [
+        "survival"
+      ],
+      "format": "tiles",
+      "prompt": "{target} goes camping. First problem?",
+      "answers": [
+        "Forgot the tent poles",
+        "Mosquitoes",
+        "Every noise is a bear",
+        "No phone signal"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "surv.bear",
+      "themes": [
+        "survival"
+      ],
+      "format": "tiles",
+      "prompt": "A bear walks into {target}'s camp. They…",
+      "answers": [
+        "Make themselves big and loud",
+        "Play dead",
+        "Climb a tree",
+        "Offer it their sandwich"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "surv.bag",
+      "themes": [
+        "survival"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s survival bag contains…",
+      "answers": [
+        "A knife and rope",
+        "Mostly snacks",
+        "A phone charger",
+        "Too much stuff to carry"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "surv.apocalypse",
+      "themes": [
+        "survival"
+      ],
+      "format": "tiles",
+      "prompt": "Which disaster would {target} survive best?",
+      "answers": [
+        "An alien invasion",
+        "A new ice age",
+        "A great flood",
+        "Everyone else vanishing"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "surv.show",
+      "themes": [
+        "survival"
+      ],
+      "format": "tiles",
+      "prompt": "On a survival TV show, {target} is out because…",
+      "answers": [
+        "They ate a poisonous berry",
+        "They quit after one night",
+        "They got lost",
+        "They don't go out, they win"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "surv.no-shower",
+      "themes": [
+        "survival"
+      ],
+      "format": "number",
+      "prompt": "How many days could {target} go without a shower in the wild?",
+      "number": {
+        "min": 0,
+        "max": 60,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 2
+        },
+        "unit": "days"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "surv.walk",
+      "themes": [
+        "survival"
+      ],
+      "format": "number",
+      "prompt": "How many km could {target} walk in one day if they had to?",
+      "number": {
+        "min": 0,
+        "max": 80,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 5
+        },
+        "unit": "km"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "surv.knots",
+      "themes": [
+        "survival"
+      ],
+      "format": "number",
+      "prompt": "How many different knots can {target} tie?",
+      "number": {
+        "min": 0,
+        "max": 15,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        },
+        "unit": "knots"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "surv.outdoorsy",
+      "themes": [
+        "survival"
+      ],
+      "format": "scale",
+      "prompt": "How outdoorsy is {target}, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "Wi-Fi or nothing",
+        "max": "lives in hiking boots"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "surv.prepared",
+      "themes": [
+        "survival"
+      ],
+      "format": "scale",
+      "prompt": "How prepared is {target} for an emergency, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "no plan, no batteries",
+        "max": "a cellar full of canned beans"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "surv.cold",
+      "themes": [
+        "survival"
+      ],
+      "format": "scale",
+      "prompt": "How well does {target} handle the cold, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "freezing at 15 °C",
+        "max": "T-shirt in the snow"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "surv.cans",
+      "themes": [
+        "survival"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} has 10 cans of food at home right now. Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "cans"
+      },
+      "reference": 10,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "surv.no-food",
+      "themes": [
+        "survival"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} could go 2 days without eating. Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 30,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "days"
+      },
+      "reference": 2,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "surv.lost-woods",
+      "themes": [
+        "survival"
+      ],
+      "format": "player",
+      "prompt": "Who here would {target} want with them if lost in the woods?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "surv.complain",
+      "themes": [
+        "survival"
+      ],
+      "format": "player",
+      "prompt": "Who here would {target} expect to complain the most on a camping trip?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "surv.rank-gear",
+      "themes": [
+        "survival"
+      ],
+      "format": "ranking",
+      "prompt": "Rank this gear the way {target} would pack it, most important first:",
+      "answers": [
+        "Sleeping bag",
+        "Tent",
+        "First-aid kit",
+        "Cooking pot"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "surv.rank-disasters",
+      "themes": [
+        "survival"
+      ],
+      "format": "ranking",
+      "prompt": "Rank these disasters the way {target} fears them, worst first:",
+      "answers": [
+        "Earthquake",
+        "Flood",
+        "Wildfire",
+        "Tornado"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "surv.mlt-bunker",
+      "themes": [
+        "survival"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to have a secret emergency bunker?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "surv.mlt-berry",
+      "themes": [
+        "survival"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to eat the poisonous berry?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "surv.mlt-campfire",
+      "themes": [
+        "survival"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to tell scary stories at the campfire?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,474 @@
+{
+  "id": "core-guilty-pleasures",
+  "name": "Guilty Pleasures",
+  "language": "en",
+  "version": 1,
+  "description": "The comfort shows, secret snacks and songs nobody admits to.",
+  "questions": [
+    {
+      "id": "guilty.comfort-show",
+      "themes": [
+        "guilty-pleasures"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s comfort show to rewatch?",
+      "answers": [
+        "A sitcom they know by heart",
+        "A cheesy dating show",
+        "A cartoon for kids",
+        "A true-crime documentary series"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "guilty.song",
+      "themes": [
+        "guilty-pleasures"
+      ],
+      "format": "tiles",
+      "prompt": "Which song would {target} never admit they love?",
+      "answers": [
+        "A 2000s boy band hit",
+        "A Eurovision banger",
+        "A children's song",
+        "A song from a TikTok trend"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "guilty.midnight-snack",
+      "themes": [
+        "guilty-pleasures"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s secret midnight snack?",
+      "answers": [
+        "Cereal straight from the box",
+        "Cold pizza",
+        "Peanut butter off a spoon",
+        "Cheese, just cheese"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "guilty.rewatch-movie",
+      "themes": [
+        "guilty-pleasures"
+      ],
+      "format": "tiles",
+      "prompt": "The movie {target} has seen way too many times?",
+      "answers": [
+        "A romcom",
+        "An animated movie",
+        "A terrible action movie",
+        "A Christmas movie, in July"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "guilty.bedtime",
+      "themes": [
+        "guilty-pleasures"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s guilty bedtime habit?",
+      "answers": [
+        "Scrolling until 3 AM",
+        "One more episode",
+        "Reading celebrity gossip",
+        "Filling a shopping cart they never buy"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "guilty.store",
+      "themes": [
+        "guilty-pleasures"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s danger-zone shop?",
+      "answers": [
+        "The candy aisle",
+        "A bookshop",
+        "A hardware store",
+        "Anything with 'sale' on the door"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "guilty.gossip",
+      "themes": [
+        "guilty-pleasures"
+      ],
+      "format": "tiles",
+      "prompt": "Celebrity gossip and {target}?",
+      "answers": [
+        "Knows everything",
+        "Pretends not to care, knows everything",
+        "Couldn't name one celebrity",
+        "Only royal gossip"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "guilty.combo",
+      "themes": [
+        "guilty-pleasures"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s weird food combo?",
+      "answers": [
+        "Fries dipped in a milkshake",
+        "Ketchup on everything",
+        "Pickles and chocolate",
+        "Crisps in a sandwich"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "guilty.game",
+      "themes": [
+        "guilty-pleasures"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s guilty pleasure game?",
+      "answers": [
+        "A phone game they've spent money on",
+        "A game for kids",
+        "A cozy farming game",
+        "A dating sim"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "guilty.just-one",
+      "themes": [
+        "guilty-pleasures"
+      ],
+      "format": "number",
+      "prompt": "How many episodes does {target} watch after saying 'just one more'?",
+      "number": {
+        "min": 1,
+        "max": 12,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        },
+        "unit": "episodes"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "guilty.rewatches",
+      "themes": [
+        "guilty-pleasures"
+      ],
+      "format": "number",
+      "prompt": "How many times has {target} rewatched their comfort show?",
+      "number": {
+        "min": 0,
+        "max": 50,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 3
+        },
+        "unit": "times"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "guilty.hidden-snacks",
+      "themes": [
+        "guilty-pleasures"
+      ],
+      "format": "number",
+      "prompt": "How many snacks does {target} have hidden at home right now?",
+      "number": {
+        "min": 0,
+        "max": 30,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 3
+        },
+        "unit": "snacks"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "guilty.music-shame",
+      "themes": [
+        "guilty-pleasures"
+      ],
+      "format": "scale",
+      "prompt": "How ashamed is {target} of their music taste, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "proud of every song",
+        "max": "hides their year-end stats"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "guilty.romcoms",
+      "themes": [
+        "guilty-pleasures"
+      ],
+      "format": "scale",
+      "prompt": "How much does {target} love cheesy romcoms, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "rolls their eyes",
+        "max": "knows every line"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "guilty.junk-food",
+      "themes": [
+        "guilty-pleasures"
+      ],
+      "format": "scale",
+      "prompt": "How often does {target} eat junk food, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "once a year",
+        "max": "it's a food group"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "guilty.minutes",
+      "themes": [
+        "guilty-pleasures"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} listened to their top artist for 3,000 minutes last year. Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 100000,
+        "step": 100,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "minutes"
+      },
+      "reference": 3000,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "guilty.chips",
+      "themes": [
+        "guilty-pleasures"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} finishes a family-size bag of chips in 20 minutes. Higher or lower?",
+      "number": {
+        "min": 1,
+        "max": 240,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "minutes"
+      },
+      "reference": 20,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "guilty.watch-buddy",
+      "themes": [
+        "guilty-pleasures"
+      ],
+      "format": "player",
+      "prompt": "Who here would {target} watch their guilty pleasure show with?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "guilty.knows",
+      "themes": [
+        "guilty-pleasures"
+      ],
+      "format": "player",
+      "prompt": "Who here knows {target}'s most embarrassing favourite song?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "guilty.rank",
+      "themes": [
+        "guilty-pleasures"
+      ],
+      "format": "ranking",
+      "prompt": "Rank these the way {target} would feel guilty about them, most guilty first:",
+      "answers": [
+        "Eating in bed",
+        "Skipping the gym for TV",
+        "Buying things they don't need",
+        "Pyjamas all weekend"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "guilty.rank-junk",
+      "themes": [
+        "guilty-pleasures"
+      ],
+      "format": "ranking",
+      "prompt": "Rank these junk foods the way {target} would, best first:",
+      "answers": [
+        "Fried chicken",
+        "Doughnuts",
+        "Instant noodles",
+        "Nachos"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "guilty.mlt-fanfic",
+      "themes": [
+        "guilty-pleasures"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to secretly read fan fiction?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "guilty.mlt-boyband",
+      "themes": [
+        "guilty-pleasures"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to know every member of a boy band?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "guilty.mlt-cereal",
+      "themes": [
+        "guilty-pleasures"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to eat cereal for dinner three nights in a row?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    }
+  ]
+}

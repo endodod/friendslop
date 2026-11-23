@@ -1,0 +1,603 @@
+{
+  "id": "core-home",
+  "name": "Home & Habits",
+  "language": "en",
+  "version": 1,
+  "description": "How you really live: fridge contents, shoes at the door and the junk drawer.",
+  "questions": [
+    {
+      "id": "home.fridge",
+      "themes": [
+        "home"
+      ],
+      "format": "tiles",
+      "prompt": "What's always in {target}'s fridge?",
+      "answers": [
+        "Sauces and nothing else",
+        "Neatly labelled meal prep",
+        "Leftovers of unknown age",
+        "Mostly drinks"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "home.shoes",
+      "themes": [
+        "home"
+      ],
+      "format": "tiles",
+      "prompt": "Shoes at {target}'s place?",
+      "answers": [
+        "Off at the door, always",
+        "Slippers ready for guests",
+        "Shoes on, who cares",
+        "Depends how clean the shoes are"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "home.thermostat",
+      "themes": [
+        "home"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s heating is set to…",
+      "answers": [
+        "Sauna mode",
+        "Arctic",
+        "Whatever it was when they moved in",
+        "A constant war with whoever they live with"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "home.decor",
+      "themes": [
+        "home"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s home decor style?",
+      "answers": [
+        "Minimalist, bare walls",
+        "Plants everywhere",
+        "Posters and fairy lights",
+        "Grandma's living room",
+        "Still in moving boxes"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "home.guests",
+      "themes": [
+        "home"
+      ],
+      "format": "tiles",
+      "prompt": "Surprise guests ring {target}'s doorbell. They…",
+      "answers": [
+        "Pretend nobody's home",
+        "Shove everything into a cupboard",
+        "Let them in, it's always tidy",
+        "Make the guests help clean"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "home.outfit",
+      "themes": [
+        "home"
+      ],
+      "format": "tiles",
+      "prompt": "What does {target} wear at home?",
+      "answers": [
+        "Pyjamas all day",
+        "Joggers and a hoodie",
+        "Fully dressed, even alone",
+        "As little as possible"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "home.dinner",
+      "themes": [
+        "home"
+      ],
+      "format": "tiles",
+      "prompt": "A normal weeknight dinner at {target}'s?",
+      "answers": [
+        "Proper home cooking",
+        "Pasta, again",
+        "Delivery",
+        "Cereal counts as dinner"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "home.junk-drawer",
+      "themes": [
+        "home"
+      ],
+      "format": "tiles",
+      "prompt": "What's in {target}'s junk drawer?",
+      "answers": [
+        "Cables for devices they don't own anymore",
+        "Takeaway chopsticks and sauce packets",
+        "Batteries of unknown charge",
+        "They don't have one"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "home.eat-where",
+      "themes": [
+        "home"
+      ],
+      "format": "tiles",
+      "prompt": "Where does {target} actually eat at home?",
+      "answers": [
+        "At the table",
+        "On the sofa",
+        "In bed",
+        "Standing over the sink"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "home.background",
+      "themes": [
+        "home"
+      ],
+      "format": "tiles",
+      "prompt": "What's on in the background at {target}'s place?",
+      "answers": [
+        "Music",
+        "The TV, nobody watching",
+        "A podcast",
+        "Total silence"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "home.sheets",
+      "themes": [
+        "home"
+      ],
+      "format": "tiles",
+      "prompt": "{target} changes their bed sheets…",
+      "answers": [
+        "Every week",
+        "Every two weeks",
+        "Once a month",
+        "When someone's coming over"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "home.toilet-scroll",
+      "themes": [
+        "home"
+      ],
+      "format": "number",
+      "prompt": "How many minutes does {target} scroll on the toilet?",
+      "number": {
+        "min": 0,
+        "max": 45,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 3
+        },
+        "unit": "minutes"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "home.spices",
+      "themes": [
+        "home"
+      ],
+      "format": "number",
+      "prompt": "How many spices are in {target}'s kitchen?",
+      "number": {
+        "min": 0,
+        "max": 40,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 3
+        },
+        "unit": "spices"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "home.blankets",
+      "themes": [
+        "home"
+      ],
+      "format": "number",
+      "prompt": "How many blankets does {target} own?",
+      "number": {
+        "min": 0,
+        "max": 20,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 2
+        },
+        "unit": "blankets"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "home.magnets",
+      "themes": [
+        "home"
+      ],
+      "format": "number",
+      "prompt": "How many magnets are on {target}'s fridge?",
+      "number": {
+        "min": 0,
+        "max": 40,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 3
+        },
+        "unit": "magnets"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "home.cozy",
+      "themes": [
+        "home"
+      ],
+      "format": "scale",
+      "prompt": "How cozy is {target}'s home, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "a waiting room",
+        "max": "a hug in building form"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "home.diy",
+      "themes": [
+        "home"
+      ],
+      "format": "scale",
+      "prompt": "How handy is {target} with a drill, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "calls a pro to hang a picture",
+        "max": "builds their own furniture"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "home.hoarder",
+      "themes": [
+        "home"
+      ],
+      "format": "scale",
+      "prompt": "How much of a hoarder is {target}, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "owns twelve things",
+        "max": "keeps every box 'just in case'"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "home.neighbour",
+      "themes": [
+        "home"
+      ],
+      "format": "scale",
+      "prompt": "How loud a neighbour is {target}, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "basically a ghost",
+        "max": "the reason the house rules exist"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "home.candles",
+      "themes": [
+        "home"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} owns 6 candles. Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 50,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "candles"
+      },
+      "reference": 6,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "home.cups",
+      "themes": [
+        "home"
+      ],
+      "format": "higherLower",
+      "prompt": "There are 3 used cups in {target}'s room right now. Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 20,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "cups"
+      },
+      "reference": 3,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "home.plates",
+      "themes": [
+        "home"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} owns 12 plates. Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 40,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "plates"
+      },
+      "reference": 12,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "home.house-sit",
+      "themes": [
+        "home"
+      ],
+      "format": "player",
+      "prompt": "Who here would {target} trust to house-sit?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "home.messiest",
+      "themes": [
+        "home"
+      ],
+      "format": "player",
+      "prompt": "Whose place does {target} think is the messiest?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "home.rank-first-buy",
+      "themes": [
+        "home"
+      ],
+      "format": "ranking",
+      "prompt": "New flat! Rank what {target} would buy first, first = first:",
+      "answers": [
+        "A big TV",
+        "A good bed",
+        "A coffee machine",
+        "A sofa"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "home.rank-sounds",
+      "themes": [
+        "home"
+      ],
+      "format": "ranking",
+      "prompt": "Rank these sounds the way {target} hates them, worst first:",
+      "answers": [
+        "A dripping tap",
+        "Neighbours drilling",
+        "A buzzing fridge",
+        "Someone chewing"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "home.rank-wfh",
+      "themes": [
+        "home"
+      ],
+      "format": "ranking",
+      "prompt": "Rank where {target} works from home, favourite first:",
+      "answers": [
+        "The desk",
+        "The sofa",
+        "The bed",
+        "The kitchen table"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "home.mlt-boxes",
+      "themes": [
+        "home"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to still have unpacked boxes a year after moving?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "home.mlt-fort",
+      "themes": [
+        "home"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to build a blanket fort as an adult?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "home.mlt-couch-sleep",
+      "themes": [
+        "home"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to fall asleep on the sofa every night?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    }
+  ]
+}

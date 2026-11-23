@@ -148,13 +148,13 @@ describe("mini-game mix", () => {
 });
 
 describe("default packs", () => {
-  it("niche packs (League) start switched off; everything else on", async () => {
+  it("niche packs (League, Spicy) start switched off; everything else on", async () => {
     const { defaultSettings, selectablePacks } = await import("../src");
     const { content } = await import("./helpers");
     const s = defaultSettings(content);
     expect(s.packs).not.toContain("core-league");
     expect(s.packs).toContain("core-party");
     const off = selectablePacks(content).filter((p) => !s.packs.includes(p.id)).map((p) => p.id);
-    expect(off).toEqual(["core-league"]);
+    expect(off).toEqual(["core-league", "core-spicy"]);
   });
 });

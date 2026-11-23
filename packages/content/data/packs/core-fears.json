@@ -1,0 +1,550 @@
+{
+  "id": "core-fears",
+  "name": "Fears & Phobias",
+  "language": "en",
+  "version": 1,
+  "description": "Jump scares, heights, dentists and the noise downstairs.",
+  "questions": [
+    {
+      "id": "fears.jump-scare",
+      "themes": [
+        "fears"
+      ],
+      "format": "tiles",
+      "prompt": "Something jumps out at {target}. They…",
+      "answers": [
+        "Scream",
+        "Punch it",
+        "Freeze completely",
+        "Run, leaving everyone behind"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "fears.horror-movie",
+      "themes": [
+        "fears"
+      ],
+      "format": "tiles",
+      "prompt": "{target} watching a horror movie?",
+      "answers": [
+        "Hands over their eyes",
+        "Laughs at it",
+        "Leaves the room",
+        "Can't sleep for a week"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "fears.glass-floor",
+      "themes": [
+        "fears"
+      ],
+      "format": "tiles",
+      "prompt": "{target} on a glass floor 300 m up?",
+      "answers": [
+        "Walks right across",
+        "Jumps on it for fun",
+        "Hugs the wall",
+        "Refuses to go up at all"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "fears.turbulence",
+      "themes": [
+        "fears"
+      ],
+      "format": "tiles",
+      "prompt": "{target} during turbulence?",
+      "answers": [
+        "Sleeps through it",
+        "Grips the armrest",
+        "Prays out loud",
+        "Orders another drink"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "fears.dentist",
+      "themes": [
+        "fears"
+      ],
+      "format": "tiles",
+      "prompt": "{target} at the dentist?",
+      "answers": [
+        "Totally relaxed",
+        "Needs a hand to hold",
+        "Last went years ago",
+        "Cancels every appointment"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "fears.night-light",
+      "themes": [
+        "fears"
+      ],
+      "format": "tiles",
+      "prompt": "Does {target} sleep with a light on?",
+      "answers": [
+        "Never",
+        "A tiny night light",
+        "The TV stays on",
+        "Only after a horror movie"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "fears.noise",
+      "themes": [
+        "fears"
+      ],
+      "format": "tiles",
+      "prompt": "{target} hears a noise downstairs at night. They…",
+      "answers": [
+        "Investigate, armed with a shoe",
+        "Wake someone else up",
+        "Pull the covers over their head",
+        "Call out 'hello?' like in a horror movie"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "fears.irrational",
+      "themes": [
+        "fears"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s most irrational fear?",
+      "answers": [
+        "Birds",
+        "Balloons popping",
+        "Dolls",
+        "Mascots",
+        "Feet"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "fears.deep-water",
+      "themes": [
+        "fears"
+      ],
+      "format": "tiles",
+      "prompt": "{target} in deep, dark water?",
+      "answers": [
+        "Dives right in",
+        "Panics about what's below",
+        "Stays on the boat",
+        "Swims fast and gets out"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "fears.wasp",
+      "themes": [
+        "fears"
+      ],
+      "format": "tiles",
+      "prompt": "A wasp gets into the car while {target} is driving. They…",
+      "answers": [
+        "Stay calm",
+        "Pull over and run",
+        "Swerve and scream",
+        "Open every window and pray"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "fears.alone",
+      "themes": [
+        "fears"
+      ],
+      "format": "tiles",
+      "prompt": "{target} alone in a big empty house at night?",
+      "answers": [
+        "Loves it",
+        "Turns every light on",
+        "Stays on the phone until they fall asleep",
+        "Leaves"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "fears.theme-park",
+      "themes": [
+        "fears"
+      ],
+      "format": "tiles",
+      "prompt": "{target} at a theme park?",
+      "answers": [
+        "Biggest rollercoaster first",
+        "Only the carousel",
+        "Holds everyone's bags",
+        "Screams the loudest"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "fears.horror-count",
+      "themes": [
+        "fears"
+      ],
+      "format": "number",
+      "prompt": "How many horror movies has {target} actually watched to the end?",
+      "number": {
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 5
+        },
+        "unit": "movies"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "fears.bad-nights",
+      "themes": [
+        "fears"
+      ],
+      "format": "number",
+      "prompt": "After a scary movie, how many nights does {target} sleep badly?",
+      "number": {
+        "min": 0,
+        "max": 14,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        },
+        "unit": "nights"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "fears.phobias",
+      "themes": [
+        "fears"
+      ],
+      "format": "number",
+      "prompt": "How many real phobias does {target} have?",
+      "number": {
+        "min": 0,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        },
+        "unit": "phobias"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "fears.jumpy",
+      "themes": [
+        "fears"
+      ],
+      "format": "scale",
+      "prompt": "How easily does {target} get scared, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "fearless",
+        "max": "jumps at their own reflection"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "fears.emergency",
+      "themes": [
+        "fears"
+      ],
+      "format": "scale",
+      "prompt": "How brave is {target} in a real emergency, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "first one out the door",
+        "max": "runs towards the danger"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "fears.door-check",
+      "themes": [
+        "fears"
+      ],
+      "format": "scale",
+      "prompt": "How paranoid is {target} about locking the door, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "leaves it open",
+        "max": "checks it five times"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "fears.bungee",
+      "themes": [
+        "fears"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} would need 500 € to go bungee jumping. Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 10000,
+        "step": 50,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "€"
+      },
+      "reference": 500,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "fears.tarantula",
+      "themes": [
+        "fears"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} would need 50 € to hold a tarantula for a minute. Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 1000,
+        "step": 10,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "€"
+      },
+      "reference": 50,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "fears.hide-behind",
+      "themes": [
+        "fears"
+      ],
+      "format": "player",
+      "prompt": "Who here would {target} hide behind if a bear showed up?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "fears.to-scare",
+      "themes": [
+        "fears"
+      ],
+      "format": "player",
+      "prompt": "Who here would {target} most like to scare?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "fears.rank",
+      "themes": [
+        "fears"
+      ],
+      "format": "ranking",
+      "prompt": "Rank these the way {target} fears them, worst first:",
+      "answers": [
+        "Heights",
+        "Needles",
+        "Small spaces",
+        "Being forgotten"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "fears.rank-villains",
+      "themes": [
+        "fears"
+      ],
+      "format": "ranking",
+      "prompt": "Rank horror villains the way {target} fears them, scariest first:",
+      "answers": [
+        "Ghosts",
+        "Masked killers",
+        "Possessed dolls",
+        "Aliens"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "fears.rank-awkward",
+      "themes": [
+        "fears"
+      ],
+      "format": "ranking",
+      "prompt": "Rank these moments the way {target} dreads them, worst first:",
+      "answers": [
+        "Everyone singing happy birthday to them",
+        "Being called on in a meeting",
+        "Forgetting someone's name",
+        "A voicemail they have to listen to"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "fears.mlt-scream",
+      "themes": [
+        "fears"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to scream louder than the people in the horror movie?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "fears.mlt-under-bed",
+      "themes": [
+        "fears"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to check under the bed before going to sleep?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "fears.mlt-first-victim",
+      "themes": [
+        "fears"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to be the first one gone in a horror movie?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    }
+  ]
+}

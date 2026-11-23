@@ -301,6 +301,136 @@
       }
     },
     {
+      "id": "home",
+      "name": {
+        "en": "Home & Habits",
+        "de": "Zuhause & Gewohnheiten"
+      },
+      "icon": "home",
+      "color": "#8ecae6",
+      "description": {
+        "en": "Fridge crimes, sofa forts and how you really live.",
+        "de": "Kühlschrankverbrechen, Sofaburgen und wie du wirklich wohnst."
+      }
+    },
+    {
+      "id": "school",
+      "name": {
+        "en": "School Days",
+        "de": "Schulzeit"
+      },
+      "icon": "school",
+      "color": "#6d9eeb",
+      "description": {
+        "en": "Exams, detention, school trips and the yearbook.",
+        "de": "Prüfungen, Nachsitzen, Klassenfahrten und das Jahrbuch."
+      }
+    },
+    {
+      "id": "fears",
+      "name": {
+        "en": "Fears & Phobias",
+        "de": "Ängste & Phobien"
+      },
+      "icon": "fears",
+      "color": "#9b7bd6",
+      "description": {
+        "en": "What makes you scream, run or sleep with the light on.",
+        "de": "Was dich schreien, rennen oder mit Licht schlafen lässt."
+      }
+    },
+    {
+      "id": "road-trip",
+      "name": {
+        "en": "Road Trip",
+        "de": "Roadtrip"
+      },
+      "icon": "road-trip",
+      "color": "#f4a261",
+      "description": {
+        "en": "Snacks, gas stations, car karaoke and getting lost.",
+        "de": "Snacks, Tankstellen, Auto-Karaoke und Verfahren."
+      }
+    },
+    {
+      "id": "superpowers",
+      "name": {
+        "en": "Superpowers & Fantasy",
+        "de": "Superkräfte & Fantasy"
+      },
+      "icon": "superpowers",
+      "color": "#e76f51",
+      "description": {
+        "en": "Hero names, useless powers, wizards and wishes.",
+        "de": "Heldennamen, nutzlose Kräfte, Zauberer und Wünsche."
+      }
+    },
+    {
+      "id": "social-media",
+      "name": {
+        "en": "Social Media",
+        "de": "Social Media"
+      },
+      "icon": "social-media",
+      "color": "#ff6bc6",
+      "description": {
+        "en": "Captions, stories, close friends and the unfollow.",
+        "de": "Captions, Storys, enge Freunde und das Entfolgen."
+      }
+    },
+    {
+      "id": "guilty-pleasures",
+      "name": {
+        "en": "Guilty Pleasures",
+        "de": "Heimliche Laster"
+      },
+      "icon": "guilty-pleasures",
+      "color": "#ffb3c6",
+      "description": {
+        "en": "The comfort shows, snacks and songs nobody admits to.",
+        "de": "Die Serien, Snacks und Songs, die keiner zugibt."
+      }
+    },
+    {
+      "id": "survival",
+      "name": {
+        "en": "Survival",
+        "de": "Überleben"
+      },
+      "icon": "survival",
+      "color": "#7a9e5f",
+      "description": {
+        "en": "Campfires, storms, blackouts and how long you'd last.",
+        "de": "Lagerfeuer, Stürme, Stromausfälle und wie lange du durchhältst."
+      }
+    },
+    {
+      "id": "family",
+      "name": {
+        "en": "Family",
+        "de": "Familie"
+      },
+      "icon": "family",
+      "color": "#c9a227",
+      "description": {
+        "en": "Family dinners, group chats and holiday chaos.",
+        "de": "Familienessen, Familienchats und Feiertagschaos."
+      }
+    },
+    {
+      "id": "spicy",
+      "name": {
+        "en": "Spicy (18+)",
+        "de": "Scharf (18+)"
+      },
+      "icon": "spicy",
+      "color": "#ff4d5e",
+      "description": {
+        "en": "Flirty and cheeky. Off by default.",
+        "de": "Flirty und frech. Standardmäßig aus."
+      }
+    },
+    {
       "id": "custom",
       "name": {
         "en": "Custom",

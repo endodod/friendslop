@@ -1,0 +1,550 @@
+{
+  "id": "core-school",
+  "name": "School Days",
+  "language": "en",
+  "version": 1,
+  "description": "Teenage years and beyond: exams, detention, school trips and the yearbook.",
+  "questions": [
+    {
+      "id": "school.exam-night",
+      "themes": [
+        "school"
+      ],
+      "format": "tiles",
+      "prompt": "The night before a big exam, {target}…",
+      "answers": [
+        "Studied weeks ago, just relaxes",
+        "Pulls an all-nighter",
+        "Makes a beautiful study plan, studies nothing",
+        "Sleeps and hopes for the best"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "school.cheat",
+      "themes": [
+        "school"
+      ],
+      "format": "tiles",
+      "prompt": "Did {target} ever cheat on a test?",
+      "answers": [
+        "Never",
+        "Peeked once",
+        "Notes hidden in the pencil case",
+        "Ran a business selling answers"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "school.group-project",
+      "themes": [
+        "school"
+      ],
+      "format": "tiles",
+      "prompt": "In a group project, {target}…",
+      "answers": [
+        "Does everything alone",
+        "Makes the slides, nothing else",
+        "Disappears until the presentation",
+        "Is the reason it's late"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "school.detention",
+      "themes": [
+        "school"
+      ],
+      "format": "tiles",
+      "prompt": "What would {target} get detention for?",
+      "answers": [
+        "Talking in class",
+        "Being late, again",
+        "Their phone",
+        "Something they still won't talk about"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "school.yearbook",
+      "themes": [
+        "school"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s yearbook award?",
+      "answers": [
+        "Most likely to succeed",
+        "Class clown",
+        "Best hair",
+        "Most likely to be late to graduation"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "school.gym",
+      "themes": [
+        "school"
+      ],
+      "format": "tiles",
+      "prompt": "{target} in PE?",
+      "answers": [
+        "Picked first, every time",
+        "Forgot their kit 'again'",
+        "Collects doctor's notes",
+        "Tries hard, fails loudly"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "school.trip",
+      "themes": [
+        "school"
+      ],
+      "format": "tiles",
+      "prompt": "On the class trip, {target}…",
+      "answers": [
+        "Sneaked out at night",
+        "Got homesick",
+        "Packed only candy",
+        "Got lost in the museum"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "school.seat",
+      "themes": [
+        "school"
+      ],
+      "format": "tiles",
+      "prompt": "Where did {target} sit in class?",
+      "answers": [
+        "Front row",
+        "Back row, by the window",
+        "Next to the teacher, by force",
+        "Wherever their friends were"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "school.homework-excuse",
+      "themes": [
+        "school"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s excuse for missing homework?",
+      "answers": [
+        "The dog ate it",
+        "Left it at home",
+        "\"There was homework?\"",
+        "Never missed one"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "school.dance",
+      "themes": [
+        "school"
+      ],
+      "format": "tiles",
+      "prompt": "{target} at the school dance?",
+      "answers": [
+        "Danced all night",
+        "Stood by the snacks",
+        "Skipped it",
+        "Organised it"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "school.uni",
+      "themes": [
+        "school"
+      ],
+      "format": "tiles",
+      "prompt": "{target} at university is (or was)…",
+      "answers": [
+        "At every lecture",
+        "Only at the parties",
+        "Changing their major again",
+        "Asleep in the back row"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "school.nickname",
+      "themes": [
+        "school"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s nickname at school came from…",
+      "answers": [
+        "Their last name",
+        "Something embarrassing",
+        "Their looks",
+        "They didn't have one"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "school.notes",
+      "themes": [
+        "school"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s notes in class?",
+      "answers": [
+        "Colour-coded masterpieces",
+        "Doodles, no notes",
+        "Photos of someone else's notes",
+        "Nothing written down"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "school.all-nighters",
+      "themes": [
+        "school"
+      ],
+      "format": "number",
+      "prompt": "How many all-nighters did {target} pull for school in total?",
+      "number": {
+        "min": 0,
+        "max": 50,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 3
+        },
+        "unit": "nights"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "school.languages",
+      "themes": [
+        "school"
+      ],
+      "format": "number",
+      "prompt": "How many languages did {target} learn at school?",
+      "number": {
+        "min": 0,
+        "max": 6,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "languages"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "school.teachers",
+      "themes": [
+        "school"
+      ],
+      "format": "number",
+      "prompt": "How many of their old teachers' names does {target} still remember?",
+      "number": {
+        "min": 0,
+        "max": 40,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 3
+        },
+        "unit": "teachers"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "school.studying",
+      "themes": [
+        "school"
+      ],
+      "format": "scale",
+      "prompt": "How hard did {target} study for exams, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "winged everything",
+        "max": "studied for the practice test"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "school.popular",
+      "themes": [
+        "school"
+      ],
+      "format": "scale",
+      "prompt": "How popular was {target} at school, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "who?",
+        "max": "everyone knew their name"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "school.rebel",
+      "themes": [
+        "school"
+      ],
+      "format": "scale",
+      "prompt": "How rebellious was {target} as a teenager, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "never broke a rule",
+        "max": "the principal knew their parents by name"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "school.late",
+      "themes": [
+        "school"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} was late to school 20 times a year. Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 150,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "times"
+      },
+      "reference": 20,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "school.study-hours",
+      "themes": [
+        "school"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} studied 5 hours for their hardest exam. Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 60,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "hours"
+      },
+      "reference": 5,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "school.study-buddy",
+      "themes": [
+        "school"
+      ],
+      "format": "player",
+      "prompt": "Who here would {target} want as a study partner?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "school.copy-from",
+      "themes": [
+        "school"
+      ],
+      "format": "player",
+      "prompt": "Who here would {target} copy homework from?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "school.rank-hated",
+      "themes": [
+        "school"
+      ],
+      "format": "ranking",
+      "prompt": "Rank the subjects the way teenage {target} hated them, most hated first:",
+      "answers": [
+        "Maths",
+        "Foreign languages",
+        "Chemistry",
+        "PE"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "school.rank-days",
+      "themes": [
+        "school"
+      ],
+      "format": "ranking",
+      "prompt": "Rank these school days the way {target} would, best first:",
+      "answers": [
+        "Class trip",
+        "Last day before summer",
+        "Sports day",
+        "Exam results day"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "school.mlt-teacher",
+      "themes": [
+        "school"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to become a teacher?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "school.mlt-fire-alarm",
+      "themes": [
+        "school"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to have set off the school fire alarm?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "school.mlt-reunion",
+      "themes": [
+        "school"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to skip the class reunion?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    }
+  ]
+}

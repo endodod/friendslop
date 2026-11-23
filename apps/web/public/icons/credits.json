@@ -677,5 +677,75 @@
   "author": "delapouite",
   "name": "flashlight",
   "license": "CC BY 3.0"
+ },
+ {
+  "id": "home",
+  "source": "https://game-icons.net/1x1/delapouite/sofa.html",
+  "author": "delapouite",
+  "name": "sofa",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "school",
+  "source": "https://game-icons.net/1x1/delapouite/graduate-cap.html",
+  "author": "delapouite",
+  "name": "graduate-cap",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "fears",
+  "source": "https://game-icons.net/1x1/lorc/terror.html",
+  "author": "lorc",
+  "name": "terror",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "road-trip",
+  "source": "https://game-icons.net/1x1/delapouite/car-key.html",
+  "author": "delapouite",
+  "name": "car-key",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "superpowers",
+  "source": "https://game-icons.net/1x1/delapouite/cape.html",
+  "author": "delapouite",
+  "name": "cape",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "social-media",
+  "source": "https://game-icons.net/1x1/delapouite/thumb-up.html",
+  "author": "delapouite",
+  "name": "thumb-up",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "guilty-pleasures",
+  "source": "https://game-icons.net/1x1/delapouite/donut.html",
+  "author": "delapouite",
+  "name": "donut",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "survival",
+  "source": "https://game-icons.net/1x1/lorc/campfire.html",
+  "author": "lorc",
+  "name": "campfire",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "family",
+  "source": "https://game-icons.net/1x1/delapouite/family-tree.html",
+  "author": "delapouite",
+  "name": "family-tree",
+  "license": "CC BY 3.0"
+ },
+ {
+  "id": "spicy",
+  "source": "https://game-icons.net/1x1/delapouite/chili-pepper.html",
+  "author": "delapouite",
+  "name": "chili-pepper",
+  "license": "CC BY 3.0"
  }
 ]

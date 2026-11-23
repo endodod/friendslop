@@ -1,0 +1,531 @@
+{
+  "id": "core-family",
+  "name": "Family",
+  "language": "en",
+  "version": 1,
+  "description": "Family dinners, the family group chat and holiday chaos.",
+  "questions": [
+    {
+      "id": "fam.dinner",
+      "themes": [
+        "family"
+      ],
+      "format": "tiles",
+      "prompt": "Family dinner with {target}?",
+      "answers": [
+        "Brings up politics",
+        "Eats quietly and leaves",
+        "Tells embarrassing stories",
+        "Ends up doing all the dishes"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "fam.role",
+      "themes": [
+        "family"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s role in their family?",
+      "answers": [
+        "The favourite",
+        "The responsible one",
+        "The chaotic one",
+        "The one who lives far away"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "fam.chat",
+      "themes": [
+        "family"
+      ],
+      "format": "tiles",
+      "prompt": "{target} in the family group chat?",
+      "answers": [
+        "Sends good-morning gifs",
+        "Muted it years ago",
+        "Explains tech to everyone",
+        "Only reacts with a thumbs up"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "fam.holidays",
+      "themes": [
+        "family"
+      ],
+      "format": "tiles",
+      "prompt": "Holidays with {target}'s family are…",
+      "answers": [
+        "Peaceful and cozy",
+        "Loud and chaotic",
+        "A carefully planned schedule",
+        "Someone always storms out"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "fam.parents-call",
+      "themes": [
+        "family"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s parents call. {target}…",
+      "answers": [
+        "Picks up right away",
+        "Calls back the next day",
+        "Texts 'what's up?'",
+        "Lets it ring, it's probably a tech question"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "fam.cooking",
+      "themes": [
+        "family"
+      ],
+      "format": "tiles",
+      "prompt": "Whose cooking does {target} miss the most?",
+      "answers": [
+        "Mum's",
+        "Dad's",
+        "A grandparent's",
+        "Their own, honestly"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "fam.siblings",
+      "themes": [
+        "family"
+      ],
+      "format": "tiles",
+      "prompt": "{target} and their siblings (or cousins) still argue about…",
+      "answers": [
+        "Who was the favourite",
+        "Old childhood stuff",
+        "Who sits where",
+        "Nothing, they're best friends"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "fam.visit",
+      "themes": [
+        "family"
+      ],
+      "format": "tiles",
+      "prompt": "{target} visits family. They leave with…",
+      "answers": [
+        "Bags of leftovers",
+        "A list of chores done",
+        "A headache",
+        "Money slipped into their pocket"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "fam.shock",
+      "themes": [
+        "family"
+      ],
+      "format": "tiles",
+      "prompt": "What would {target}'s family be shocked to find out?",
+      "answers": [
+        "Their real spending habits",
+        "Their dating life",
+        "That they can actually cook",
+        "What they do on weekends"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "fam.parent",
+      "themes": [
+        "family"
+      ],
+      "format": "tiles",
+      "prompt": "{target} as a parent (one day or now)?",
+      "answers": [
+        "Strict",
+        "The fun one",
+        "Overprotective",
+        "Lets the kids run the house"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "fam.party",
+      "themes": [
+        "family"
+      ],
+      "format": "tiles",
+      "prompt": "At a big family party, {target}…",
+      "answers": [
+        "Hides with the kids",
+        "Dances with the aunts",
+        "Plays bartender",
+        "Gets asked when they're getting married"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "fam.nickname",
+      "themes": [
+        "family"
+      ],
+      "format": "tiles",
+      "prompt": "What does {target}'s family call them?",
+      "answers": [
+        "Their real name",
+        "A childhood nickname",
+        "Something embarrassing",
+        "Whatever name comes out first"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "fam.cousins",
+      "themes": [
+        "family"
+      ],
+      "format": "number",
+      "prompt": "How many cousins does {target} have?",
+      "number": {
+        "min": 0,
+        "max": 50,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 2
+        },
+        "unit": "cousins"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "fam.calls",
+      "themes": [
+        "family"
+      ],
+      "format": "number",
+      "prompt": "How many times a week does {target} talk to their parents?",
+      "number": {
+        "min": 0,
+        "max": 14,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        },
+        "unit": "times"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "fam.contacts",
+      "themes": [
+        "family"
+      ],
+      "format": "number",
+      "prompt": "How many relatives are saved in {target}'s phone?",
+      "number": {
+        "min": 0,
+        "max": 60,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 3
+        },
+        "unit": "relatives"
+      },
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "fam.close",
+      "themes": [
+        "family"
+      ],
+      "format": "scale",
+      "prompt": "How close is {target} to their family, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "a card once a year",
+        "max": "talks to them every day"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "fam.like-parents",
+      "themes": [
+        "family"
+      ],
+      "format": "scale",
+      "prompt": "How much like their parents is {target}, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "nothing in common",
+        "max": "a carbon copy"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "fam.favourite",
+      "themes": [
+        "family"
+      ],
+      "format": "scale",
+      "prompt": "How much is {target} the favourite child, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "the black sheep",
+        "max": "the golden child"
+      },
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "fam.dinner-length",
+      "themes": [
+        "family"
+      ],
+      "format": "higherLower",
+      "prompt": "{target}'s family dinners last 2 hours. Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 8,
+        "step": 0.5,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "hours"
+      },
+      "reference": 2,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "fam.relatives",
+      "themes": [
+        "family"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} could name 20 relatives. Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 150,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "relatives"
+      },
+      "reference": 20,
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "fam.parents-favourite",
+      "themes": [
+        "family"
+      ],
+      "format": "player",
+      "prompt": "Who here would {target}'s parents like the most?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "fam.adopt",
+      "themes": [
+        "family"
+      ],
+      "format": "player",
+      "prompt": "Who here would {target} adopt into their family?",
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "fam.rank-relatives",
+      "themes": [
+        "family"
+      ],
+      "format": "ranking",
+      "prompt": "Rank who {target} would sit next to at a family dinner, favourite first:",
+      "answers": [
+        "Grandparents",
+        "Cousins",
+        "Aunts and uncles",
+        "Siblings"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "fam.rank-traditions",
+      "themes": [
+        "family"
+      ],
+      "format": "ranking",
+      "prompt": "Rank these family traditions the way {target} would, best first:",
+      "answers": [
+        "Big holiday dinner",
+        "Game night",
+        "Summer barbecue",
+        "Birthday breakfast"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "fam.mlt-grandma",
+      "themes": [
+        "family"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to be their grandma's favourite?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "fam.mlt-big-family",
+      "themes": [
+        "family"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to have a huge family one day?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "fam.mlt-hosts",
+      "themes": [
+        "family"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to host every family holiday?",
+      "tags": [
+        "mostLikely"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    }
+  ]
+}

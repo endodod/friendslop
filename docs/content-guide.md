@@ -169,8 +169,10 @@ SVG with the board's `aspect` ratio (width / height).
 - `next` lists where a token can go; two or more entries make a junction (the player chooses).
 - The lint check requires every tile to be reachable from the start and to lead back to it, and only
   known tile types.
-- Every board in the folder shows up in the lobby's map picker (with a preview). The first board is the default.
-- Shipped maps: Heartbeat (2–4 players), Friendship Loop (classic, 2–6), Island Hopper (4–8, 37 tiles), Orbit (3–8), Metropolis (4–8). The lobby also offers **Random**, which picks one of them when the game starts.
+- `warpTo` (on a `warp` tile) names the tile a Warp Pipe sends you to. Pipes usually come in pairs that point at
+  each other. Warp tiles can't be tuned in the tile mix.
+- Every board in the folder shows up in the lobby's map picker (with a preview). Friendship Loop (classic) is the default.
+- Shipped maps: Heartbeat (2–4 players), Pit Stop (2–4, 23 tiles), Friendship Loop (classic, 2–6), Casino Strip (3–6, 37 tiles), Island Hopper (4–8, 37 tiles), Orbit (3–8), Metropolis (4–8), Twin Islands (4–8, 56 tiles). The lobby also offers **Random**, which picks one of them when the game starts.
 - `recommendedPlayers: { "min": 4, "max": 8 }` is shown on the map card. Every shipped map sets it.
 - Players can tune how often each tile type appears (lobby → Tile mix: Off / Few / Normal / Many).
   "Normal" is the board as designed; extra tiles are taken from blue tiles, and at least

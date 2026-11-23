@@ -1,0 +1,622 @@
+{
+  "id": "core-spicy",
+  "name": "Spicy (18+)",
+  "language": "en",
+  "version": 1,
+  "description": "Flirty and cheeky questions for grown-up groups. Hidden in family-friendly mode.",
+  "questions": [
+    {
+      "id": "spicy.interest",
+      "themes": [
+        "spicy"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s signature move to show they're interested?",
+      "answers": [
+        "Lingering eye contact",
+        "A cheeky text at midnight",
+        "Laughing at every joke",
+        "Buying them a drink"
+      ],
+      "tags": [
+        "spicy"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "spicy.kissing",
+      "themes": [
+        "spicy"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s kissing style?",
+      "answers": [
+        "Slow and romantic",
+        "Enthusiastic",
+        "Shy at first",
+        "Full of surprises"
+      ],
+      "tags": [
+        "spicy"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "spicy.morning-after",
+      "themes": [
+        "spicy"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s morning after?",
+      "answers": [
+        "Stays for breakfast",
+        "Sneaks out early",
+        "Makes breakfast for two",
+        "Pretends to be asleep"
+      ],
+      "tags": [
+        "spicy"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "spicy.first-notice",
+      "themes": [
+        "spicy"
+      ],
+      "format": "tiles",
+      "prompt": "What catches {target}'s attention first?",
+      "answers": [
+        "A great laugh",
+        "Confidence",
+        "A nice voice",
+        "Nice hands"
+      ],
+      "tags": [
+        "spicy"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "spicy.flirty-texts",
+      "themes": [
+        "spicy"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s flirty texts are…",
+      "answers": [
+        "Smooth and subtle",
+        "Emojis only",
+        "Sent to the wrong chat",
+        "Pure poetry"
+      ],
+      "tags": [
+        "spicy"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "spicy.love-life",
+      "themes": [
+        "spicy"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s love life right now?",
+      "answers": [
+        "Happily taken",
+        "A situationship",
+        "Single and thriving",
+        "Complicated, don't ask"
+      ],
+      "tags": [
+        "spicy"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "spicy.type",
+      "themes": [
+        "spicy"
+      ],
+      "format": "tiles",
+      "prompt": "{target}'s type?",
+      "answers": [
+        "The bad boy or bad girl",
+        "The nerd",
+        "The sporty one",
+        "The funny one",
+        "Someone older"
+      ],
+      "tags": [
+        "spicy"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "spicy.date-end",
+      "themes": [
+        "spicy"
+      ],
+      "format": "tiles",
+      "prompt": "A great date ends. {target}…",
+      "answers": [
+        "Goes in for the kiss",
+        "Waits for the other person to make a move",
+        "Gives an awkward hug",
+        "Invites them up for 'coffee'"
+      ],
+      "tags": [
+        "spicy"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "spicy.skinny-dip",
+      "themes": [
+        "spicy"
+      ],
+      "format": "tiles",
+      "prompt": "Would {target} go skinny-dipping?",
+      "answers": [
+        "Already has",
+        "With the right people",
+        "Only in the dark",
+        "Never"
+      ],
+      "tags": [
+        "spicy"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "spicy.daring-place",
+      "themes": [
+        "spicy"
+      ],
+      "format": "tiles",
+      "prompt": "The most daring place {target} would kiss someone?",
+      "answers": [
+        "A lift",
+        "The cinema",
+        "A plane",
+        "The back of a taxi"
+      ],
+      "tags": [
+        "spicy"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "spicy.strip-poker",
+      "themes": [
+        "spicy"
+      ],
+      "format": "tiles",
+      "prompt": "{target} at strip poker?",
+      "answers": [
+        "Wins fully dressed",
+        "Loses on purpose",
+        "Folds immediately",
+        "Refuses to play"
+      ],
+      "tags": [
+        "spicy"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "spicy.swipe",
+      "themes": [
+        "spicy"
+      ],
+      "format": "tiles",
+      "prompt": "On a dating app, {target} swipes right on…",
+      "answers": [
+        "Almost everyone",
+        "Almost no one",
+        "Only photos with dogs",
+        "Whoever has the funniest bio"
+      ],
+      "tags": [
+        "spicy"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "spicy.kissed",
+      "themes": [
+        "spicy"
+      ],
+      "format": "number",
+      "prompt": "How many people has {target} kissed?",
+      "number": {
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 3
+        },
+        "unit": "people"
+      },
+      "tags": [
+        "spicy"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "spicy.crushes",
+      "themes": [
+        "spicy"
+      ],
+      "format": "number",
+      "prompt": "How many crushes does {target} have right now?",
+      "number": {
+        "min": 0,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        },
+        "unit": "crushes"
+      },
+      "tags": [
+        "spicy"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "spicy.matches",
+      "themes": [
+        "spicy"
+      ],
+      "format": "number",
+      "prompt": "How many dating app matches has {target} had in total?",
+      "number": {
+        "min": 0,
+        "max": 1000,
+        "step": 5,
+        "tolerance": {
+          "type": "absolute",
+          "value": 20
+        },
+        "unit": "matches"
+      },
+      "tags": [
+        "spicy"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "spicy.two-drinks",
+      "themes": [
+        "spicy"
+      ],
+      "format": "scale",
+      "prompt": "How flirty is {target} after two drinks, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "talks about the weather",
+        "max": "flirts with the bartender, the bouncer and a lamp"
+      },
+      "tags": [
+        "spicy"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "spicy.wild",
+      "themes": [
+        "spicy"
+      ],
+      "format": "scale",
+      "prompt": "How wild is {target} behind closed doors, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "lights off, socks on",
+        "max": "don't ask"
+      },
+      "tags": [
+        "spicy"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "spicy.number",
+      "themes": [
+        "spicy"
+      ],
+      "format": "scale",
+      "prompt": "How smooth is {target} at getting someone's number, 1–10?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 1
+        }
+      },
+      "scaleLabels": {
+        "min": "gets their email instead",
+        "max": "leaves with three numbers"
+      },
+      "tags": [
+        "spicy"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "spicy.first-dates",
+      "themes": [
+        "spicy"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} went on 10 first dates last year. Higher or lower?",
+      "number": {
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        },
+        "unit": "dates"
+      },
+      "reference": 10,
+      "tags": [
+        "spicy"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "spicy.blush",
+      "themes": [
+        "spicy"
+      ],
+      "format": "higherLower",
+      "prompt": "{target} rates how easily they blush a 5/10. Higher or lower?",
+      "number": {
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "tolerance": {
+          "type": "absolute",
+          "value": 0
+        }
+      },
+      "reference": 5,
+      "tags": [
+        "spicy"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "spicy.crush",
+      "themes": [
+        "spicy"
+      ],
+      "format": "player",
+      "prompt": "Who here would {target} have had a crush on?",
+      "tags": [
+        "spicy"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "spicy.midnight-kiss",
+      "themes": [
+        "spicy"
+      ],
+      "format": "player",
+      "prompt": "Who here would {target} kiss at midnight on New Year's Eve?",
+      "tags": [
+        "spicy"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "spicy.bad-influence",
+      "themes": [
+        "spicy"
+      ],
+      "format": "player",
+      "prompt": "Who here is the worst influence on {target}'s love life?",
+      "tags": [
+        "spicy"
+      ],
+      "usage": [
+        "tile",
+        "minigameIntro"
+      ]
+    },
+    {
+      "id": "spicy.rank-moves",
+      "themes": [
+        "spicy"
+      ],
+      "format": "ranking",
+      "prompt": "Rank these the way {target} finds them hottest, hottest first:",
+      "answers": [
+        "A cheeky wink",
+        "A handwritten note",
+        "A slow dance",
+        "A surprise kiss"
+      ],
+      "tags": [
+        "spicy"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "spicy.rank-places",
+      "themes": [
+        "spicy"
+      ],
+      "format": "ranking",
+      "prompt": "Rank where {target} would rather make out, favourite first:",
+      "answers": [
+        "On the beach",
+        "In a car",
+        "At a party",
+        "On the sofa"
+      ],
+      "tags": [
+        "spicy"
+      ],
+      "usage": [
+        "tile",
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "spicy.mlt-wedding-kiss",
+      "themes": [
+        "spicy"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to end up kissing someone at a wedding?",
+      "tags": [
+        "mostLikely",
+        "spicy"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "spicy.mlt-ex",
+      "themes": [
+        "spicy"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to get back together with an ex twice?",
+      "tags": [
+        "mostLikely",
+        "spicy"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    },
+    {
+      "id": "spicy.mlt-admirer",
+      "themes": [
+        "spicy"
+      ],
+      "format": "player",
+      "prompt": "Who's most likely to have a secret admirer right now?",
+      "tags": [
+        "mostLikely",
+        "spicy"
+      ],
+      "usage": [
+        "questionOnlyMinigame"
+      ]
+    }
+  ],
+  "defaultEnabled": false
+}
