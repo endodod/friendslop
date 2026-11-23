@@ -469,9 +469,11 @@ function ShopPanel({ display }: { display?: boolean }) {
 
 function StarPanel({ display }: { display?: boolean }) {
   const { g, isActive, active, playerId } = useGameCtx();
-  const coins = g.players[g.order[g.activeIndex]]?.coins ?? 0;
+  const activePlayer = g.players[g.order[g.activeIndex]];
+  const coins = activePlayer?.coins ?? 0;
   const priv = useStore((st) => st.priv);
-  const cost = isActive ? starPrice(clientContent, priv?.items ?? []) : GAME_CONFIG.economy.starCost;
+  // Items are public, so everyone sees the active player's coupon price.
+  const cost = starPrice(clientContent, (isActive ? priv?.items : activePlayer?.items) ?? []);
   const discounted = cost < GAME_CONFIG.economy.starCost;
   const afford = coins >= cost;
   void playerId;

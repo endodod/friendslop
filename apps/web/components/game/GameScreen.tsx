@@ -135,7 +135,7 @@ function TopBar({ compact }: { compact?: boolean }) {
       )}
       <HelpButton minigameId={g.minigame?.id ?? null} />
       <MuteButton />
-      {isHost && g.mode === "board" && g.phase !== "podium" && g.phase !== "gameEnd" && (
+      {isHost && g.mode === "board" && !["gameEnd", "bonusStars", "podium"].includes(g.phase) && (
         <button
           className="btn-ghost min-h-11 min-w-9 px-1 sm:min-w-11 sm:px-2"
           aria-label="Finish the game now and show the results"

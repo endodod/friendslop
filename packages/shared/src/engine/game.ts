@@ -264,6 +264,22 @@ export function removePlayerFromGame(room: RoomState, playerId: PlayerId, ctx: E
       return finishGame(d);
     }
 
+    // Mini-games: they stay in the mini-game's own state but get no placement or coins.
+    if (g.minigame) {
+      g.minigame.participants = g.minigame.participants.filter((p) => p !== playerId);
+      g.minigame.bonuses = g.minigame.bonuses.filter((p) => p !== playerId);
+      if (g.minigame.origin === "duel" && g.phase !== "minigameResults" && g.duel && [g.duel.challengerId, g.duel.opponentId].includes(playerId)) {
+        g.minigame = null;
+        g.duel = null;
+        g.question = null;
+        if (wasActive) g.activeIndex--;
+        return turnEnd(d);
+      }
+      if (g.minigame.participants.length === 0) {
+        g.minigame = null;
+        return afterMinigameResults(d);
+      }
+    }
     // Question rounds
     const q = g.question;
     if (q && q.participants.includes(playerId)) {
@@ -281,21 +297,11 @@ export function removePlayerFromGame(room: RoomState, playerId: PlayerId, ctx: E
         if (q.stage === "answering") maybeEndAnswering(d);
       }
     }
-    // Mini-games: they stay in the mini-game's own state but get no placement or coins.
-    if (g.minigame) {
-      g.minigame.participants = g.minigame.participants.filter((p) => p !== playerId);
-      g.minigame.bonuses = g.minigame.bonuses.filter((p) => p !== playerId);
-      if (g.minigame.origin === "duel" && g.phase !== "minigameResults" && g.duel && [g.duel.challengerId, g.duel.opponentId].includes(playerId)) {
-        g.minigame = null;
-        g.duel = null;
-        return turnEnd(d);
-      }
-      if (g.minigame.participants.length === 0) {
-        g.minigame = null;
-        return afterMinigameResults(d);
-      }
+    if (g.phase === "duel" && g.duel?.challengerId === playerId) {
+      g.duel = null;
+      if (wasActive) g.activeIndex--;
+      return turnEnd(d);
     }
-    if (g.phase === "duel" && g.duel?.challengerId === playerId) return turnEnd(d);
     // It was their turn: move on to whoever is next.
     if (wasActive && !["roundEnd", "minigameIntro", "minigameQuestion", "minigameCountdown", "minigamePlaying", "minigameResults", "gameEnd", "bonusStars", "podium"].includes(g.phase)) {
       g.activeIndex--;
@@ -416,12 +422,16 @@ function handleAction(d: Draft, a: GameAction, isHost: boolean): void {
     case "finish": {
       if (!isHost) fail("NOT_HOST", "Only the host can finish the game.");
       if (g.mode !== "board") fail("WRONG_PHASE", "Practice modes are ended from the menu.");
-      if (g.phase === "gameEnd" || g.phase === "podium") fail("WRONG_PHASE", "The game is already over.");
+      if (g.phase === "gameEnd" || g.phase === "bonusStars" || g.phase === "podium") fail("WRONG_PHASE", "The game is already over.");
       // Drop whatever was in progress; results are computed from what has been earned so far.
       g.question = null;
       g.minigame = null;
       g.movement = null;
       g.junction = null;
+      g.shop = null;
+      g.star = null;
+      g.duel = null;
+      g.event = null;
       return goto(d, "gameEnd", T.gameEndMs);
     }
   }
@@ -571,7 +581,8 @@ function advanceMovement(d: Draft) {
       emit(s, { type: "sfx", id: "coin" });
       log(g, s, `${playerName(d, pid)} passed Start: +${lapCoins} coins`, pid);
     }
-    if (to === g.starTileId && mv.remaining > 0) {
+    // Walking past the star: stop to buy it, but only if you can afford it.
+    if (to === g.starTileId && mv.remaining > 0 && p.coins >= starPriceFor(d, pid)) {
       stop = "starPass";
       break;
     }

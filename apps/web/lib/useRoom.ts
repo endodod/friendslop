@@ -34,6 +34,15 @@ export function useRoom(code: string, wantDisplay: boolean) {
         setStatus("notFound");
         return;
       }
+      // A flaky connection (timeout, rate limit, server hiccup) must not cost the seat: mid-game
+      // there's no way back in without it. Keep it and try again shortly.
+      if (["TIMEOUT", "RATE_LIMITED", "INTERNAL"].includes(res.code ?? "")) {
+        setStatus("connecting");
+        setTimeout(() => {
+          if (getSocket().connected && statusRef.current === "connecting") void rejoin();
+        }, 2000);
+        return;
+      }
       clearSeat(code);
     }
     if (wantDisplay) {

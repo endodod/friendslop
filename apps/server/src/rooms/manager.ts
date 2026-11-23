@@ -63,10 +63,14 @@ interface LiveRoom extends RoomRecord {
   /** Recent chat (not part of the game state, never persisted). */
   chat?: ChatMessage[];
   lastChatAt?: Map<string, number>;
+  /** Real time the host was first seen disconnected (for the host handover). */
+  hostAwaySince?: number;
 }
 
 const CHAT_MIN_INTERVAL_MS = 600;
 const LOBBY_DISCONNECT_REMOVE_MS = 3 * 60 * 1000;
+/** A host who has been gone this long hands host controls (skip, pause, kick, start) to someone who's here. */
+const HOST_HANDOVER_MS = 20 * 1000;
 
 export class RoomManager {
   private store: RoomStore = new InMemoryRoomStore();
@@ -144,6 +148,13 @@ export class RoomManager {
       account?: { userId: string; username: string; photo: string | null } | null;
     },
   ): Seat {
+    // Switching rooms on the same socket: leave the old one properly, or it keeps a ghost "connected" seat.
+    if (socket.data.code && socket.data.code !== rec.room.code) {
+      const old = socket.data.code;
+      this.disconnect(socket);
+      socket.leave(old);
+      socket.data = {};
+    }
     const room = rec.room;
     let seat = args.token ? rec.seats.get(args.token) : undefined;
     if (seat && seat.playerId && !room.players.some((p) => p.id === seat!.playerId)) {
@@ -289,7 +300,14 @@ export class RoomManager {
 
   abort(rec: LiveRoom, actor: SocketData) {
     assertHost(rec.room, { playerId: actor.playerId ?? undefined, isDisplay: actor.role === "display" });
-    rec.room = { ...rec.room, stage: "lobby", game: null, players: rec.room.players.map((p) => ({ ...p, ready: false })) };
+    // disconnectedAt was on the game clock; the lobby uses real time.
+    const now = Date.now();
+    rec.room = {
+      ...rec.room,
+      stage: "lobby",
+      game: null,
+      players: rec.room.players.map((p) => ({ ...p, ready: false, disconnectedAt: p.connected ? null : now })),
+    };
     this.broadcast(rec, []);
   }
 
@@ -332,6 +350,7 @@ export class RoomManager {
       const rec = r as LiveRoom;
       try {
         if (rec.room.game) this.apply(rec, tickGame(rec.room, this.ctx(rec)));
+        this.handOverHost(rec);
         // Lobby: drop players who left long ago so "everyone ready" isn't blocked forever.
         if (rec.room.stage === "lobby") {
           const stale = rec.room.players.filter((p) => !p.connected && p.disconnectedAt && now - p.disconnectedAt > LOBBY_DISCONNECT_REMOVE_MS);
@@ -350,6 +369,25 @@ export class RoomManager {
         console.error(`[room ${rec.room.code}] tick failed`, e);
       }
     }
+  }
+
+  /** Without a present host nobody could skip, pause, kick or start: pass it to a connected player. */
+  private handOverHost(rec: LiveRoom) {
+    const host = rec.room.players.find((p) => p.id === rec.room.hostId);
+    if (host?.connected) {
+      rec.hostAwaySince = undefined;
+      return;
+    }
+    // Real time, not the game clock: that one stands still while the (gone) host has it paused.
+    const now = Date.now();
+    rec.hostAwaySince ??= now;
+    if (host && now - rec.hostAwaySince < HOST_HANDOVER_MS) return;
+    const next = rec.room.players.find((p) => p.connected);
+    if (!next) return;
+    rec.room = { ...rec.room, hostId: next.id };
+    rec.hostAwaySince = undefined;
+    console.log(`[room ${rec.room.code}] host handed over to ${next.name}`);
+    this.broadcast(rec, []);
   }
 
   /** Send public state to everyone, private state per socket, and animation events. Skips unchanged. */
