@@ -18,7 +18,7 @@ export function GameEndBanner() {
   const players = usePlayers();
   const winner = g?.starGoalWinner ? players[g.starGoalWinner] : null;
   return (
-    <div className="flex flex-col items-center gap-4 py-10 text-center">
+    <div className="flex flex-col items-center gap-4 overflow-hidden py-10 text-center">
       <motion.h2
         initial={{ scale: 3, opacity: 0, rotate: -10 }}
         animate={{ scale: 1, opacity: 1, rotate: 0 }}
@@ -352,11 +352,11 @@ export function Podium({ game }: { game: PublicGameState }) {
               initial={{ y: 200, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.4 + (2 - i) * 0.4, type: "spring", stiffness: 90 }}
-              className="flex w-28 flex-col items-center gap-2"
+              className="flex w-[31%] max-w-28 min-w-0 flex-col items-center gap-2"
             >
               {i === 0 && <Icon id="crown" size={44} className="text-accent" />}
               <Avatar player={p} size={i === 0 ? 76 : 60} ring={i === 0} />
-              <span className="font-display text-lg">{p?.name}</span>
+              <span className="w-full truncate text-center font-display text-base sm:text-lg" title={p?.name}>{p?.name}</span>
               <div
                 className="flex w-full flex-col items-center justify-start gap-1 rounded-t-2xl pt-3"
                 style={{

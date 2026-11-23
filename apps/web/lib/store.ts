@@ -82,3 +82,6 @@ export function onGameEvent(fn: Listener): () => void {
 export function dispatchGameEvents(events: GameEvent[]) {
   for (const e of events) for (const l of listeners) l(e);
 }
+
+// Dev only: lets the mobile UI check script (and you, in the console) read the game state.
+if (typeof window !== "undefined" && process.env.NODE_ENV !== "production") (window as unknown as { __store: typeof useStore }).__store = useStore;
