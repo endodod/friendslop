@@ -115,7 +115,7 @@ function TopBar({ compact }: { compact?: boolean }) {
     <div className={`grid items-center gap-1 px-2 py-2 sm:gap-3 sm:px-3 ${compact ? "grid-cols-[1fr_auto]" : "grid-cols-[1fr_minmax(0,auto)_1fr]"}`}>
       <div className="flex min-w-0 items-center gap-1 sm:gap-3">
       <span className="min-w-0 truncate whitespace-nowrap rounded-xl bg-panel-2 px-2 py-1 font-display sm:px-3">
-        {g.mode === "questionDebug" ? "Questions" : g.mode === "minigameDebug" ? "Mini-games" : g.turnCount > 0 ? `Round ${g.round}/${g.turnCount}` : `Round ${g.round}`}
+        {g.mode === "questionDebug" ? "Questions" : g.mode === "minigameDebug" ? "Practice" : g.turnCount > 0 ? `Round ${g.round}/${g.turnCount}` : `Round ${g.round}`}
       </span>
       {g.mode === "board" && (pub.settings.starGoal ?? 0) > 0 && (
         <span className="rounded-xl bg-[#ffe066]/15 px-2 py-1 font-display text-sm text-[#ffe066]">First to {pub.settings.starGoal} ★</span>
@@ -343,9 +343,10 @@ function GameScreenInner() {
   const focus = g.mode !== "board" || (FOCUS_PHASES.has(g.phase) && !boardBusy);
   // Phones: the page keeps its scroll position. Coming from a scrolled-down lobby, or when a question or
   // mini-game takes over, jump back to the top so the top bar and the new content are in view.
+  const focusPhase = focus ? g.phase : null;
   useEffect(() => {
     window.scrollTo({ top: 0 });
-  }, [focus]);
+  }, [focus, focusPhase]);
   const controllerMode = !display && pub.displays > 0; // same room: phones are controllers
   const myTurn = playerId === g.order[g.activeIndex];
   const selectable = g.phase === "junctionChoice" && myTurn && !display ? (g.junction?.options ?? []) : [];
