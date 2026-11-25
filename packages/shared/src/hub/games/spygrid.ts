@@ -138,6 +138,27 @@ export function clueProblem(s: Pick<SpyState, "cards">, raw: string): string | n
   return null;
 }
 
+/**
+ * Chat during Spy Grid: no words that are still hidden on the grid (also simple plurals), so nobody can
+ * hint outside the one official clue. Returns the reason, or null when the message is fine.
+ */
+export function spyChatProblem(s: Pick<SpyState, "cards" | "phase">, text: string): string | null {
+  if (s.phase === "over") return null;
+  const hidden = new Set(s.cards.filter((c) => !c.revealed).map((c) => c.word.toUpperCase()));
+  const tokens = text
+    .toUpperCase()
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .split(/[^A-Z0-9]+/)
+    .filter(Boolean);
+  for (const t of tokens) {
+    const forms = [t, t.replace(/ES$/, ""), t.replace(/S$/, ""), t.replace(/'S$/, "")];
+    const hit = forms.find((f) => hidden.has(f));
+    if (hit) return `No grid words in chat during Spy Grid ("${hit.toLowerCase()}" is still on the grid).`;
+  }
+  return null;
+}
+
 function stat(s: SpyState, pid: PlayerId): SpyStats {
   return (s.stats[pid] ??= { cluesGiven: 0, clueHits: 0, found: 0, misses: 0, traps: 0 });
 }

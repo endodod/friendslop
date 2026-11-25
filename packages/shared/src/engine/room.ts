@@ -6,7 +6,7 @@ import { CUSTOM_PACK_ID } from "../logic/custom";
 import { RANDOM_BOARD_ID } from "../logic/board";
 import type { RoomPlayer, RoomSettings, RoomState } from "./types";
 import { DEFAULT_HUB_SETTINGS, type GameId, type HubSettings, type TeamId } from "../hub/types";
-import { GAMES } from "../hub/catalog";
+import { GAMES, gameInfo } from "../hub/catalog";
 import { canStartHub } from "../hub/engine";
 
 /** Options of the hub games' lobby settings. */
@@ -213,9 +213,14 @@ export function dataQuestionsAvailable(room: RoomState): boolean {
   return room.players.some((p) => p.linked.some((l) => l.status === "ok"));
 }
 
-export function canStart(room: RoomState): { ok: true } | { ok: false; reason: string } {
+/** `mode`: the party game's practice modes (no board) work with fewer players than the board game. */
+export function canStart(room: RoomState, mode: "board" | "questionDebug" | "minigameDebug" = "board"): { ok: true } | { ok: false; reason: string } {
   if (room.players.length < GAME_CONFIG.players.min) return { ok: false, reason: "Need at least 2 players." };
   const gameId: GameId = room.settings.gameId ?? "party";
+  if (gameId === "party" && mode === "board") {
+    const min = gameInfo("party").players.min;
+    if (room.players.length < min) return { ok: false, reason: `Party Board needs at least ${min} players (add a bot to try it out).` };
+  }
   if (gameId !== "party") {
     const hub = canStartHub(room, gameId);
     if (!hub.ok) return hub;

@@ -4,38 +4,29 @@ import { Lock, Send } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { SPECTRUM, clueTextProblem, colorHex, type SpectrumPrivate, type SpectrumPublic } from "@party-game/shared";
 import { useStore } from "@/lib/store";
-import { Avatar, PlayerName, Timer, usePlayers } from "../ui";
+import { Avatar, Icon, PlayerName, Timer, usePlayers } from "../ui";
 import { Confetti } from "../fx";
-import { HubSkip, hubAct, useHubPriv, useHubState } from "./common";
+import { HubSkip, Splash, chunky, hubAct, shade, useHubPriv, useHubState } from "./common";
 
 const LEFT = "#3dd6c6";
 const RIGHT = "#ff6bc6";
 
-/** Target zones drawn around `target` (outermost first). */
-function Zones({ target }: { target: number }) {
-  const zones = [...SPECTRUM.zones].reverse();
-  return (
-    <>
-      {zones.map((z, i) => (
-        <motion.div
-          key={z.within}
-          initial={{ scaleX: 0 }}
-          animate={{ scaleX: 1 }}
-          transition={{ delay: 0.1 * i }}
-          className="absolute inset-y-0 rounded-md"
-          style={{
-            left: `${Math.max(0, target - z.within - 0.5)}%`,
-            width: `${Math.min(100, target + z.within + 0.5) - Math.max(0, target - z.within - 0.5)}%`,
-            background: ["#ffc93355", "#ffc93399", "#ffc933"][i],
-          }}
-        >
-          <span className="absolute inset-x-0 -top-5 text-center font-display text-xs text-accent">{i === zones.length - 1 ? z.points : ""}</span>
-        </motion.div>
-      ))}
-    </>
-  );
+/** Steps of the scale: 1..10. */
+const STEPS = Array.from({ length: SPECTRUM.max - SPECTRUM.min + 1 }, (_, i) => SPECTRUM.min + i);
+
+function mix(a: string, b: string, t: number): string {
+  const h = (x: string, i: number) => parseInt(x.slice(1 + i * 2, 3 + i * 2), 16);
+  const c = [0, 1, 2].map((i) => Math.round(h(a, i) + (h(b, i) - h(a, i)) * t).toString(16).padStart(2, "0"));
+  return `#${c.join("")}`;
 }
 
+/** Highlight of a step around the revealed (or, for the clue-giver, secret) target. */
+const ZONE_BG = ["#ffc933", "#ffc93399", "#ffc93348"];
+
+/**
+ * The 1–10 scale between two opposites. Tappable steps when `onChange` is set; with `target` the
+ * scoring zones light up; `markers` put players' avatars on the steps they picked.
+ */
 export function Dial({
   left,
   right,
@@ -54,6 +45,7 @@ export function Dial({
   big?: boolean;
 }) {
   const players = usePlayers();
+  const hasTarget = target !== null && target !== undefined;
   return (
     <div className="flex flex-col gap-2" data-testid="dial">
       <div className={`flex items-end justify-between gap-3 font-display ${big ? "text-3xl" : "text-lg sm:text-xl"}`}>
@@ -64,40 +56,73 @@ export function Dial({
           {right} →
         </span>
       </div>
-      <div className={`relative mt-5 ${big ? "h-20" : "h-14"} rounded-2xl`} style={{ background: `linear-gradient(90deg, ${LEFT}55, #2a2549 50%, ${RIGHT}55)` }}>
-        <div className="absolute inset-x-2 inset-y-0">
-          {target !== null && target !== undefined && <Zones target={target} />}
-          {markers.map((m, i) => (
-            <motion.span
-              key={m.pid}
-              initial={{ y: -20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.4 + i * 0.12 }}
-              className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2"
-              style={{ left: `${m.value}%` }}
+      <div
+        className={`grid grid-cols-10 ${big ? "gap-2" : "gap-1 sm:gap-1.5"}`}
+        role={onChange ? "radiogroup" : undefined}
+        aria-label={onChange ? `Your guess from ${SPECTRUM.min} (${left}) to ${SPECTRUM.max} (${right})` : undefined}
+      >
+        {STEPS.map((n, i) => {
+          const d = hasTarget ? Math.abs(n - target!) : null;
+          const zone = d !== null ? SPECTRUM.zones.findIndex((z) => d <= z.within) : -1;
+          const selected = value === n;
+          const here = markers.filter((m) => m.value === n);
+          const base = mix(LEFT, RIGHT, i / (STEPS.length - 1));
+          const Cell = onChange ? "button" : "div";
+          return (
+            <Cell
+              key={n}
+              {...(onChange
+                ? { type: "button" as const, role: "radio", "aria-checked": selected, "aria-label": String(n), onClick: () => onChange(n), "data-testid": `step-${n}` }
+                : {})}
+              className={`relative flex min-w-0 flex-col items-center justify-start rounded-xl pt-1.5 transition-[transform,filter] ${
+                big ? "min-h-28" : "min-h-16 sm:min-h-20"
+              } ${onChange ? "cursor-pointer hover:brightness-110 active:translate-y-1" : ""} ${zone === 0 ? "z-10" : ""}`}
+              style={{
+                ...chunky(zone === 0 ? "#ffc933" : base, { depth: big ? 6 : 4 }),
+                ...(zone > 0 ? { background: `linear-gradient(180deg, #ffffff38 0%, #ffffff00 45%), linear-gradient(${ZONE_BG[zone]}, ${ZONE_BG[zone]}), ${base}` } : {}),
+                ...(selected ? { boxShadow: `0 0 0 3px #0d0b1a, 0 0 0 6px #fff, 0 4px 0 ${shade(base)}`, transform: "translateY(-4px)" } : {}),
+                ...(zone === 0 ? { boxShadow: `0 ${big ? 6 : 4}px 0 #b38a12, 0 0 28px 6px #ffc93399` } : {}),
+                opacity: hasTarget && zone < 0 && !here.length ? 0.55 : 1,
+              }}
             >
-              <Avatar player={players[m.pid]} size={big ? 40 : 30} ring />
-            </motion.span>
-          ))}
-          {value !== null && value !== undefined && (
-            <span className="pointer-events-none absolute inset-y-[-6px] w-1.5 -translate-x-1/2 rounded-full bg-white shadow-[0_0_0_3px_#0d0b1a]" style={{ left: `${value}%` }}>
-              <span className="absolute -top-2 left-1/2 h-4 w-4 -translate-x-1/2 rounded-full bg-white shadow-[0_0_0_3px_#0d0b1a]" />
-            </span>
-          )}
-        </div>
-        {onChange && (
-          <input
-            type="range"
-            min={0}
-            max={100}
-            step={1}
-            value={value ?? 50}
-            onChange={(e) => onChange(Number(e.target.value))}
-            aria-label={`Your guess between ${left} and ${right}`}
-            className="absolute inset-0 h-full w-full cursor-pointer opacity-0"
-            data-testid="dial-input"
-          />
-        )}
+              {zone === 0 && (
+                <motion.span
+                  aria-hidden
+                  initial={{ scale: 0, rotate: -90 }}
+                  animate={{ scale: 1, rotate: 0 }}
+                  transition={{ type: "spring", stiffness: 200, damping: 12 }}
+                  className="absolute -top-4 text-[#ffe066] drop-shadow-[0_2px_0_#0008]"
+                >
+                  <Icon id="star" size={big ? 30 : 22} />
+                </motion.span>
+              )}
+              <span
+                className={`font-display leading-none drop-shadow-[0_2px_0_#0005] ${big ? "text-3xl" : "text-lg sm:text-xl"} ${zone === 0 ? "text-[#241a00]" : "text-white"}`}
+              >
+                {n}
+              </span>
+              {zone >= 0 && (
+                <motion.span
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ delay: 0.1 * zone }}
+                  className="rounded-md bg-[#241a00cc] px-1 font-display text-xs text-[#ffe066]"
+                >
+                  +{SPECTRUM.zones[zone].points}
+                </motion.span>
+              )}
+              {here.length > 0 && (
+                <span className="mt-1 flex flex-col items-center -space-y-1.5">
+                  {here.map((m, k) => (
+                    <motion.span key={m.pid} initial={{ y: -12, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.4 + k * 0.12 }}>
+                      <Avatar player={players[m.pid]} size={big ? 34 : 22} ring />
+                    </motion.span>
+                  ))}
+                </span>
+              )}
+            </Cell>
+          );
+        })}
       </div>
     </div>
   );
@@ -118,7 +143,8 @@ function ClueInput({ target }: { target: number }) {
     >
       <p className="font-display text-xl">Only you see the target. Give a clue that sits right there!</p>
       <p className="text-sm text-muted">
-        It&apos;s at {target} of 100. Any word, name or short phrase, but no numbers.
+        The target is <span className="font-display text-ink">{target}</span> of {SPECTRUM.max}. Any word, name or short phrase, but no
+        numbers.
       </p>
       <div className="flex gap-2">
         <input
@@ -145,11 +171,11 @@ function GuessControls() {
   const playerId = useStore((st) => st.playerId);
   const r = s.round!;
   const locked = !!playerId && r.locked.includes(playerId);
-  const [value, setValue] = useState<number>(priv?.myGuess ?? 50);
-  const sent = useRef(0);
+  const [value, setValue] = useState<number | null>(priv?.myGuess ?? null);
+  const sent = useRef<number | null>(null);
   // Unlocked dials count when time runs out: keep the server up to date (throttled).
   useEffect(() => {
-    if (locked) return;
+    if (locked || value === null) return;
     const t = setTimeout(() => {
       if (sent.current !== value) {
         sent.current = value;
@@ -167,18 +193,15 @@ function GuessControls() {
         </p>
       ) : (
         <>
-          <div className="flex items-center gap-2">
-            <button className="btn-secondary min-w-12" aria-label="Move left" onClick={() => setValue((v) => Math.max(0, v - 1))}>
-              ‹
-            </button>
-            <button className="btn-primary min-h-14 flex-1 text-2xl" onClick={() => hubAct({ type: "guess", value })} data-testid="lock-guess">
-              <Lock size={20} /> Lock in
-            </button>
-            <button className="btn-secondary min-w-12" aria-label="Move right" onClick={() => setValue((v) => Math.min(100, v + 1))}>
-              ›
-            </button>
-          </div>
-          <p className="text-center text-xs text-muted">Drag the dial, then lock in. If time runs out, where your dial is counts.</p>
+          <button
+            className="btn-primary min-h-14 text-2xl"
+            disabled={value === null}
+            onClick={() => value !== null && hubAct({ type: "guess", value })}
+            data-testid="lock-guess"
+          >
+            <Lock size={20} /> {value === null ? "Pick a number" : `Lock in ${value}`}
+          </button>
+          <p className="text-center text-xs text-muted">Tap a number, then lock in. If time runs out, the number you picked counts.</p>
         </>
       )}
     </div>
@@ -205,7 +228,9 @@ function Reveal({ display }: { display: boolean }) {
             <li key={pid} className="flex items-center gap-2 rounded-2xl bg-bg-2 px-3 py-2">
               <Avatar player={players[pid]} size={28} />
               <PlayerName player={players[pid]} className="min-w-0 flex-1 truncate" />
-              <span className="text-sm text-muted">{zone?.label ?? `off by ${d}`}</span>
+              <span className="text-sm text-muted">
+                {r.guesses?.[pid]} · {zone?.label ?? `${d} off`}
+              </span>
               <span className={`font-display text-xl ${pts[pid] ? "text-good" : "text-muted"}`}>+{pts[pid] ?? 0}</span>
             </li>
           );
@@ -235,6 +260,9 @@ export function SpectrumView({ display }: { display: boolean; controller?: boole
   const total = s.phaseEndsAt ? s.phaseEndsAt - s.phaseStartedAt : 0;
   return (
     <div className="flex flex-col gap-4" data-testid="spectrum">
+      <Splash id={`round-${r.index}`} color="#3dd6c6" sub={iAmGiver ? "You give the clue!" : `${giver?.name ?? "?"} gives the clue`}>
+        Round {r.index + 1}
+      </Splash>
       <div className="flex flex-wrap items-center justify-between gap-2">
         <span className="flex items-center gap-2 font-display text-xl">
           <Avatar player={giver} size={34} ring /> {iAmGiver ? "You give the clue" : `${giver?.name} gives the clue`}
@@ -250,12 +278,16 @@ export function SpectrumView({ display }: { display: boolean; controller?: boole
           {r.clue && (
             <div className="flex flex-col items-center gap-1 text-center" data-testid="spectrum-clue">
               <span className="text-sm text-muted">Clue</span>
-              <span
-                className={`max-w-full break-words rounded-2xl bg-panel-2 px-5 py-2 font-display ${display ? "text-6xl" : "text-3xl sm:text-4xl"}`}
-                style={{ boxShadow: `inset 0 0 0 3px ${colorHex(giver?.color ?? "")}` }}
+              <motion.span
+                initial={{ scale: 0.5, rotate: -6, opacity: 0 }}
+                animate={{ scale: 1, rotate: -1, opacity: 1 }}
+                transition={{ type: "spring", stiffness: 180, damping: 12 }}
+                className={`relative max-w-full break-words rounded-3xl bg-white px-5 py-2 font-display text-[#14112a] ${display ? "text-6xl" : "text-3xl sm:text-4xl"}`}
+                style={{ boxShadow: `0 6px 0 ${colorHex(giver?.color ?? "")}, 0 10px 20px #0007` }}
               >
-                “{r.clue}”
-              </span>
+                {r.clue}
+                <span aria-hidden className="absolute -bottom-3 left-8 h-5 w-5 rotate-45 bg-white" style={{ boxShadow: `4px 4px 0 ${colorHex(giver?.color ?? "")}` }} />
+              </motion.span>
             </div>
           )}
 

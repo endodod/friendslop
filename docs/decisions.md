@@ -154,11 +154,13 @@ Defaults picked where the build prompt left room, or where the environment force
 - **Spy Grid voting:** guessers vote on phones; a word is revealed once a majority of the team's guessers who are here
   agree (one guesser = instant). "End our turn" works the same way. The clue-giver role goes to a volunteer, else to
   someone who didn't give clues last game (humans before bots). A clue-giver who leaves hands the role to a teammate.
-- **Spectrum** is free-for-all: everyone guesses on their own dial, and the clue-giver scores the average, so clear
+- **Spectrum** is free-for-all on a 1–10 scale (whole numbers, easy to tap on a phone): everyone picks their own number, and the clue-giver scores the average, so clear
   clues pay. Clues may not contain digits.
 - **Bluff Club** is about the players (like the board game's questions), not trivia: the spotlight player writes the
   truth. Fakes identical to the truth (ignoring case, punctuation, "a/the") make you a mind reader (+3, no vote);
   identical fakes are merged and share the credit. House lies pad the list to 4 answers.
+  Every answer (truth, fakes, house lies) is stored in one style: lowercase, no punctuation (apostrophes and hyphens
+  inside words stay, emoji stay), so nobody gives themselves away with a capital letter or an exclamation mark.
 - **Brief disconnects don't end a step.** A step that waits for everyone (guesses, answers, votes) only stops waiting
   for a player once they've been gone `disconnectedAutoplayMs`, so a page refresh doesn't cost your answer.
 - **Per-game account stats** (`UserGameStat`); `User.gamesPlayed/gamesWon` stay the totals. The migration backfills

@@ -50,6 +50,8 @@ export function Lobby({ code, onLeave }: { code: string; onLeave: () => Promise<
   const isParty = gameId === "party";
   const startCheck = canStart(pub as never);
   const allReady = startCheck.ok;
+  // Practice modes (party game without the board) need only 2 players.
+  const practiceCheck = canStart(pub as never, "questionDebug");
   const meRoom = players.find((p) => p.id === me?.id);
   const isDisplay = role === "display";
   const [practice, setPractice] = useState("red-light");
@@ -247,7 +249,7 @@ export function Lobby({ code, onLeave }: { code: string; onLeave: () => Promise<
           <details className="text-sm text-muted">
             <summary className="cursor-pointer py-2 text-center">Practice modes</summary>
             <div className="flex flex-col gap-2 pt-2">
-              <button className="btn-secondary min-h-11 text-base" disabled={!allReady} onClick={() => act("game:start", { mode: "questionDebug" })}>
+              <button className="btn-secondary min-h-11 text-base" disabled={!practiceCheck.ok} onClick={() => act("game:start", { mode: "questionDebug" })}>
                 Question rounds only (no board)
               </button>
               <div className="flex gap-2">
@@ -267,7 +269,7 @@ export function Lobby({ code, onLeave }: { code: string; onLeave: () => Promise<
                 </select>
                 <button
                   className="btn-secondary min-h-11 text-base"
-                  disabled={!allReady}
+                  disabled={!practiceCheck.ok}
                   onClick={() => act("game:start", { mode: "minigameDebug", minigameId: practice })}
                 >
                   Play mini-games

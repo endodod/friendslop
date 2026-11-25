@@ -3,7 +3,7 @@ import { fail } from "../../engine/errors";
 import type { PlayerId } from "../../engine/types";
 import type { BluffPrompt } from "../../content/schemas";
 import { shuffle } from "../../rng";
-import { cleanText, goneLong, normalizeAnswer, pickRandom, present, hubRanking, setPhase } from "../helpers";
+import { cleanText, goneLong, normalizeAnswer, styleAnswer, pickRandom, present, hubRanking, setPhase } from "../helpers";
 import type { HubCtx, HubGameDefinition, HubHighlight, HubPhaseState, HubStatLine } from "../types";
 
 /**
@@ -151,7 +151,7 @@ function startVoting(s: BluffState, ctx: HubCtx) {
     if (entries.length >= BLUFF.minEntries) break;
     const key = normalizeAnswer(d);
     if (byKey.has(key)) continue;
-    const e: BluffEntry = { id: "", text: d, authors: [], truth: false, house: true };
+    const e: BluffEntry = { id: "", text: styleAnswer(d), authors: [], truth: false, house: true };
     byKey.set(key, e);
     entries.push(e);
   }
@@ -306,7 +306,7 @@ export const bluff: HubGameDefinition<BluffState, BluffAction> = {
     switch (a.type) {
       case "write": {
         if (s.phase !== "write") fail("WRONG_PHASE", "Writing time is over.");
-        const text = cleanText(a.text, BLUFF.answerMaxLength);
+        const text = styleAnswer(cleanText(a.text, BLUFF.answerMaxLength));
         if (!text) fail("INVALID_INPUT", "Write something first.");
         if (pid === r.targetId) r.truth = text;
         else r.fakes[pid] = text;
