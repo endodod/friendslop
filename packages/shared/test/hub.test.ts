@@ -10,6 +10,8 @@ import {
   gameClock,
   hubBotActions,
   hubConnectionChange,
+  addPlayer,
+  addPlayerToHub,
   newHubBotMemory,
   removePlayerFromHub,
   setPaused,
@@ -427,6 +429,39 @@ describe("Bluff Club", () => {
     const h = new HubHarness(3, "bluff", { familyFriendly: true, hub: { bluff: { roundsEach: 3 } } });
     expect(st(h).schedule.every((x) => !x.prompt.spicy)).toBe(true);
     expect(st(h).schedule).toHaveLength(9);
+  });
+});
+
+describe("joining a running hub game", () => {
+  const join = (h: HubHarness, id: string) => {
+    h.room = addPlayer(h.room, { id, name: id, now: h.now });
+    h.room = addPlayerToHub(h.room, id, h.ctx()).room;
+  };
+  it("Spectrum and Bluff Club add the newcomer's own rounds at the end", () => {
+    const sp = new HubHarness(3, "spectrum", { hub: { spectrum: { cluesEach: 2 } } });
+    sp.readyAll();
+    join(sp, "late");
+    const st = sp.state<SpectrumState>();
+    expect(st.players).toContain("late");
+    expect(st.schedule.slice(-2)).toEqual(["late", "late"]);
+    expect(st.scores.late).toBe(0);
+
+    const bl = new HubHarness(3, "bluff", { hub: { bluff: { roundsEach: 1 } } });
+    bl.readyAll();
+    join(bl, "late");
+    const bs = bl.state<BluffState>();
+    expect(bs.schedule).toHaveLength(4);
+    expect(bs.schedule[3].targetId).toBe("late");
+    expect(new Set(bs.schedule.map((x) => x.prompt.id)).size).toBe(4);
+  });
+  it("Spy Grid puts the newcomer on the smaller team as a guesser", () => {
+    const h = new HubHarness(5, "spygrid");
+    h.readyAll();
+    const st = h.state<SpyState>();
+    const small = Object.values(st.teams).filter((t) => t === "a").length < Object.values(st.teams).filter((t) => t === "b").length ? "a" : "b";
+    join(h, "late");
+    expect(h.state<SpyState>().teams.late).toBe(small);
+    expect(Object.values(h.state<SpyState>().clueGivers)).not.toContain("late");
   });
 });
 

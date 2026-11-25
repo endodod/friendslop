@@ -28,7 +28,7 @@ describe("registry completeness", () => {
       expect(MINIGAMES[m.id], `server ${m.id}`).toBeDefined();
       expect(MINIGAME_CLIENTS[m.id], `client ${m.id}`).toBeDefined();
     }
-    expect(Object.keys(MINIGAMES)).toHaveLength(34);
+    expect(Object.keys(MINIGAMES)).toHaveLength(33);
   });
 });
 
@@ -172,11 +172,6 @@ describe("voting games", () => {
     expect(r.gained).toEqual({ a: 2, b: 2, j: 2 });
     expect(scoreJudge({ a: "a" }, ["j", "a"], "j").gained).toEqual({});
   });
-  it("Underdog: the least-voted pick scores; all tied scores nobody", async () => {
-    const { scoreUnderdog } = await import("../src/kit/voteGame");
-    expect(scoreUnderdog({ a: "x", b: "x", c: "y" })).toEqual({ winners: ["y"], gained: { c: 2 } });
-    expect(scoreUnderdog({ a: "x", b: "y" }).winners).toEqual([]);
-  });
   it("Hall of Fame: votes received are points, backing the winner is a bonus; no self votes", async () => {
     const { scoreHallOfFame } = await import("../src/kit/voteGame");
     expect(scoreHallOfFame({ a: "b", c: "b", b: "a" }).gained).toEqual({ b: 2, a: 2, c: 1 });
@@ -184,5 +179,34 @@ describe("voting games", () => {
     const s0 = { players: ["a", "b", "c"], index: 0, round: { question: {} as never, stage: "vote" as const, stageEndsAt: 1e12, votes: {}, winners: [], gained: {}, judge: null }, points: { a: 0, b: 0, c: 0 }, done: false };
     const s1 = hallOfFame.onInput!(s0, "a", { answer: { kind: "player", playerId: "a" } }, {} as never);
     expect(s1.round!.votes).toEqual({});
+  });
+});
+
+describe("untimed vote and question mini-games", () => {
+  const question = { id: "q", format: "player", themeId: "friends", prompt: "Who would win?", isData: false, playerChoices: ["a", "b", "c"] } as never;
+  const away = new Set<string>();
+  const services = {
+    pickQuestion: () => question,
+    isPresent: (p: string) => !away.has(p),
+  } as unknown as MinigameServices;
+  const ctx = (now: number): MinigameStepCtx => ({ now, rng: createRng(1), services });
+
+  it("vote games, Ranking, Speed Sync, Duel and Hot or Not have no clock", () => {
+    for (const id of ["most-likely-to", "judges-call", "hall-of-fame", "ranking", "speed-sync", "duel", "hot-or-not"]) expect(MINIGAMES[id].untimed, id).toBe(true);
+    for (const id of ["pump-it", "quick-math", "color-clash", "red-light"]) expect(MINIGAMES[id].untimed, id).toBeFalsy();
+  });
+
+  it("a vote waits for everyone who's here, however long it takes", () => {
+    const def = MINIGAMES["most-likely-to"];
+    let s = def.init({ players: ["a", "b", "c"], bonuses: [], seed: 1, rng: createRng(1), now: 0, services });
+    s = def.onInput!(s, "a", { answer: { kind: "player", playerId: "b" } }, ctx(10));
+    s = def.onInput!(s, "b", { answer: { kind: "player", playerId: "b" } }, ctx(10));
+    s = def.tick!(s, ctx(10 * 60_000));
+    expect(s.round.stage).toBe("vote");
+    // c left the game: no more waiting.
+    away.add("c");
+    s = def.tick!(s, ctx(10 * 60_000 + 100));
+    expect(s.round.stage).toBe("reveal");
+    away.clear();
   });
 });

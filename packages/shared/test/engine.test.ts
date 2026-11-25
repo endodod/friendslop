@@ -564,7 +564,7 @@ describe("special tiles", () => {
     expect(h.g.bank).toBe(0);
   });
 
-  it("Start: walking past it pays a lap bonus", () => {
+  it("Start: walking past it gives another roll once the turn is over", () => {
     const h = new Harness(2);
     toTurnStart(h);
     const pid = h.active();
@@ -573,7 +573,18 @@ describe("special tiles", () => {
     const last = getBoard(content, h.g.boardId).tiles.find((t) => t.next.includes("m0"))!.id;
     h.room.game!.players[pid].tileId = last;
     rollExactly(h, 2); // past m0 (Start) → m1
-    expect(h.g.players[pid].coins).toBe(before + 5);
+    expect(h.g.players[pid].coins).toBe(before);
+    expect(h.g.startReroll).toBe(pid);
+    // The turn plays out, then the same player is up again.
+    for (let i = 0; i < 50 && h.g.phase !== "turnStart"; i++) h.timeout();
+    expect(h.g.phase).toBe("turnStart");
+    expect(h.active()).toBe(pid);
+    expect(h.g.startReroll).toBeNull();
+    // After that bonus turn, play moves on to the next player.
+    h.room.game!.players[pid].tileId = "m3";
+    rollExactly(h, 1);
+    for (let i = 0; i < 50 && h.g.phase !== "turnStart" && h.g.phase !== "roundEnd"; i++) h.timeout();
+    expect(h.active()).not.toBe(pid);
   });
 
   it("Thief: steals from a random other player; a Shield blocks it", () => {

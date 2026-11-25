@@ -469,6 +469,14 @@ export const spyGrid: HubGameDefinition<SpyState, SpyGridAction> = {
     resolveVotes(s, ctx);
   },
 
+  addPlayer(s, pid) {
+    // Join the smaller team as a guesser.
+    const a = teamMembers(s, "a").length;
+    const b = teamMembers(s, "b").length;
+    s.teams[pid] = a <= b ? "a" : "b";
+    s.stats[pid] ??= { cluesGiven: 0, clueHits: 0, found: 0, misses: 0, traps: 0 };
+  },
+
   connectionChanged(s, ctx) {
     // Fewer guessers here: the votes already cast may now be a majority.
     resolveVotes(s, ctx);

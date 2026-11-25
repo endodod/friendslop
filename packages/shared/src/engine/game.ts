@@ -54,6 +54,8 @@ export type GameAction =
   | { type: "minigameSubmit"; playerId: PlayerId; submission: unknown }
   | { type: "ready"; playerId: PlayerId }
   | { type: "continue" }
+  /** Host: end an untimed mini-game now (everyone still missing simply didn't answer). */
+  | { type: "endMinigame" }
   /** Host: end the game now and go to the results (used for unlimited games). */
   | { type: "finish" };
 
@@ -263,6 +265,7 @@ export function removePlayerFromGame(room: RoomState, playerId: PlayerId, ctx: E
     delete g.players[playerId];
     g.ready = g.ready.filter((p) => p !== playerId);
     if (g.targetOverride && (g.targetOverride.targetId === playerId || g.targetOverride.by === playerId)) g.targetOverride = null;
+    if (g.startReroll === playerId) g.startReroll = null;
     if (idx < g.activeIndex) g.activeIndex--;
     g.tolls = (g.tolls ?? []).filter((t) => t.ownerId !== playerId);
     if (g.spotlight?.targetId === playerId) g.spotlight = null;
@@ -321,6 +324,34 @@ export function removePlayerFromGame(room: RoomState, playerId: PlayerId, ctx: E
       return goto(d, "turnEnd", T.turnEndMs);
     }
     if (g.activeIndex >= g.order.length) g.activeIndex = 0;
+  });
+}
+
+/**
+ * Someone joined while the board game is running: they get a seat at the end of the turn order, start
+ * on Start with the average coins of everyone else (at least the usual starting coins) and no stars.
+ * Questions and mini-games already in progress go on without them.
+ */
+export function addPlayerToGame(room: RoomState, playerId: PlayerId, ctx: EngineContext): EngineResult {
+  return withDraft(room, ctx, (d) => {
+    const { g, s } = d;
+    if (g.players[playerId]) return;
+    const board = getBoard(s.ctx.content, g.boardId);
+    const others = Object.values(g.players);
+    const avg = others.length ? Math.round(others.reduce((n, p) => n + p.coins, 0) / others.length) : 0;
+    g.players[playerId] = {
+      id: playerId,
+      coins: Math.max(GAME_CONFIG.economy.startCoins, avg),
+      stars: GAME_CONFIG.economy.startStars,
+      tileId: board.startTileId,
+      items: [],
+      effects: { shield: false },
+      stats: emptyStats(),
+    };
+    g.order.push(playerId);
+    emit(s, { type: "toast", text: `${playerName(d, playerId)} joined the game!` });
+    emit(s, { type: "sfx", id: "join" });
+    log(g, s, `${playerName(d, playerId)} joined the game.`, playerId);
   });
 }
 
@@ -437,6 +468,16 @@ function handleAction(d: Draft, a: GameAction, isHost: boolean): void {
       if ((g.phase === "questionRound" || g.phase === "minigameQuestion") && g.question?.stage !== "answering" && g.question?.stage !== "targetAnswering")
         return onTimeout(d);
       fail("WRONG_PHASE", "Nothing to skip.");
+    }
+    case "endMinigame": {
+      if (!isHost) fail("NOT_HOST", "Only the host can end the mini-game.");
+      requirePhase(d, "minigamePlaying");
+      const mg = g.minigame!;
+      if (!mg.untimed) fail("WRONG_PHASE", "This mini-game ends on its own.");
+      if (d.s.ctx.now - g.phaseStartedAt < SKIP_GRACE_MS) return;
+      const def = minigameDef(d, mg.id);
+      if (def.onTimeout) mg.state = def.onTimeout(mg.state, mgStepCtx(d));
+      return finishMinigame(d);
     }
     case "finish": {
       if (!isHost) fail("NOT_HOST", "Only the host can finish the game.");
@@ -630,13 +671,13 @@ function advanceMovement(d: Draft) {
     payToll(d, pid, to);
     path.push(to);
     p.stats.stepsMoved++;
-    // Passing (or landing on) Start pays a lap bonus.
+    // Passing (or landing on) Start: roll again once this turn is over.
     const stepDef = tileDef(s.ctx.content, g.tileTypes[to] ?? getTile(board, to).type);
-    const lapCoins = stepDef?.params?.passCoins ?? 0;
-    if (lapCoins > 0) {
-      changeCoins(g, s, pid, lapCoins, "tile:start");
-      emit(s, { type: "sfx", id: "coin" });
-      log(g, s, `${playerName(d, pid)} passed Start: +${lapCoins} coins`, pid);
+    if ((stepDef?.params?.passReroll ?? 0) > 0 && g.startReroll !== pid) {
+      g.startReroll = pid;
+      emit(s, { type: "sfx", id: "star" });
+      emit(s, { type: "toast", text: `${playerName(d, pid)} passed Start: roll again after this turn!` });
+      log(g, s, `${playerName(d, pid)} passed Start: rolls again after this turn`, pid);
     }
     // Walking past the star: stop to buy it, but only if you can afford it.
     if (to === g.starTileId && mv.remaining > 0 && p.coins >= starPriceFor(d, pid)) {
@@ -1044,6 +1085,12 @@ function turnEnd(d: Draft) {
 
 function nextTurn(d: Draft) {
   const { g } = d;
+  // Start tile bonus: the same player takes another turn.
+  if (g.startReroll && g.startReroll === activeId(g)) {
+    g.startReroll = null;
+    return turnStart(d);
+  }
+  g.startReroll = null;
   g.activeIndex++;
   if (g.activeIndex >= g.order.length) {
     g.activeIndex = 0;
@@ -1117,6 +1164,12 @@ function questionServices(d: Draft): MinigameServices {
     leastTargeted: (cands) => leastTargeted(s.ctx.rng, cands, g.history.targetCounts),
     noteTargeted: (pid) => {
       g.history.targetCounts[pid] = (g.history.targetCounts[pid] ?? 0) + 1;
+    },
+    isPresent: (pid) => {
+      const p = room.players.find((x) => x.id === pid);
+      if (!p) return false;
+      if (p.connected) return true;
+      return s.ctx.now - (p.disconnectedAt ?? 0) < T.disconnectedAutoplayMs;
     },
   };
 }
@@ -1441,7 +1494,8 @@ function startMinigamePlay(d: Draft) {
   const def = minigameDef(d, mg.id);
   g.question = null;
   mg.startedAt = s.ctx.now;
-  mg.endsAt = s.ctx.now + def.durationSec * 1000;
+  mg.untimed = !!def.untimed;
+  mg.endsAt = def.untimed ? 0 : s.ctx.now + def.durationSec * 1000;
   mg.state = def.init({
     players: mg.participants,
     bonuses: mg.bonuses,
@@ -1451,7 +1505,7 @@ function startMinigamePlay(d: Draft) {
     services: questionServices(d),
   });
   emit(s, { type: "minigameStarted", id: mg.id });
-  goto(d, "minigamePlaying", def.durationSec * 1000 + M.graceMs);
+  goto(d, "minigamePlaying", def.untimed ? null : def.durationSec * 1000 + M.graceMs);
 }
 
 function finishMinigame(d: Draft) {

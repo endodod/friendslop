@@ -36,6 +36,8 @@ import {
   updatePlayer,
   updateSettings,
   applyHubAction,
+  addPlayerToGame,
+  addPlayerToHub,
   hubBotActions,
   hubConnectionChange,
   newHubBotMemory,
@@ -201,6 +203,9 @@ export class RoomManager {
       rec.room = addPlayer(room, { id, name: args.name ?? "", color: args.color, avatar: args.avatar, now: Date.now(), account: args.account });
       seat = { token: this.newToken(), role: "player", playerId: id, profileId: args.profileId ?? null };
       rec.seats.set(seat.token, seat);
+      // Joined a game that's already running: give them a seat in it.
+      if (rec.room.game) this.apply(rec, addPlayerToGame(rec.room, id, this.ctx(rec)));
+      else if (rec.room.hub) this.apply(rec, addPlayerToHub(rec.room, id, this.ctx(rec)));
     }
     // Only one live socket per seat: kick older sockets holding the same token.
     for (const [, other] of this.io.of("/").sockets) {
@@ -434,7 +439,7 @@ export class RoomManager {
 
   /** Invite a friend to this room. Checks are done by the caller (friendship, sender in room). */
   canInvite(rec: LiveRoom): void {
-    if (rec.room.stage !== "lobby") fail("GAME_IN_PROGRESS", "The game has already started.");
+    // Friends may join a running game too (they get a seat in it).
     if (rec.room.players.length >= GAME_CONFIG.players.max) fail("ROOM_FULL", "The room is full.");
   }
 

@@ -83,7 +83,7 @@ export function addPlayer(
     account?: { userId: string; username: string; photo: string | null } | null;
   },
 ): RoomState {
-  if (room.stage !== "lobby") fail("GAME_IN_PROGRESS", "This game has already started.");
+  // Joining a running game is fine: the server adds the seat to the game (addPlayerToGame / addPlayerToHub).
   if (room.players.length >= GAME_CONFIG.players.max) fail("ROOM_FULL", `This room is full (${GAME_CONFIG.players.max} players max).`);
   const name = sanitizeName(args.name);
   if (!name) fail("NAME_INVALID", "Please enter a name.");

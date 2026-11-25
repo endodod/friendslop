@@ -294,6 +294,16 @@ export const spectrum: HubGameDefinition<SpectrumState, SpectrumAction> = {
     maybeReveal(s, ctx);
   },
 
+  addPlayer(s, pid, ctx) {
+    if (s.players.includes(pid)) return;
+    s.players.push(pid);
+    s.scores[pid] = 0;
+    s.stats[pid] = { bullseyes: 0, guesses: 0, guessPoints: 0, totalDistance: 0, cluesGiven: 0, cluePoints: 0 };
+    // Their clue rounds go at the end, as many as everyone else gets.
+    const each = ctx.settings.hub?.spectrum?.cluesEach ?? 2;
+    for (let i = 0; i < each; i++) s.schedule.push(pid);
+  },
+
   connectionChanged(s, ctx) {
     maybeReveal(s, ctx);
   },

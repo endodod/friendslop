@@ -112,23 +112,24 @@ function TopBar({ compact }: { compact?: boolean }) {
   const active = players[g.order[g.activeIndex]];
   return (
     <header className="flex flex-col">
-    <div className={`grid items-center gap-1 px-2 py-2 sm:gap-3 sm:px-3 ${compact ? "grid-cols-[1fr_auto]" : "grid-cols-[1fr_minmax(0,auto)_1fr]"}`}>
-      <div className="flex min-w-0 items-center gap-1 sm:gap-3">
-      <span className="min-w-0 truncate whitespace-nowrap rounded-xl bg-panel-2 px-2 py-1 font-display sm:px-3">
+    <div className="flex items-center gap-1 px-2 py-2 sm:gap-3 sm:px-3">
+      {/* The round count is never shortened: it sits alone on the left; everything else lines up on the right. */}
+      <div className="flex shrink-0 items-center gap-1 sm:gap-2">
+      <span className="whitespace-nowrap rounded-xl bg-panel-2 px-2 py-1 font-display sm:px-3" data-testid="round-chip">
         {g.mode === "questionDebug" ? "Questions" : g.mode === "minigameDebug" ? "Practice" : g.turnCount > 0 ? `Round ${g.round}/${g.turnCount}` : `Round ${g.round}`}
       </span>
       {g.mode === "board" && (pub.settings.starGoal ?? 0) > 0 && (
-        <span className="rounded-xl bg-[#ffe066]/15 px-2 py-1 font-display text-sm text-[#ffe066]">First to {pub.settings.starGoal} ★</span>
+        <span className="whitespace-nowrap rounded-xl bg-[#ffe066]/15 px-2 py-1 font-display text-sm text-[#ffe066]">First to {pub.settings.starGoal} ★</span>
       )}
+      </div>
+      <div className="flex min-w-0 flex-1 items-center justify-end gap-1 sm:gap-3">
       {!compact && g.mode === "board" && active && !FOCUS_PHASES.has(g.phase) && (
-        <span className="truncate font-display text-muted">{active.name}&apos;s turn</span>
+        <span className="min-w-0 truncate font-display text-muted">{active.name}&apos;s turn</span>
       )}
       {!compact && g.mode === "board" && g.phase !== "podium" && <TurnOrder />}
-      </div>
-      {!compact && <LastAction />}
-      <div className="flex items-center justify-end gap-1 sm:gap-3">
+      {!compact && <LastAction className="min-w-0 shrink" />}
       {me && (
-        <span className="flex items-center gap-2 rounded-xl bg-panel-2 px-2 py-1 sm:gap-3 sm:px-3">
+        <span className="flex shrink-0 items-center gap-2 rounded-xl bg-panel-2 px-2 py-1 sm:gap-3 sm:px-3">
           <StarCount value={me.stars} size={18} />
           <CoinCount value={me.coins} size={18} />
         </span>

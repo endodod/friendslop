@@ -164,7 +164,8 @@ function Answering({
     draftTimer.current = setTimeout(() => void send("question:draft", { answer: a }), 150);
   };
   useEffect(() => {
-    if (!onSubmit || !participant || myAnswer) return;
+    // Untimed mini-game rounds (stageEndsAt 0) have no deadline to beat.
+    if (!onSubmit || !participant || myAnswer || !round.stageEndsAt) return;
     const ms = round.stageEndsAt - serverNow() - 700;
     const t = setTimeout(() => {
       if (latest.current) void onSubmit(latest.current);

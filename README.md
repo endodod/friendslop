@@ -5,7 +5,7 @@ host picks the game in the lobby and can switch between games without anyone lea
 
 | Game | Players | What it is |
 | --- | --- | --- |
-| **Party Board** | 2–8 | Board game: roll, move, buy stars. Every question is about one player (the **target**): you score by landing on the same answer as the target. A mini-game after every round. |
+| **Party Board** | 3–8 | Board game: roll, move, buy stars. Every question is about one player (the **target**): you score by landing on the same answer as the target. A mini-game after every round. |
 | **Spy Grid** | 4–8 | Two teams (Foxes vs Owls), 25 words. Each team's clue-giver sees the secret key and gives one-word clues; teammates vote on words. Find all your agents first, never touch the trap. |
 | **Spectrum** | 2–8 | A hidden target from 1 to 10 sits on a scale between two opposites. The clue-giver sees it and gives a clue; everyone picks a number. Exact 4, one off 2, two off 1; the clue-giver gets the average. |
 | **Bluff Club** | 3–8 | Each round is about one player: they write the real answer to "What would your friend name a boat?", everyone else writes a fake. Find the truth (+3), fool friends (+2 each), 😂 the funniest fake (+1). |
@@ -35,6 +35,10 @@ key; the TV never does. Players can flag cards for themselves (the little flag o
 see it), and while the game runs, chat rejects any word that is still hidden on the grid, so nobody can
 hint outside the official clue. Bluff Club shows every answer in lowercase without punctuation, so
 nobody gives themselves away by their writing style.
+
+Friends can join a game that's already running: in the Party Board they get a seat at the end of
+the turn order with the average coins of the others; in Spectrum and Bluff Club their own rounds
+are added at the end; in Spy Grid they join the smaller team.
 
 Refreshing or losing connection is fine: you get your seat back automatically. If you're gone
 on your turn, it auto-plays after a few seconds.

@@ -18,7 +18,7 @@ export interface SeriesPublic {
   round: PublicQuestionRound | null;
   points: Record<PlayerId, number>;
   lastGain: Record<PlayerId, number>;
-  answerMs: number;
+  answerMs: number | null;
 }
 
 /**
@@ -31,7 +31,8 @@ export function defineQuestionSeries(opts: {
   formats: string[];
   tags?: string[];
   allowData?: boolean;
-  answerMs: number;
+  /** null = no time limit (wait for everyone present). */
+  answerMs: number | null;
   introMs?: number;
   resultsMs?: number;
   durationSec: number;
@@ -52,6 +53,7 @@ export function defineQuestionSeries(opts: {
     id: opts.id,
     kind: "questionOnly",
     durationSec: opts.durationSec,
+    untimed: opts.answerMs === null,
     minPlayers: 2,
     inputSchema: z.object({ answer: AnswerSchema }) as never,
     init: ({ players, services, now, rng }) =>
@@ -61,7 +63,7 @@ export function defineQuestionSeries(opts: {
     tick: (s, { now, rng, services }) => {
       if (!s.round || s.done) return s;
       const before = s.round.stage;
-      const round = stepMiniRound(s.round, now, (r) => services.scoreAnswers(r.question, r.targetId, r.participants, r.answers), { resultsMs: opts.resultsMs ?? 2500 });
+      const round = stepMiniRound(s.round, now, (r) => services.scoreAnswers(r.question, r.targetId, r.participants, r.answers), { resultsMs: opts.resultsMs ?? 2500, present: services.isPresent });
       let next: SeriesState = { ...s, round };
       if (before === "answering" && round.stage === "reveal") {
         const gain = opts.points(round, services);

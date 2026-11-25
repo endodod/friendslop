@@ -114,7 +114,7 @@ Defaults picked where the build prompt left room, or where the environment force
 
 ## Playtest batch (accounts follow-up)
 
-- **Piggy Bank** fills from red-tile losses instead of a walk-past toll. **Start** pays +5 coins when passed or landed on.
+- **Piggy Bank** fills from red-tile losses instead of a walk-past toll. **Start**: passing or landing on it gives another roll once the turn is over (it used to pay +5 coins).
 - **Item tiles** drop strong items rarely: weight × (6 / effective price)^1.5 (`economy.itemDrop`). Shops are unchanged.
 - **Bonus stars** are drawn at random from the highlight categories (`bonusStars.json`, now also Biggest Thief and a
   per-question Enigma), only among categories somebody won; count = 1 + ceil(players / 2). The results page shows one
@@ -165,3 +165,20 @@ Defaults picked where the build prompt left room, or where the environment force
   for a player once they've been gone `disconnectedAutoplayMs`, so a page refresh doesn't cost your answer.
 - **Per-game account stats** (`UserGameStat`); `User.gamesPlayed/gamesWon` stay the totals. The migration backfills
   existing totals as Party Board games.
+
+## Party Board changes (after playtests)
+- **3 players minimum** for the board game (practice modes still run with 2).
+- **Rounds:** 5 / 10 / 12 / 15 / 20 / ∞.
+- **Answer options:** never more than 4 (`question.maxOptions`): "pick a player" questions show 4 random eligible players,
+  5-answer tile questions show 4 of their answers. Rankings keep all their items.
+- **Start tile:** passing or landing on it gives another roll once the turn is over (instead of +5 coins).
+- **Shop:** always stocks at least one way to a star: Star Thief, Swap Places or Star Warp.
+- **Vote and question mini-games have no clock** (`untimed`: Most Likely To, Judge's Call, Hall of Fame, Ranking, Speed Sync,
+  Duel, Hot or Not). Each step waits for everyone present (players gone longer than `disconnectedAutoplayMs` are skipped);
+  the host can press "End mini-game" for an AFK player. Speed Sync keeps its speed bonus for answering within 4 s.
+  Action mini-games keep their clocks.
+- **Underdog** was removed.
+- **Late joiners:** joining a running game gives a seat at the end of the turn order, on Start, with the average coins of the
+  others (at least the starting coins) and no stars. Hub games add the newcomer's rounds at the end (Spy Grid: smaller team).
+- **Token animations:** moves sent in one update (e.g. "Everyone moves back 3") walk at the same time, and the board waits a
+  moment before snapping to new server positions so it doesn't jump ahead of the walk.

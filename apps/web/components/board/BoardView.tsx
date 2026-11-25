@@ -64,13 +64,20 @@ interface Props {
 
 const LANDING_BEAT_MS = 450;
 
+/** Moves that arrive in the same server update (e.g. "Everyone moves back 3") play at the same time. */
+type MoveGroup = { playerId: string; path: string[] }[];
+
+/** How long a new server state waits before tokens jump to it, so move animations sent with it can start first. */
+const SYNC_DELAY_MS = 120;
+
 /** Token positions as displayed (lag behind server state while hop animations play). */
 function useDisplayedPositions(game: PublicGameState) {
   const [pos, setPos] = useState<Record<string, string>>(() =>
     Object.fromEntries(Object.values(game.players).map((p) => [p.id, p.tileId])),
   );
   const [hopping, setHopping] = useState<string | null>(null);
-  const queue = useRef<{ playerId: string; path: string[] }[]>([]);
+  const queue = useRef<MoveGroup[]>([]);
+  const collecting = useRef<MoveGroup | null>(null);
   const animating = useRef(false);
   const target = useRef(game);
   target.current = game;
@@ -79,8 +86,8 @@ function useDisplayedPositions(game: PublicGameState) {
     let release: ReturnType<typeof setTimeout> | null = null;
     const run = () => {
       if (animating.current) return;
-      const next = queue.current.shift();
-      if (!next) {
+      const group = queue.current.shift();
+      if (!group) {
         // settle on server truth
         setPos(Object.fromEntries(Object.values(target.current.players).map((p) => [p.id, p.tileId])));
         setHopping(null);
@@ -91,16 +98,22 @@ function useDisplayedPositions(game: PublicGameState) {
       if (release) clearTimeout(release);
       useStore.setState({ boardBusy: true });
       animating.current = true;
-      setHopping(next.playerId);
+      // The camera follows a lone mover; group moves keep the view on the active player.
+      setHopping(group.length === 1 ? group[0].playerId : null);
+      const steps = Math.max(...group.map((m) => m.path.length));
       let i = 0;
       const step = () => {
-        if (i >= next.path.length) {
+        if (i >= steps) {
           animating.current = false;
           run();
           return;
         }
-        const tile = next.path[i++];
-        setPos((p) => ({ ...p, [next.playerId]: tile }));
+        const k = i++;
+        setPos((p) => {
+          const next = { ...p };
+          for (const m of group) if (k < m.path.length) next[m.playerId] = m.path[k];
+          return next;
+        });
         play("hop", { rate: 0.9 + Math.random() * 0.25, volume: 0.5 });
         setTimeout(step, GAME_CONFIG.timers.hopMs);
       };
@@ -108,8 +121,18 @@ function useDisplayedPositions(game: PublicGameState) {
     };
     const off = onGameEvent((e) => {
       if (e.type === "tokenMoved") {
-        queue.current.push({ playerId: e.playerId, path: e.path });
-        run();
+        // Collect every move of this update into one group; a second move of the same player goes after.
+        let group = collecting.current;
+        if (!group || group.some((m) => m.playerId === e.playerId)) {
+          group = [];
+          collecting.current = group;
+          queue.current.push(group);
+          queueMicrotask(() => {
+            if (collecting.current === group) collecting.current = null;
+            run();
+          });
+        }
+        group.push({ playerId: e.playerId, path: e.path });
       } else if (e.type === "tokenTeleported") {
         setPos((p) => ({ ...p, [e.playerId]: e.tileId }));
       }
@@ -121,11 +144,15 @@ function useDisplayedPositions(game: PublicGameState) {
     };
   }, []);
 
-  // When no animation is running, follow the server state (reconnects, new games).
+  // When no animation is running, follow the server state (reconnects, new games). Wait a moment first:
+  // the state can arrive just before the move events that animate the way there.
   useEffect(() => {
-    if (!animating.current && queue.current.length === 0) {
-      setPos(Object.fromEntries(Object.values(game.players).map((p) => [p.id, p.tileId])));
-    }
+    const t = setTimeout(() => {
+      if (!animating.current && queue.current.length === 0) {
+        setPos(Object.fromEntries(Object.values(target.current.players).map((p) => [p.id, p.tileId])));
+      }
+    }, SYNC_DELAY_MS);
+    return () => clearTimeout(t);
   }, [game]);
 
   return { pos, hopping };

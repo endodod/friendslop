@@ -6,7 +6,7 @@ export const GAME_CONFIG = {
   players: { min: 2, max: 8 },
 
   /** 0 = unlimited: the game runs until someone reaches the star goal or the host finishes it. */
-  turns: { options: [10, 12, 15, 20, 0] as const, default: 12 },
+  turns: { options: [5, 10, 12, 15, 20, 0] as const, default: 12 },
 
   /** Win condition: 0 = most stars after the last round; N = first to N stars wins (rounds = time limit). */
   starGoals: { options: [0, 3, 5] as const, default: 0 },
@@ -75,6 +75,8 @@ export const GAME_CONFIG = {
   },
 
   question: {
+    /** Questions never show more answer options than this (player picks included), whatever the player count. */
+    maxOptions: 4,
     introMs: 3200,
     answerMs: 20000,
     /** The target answers after everyone else has (so nobody can peek at their screen). */

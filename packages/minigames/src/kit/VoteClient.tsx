@@ -16,7 +16,7 @@ export interface VoteClientOptions {
   noWinner: string;
 }
 
-/** Shared screen for the voting mini-games (Most Likely To, Judge's Call, Underdog, Hall of Fame). */
+/** Shared screen for the voting mini-games (Most Likely To, Judge's Call, Hall of Fame). */
 export function VoteClient({ opts, ...p }: MinigameClientProps<VotePublic, { myVote: string | null }> & { opts: VoteClientOptions }) {
   const r = p.pub.round;
   const [draft, setDraft] = useState<Answer | null>(null);
@@ -24,7 +24,8 @@ export function VoteClient({ opts, ...p }: MinigameClientProps<VotePublic, { myV
   // Time's almost up and you picked someone but didn't vote: that pick counts.
   useEffect(() => {
     const r = p.pub.round;
-    if (!r || r.stage !== "vote" || !p.isParticipant || p.priv?.myVote || !draft) return;
+    // No clock (stageEndsAt 0): nothing to beat.
+    if (!r || r.stage !== "vote" || !r.stageEndsAt || !p.isParticipant || p.priv?.myVote || !draft) return;
     const t = setTimeout(() => p.input({ answer: draft }), Math.max(0, r.stageEndsAt - p.now() - 700));
     return () => clearTimeout(t);
   }, [p, draft]);

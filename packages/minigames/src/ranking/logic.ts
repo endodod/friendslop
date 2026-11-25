@@ -6,7 +6,7 @@ export const rankingGame = defineQuestionSeries({
   rounds: (n) => Math.min(3, n + 1),
   formats: ["ranking"],
   allowData: true,
-  answerMs: 25000,
+  answerMs: null,
   resultsMs: 3500,
   durationSec: 150,
   points: (r) => {

@@ -33,3 +33,4 @@ export * from "./hub/registry";
 export * from "./hub/games/spygrid";
 export * from "./hub/games/spectrum";
 export * from "./hub/games/bluff";
+export { COMEBACK_EFFECTS, shopStock } from "./logic/items";

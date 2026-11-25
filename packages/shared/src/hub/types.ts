@@ -135,6 +135,8 @@ export interface HubGameDefinition<S extends HubPhaseState = HubPhaseState, A = 
   /** Host "skip": shorten a reveal / end a turn. Returns false if there's nothing to skip. */
   skip(state: S, ctx: HubCtx): boolean;
   removePlayer(state: S, playerId: PlayerId, ctx: HubCtx): void;
+  /** Someone joined mid-game: give them a place in the game. */
+  addPlayer(state: S, playerId: PlayerId, ctx: HubCtx): void;
   /** A connection changed: e.g. the only missing answer left → move on. */
   connectionChanged?(state: S, ctx: HubCtx): void;
   isOver(state: S): boolean;

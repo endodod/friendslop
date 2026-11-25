@@ -29,7 +29,7 @@ export const GAMES: GameInfo[] = [
       "Roll, move and grab stars on a board full of surprises. Questions are about the players: score by guessing what your friends answer about themselves. A mini-game after every round.",
     players: { min: 3, max: 8 },
     minutes: "30–60 min",
-    tags: ["Board", "Questions", "34 mini-games"],
+    tags: ["Board", "Questions", "33 mini-games"],
     howTo: [],
   },
   {

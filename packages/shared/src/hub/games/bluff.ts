@@ -395,6 +395,23 @@ export const bluff: HubGameDefinition<BluffState, BluffAction> = {
     maybeEndVoting(s, ctx);
   },
 
+  addPlayer(s, pid, ctx) {
+    if (s.players.includes(pid)) return;
+    s.players.push(pid);
+    s.scores[pid] = 0;
+    s.stats[pid] = emptyStats();
+    // Their spotlight rounds go at the end, with prompts nobody had yet.
+    const each = ctx.settings.hub?.bluff?.roundsEach ?? 1;
+    const family = !!ctx.settings.familyFriendly;
+    const used = new Set(s.schedule.map((x) => x.prompt.id));
+    const fresh = shuffle(
+      ctx.rng,
+      ctx.content.hub.bluffPrompts.filter((p) => (!family || !p.spicy) && !used.has(p.id)),
+    );
+    const pool = fresh.length ? fresh : ctx.content.hub.bluffPrompts;
+    for (let i = 0; i < each && pool.length; i++) s.schedule.push({ targetId: pid, prompt: pool[i % pool.length] });
+  },
+
   connectionChanged(s, ctx) {
     maybeEndWriting(s, ctx);
     maybeEndVoting(s, ctx);

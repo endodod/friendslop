@@ -215,6 +215,8 @@ describe("mini-game flow in a real game", () => {
         if (h.g.phase === "minigamePlaying") {
           h.now += 500;
           h.tick();
+          // Untimed (vote/question) mini-games wait for everyone: nobody answers here, so the host ends them.
+          if (h.g.phase === "minigamePlaying" && h.g.minigame?.untimed && h.now - h.g.phaseStartedAt > 60_000) h.act({ type: "endMinigame" }, true);
         } else h.timeout();
         for (const p of Object.values(h.g.players)) expect(p.coins).toBeGreaterThanOrEqual(0);
       }

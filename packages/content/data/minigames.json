@@ -369,21 +369,6 @@
       "bonus": "—"
     },
     {
-      "id": "underdog",
-      "name": "Underdog",
-      "icon": "wolf",
-      "weight": 2,
-      "goal": "Back the player with the fewest votes.",
-      "howTo": [
-        "Read the 'Who's most likely to…' prompt.",
-        "Vote for a player, but think about what the others pick.",
-        "Everyone who picked the least-voted player scores 2."
-      ],
-      "rules": "Who's most likely to…? Score by picking the player with the fewest votes.",
-      "controls": "Tap a player.",
-      "bonus": "—"
-    },
-    {
       "id": "hall-of-fame",
       "name": "Hall of Fame",
       "icon": "crown",

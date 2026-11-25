@@ -271,6 +271,18 @@ export function removePlayerFromHub(room: RoomState, playerId: PlayerId, ctx: En
   });
 }
 
+/** Someone joined while a hub game is running. On the results screen they simply watch (and play the next one). */
+export function addPlayerToHub(room: RoomState, playerId: PlayerId, ctx: EngineContext): EngineResult {
+  return withHub(room, ctx, (d) => {
+    const { rt, def } = d;
+    if (rt.players.includes(playerId) || rt.stage === "podium") return;
+    rt.players.push(playerId);
+    def.addPlayer(rt.state, playerId, d.hctx);
+    d.events.push({ type: "toast", text: `${d.hctx.name(playerId)} joined the game!` });
+    d.events.push({ type: "sfx", id: "join" });
+  });
+}
+
 export function hubConnectionChange(room: RoomState, ctx: EngineContext): EngineResult | null {
   const rt = room.hub;
   if (!rt || rt.stage !== "playing") return null;
