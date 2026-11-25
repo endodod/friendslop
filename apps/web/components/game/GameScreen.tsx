@@ -265,8 +265,8 @@ function LastAction({ className = "" }: { className?: string }) {
 }
 
 /** Everyone sees this while the host has paused; the host can resume from it. */
-function PauseOverlay() {
-  const pause = useStore((s) => s.pub?.game?.pause ?? null);
+export function PauseOverlay() {
+  const pause = useStore((s) => s.pub?.game?.pause ?? s.pub?.hub?.pause ?? null);
   const isHost = useIsHost();
   const players = usePlayers();
   // Solo mini-games keep their own clocks on each phone: freeze those too.

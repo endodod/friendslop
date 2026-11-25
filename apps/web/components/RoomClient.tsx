@@ -7,6 +7,7 @@ import { AvatarPicker } from "./AvatarPicker";
 import { ColorPicker } from "./ColorPicker";
 import { Lobby } from "./lobby/Lobby";
 import { GameScreen } from "./game/GameScreen";
+import { HubGameScreen } from "./hub/HubGameScreen";
 import { ConnectionBadge, Toasts } from "./ui";
 import { useRoom } from "@/lib/useRoom";
 import { useStore } from "@/lib/store";
@@ -44,6 +45,8 @@ export function RoomClient({ code, display }: { code: string; display: boolean }
         <JoinForm code={code} error={error} onJoin={join} />
       ) : pub?.stage === "game" && pub.game ? (
         <GameScreen />
+      ) : pub?.stage === "game" && pub.hub ? (
+        <HubGameScreen />
       ) : (
         <Lobby code={code} onLeave={leave} />
       )}

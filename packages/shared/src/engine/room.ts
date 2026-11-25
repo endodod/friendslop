@@ -5,6 +5,16 @@ import { fail } from "./errors";
 import { CUSTOM_PACK_ID } from "../logic/custom";
 import { RANDOM_BOARD_ID } from "../logic/board";
 import type { RoomPlayer, RoomSettings, RoomState } from "./types";
+import { DEFAULT_HUB_SETTINGS, type GameId, type HubSettings, type TeamId } from "../hub/types";
+import { GAMES } from "../hub/catalog";
+import { canStartHub } from "../hub/engine";
+
+/** Options of the hub games' lobby settings. */
+export const HUB_SETTING_OPTIONS = {
+  spygridPace: ["fast", "normal", "relaxed", "off"] as const,
+  spectrumCluesEach: [1, 2, 3] as const,
+  bluffRoundsEach: [1, 2, 3] as const,
+};
 
 export function generateRoomCode(rng: Rng, taken: (code: string) => boolean = () => false): string {
   const { codeAlphabet, codeLength } = GAME_CONFIG.room;
@@ -18,6 +28,8 @@ export function generateRoomCode(rng: Rng, taken: (code: string) => boolean = ()
 
 export function defaultSettings(content: ContentBundle): RoomSettings {
   return {
+    gameId: "party",
+    hub: structuredClone(DEFAULT_HUB_SETTINGS),
     turnCount: GAME_CONFIG.turns.default,
     tileFrequency: {},
     minigameMix: {},
@@ -47,6 +59,7 @@ export function createRoom(code: string, now: number, content: ContentBundle): R
     customQuestions: [],
     stage: "lobby",
     game: null,
+    hub: null,
   };
 }
 
@@ -154,9 +167,24 @@ export function assertHost(room: RoomState, actor: { playerId?: string; isDispla
   if (!actor.playerId || room.hostId !== actor.playerId) fail("NOT_HOST", "Only the host can do that.");
 }
 
-export function updateSettings(room: RoomState, patch: Partial<RoomSettings>, content: ContentBundle): RoomState {
+export type RoomSettingsPatch = Omit<Partial<RoomSettings>, "hub"> & {
+  hub?: { [K in keyof HubSettings]?: Partial<HubSettings[K]> };
+};
+
+export function updateSettings(room: RoomState, patch: RoomSettingsPatch, content: ContentBundle): RoomState {
   if (room.stage !== "lobby") fail("GAME_IN_PROGRESS", "Settings are locked during a game.");
-  const s = { ...room.settings, ...patch };
+  const base = room.settings.hub ?? DEFAULT_HUB_SETTINGS;
+  const hub: HubSettings = {
+    spygrid: { ...DEFAULT_HUB_SETTINGS.spygrid, ...base.spygrid, ...patch.hub?.spygrid },
+    spectrum: { ...DEFAULT_HUB_SETTINGS.spectrum, ...base.spectrum, ...patch.hub?.spectrum },
+    bluff: { ...DEFAULT_HUB_SETTINGS.bluff, ...base.bluff, ...patch.hub?.bluff },
+  };
+  const s: RoomSettings = { ...room.settings, ...patch, hub, gameId: patch.gameId ?? room.settings.gameId ?? "party" };
+  if (!GAMES.some((g) => g.id === s.gameId)) fail("INVALID_INPUT", "Unknown game.");
+  const O = HUB_SETTING_OPTIONS;
+  if (!(O.spygridPace as readonly string[]).includes(hub.spygrid.pace)) fail("INVALID_INPUT", "Invalid timer setting.");
+  if (!(O.spectrumCluesEach as readonly number[]).includes(hub.spectrum.cluesEach)) fail("INVALID_INPUT", "Invalid round count.");
+  if (!(O.bluffRoundsEach as readonly number[]).includes(hub.bluff.roundsEach)) fail("INVALID_INPUT", "Invalid round count.");
   if (!(GAME_CONFIG.turns.options as readonly number[]).includes(s.turnCount)) fail("INVALID_INPUT", "Invalid turn count.");
   // Themes used to be a separate filter; packs are the only switch now.
   delete (s as { themes?: unknown }).themes;
@@ -187,6 +215,36 @@ export function dataQuestionsAvailable(room: RoomState): boolean {
 
 export function canStart(room: RoomState): { ok: true } | { ok: false; reason: string } {
   if (room.players.length < GAME_CONFIG.players.min) return { ok: false, reason: "Need at least 2 players." };
+  const gameId: GameId = room.settings.gameId ?? "party";
+  if (gameId !== "party") {
+    const hub = canStartHub(room, gameId);
+    if (!hub.ok) return hub;
+  }
   if (!room.players.every((p) => p.ready)) return { ok: false, reason: "Everyone needs to be ready." };
   return { ok: true };
+}
+
+/** Spy Grid lobby: pick a team (null = any) and/or volunteer as the team's clue-giver. */
+export function setTeam(room: RoomState, playerId: string, patch: { team?: TeamId | null; clueGiver?: boolean }): RoomState {
+  if (room.stage !== "lobby") fail("GAME_IN_PROGRESS", "Teams are locked during a game.");
+  const me = room.players.find((p) => p.id === playerId);
+  if (!me) fail("UNKNOWN_PLAYER", "Unknown player.");
+  const team = patch.team !== undefined ? patch.team : (me.team ?? null);
+  let clueGiver = patch.clueGiver !== undefined ? patch.clueGiver : !!me.clueGiver;
+  if (!team) clueGiver = false;
+  if (clueGiver && room.players.some((p) => p.id !== playerId && p.team === team && p.clueGiver))
+    fail("INVALID_INPUT", "Your team already has a clue-giver.");
+  return { ...room, players: room.players.map((p) => (p.id === playerId ? { ...p, team, clueGiver } : p)) };
+}
+
+/** Host: shuffle everyone into two even teams (clears clue-giver picks). */
+export function shuffleTeams(room: RoomState, rng: () => number): RoomState {
+  if (room.stage !== "lobby") fail("GAME_IN_PROGRESS", "Teams are locked during a game.");
+  const ids = room.players.map((p) => p.id);
+  for (let i = ids.length - 1; i > 0; i--) {
+    const j = Math.floor(rng() * (i + 1));
+    [ids[i], ids[j]] = [ids[j], ids[i]];
+  }
+  const teamOf = new Map(ids.map((id, i) => [id, (i % 2 === 0 ? "a" : "b") as TeamId]));
+  return { ...room, players: room.players.map((p) => ({ ...p, team: teamOf.get(p.id) ?? null, clueGiver: false })) };
 }

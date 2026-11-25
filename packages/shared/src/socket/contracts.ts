@@ -32,6 +32,14 @@ export const RoomSettingsPatchSchema = z
     familyFriendly: z.boolean(),
     language: LanguageSchema,
     boardId: z.string().max(64),
+    gameId: z.enum(["party", "spygrid", "spectrum", "bluff"]),
+    hub: z
+      .object({
+        spygrid: z.object({ pace: z.enum(["fast", "normal", "relaxed", "off"]) }).partial(),
+        spectrum: z.object({ cluesEach: z.number().int() }).partial(),
+        bluff: z.object({ roundsEach: z.number().int() }).partial(),
+      })
+      .partial(),
   })
   .partial();
 
@@ -45,6 +53,8 @@ export const ClientEvents = {
     profileToken: z.string().max(64).optional(),
     /** Signed in with a profile picture: show it (default) or use the chosen icon instead. */
     usePhoto: z.boolean().optional(),
+    /** Game picked on the hub page (the host can change it in the lobby). */
+    gameId: z.enum(["party", "spygrid", "spectrum", "bluff"]).optional(),
   }),
   "room:join": z.object({
     code: RoomCodeSchema,
@@ -68,6 +78,12 @@ export const ClientEvents = {
     usePhoto: z.boolean().optional(),
   }),
   "room:kick": z.object({ playerId: PlayerIdSchema }),
+  /** Spy Grid lobby: pick your team (null = any) and/or volunteer as clue-giver. */
+  "room:team": z.object({ team: z.enum(["a", "b"]).nullable().optional(), clueGiver: z.boolean().optional() }),
+  /** Host: shuffle everyone into two even teams. */
+  "room:shuffleTeams": z.object({}),
+  /** A move in a hub game (validated by the game itself). */
+  "hub:action": z.object({ action: z.unknown() }),
   "player:ready": z.object({ ready: z.boolean() }),
   "game:start": z.object({
     mode: z.enum(["board", "questionDebug", "minigameDebug"]).default("board"),

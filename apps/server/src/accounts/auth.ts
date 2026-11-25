@@ -47,7 +47,9 @@ export async function userFromToken(token: string | null | undefined): Promise<U
   return s.user;
 }
 
-type PublicUserRow = Pick<User, "id" | "username" | "avatarVersion" | "avatarMime" | "createdAt" | "gamesPlayed" | "gamesWon" | "starsCollected">;
+type PublicUserRow = Pick<User, "id" | "username" | "avatarVersion" | "avatarMime" | "createdAt" | "gamesPlayed" | "gamesWon" | "starsCollected"> & {
+  gameStats?: { gameId: string; played: number; won: number }[];
+};
 
 export function toPublicUser(u: PublicUserRow): PublicUser {
   return {
@@ -55,7 +57,12 @@ export function toPublicUser(u: PublicUserRow): PublicUser {
     username: u.username,
     photo: u.avatarMime ? avatarPath(u.id, u.avatarVersion) : null,
     createdAt: u.createdAt.toISOString(),
-    stats: { gamesPlayed: u.gamesPlayed, gamesWon: u.gamesWon, starsCollected: u.starsCollected },
+    stats: {
+      gamesPlayed: u.gamesPlayed,
+      gamesWon: u.gamesWon,
+      starsCollected: u.starsCollected,
+      byGame: Object.fromEntries((u.gameStats ?? []).map((g) => [g.gameId, { played: g.played, won: g.won }])),
+    },
   };
 }
 
@@ -69,4 +76,5 @@ export const publicUserSelect = {
   gamesPlayed: true,
   gamesWon: true,
   starsCollected: true,
+  gameStats: { select: { gameId: true, played: true, won: true } },
 } as const;

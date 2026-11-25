@@ -1,0 +1,889 @@
+{
+ "prompts": [
+  {
+   "id": "bluff.boat",
+   "prompt": "What would {target} name a boat?",
+   "decoys": [
+    "The Unsinkable",
+    "Seas the Day",
+    "Boaty McBoatface",
+    "Knot Today"
+   ]
+  },
+  {
+   "id": "bluff.wifi",
+   "prompt": "What would {target} name their Wi-Fi network?",
+   "decoys": [
+    "FBI Surveillance Van",
+    "Pretty Fly for a WiFi",
+    "Get Your Own",
+    "LAN Before Time"
+   ]
+  },
+  {
+   "id": "bluff.band",
+   "prompt": "What would {target}'s band be called?",
+   "decoys": [
+    "The Midnight Snacks",
+    "Unpaid Interns",
+    "Socks & Sandals",
+    "Velvet Thunder"
+   ]
+  },
+  {
+   "id": "bluff.karaoke",
+   "prompt": "What's {target}'s go-to karaoke song?",
+   "decoys": [
+    "Bohemian Rhapsody",
+    "Don't Stop Believin'",
+    "I Will Survive",
+    "Mr. Brightside"
+   ]
+  },
+  {
+   "id": "bluff.lastmeal",
+   "prompt": "What would {target} pick as their last meal?",
+   "decoys": [
+    "A giant lasagna",
+    "Grandma's soup",
+    "Sushi platter",
+    "Cheeseburger and fries"
+   ]
+  },
+  {
+   "id": "bluff.emoji",
+   "prompt": "What emoji does {target} overuse?",
+   "decoys": [
+    "😂",
+    "💀",
+    "🙃",
+    "👀"
+   ]
+  },
+  {
+   "id": "bluff.superpower",
+   "prompt": "What superpower would {target} choose?",
+   "decoys": [
+    "Teleportation",
+    "Invisibility",
+    "Flying",
+    "Talking to animals"
+   ]
+  },
+  {
+   "id": "bluff.fear",
+   "prompt": "What weird thing is {target} secretly scared of?",
+   "decoys": [
+    "Pigeons",
+    "Escalators",
+    "Balloons",
+    "Deep water"
+   ]
+  },
+  {
+   "id": "bluff.pet",
+   "prompt": "What would {target} name a pet goldfish?",
+   "decoys": [
+    "Sir Swims-a-Lot",
+    "Bubbles",
+    "Gordon",
+    "Fish Sheeran"
+   ]
+  },
+  {
+   "id": "bluff.autobiography",
+   "prompt": "What would {target}'s autobiography be called?",
+   "decoys": [
+    "Running Late",
+    "Snacks & Regrets",
+    "It Was Like That When I Got Here",
+    "Mostly Harmless"
+   ]
+  },
+  {
+   "id": "bluff.celebrity",
+   "prompt": "Which celebrity would {target} most like to have dinner with?",
+   "decoys": [
+    "Keanu Reeves",
+    "Beyoncé",
+    "Gordon Ramsay",
+    "Dwayne Johnson"
+   ]
+  },
+  {
+   "id": "bluff.tattoo",
+   "prompt": "What tattoo would {target} get after losing a bet?",
+   "decoys": [
+    "A dolphin on the ankle",
+    "\"Mom\" in a heart",
+    "A tiny taco",
+    "Their own face"
+   ]
+  },
+  {
+   "id": "bluff.dreamjob",
+   "prompt": "What was {target}'s dream job as a kid?",
+   "decoys": [
+    "Astronaut",
+    "Dinosaur scientist",
+    "Pop star",
+    "Firefighter"
+   ]
+  },
+  {
+   "id": "bluff.hiddentalent",
+   "prompt": "What's {target}'s hidden talent?",
+   "decoys": [
+    "Juggling",
+    "Wiggling their ears",
+    "Perfect parallel parking",
+    "Beatboxing"
+   ]
+  },
+  {
+   "id": "bluff.sandwich",
+   "prompt": "What's {target}'s perfect sandwich?",
+   "decoys": [
+    "Peanut butter and banana",
+    "Classic BLT",
+    "Grilled cheese",
+    "Everything in the fridge"
+   ]
+  },
+  {
+   "id": "bluff.roadtrip",
+   "prompt": "What snack does {target} always buy on a road trip?",
+   "decoys": [
+    "Gummy bears",
+    "Beef jerky",
+    "Salted pretzels",
+    "Sour candy"
+   ]
+  },
+  {
+   "id": "bluff.zombie",
+   "prompt": "What would be {target}'s weapon in a zombie apocalypse?",
+   "decoys": [
+    "A frying pan",
+    "A cricket bat",
+    "A leaf blower",
+    "Their wit"
+   ]
+  },
+  {
+   "id": "bluff.moviequote",
+   "prompt": "What movie quote does {target} say way too often?",
+   "decoys": [
+    "I'll be back",
+    "Just keep swimming",
+    "May the Force be with you",
+    "You shall not pass"
+   ]
+  },
+  {
+   "id": "bluff.ringtone",
+   "prompt": "What would {target}'s ringtone be?",
+   "decoys": [
+    "A duck quacking",
+    "The Nokia tune",
+    "Darth Vader's theme",
+    "Silence, always on mute"
+   ]
+  },
+  {
+   "id": "bluff.excuse",
+   "prompt": "What's {target}'s classic excuse for being late?",
+   "decoys": [
+    "Traffic was crazy",
+    "My alarm didn't go off",
+    "I couldn't find my keys",
+    "The bus was early"
+   ]
+  },
+  {
+   "id": "bluff.desertisland",
+   "prompt": "What item would {target} bring to a desert island?",
+   "decoys": [
+    "A hammock",
+    "A guitar",
+    "Sunscreen",
+    "A satellite phone"
+   ]
+  },
+  {
+   "id": "bluff.superhero",
+   "prompt": "What would {target}'s superhero name be?",
+   "decoys": [
+    "Captain Nap",
+    "The Procrastinator",
+    "Snack Woman",
+    "Mister Overthink"
+   ]
+  },
+  {
+   "id": "bluff.restaurant",
+   "prompt": "If {target} opened a restaurant, what would it be called?",
+   "decoys": [
+    "The Hungry Hippo",
+    "Fork Yeah",
+    "Eat Your Heart Out",
+    "Thyme After Thyme"
+   ]
+  },
+  {
+   "id": "bluff.signature",
+   "prompt": "What's {target}'s signature dance move?",
+   "decoys": [
+    "The robot",
+    "The sprinkler",
+    "Awkward shoulder shuffle",
+    "The worm"
+   ]
+  },
+  {
+   "id": "bluff.pizza",
+   "prompt": "What's {target}'s favourite pizza topping?",
+   "decoys": [
+    "Pineapple",
+    "Pepperoni",
+    "Mushrooms",
+    "Extra cheese"
+   ]
+  },
+  {
+   "id": "bluff.famousfor",
+   "prompt": "What would {target} be famous for in 10 years?",
+   "decoys": [
+    "A viral cooking video",
+    "Inventing a weird app",
+    "Winning a hot dog contest",
+    "A true crime podcast"
+   ]
+  },
+  {
+   "id": "bluff.guilty",
+   "prompt": "What's {target}'s guiltiest TV pleasure?",
+   "decoys": [
+    "Reality dating shows",
+    "Cooking competitions",
+    "Old cartoons",
+    "Home makeover shows"
+   ]
+  },
+  {
+   "id": "bluff.spirit",
+   "prompt": "What's {target}'s spirit animal?",
+   "decoys": [
+    "A sleepy cat",
+    "A golden retriever",
+    "A raccoon",
+    "An owl"
+   ]
+  },
+  {
+   "id": "bluff.catchphrase",
+   "prompt": "What's {target}'s catchphrase?",
+   "decoys": [
+    "It is what it is",
+    "Literally dying",
+    "No worries",
+    "Wait, what?"
+   ]
+  },
+  {
+   "id": "bluff.morning",
+   "prompt": "What's the first thing {target} does in the morning?",
+   "decoys": [
+    "Checks their phone",
+    "Hits snooze three times",
+    "Makes coffee",
+    "Complains"
+   ]
+  },
+  {
+   "id": "bluff.crush",
+   "prompt": "Who was {target}'s first celebrity crush?",
+   "decoys": [
+    "Leonardo DiCaprio",
+    "Hilary Duff",
+    "Zac Efron",
+    "Avril Lavigne"
+   ]
+  },
+  {
+   "id": "bluff.lottery",
+   "prompt": "What's the first thing {target} would buy after winning the lottery?",
+   "decoys": [
+    "A private island",
+    "A ridiculous car",
+    "A house for their parents",
+    "A lifetime of pizza"
+   ]
+  },
+  {
+   "id": "bluff.holiday",
+   "prompt": "Where would {target} go on a dream holiday?",
+   "decoys": [
+    "Japan",
+    "Iceland",
+    "The Maldives",
+    "Disneyland"
+   ]
+  },
+  {
+   "id": "bluff.weirdfood",
+   "prompt": "What weird food combo does {target} secretly love?",
+   "decoys": [
+    "Fries dipped in milkshake",
+    "Pickles and peanut butter",
+    "Cereal with orange juice",
+    "Pizza with honey"
+   ]
+  },
+  {
+   "id": "bluff.retirement",
+   "prompt": "What will {target} do when they retire?",
+   "decoys": [
+    "Open a bakery",
+    "Sail around the world",
+    "Garden all day",
+    "Start a podcast"
+   ]
+  },
+  {
+   "id": "bluff.mascot",
+   "prompt": "If {target} were a sports mascot, what would they be?",
+   "decoys": [
+    "A dancing taco",
+    "A grumpy seagull",
+    "A giant foam finger",
+    "A confused moose"
+   ]
+  },
+  {
+   "id": "bluff.shop",
+   "prompt": "If {target} owned a shop, what would it sell?",
+   "decoys": [
+    "Fancy candles",
+    "Vintage sneakers",
+    "Only socks",
+    "Board games"
+   ]
+  },
+  {
+   "id": "bluff.tvshow",
+   "prompt": "What TV show could {target} rewatch forever?",
+   "decoys": [
+    "Friends",
+    "The Office",
+    "Avatar",
+    "Gilmore Girls"
+   ]
+  },
+  {
+   "id": "bluff.nickname",
+   "prompt": "What nickname did {target} have as a kid?",
+   "decoys": [
+    "Shorty",
+    "Bean",
+    "Turbo",
+    "Professor"
+   ]
+  },
+  {
+   "id": "bluff.museum",
+   "prompt": "What would be in a museum about {target}?",
+   "decoys": [
+    "A wall of hoodies",
+    "Their first phone",
+    "A lost sock collection",
+    "An empty pizza box"
+   ]
+  },
+  {
+   "id": "bluff.apocalypse",
+   "prompt": "What would {target} hoard before the apocalypse?",
+   "decoys": [
+    "Toilet paper",
+    "Instant noodles",
+    "Batteries",
+    "Chocolate"
+   ]
+  },
+  {
+   "id": "bluff.roommate",
+   "prompt": "What's {target}'s most annoying roommate habit?",
+   "decoys": [
+    "Leaving dishes in the sink",
+    "Singing in the shower",
+    "Never buying toilet paper",
+    "Late night snacks"
+   ]
+  },
+  {
+   "id": "bluff.gift",
+   "prompt": "What's the worst gift {target} ever got?",
+   "decoys": [
+    "A fruitcake",
+    "Socks with their own face",
+    "A self-help book",
+    "A singing fish"
+   ]
+  },
+  {
+   "id": "bluff.sport",
+   "prompt": "What Olympic sport would {target} be surprisingly good at?",
+   "decoys": [
+    "Curling",
+    "Table tennis",
+    "Synchronized swimming",
+    "Speed walking"
+   ]
+  },
+  {
+   "id": "bluff.spy",
+   "prompt": "What would {target}'s secret agent codename be?",
+   "decoys": [
+    "Agent Nap",
+    "The Velvet Fox",
+    "Double-O Snack",
+    "Shadow"
+   ]
+  },
+  {
+   "id": "bluff.plant",
+   "prompt": "What kind of plant is {target}?",
+   "decoys": [
+    "A cactus",
+    "A sunflower",
+    "A dramatic fern",
+    "A Venus flytrap"
+   ]
+  },
+  {
+   "id": "bluff.weekend",
+   "prompt": "What does {target}'s perfect weekend look like?",
+   "decoys": [
+    "Sleeping until noon",
+    "A hike and a brunch",
+    "Gaming marathon",
+    "Party all night"
+   ]
+  },
+  {
+   "id": "bluff.argument",
+   "prompt": "What does {target} argue about way too much?",
+   "decoys": [
+    "Whether a hot dog is a sandwich",
+    "Pineapple on pizza",
+    "Which movie is better",
+    "Directions"
+   ]
+  },
+  {
+   "id": "bluff.childhood",
+   "prompt": "What was {target}'s favourite toy as a kid?",
+   "decoys": [
+    "LEGO",
+    "A stuffed rabbit",
+    "A Game Boy",
+    "Toy dinosaurs"
+   ]
+  },
+  {
+   "id": "bluff.flavor",
+   "prompt": "If {target} were an ice cream flavour, what would they be?",
+   "decoys": [
+    "Mint chocolate chip",
+    "Salted caramel",
+    "Plain vanilla",
+    "Rocky road"
+   ]
+  },
+  {
+   "id": "bluff.reality",
+   "prompt": "What reality show would {target} win?",
+   "decoys": [
+    "Survivor",
+    "Bake Off",
+    "Love Island",
+    "The Amazing Race"
+   ]
+  },
+  {
+   "id": "bluff.rule",
+   "prompt": "If {target} ruled the world, what's the first new law?",
+   "decoys": [
+    "Naps are mandatory",
+    "No meetings on Mondays",
+    "Free pizza Fridays",
+    "Ban slow walkers"
+   ]
+  },
+  {
+   "id": "bluff.alias",
+   "prompt": "What fake name does {target} give at coffee shops?",
+   "decoys": [
+    "Batman",
+    "Gandalf",
+    "Beyoncé",
+    "Steve"
+   ]
+  },
+  {
+   "id": "bluff.hobby",
+   "prompt": "What hobby did {target} quit after a week?",
+   "decoys": [
+    "Learning guitar",
+    "Running",
+    "Knitting",
+    "Learning Japanese"
+   ]
+  },
+  {
+   "id": "bluff.fridge",
+   "prompt": "What's always in {target}'s fridge?",
+   "decoys": [
+    "Hot sauce",
+    "Leftover pizza",
+    "Way too many sauces",
+    "Nothing but drinks"
+   ]
+  },
+  {
+   "id": "bluff.superstition",
+   "prompt": "What silly superstition does {target} believe?",
+   "decoys": [
+    "Never walk under ladders",
+    "Lucky socks for big days",
+    "Knocking on wood",
+    "Never say \"quiet shift\""
+   ]
+  },
+  {
+   "id": "bluff.gameshow",
+   "prompt": "What would {target}'s game show be called?",
+   "decoys": [
+    "Who Wants to Be Late",
+    "Snack or Sack",
+    "The Overthinker",
+    "Nap Quest"
+   ]
+  },
+  {
+   "id": "bluff.villain",
+   "prompt": "What would be {target}'s evil plan as a villain?",
+   "decoys": [
+    "Stealing all the left socks",
+    "Making every Monday longer",
+    "Banning naps",
+    "Replacing coffee with decaf"
+   ]
+  },
+  {
+   "id": "bluff.song",
+   "prompt": "What song describes {target}'s life right now?",
+   "decoys": [
+    "Under Pressure",
+    "Bad Day",
+    "Walking on Sunshine",
+    "Lose Yourself"
+   ]
+  },
+  {
+   "id": "bluff.phone",
+   "prompt": "What app does {target} spend the most time on?",
+   "decoys": [
+    "TikTok",
+    "YouTube",
+    "Reddit",
+    "Their banking app, crying"
+   ]
+  },
+  {
+   "id": "bluff.dish",
+   "prompt": "What's the one dish {target} can actually cook?",
+   "decoys": [
+    "Spaghetti",
+    "Pancakes",
+    "Instant noodles",
+    "Scrambled eggs"
+   ]
+  },
+  {
+   "id": "bluff.smell",
+   "prompt": "What smell reminds {target} of home?",
+   "decoys": [
+    "Fresh bread",
+    "Grandma's perfume",
+    "Rain",
+    "Laundry"
+   ]
+  },
+  {
+   "id": "bluff.award",
+   "prompt": "What award would {target} win at a party?",
+   "decoys": [
+    "Last one to leave",
+    "Best snack bringer",
+    "Loudest laugh",
+    "Most likely to fall asleep"
+   ]
+  },
+  {
+   "id": "bluff.tshirt",
+   "prompt": "What would {target}'s T-shirt slogan be?",
+   "decoys": [
+    "I need a nap",
+    "Powered by coffee",
+    "Ask me about my dog",
+    "Error 404: Motivation not found"
+   ]
+  },
+  {
+   "id": "bluff.car",
+   "prompt": "What would {target} name their car?",
+   "decoys": [
+    "The Beast",
+    "Betsy",
+    "Lightning",
+    "The Tin Can"
+   ]
+  },
+  {
+   "id": "bluff.history",
+   "prompt": "What era of history would {target} visit first?",
+   "decoys": [
+    "Ancient Egypt",
+    "The Wild West",
+    "The 80s",
+    "Medieval times"
+   ]
+  },
+  {
+   "id": "bluff.regret",
+   "prompt": "What's {target}'s most regrettable haircut?",
+   "decoys": [
+    "A bowl cut",
+    "Frosted tips",
+    "Shaved eyebrow",
+    "A mullet"
+   ]
+  },
+  {
+   "id": "bluff.password",
+   "prompt": "What's {target}'s password (probably)?",
+   "decoys": [
+    "password123",
+    "their pet's name",
+    "qwerty",
+    "ilovepizza"
+   ]
+  },
+  {
+   "id": "bluff.shower",
+   "prompt": "What does {target} sing in the shower?",
+   "decoys": [
+    "Disney songs",
+    "Sad ballads",
+    "Opera, badly",
+    "Their own jingles"
+   ]
+  },
+  {
+   "id": "bluff.morningdrink",
+   "prompt": "What's {target}'s go-to drink?",
+   "decoys": [
+    "Iced coffee",
+    "Green tea",
+    "Energy drink",
+    "Hot chocolate"
+   ]
+  },
+  {
+   "id": "bluff.rob",
+   "prompt": "What would {target} steal in a museum heist?",
+   "decoys": [
+    "The Mona Lisa",
+    "A dinosaur bone",
+    "The gift shop snacks",
+    "A crown"
+   ]
+  },
+  {
+   "id": "bluff.complain",
+   "prompt": "What does {target} complain about the most?",
+   "decoys": [
+    "The weather",
+    "Being tired",
+    "Prices these days",
+    "Their phone battery"
+   ]
+  },
+  {
+   "id": "bluff.superstar",
+   "prompt": "If {target} were a pop star, what would their stage name be?",
+   "decoys": [
+    "Lil Snooze",
+    "DJ Overthink",
+    "Lady Gaga 2",
+    "The Sandwich Kid"
+   ]
+  },
+  {
+   "id": "bluff.stuck",
+   "prompt": "Who would {target} want to be stuck in an elevator with?",
+   "decoys": [
+    "A comedian",
+    "A doctor",
+    "Their mom",
+    "A snack delivery guy"
+   ]
+  },
+  {
+   "id": "bluff.group",
+   "prompt": "What's {target}'s role in the group?",
+   "decoys": [
+    "The planner",
+    "The one who's always late",
+    "The therapist",
+    "The chaos"
+   ]
+  },
+  {
+   "id": "bluff.quote",
+   "prompt": "What would {target}'s yearbook quote be?",
+   "decoys": [
+    "I came, I saw, I napped",
+    "Don't take life too seriously",
+    "Out of order",
+    "Catch me if you can"
+   ]
+  },
+  {
+   "id": "bluff.monster",
+   "prompt": "Which mythical creature would {target} want as a pet?",
+   "decoys": [
+    "A dragon",
+    "A unicorn",
+    "A phoenix",
+    "A tiny kraken"
+   ]
+  },
+  {
+   "id": "bluff.sin",
+   "prompt": "What's {target}'s biggest kitchen crime?",
+   "decoys": [
+    "Ketchup on everything",
+    "Microwaving fish",
+    "Cereal before milk",
+    "Burning water"
+   ]
+  },
+  {
+   "id": "bluff.dinnerparty",
+   "prompt": "What would {target} bring to a dinner party?",
+   "decoys": [
+    "A bottle of wine",
+    "Store-bought cookies",
+    "A board game",
+    "Their appetite"
+   ]
+  },
+  {
+   "id": "bluff.store",
+   "prompt": "What store could {target} spend all day in?",
+   "decoys": [
+    "IKEA",
+    "A bookstore",
+    "A hardware store",
+    "A candy shop"
+   ]
+  },
+  {
+   "id": "bluff.screams",
+   "prompt": "What makes {target} scream instantly?",
+   "decoys": [
+    "A spider",
+    "A surprise party",
+    "Their phone on 1%",
+    "A loud alarm"
+   ]
+  },
+  {
+   "id": "bluff.fact",
+   "prompt": "What useless fact does {target} love to share?",
+   "decoys": [
+    "Octopuses have three hearts",
+    "Bananas are berries",
+    "Cows have best friends",
+    "Honey never spoils"
+   ]
+  },
+  {
+   "id": "bluff.ghost",
+   "prompt": "If {target} were a ghost, how would they haunt people?",
+   "decoys": [
+    "Moving the TV remote",
+    "Hiding one sock",
+    "Whispering spoilers",
+    "Stealing snacks"
+   ]
+  },
+  {
+   "id": "bluff.spicy-ex",
+   "prompt": "What's {target}'s biggest dating red flag?",
+   "decoys": [
+    "Doesn't like dogs",
+    "Chews loudly",
+    "Still talks to their ex",
+    "Never texts back"
+   ],
+   "spicy": true
+  },
+  {
+   "id": "bluff.spicy-pickup",
+   "prompt": "What's {target}'s go-to pickup line?",
+   "decoys": [
+    "Do you come here often?",
+    "Are you a parking ticket?",
+    "Nice shoes",
+    "They just wave awkwardly"
+   ],
+   "spicy": true
+  },
+  {
+   "id": "bluff.spicy-date",
+   "prompt": "Where would {target} take someone on a first date?",
+   "decoys": [
+    "A fancy dinner",
+    "Mini golf",
+    "Their couch",
+    "An escape room"
+   ],
+   "spicy": true
+  },
+  {
+   "id": "bluff.spicy-text",
+   "prompt": "What would {target} text an ex at 2 AM?",
+   "decoys": [
+    "u up?",
+    "I miss your dog",
+    "Sorry about everything",
+    "A single emoji"
+   ],
+   "spicy": true
+  },
+  {
+   "id": "bluff.spicy-party",
+   "prompt": "What does {target} do at a party after midnight?",
+   "decoys": [
+    "Takes over the music",
+    "Raids the fridge",
+    "Deep talks in the kitchen",
+    "Disappears without saying bye"
+   ],
+   "spicy": true
+  }
+ ]
+}

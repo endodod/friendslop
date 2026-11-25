@@ -295,7 +295,42 @@ export const MinigamesFileSchema = z.object({
 });
 
 /** Everything the engine needs from content, validated. */
+// ---------------------------------------------------------------------------
+// Hub games (data/hub/*.json)
+// ---------------------------------------------------------------------------
+export const SpyGridWordsFileSchema = z.object({
+  words: z.array(z.string().trim().min(2).max(10).regex(/^[A-Za-z][A-Za-z-]*$/, "one word, letters only, at most 10 (fits a phone grid)")).min(50),
+});
+
+export const SpectrumCardSchema = z.object({
+  id: z.string().regex(/^[a-z0-9.-]+$/),
+  left: z.string().min(2).max(32),
+  right: z.string().min(2).max(32),
+});
+export const SpectrumFileSchema = z.object({ cards: z.array(SpectrumCardSchema).min(10) });
+export type SpectrumCard = z.infer<typeof SpectrumCardSchema>;
+
+export const BluffPromptSchema = z.object({
+  id: z.string().regex(/^[a-z0-9.-]+$/),
+  /** Uses {target} for the player in the spotlight. */
+  prompt: z.string().min(8).max(140),
+  /** House lies: shuffled in so there are always enough answers to pick from. */
+  decoys: z.array(z.string().min(1).max(60)).min(3),
+  /** Not shown with the family-friendly setting. */
+  spicy: z.boolean().optional(),
+});
+export const BluffFileSchema = z.object({ prompts: z.array(BluffPromptSchema).min(10) });
+export type BluffPrompt = z.infer<typeof BluffPromptSchema>;
+
+export interface HubContent {
+  spygridWords: string[];
+  spectrumCards: SpectrumCard[];
+  bluffPrompts: BluffPrompt[];
+}
+
 export interface ContentBundle {
+  /** Content of the hub games. */
+  hub: HubContent;
   themes: Theme[];
   packs: Pack[];
   tiles: TileDef[];

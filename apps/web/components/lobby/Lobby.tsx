@@ -4,7 +4,16 @@ import { Bot, Copy, Crown, LogOut, Play, Settings2, UserX, Wifi, WifiOff } from 
 import { QRCodeSVG } from "qrcode.react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { GAME_CONFIG, dataQuestionsAvailable, localize, type RoomSettings } from "@party-game/shared";
+import {
+  GAME_CONFIG,
+  HUB_SETTING_OPTIONS,
+  canStart,
+  dataQuestionsAvailable,
+  gameInfo,
+  localize,
+  type RoomSettings,
+  type RoomSettingsPatch,
+} from "@party-game/shared";
 import { clientContent } from "@party-game/content";
 import { Avatar, Icon, MuteButton, useIsHost, useMe } from "../ui";
 import { AvatarPicker } from "../AvatarPicker";
@@ -20,6 +29,8 @@ import { TileMix } from "./TileMix";
 import { MinigameMix } from "./MinigameMix";
 import { CustomQuestions } from "./CustomQuestions";
 import { InviteFriends } from "./InviteFriends";
+import { GamePicker, TeamsPanel } from "./GamePicker";
+import { GameBadge } from "../hub/common";
 import { ChatPanel } from "../ChatPanel";
 import { LobbyProfileLink } from "../account/AccountChip";
 import Link from "next/link";
@@ -34,7 +45,11 @@ export function Lobby({ code, onLeave }: { code: string; onLeave: () => Promise<
   useEffect(() => setJoinUrl(`${window.location.origin}/r/${code}`), [code]);
 
   const players = pub.players;
-  const allReady = players.length >= GAME_CONFIG.players.min && players.every((p) => p.ready);
+  const gameId = pub.settings.gameId ?? "party";
+  const info = gameInfo(gameId);
+  const isParty = gameId === "party";
+  const startCheck = canStart(pub as never);
+  const allReady = startCheck.ok;
   const meRoom = players.find((p) => p.id === me?.id);
   const isDisplay = role === "display";
   const [practice, setPractice] = useState("red-light");
@@ -48,7 +63,9 @@ export function Lobby({ code, onLeave }: { code: string; onLeave: () => Promise<
   return (
     <main className={`mx-auto flex min-h-dvh flex-col gap-4 px-4 py-5 ${isDisplay ? "max-w-6xl" : "max-w-2xl"}`}>
       <header className="flex items-center justify-between gap-2">
-        <h1 className="font-display text-2xl text-accent">Lobby</h1>
+        <h1 className="flex min-w-0 items-center gap-2 font-display text-2xl text-accent">
+          Lobby <GameBadge info={info} size="sm" />
+        </h1>
         <div className="flex items-center gap-1">
           {!isDisplay && <LobbyProfileLink />}
           <MuteButton />
@@ -160,6 +177,10 @@ export function Lobby({ code, onLeave }: { code: string; onLeave: () => Promise<
         </section>
       </div>
 
+      <GamePicker />
+
+      {gameId === "spygrid" && <TeamsPanel />}
+
       {meRoom && (
         <section className="card flex flex-col gap-4 p-5">
           <div className="flex items-center justify-between gap-3">
@@ -203,9 +224,13 @@ export function Lobby({ code, onLeave }: { code: string; onLeave: () => Promise<
 
       {meRoom && <InviteFriends />}
 
-      <CustomQuestions />
+      {isParty && <CustomQuestions />}
 
-      <SettingsPanel settings={pub.settings} editable={isHost} canData={dataQuestionsAvailable(pub as never)} />
+      {isParty ? (
+        <SettingsPanel settings={pub.settings} editable={isHost} canData={dataQuestionsAvailable(pub as never)} />
+      ) : (
+        <HubSettingsPanel settings={pub.settings} editable={isHost} playerCount={players.length} />
+      )}
 
       {isHost && (
         <section className="sticky bottom-0 z-10 -mx-4 flex flex-col gap-2 border-t border-line bg-bg/95 px-4 pb-4 pt-3 backdrop-blur">
@@ -215,13 +240,10 @@ export function Lobby({ code, onLeave }: { code: string; onLeave: () => Promise<
             disabled={!allReady}
             onClick={() => act("game:start", { mode: "board" })}
           >
-            <Play size={24} /> Start game
+            <Play size={24} /> Start {info.name}
           </button>
-          {!allReady && (
-            <p className="text-center text-sm text-muted">
-              {players.length < 2 ? "Need at least 2 players." : "Waiting for everyone to be ready."}
-            </p>
-          )}
+          {!startCheck.ok && <p className="text-center text-sm text-muted">{startCheck.reason}</p>}
+          {isParty && (
           <details className="text-sm text-muted">
             <summary className="cursor-pointer py-2 text-center">Practice modes</summary>
             <div className="flex flex-col gap-2 pt-2">
@@ -253,6 +275,7 @@ export function Lobby({ code, onLeave }: { code: string; onLeave: () => Promise<
               </div>
             </div>
           </details>
+          )}
         </section>
       )}
     </main>
@@ -344,6 +367,59 @@ function SettingsPanel({ settings, editable, canData }: { settings: RoomSettings
           onChange={(language) => set({ language })}
         />
       </Row>
+    </section>
+  );
+}
+
+function HubSettingsPanel({ settings, editable, playerCount }: { settings: RoomSettings; editable: boolean; playerCount: number }) {
+  const set = (patch: RoomSettingsPatch) => act("room:settings", patch as never);
+  const O = HUB_SETTING_OPTIONS;
+  const gameId = settings.gameId;
+  const hub = settings.hub;
+  const n = Math.max(2, playerCount);
+  return (
+    <section className="card flex flex-col gap-5 p-5" data-testid="hub-settings">
+      <h2 className="flex items-center gap-2 font-display text-2xl">
+        <Settings2 size={22} /> Settings {!editable && <span className="text-sm text-muted">(host decides)</span>}
+      </h2>
+      {gameId === "spygrid" && (
+        <Row label="Timers">
+          <Segmented
+            value={hub.spygrid.pace}
+            options={O.spygridPace.map((v) => ({ value: v, label: { fast: "Fast", normal: "Normal", relaxed: "Relaxed", off: "None" }[v] }))}
+            disabled={!editable}
+            onChange={(pace) => set({ hub: { spygrid: { pace } } })}
+          />
+        </Row>
+      )}
+      {gameId === "spectrum" && (
+        <Row label={`Clues each (${n * hub.spectrum.cluesEach} rounds)`}>
+          <Segmented
+            value={hub.spectrum.cluesEach}
+            options={O.spectrumCluesEach.map((v) => ({ value: v, label: String(v) }))}
+            disabled={!editable}
+            onChange={(cluesEach) => set({ hub: { spectrum: { cluesEach } } })}
+          />
+        </Row>
+      )}
+      {gameId === "bluff" && (
+        <>
+          <Row label={`Rounds per player (${n * hub.bluff.roundsEach} rounds)`}>
+            <Segmented
+              value={hub.bluff.roundsEach}
+              options={O.bluffRoundsEach.map((v) => ({ value: v, label: String(v) }))}
+              disabled={!editable}
+              onChange={(roundsEach) => set({ hub: { bluff: { roundsEach } } })}
+            />
+          </Row>
+          <Toggle
+            label="Family-friendly (no spicy prompts)"
+            value={settings.familyFriendly}
+            disabled={!editable}
+            onChange={(familyFriendly) => set({ familyFriendly })}
+          />
+        </>
+      )}
     </section>
   );
 }

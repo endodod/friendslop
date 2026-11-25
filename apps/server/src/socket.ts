@@ -92,7 +92,7 @@ export function registerSocketHandlers(io: Server<any, ServerToClientEvents, any
 
     on("room:create", async (p) => {
       if (p.role === "player" && !p.name?.trim()) fail("NAME_INVALID", "Please enter a name.");
-      const rec = rooms.createRoom();
+      const rec = rooms.createRoom(p.gameId);
       const profileId = await profileFor(p.profileToken, p.name);
       const seat = rooms.join(socket, rec, {
         role: p.role,
@@ -170,15 +170,26 @@ export function registerSocketHandlers(io: Server<any, ServerToClientEvents, any
     });
     on("room:kick", (p) => rooms.kick(current(), socket.data, p.playerId));
     on("room:addBot", () => rooms.addBot(current(), socket.data));
+    on("room:team", (p) => rooms.setTeam(current(), me(), p));
+    on("room:shuffleTeams", () => rooms.shuffleTeams(current(), socket.data));
+    on("hub:action", (p) => rooms.hubAction(current(), socket.data, "game", p.action));
     on("player:ready", (p) => rooms.setReady(current(), me(), p.ready));
     on("game:start", (p) => rooms.start(current(), socket.data, p.mode, p.minigameId));
     on("game:abort", () => rooms.abort(current(), socket.data));
     on("game:pause", (p) => rooms.pause(current(), socket.data, p.paused));
     on("game:playAgain", () => rooms.playAgain(current(), socket.data));
-    on("game:continue", () => rooms.action(current(), socket.data, { type: "continue" }));
+    on("game:continue", () => {
+      const rec = current();
+      if (rec.room.hub) return rooms.hubAction(rec, socket.data, "skip");
+      rooms.action(rec, socket.data, { type: "continue" });
+    });
     on("game:finish", () => rooms.action(current(), socket.data, { type: "finish" }));
     on("chat:send", (p) => rooms.chat(current(), me(), p.text));
-    on("game:ready", () => rooms.action(current(), socket.data, { type: "ready", playerId: me() }));
+    on("game:ready", () => {
+      const rec = current();
+      if (rec.room.hub) return rooms.hubAction(rec, socket.data, "ready");
+      rooms.action(rec, socket.data, { type: "ready", playerId: me() });
+    });
 
     on("turn:roll", (p) => rooms.action(current(), socket.data, { type: "roll", playerId: me(), value: p.value }));
     on("turn:useItem", (p) =>

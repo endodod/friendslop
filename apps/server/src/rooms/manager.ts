@@ -35,6 +35,19 @@ import {
   toPublicState,
   updatePlayer,
   updateSettings,
+  applyHubAction,
+  hubBotActions,
+  hubConnectionChange,
+  newHubBotMemory,
+  removePlayerFromHub,
+  setTeam,
+  shuffleTeams,
+  startHubGame,
+  tickHub,
+  type GameId,
+  type HubBotMemory,
+  type RoomSettingsPatch,
+  type TeamId,
   type ContentBundle,
   type DataQuestionGenerator,
   type EngineContext,
@@ -70,6 +83,7 @@ interface LiveRoom extends RoomRecord {
   lastChatAt?: Map<string, number>;
   /** Test bots: what they already did this mini-game. */
   bots?: BotMemory;
+  hubBots?: HubBotMemory;
   /** Real time the host was first seen disconnected (for the host handover). */
   hostAwaySince?: number;
 }
@@ -121,12 +135,12 @@ export class RoomManager {
   // -------------------------------------------------------------------------
   // Room lifecycle
   // -------------------------------------------------------------------------
-  createRoom(): LiveRoom {
+  createRoom(gameId: GameId = "party"): LiveRoom {
     const seed = env.seed ?? randomSeed();
     const rng = createRng(seed);
     const code = generateRoomCode(createRng(randomSeed()), (c) => this.store.has(c));
     const rec: LiveRoom = {
-      room: createRoom(code, Date.now(), this.content),
+      room: updateSettings(createRoom(code, Date.now(), this.content), { gameId }, this.content),
       seats: new Map(),
       playerData: {},
       seed,
@@ -172,7 +186,7 @@ export class RoomManager {
     if (seat) {
       if (seat.role === "player" && seat.playerId) {
         rec.room = updatePlayer(room, seat.playerId, { connected: true, disconnectedAt: null });
-        this.apply(rec, onConnectionChange(rec.room, this.ctx(rec)));
+        this.connectionChanged(rec);
       } else if (seat.role === "display") {
         rec.room = { ...room, displays: room.displays + 1 };
       }
@@ -201,6 +215,11 @@ export class RoomManager {
     return seat;
   }
 
+  private connectionChanged(rec: LiveRoom) {
+    if (rec.room.hub) this.apply(rec, hubConnectionChange(rec.room, this.ctx(rec)));
+    else this.apply(rec, onConnectionChange(rec.room, this.ctx(rec)));
+  }
+
   disconnect(socket: IoSocket) {
     const { code, role, playerId } = socket.data;
     if (!code) return;
@@ -209,7 +228,7 @@ export class RoomManager {
     if (role === "display") rec.room = { ...rec.room, displays: Math.max(0, rec.room.displays - 1) };
     if (role === "player" && playerId && rec.room.players.some((p) => p.id === playerId)) {
       rec.room = updatePlayer(rec.room, playerId, { connected: false, disconnectedAt: gameClock(rec.room, Date.now()) });
-      this.apply(rec, onConnectionChange(rec.room, this.ctx(rec)));
+      this.connectionChanged(rec);
     }
     rec.lastPrivate.delete(socket.id);
     this.broadcast(rec, []);
@@ -236,10 +255,10 @@ export class RoomManager {
     if (actor.playerId === playerId) fail("INVALID_INPUT", "You can't kick yourself.");
     const target = rec.room.players.find((p) => p.id === playerId);
     if (!target) fail("UNKNOWN_PLAYER", "That player isn't in the room.");
-    if (rec.room.game) {
+    if (rec.room.game || rec.room.hub) {
       // Mid-game only players who dropped out can be removed; the game goes on without them.
       if (target.connected && !target.bot) fail("INVALID_INPUT", "During a game you can only remove disconnected players (or bots).");
-      this.apply(rec, removePlayerFromGame(rec.room, playerId, this.ctx(rec)));
+      this.apply(rec, rec.room.hub ? removePlayerFromHub(rec.room, playerId, this.ctx(rec)) : removePlayerFromGame(rec.room, playerId, this.ctx(rec)));
     } else {
       rec.room = removePlayer(rec.room, playerId);
     }
@@ -267,6 +286,17 @@ export class RoomManager {
 
   /** Let the bots in this room make their moves (errors, e.g. a move that's no longer valid, are ignored). */
   private runBots(rec: LiveRoom) {
+    if (rec.room.hub && rec.room.players.some((p) => p.bot)) {
+      rec.hubBots ??= newHubBotMemory();
+      for (const action of hubBotActions(rec.room, this.ctx(rec), rec.hubBots)) {
+        try {
+          this.apply(rec, applyHubAction(rec.room, action, this.ctx(rec)));
+        } catch {
+          // not valid anymore: skip
+        }
+      }
+      return;
+    }
     if (!rec.room.game || !rec.room.players.some((p) => p.bot)) return;
     rec.bots ??= newBotMemory();
     const ctx = this.ctx(rec);
@@ -303,7 +333,18 @@ export class RoomManager {
     this.broadcast(rec, []);
   }
 
-  setSettings(rec: LiveRoom, actor: SocketData, patch: Partial<RoomSettings>) {
+  setTeam(rec: LiveRoom, playerId: string, patch: { team?: TeamId | null; clueGiver?: boolean }) {
+    rec.room = setTeam(rec.room, playerId, patch);
+    this.broadcast(rec, []);
+  }
+
+  shuffleTeams(rec: LiveRoom, actor: SocketData) {
+    assertHost(rec.room, { playerId: actor.playerId ?? undefined, isDisplay: actor.role === "display" });
+    rec.room = shuffleTeams(rec.room, rec.rng);
+    this.broadcast(rec, []);
+  }
+
+  setSettings(rec: LiveRoom, actor: SocketData, patch: RoomSettingsPatch) {
     assertHost(rec.room, { playerId: actor.playerId ?? undefined, isDisplay: actor.role === "display" });
     rec.room = updateSettings(rec.room, patch, this.content);
     this.broadcast(rec, []);
@@ -314,9 +355,28 @@ export class RoomManager {
     if (rec.room.stage !== "lobby") fail("GAME_IN_PROGRESS", "Game already running.");
     const check = canStart(rec.room);
     if (!check.ok) fail(rec.room.players.length < 2 ? "NOT_ENOUGH_PLAYERS" : "NOT_READY", check.reason);
+    const gameId = rec.room.settings.gameId ?? "party";
+    if (gameId !== "party") {
+      rec.hubBots = newHubBotMemory();
+      this.apply(rec, startHubGame(rec.room, this.ctx(rec), gameId));
+      persistence.onGameStart(rec);
+      return;
+    }
     const res = startGame(rec.room, this.ctx(rec), mode, { minigameId });
     this.apply(rec, res);
     if (mode === "board") persistence.onGameStart(rec);
+  }
+
+  /** A move in a hub game, "Got it!" on its tutorial, or the host's skip. */
+  hubAction(rec: LiveRoom, actor: SocketData, kind: "game" | "ready" | "skip", action?: unknown) {
+    if (!rec.room.hub) fail("WRONG_PHASE", "No game running.");
+    const isHost = actor.role === "display" || (!!actor.playerId && rec.room.hostId === actor.playerId);
+    const pid = actor.playerId;
+    if (kind !== "skip" && !pid) fail("UNKNOWN_PLAYER", "Only players can do that.");
+    const a =
+      kind === "skip" ? ({ type: "skip" } as const) : kind === "ready" ? ({ type: "ready", playerId: pid! } as const) : ({ type: "game", playerId: pid!, action } as const);
+    rec.lastActivity = Date.now();
+    this.apply(rec, applyHubAction(rec.room, a, this.ctx(rec), isHost));
   }
 
   pause(rec: LiveRoom, actor: SocketData, paused: boolean) {
@@ -334,6 +394,7 @@ export class RoomManager {
       ...rec.room,
       stage: "lobby",
       game: null,
+      hub: null,
       players: rec.room.players.map((p) => ({ ...p, disconnectedAt: p.connected ? null : now })),
     };
     rec.room = resetReady(rec.room);
@@ -342,6 +403,21 @@ export class RoomManager {
 
   playAgain(rec: LiveRoom, actor: SocketData) {
     assertHost(rec.room, { playerId: actor.playerId ?? undefined, isDisplay: actor.role === "display" });
+    if (rec.room.hub) {
+      if (rec.room.hub.stage !== "podium") fail("WRONG_PHASE", "The game isn't over yet.");
+      // Same game, same teams; Spy Grid rotates its clue-givers.
+      const lobby: RoomState = {
+        ...rec.room,
+        stage: "lobby",
+        game: null,
+        hub: null,
+        players: rec.room.players.map((p) => ({ ...p, ready: true, clueGiver: false })),
+      };
+      rec.hubBots = newHubBotMemory();
+      this.apply(rec, startHubGame(lobby, this.ctx(rec), rec.room.hub.gameId));
+      persistence.onGameStart(rec);
+      return;
+    }
     if (rec.room.game?.phase !== "podium") fail("WRONG_PHASE", "The game isn't over yet.");
     const lobby: RoomState = { ...rec.room, stage: "lobby", game: null, players: rec.room.players.map((p) => ({ ...p, ready: true })) };
     const res = startGame(lobby, this.ctx(rec), "board");
@@ -379,6 +455,7 @@ export class RoomManager {
       const rec = r as LiveRoom;
       try {
         if (rec.room.game) this.apply(rec, tickGame(rec.room, this.ctx(rec)));
+        else if (rec.room.hub) this.apply(rec, tickHub(rec.room, this.ctx(rec)));
         this.runBots(rec);
         this.handOverHost(rec);
         // Lobby: drop players who left long ago so "everyone ready" isn't blocked forever.

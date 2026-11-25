@@ -1,5 +1,6 @@
 import type { Language } from "../i18n";
 import type { QuestionFormat, Tolerance } from "../content/schemas";
+import type { GameId, HubRuntime, HubSettings, TeamId } from "../hub/types";
 
 export type PlayerId = string;
 
@@ -9,6 +10,10 @@ export type PlayerId = string;
 export type TileFrequency = "off" | "few" | "normal" | "many";
 
 export interface RoomSettings {
+  /** Which game of the hub this room plays. */
+  gameId: GameId;
+  /** Settings of the other hub games (Spy Grid, Spectrum, Bluff Club). */
+  hub: HubSettings;
   turnCount: number;
   /** Tile mix: tile type id → how often it appears (missing = normal). */
   tileFrequency: Record<string, TileFrequency>;
@@ -52,6 +57,10 @@ export interface RoomPlayer {
   joinedAt: number;
   disconnectedAt: number | null;
   linked: LinkedAccountInfo[];
+  /** Spy Grid: team picked in the lobby (null = any, balanced at start). */
+  team?: TeamId | null;
+  /** Spy Grid: volunteers to give their team's clues. */
+  clueGiver?: boolean;
 }
 
 export type RoomStage = "lobby" | "game";
@@ -77,7 +86,12 @@ export interface RoomState {
   /** Question ids asked in this room's earlier games (oldest first), so new games pick fresh ones. */
   askedQuestionIds?: string[];
   stage: RoomStage;
+  /** The party board game (null while a hub game or the lobby is up). */
   game: GameState | null;
+  /** Any other hub game (Spy Grid, Spectrum, Bluff Club). */
+  hub?: HubRuntime | null;
+  /** Spy Grid: last game's clue-givers, so the role rotates. */
+  lastClueGivers?: PlayerId[];
 }
 
 // ---------------------------------------------------------------------------
@@ -390,5 +404,7 @@ export type GameEvent =
   | { type: "minigameFinished"; id: string }
   | { type: "bonusStarRevealed"; bonusStarId: string; playerIds: PlayerId[] }
   | { type: "phase"; phase: Phase }
+  /** Hub games: the runtime stage (intro/playing/podium) or a game's own phase changed. */
+  | { type: "hubPhase"; phase: string }
   | { type: "sfx"; id: string; playerIds?: PlayerId[] }
   | { type: "toast"; text: string; playerId?: PlayerId };

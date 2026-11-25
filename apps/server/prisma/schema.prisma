@@ -94,6 +94,7 @@ model User {
   createdAt      DateTime     @default(now())
   sessions       Session[]
   questions      SavedQuestion[]
+  gameStats      UserGameStat[]
   sentFriends    Friendship[] @relation("FriendRequester")
   gotFriends     Friendship[] @relation("FriendAddressee")
 }
@@ -135,4 +136,15 @@ model SavedQuestion {
   createdAt DateTime @default(now())
 
   @@unique([userId, promptKey])
+}
+
+/// Games played and won per hub game ("party", "spygrid", "spectrum", "bluff"). User.gamesPlayed/gamesWon are the totals.
+model UserGameStat {
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  gameId String
+  played Int    @default(0)
+  won    Int    @default(0)
+
+  @@id([userId, gameId])
 }

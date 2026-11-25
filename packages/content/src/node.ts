@@ -13,6 +13,10 @@ function readJson(file: string): unknown {
   }
 }
 
+function readOptional(file: string): unknown {
+  return existsSync(file) ? readJson(file) : undefined;
+}
+
 function readDir(dir: string): { file: string; data: unknown }[] {
   if (!existsSync(dir)) return [];
   return readdirSync(dir)
@@ -32,6 +36,11 @@ export function readRawContent(dir = CONTENT_DIR): RawContent {
     minigames: readJson(join(dir, "minigames.json")),
     boards: readDir(join(dir, "boards")),
     packs: readDir(join(dir, "packs")),
+    hub: {
+      spygridWords: readOptional(join(dir, "hub", "spygrid-words.json")),
+      spectrum: readOptional(join(dir, "hub", "spectrum.json")),
+      bluff: readOptional(join(dir, "hub", "bluff.json")),
+    },
   };
 }
 

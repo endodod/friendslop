@@ -27,6 +27,7 @@ export const persistence = {
   },
 
   afterStep(rec: RoomRecord, _before: RoomState, events: GameEvent[]) {
+    if (rec.room.hub) return hubFinished(rec, events);
     const g = rec.room.game;
     if (!g) return;
     if (events.some((e) => e.type === "matchRevealed") && g.question?.result) {
@@ -64,6 +65,7 @@ export const persistence = {
               },
             }),
           );
+          void countGame(userId, "party", rp.id === winner);
         }
       }
       void matchPromise?.then((matchId) =>
@@ -85,3 +87,46 @@ export const persistence = {
     }
   },
 };
+
+function countGame(userId: string, gameId: string, won: boolean) {
+  return safely("userGameStat", (db) =>
+    db.userGameStat.upsert({
+      where: { userId_gameId: { userId, gameId } },
+      create: { userId, gameId, played: 1, won: won ? 1 : 0 },
+      update: { played: { increment: 1 }, won: { increment: won ? 1 : 0 } },
+    }),
+  );
+}
+
+/** A hub game reached its podium: account stats and match history. */
+function hubFinished(rec: RoomRecord, events: GameEvent[]) {
+  const rt = rec.room.hub;
+  if (!rt?.results || !events.some((e) => e.type === "hubPhase" && e.phase === "podium")) return;
+  const results = rt.results;
+  const winners = new Set(results.winners);
+  for (const rp of rec.room.players) {
+    if (!rp.userId || !rt.players.includes(rp.id)) continue;
+    const userId = rp.userId;
+    const won = winners.has(rp.id);
+    void safely("userStats", (db) =>
+      db.user.update({ where: { id: userId }, data: { gamesPlayed: { increment: 1 }, gamesWon: { increment: won ? 1 : 0 } } }),
+    );
+    void countGame(userId, rt.gameId, won);
+  }
+  const profiles = new Map<string, string>();
+  for (const seat of rec.seats.values()) if (seat.playerId && seat.profileId) profiles.set(seat.playerId, seat.profileId);
+  void matchIds.get(rec)?.then((matchId) =>
+    safely("finishMatch", async (db) => {
+      if (!matchId) return;
+      const winner = results.winners.find((p) => profiles.has(p));
+      await db.match.update({ where: { id: matchId }, data: { endedAt: new Date(), winnerProfileId: (winner && profiles.get(winner)) || null } });
+      for (const r of results.ranking) {
+        const profileId = profiles.get(r.playerId);
+        if (!profileId) continue;
+        await db.matchPlayer.create({
+          data: { matchId, profileId, stars: 0, coins: r.score, stats: { gameId: rt.gameId, rank: r.rank, lines: results.stats[r.playerId] ?? [] } as object },
+        });
+      }
+    }),
+  );
+}

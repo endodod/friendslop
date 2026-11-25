@@ -175,7 +175,8 @@ export async function handleApi(req: IncomingMessage, res: ServerResponse): Prom
     // ---------------------------------------------------------------- me
     if (path === "/api/me" && method === "GET") {
       const u = await requireUser(req);
-      return send(req, res, 200, { user: toPublicUser(u) }), true;
+      const full = await c.user.findUnique({ where: { id: u.id }, select: publicUserSelect });
+      return send(req, res, 200, { user: toPublicUser(full ?? u) }), true;
     }
     if (path === "/api/me/username" && method === "PUT") {
       const u = await requireUser(req);

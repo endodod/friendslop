@@ -1,9 +1,14 @@
 # PartyGame
 
-A browser-based party board game for 2–8 friends. Every question is about one player (the
-**target**): everyone answers, the target included, and you score by landing on the same answer
-as the target. Questions pop up on board tiles and before mini-games, where matching the target
-earns a bonus.
+A browser-based **games hub** for 2–8 friends. One room, one code, phones as controllers. The
+host picks the game in the lobby and can switch between games without anyone leaving:
+
+| Game | Players | What it is |
+| --- | --- | --- |
+| **Party Board** | 2–8 | Board game: roll, move, buy stars. Every question is about one player (the **target**): you score by landing on the same answer as the target. A mini-game after every round. |
+| **Spy Grid** | 4–8 | Two teams (Foxes vs Owls), 25 words. Each team's clue-giver sees the secret key and gives one-word clues; teammates vote on words. Find all your agents first, never touch the trap. |
+| **Spectrum** | 2–8 | A hidden target sits on a scale between two opposites. The clue-giver sees it and gives a clue; everyone drags a dial. Bullseye 4, close 3, near 2; the clue-giver gets the average. |
+| **Bluff Club** | 3–8 | Each round is about one player: they write the real answer to "What would Sam name a boat?", everyone else writes a fake. Find the truth (+3), fool friends (+2 each), 😂 the funniest fake (+1). |
 
 > Working title. Rename it in one place: `packages/shared/src/config/branding.ts`.
 
@@ -14,9 +19,19 @@ earns a bonus.
 - **Online (e.g. on a Discord call):** one person chooses *Create room & play* and shares the
   link or the 4-letter code. Everyone sees the board and their controls on their own device.
 
+### Party Board
+
 Each round every player rolls and moves; tiles give coins, start question rounds, events, shops
 or duels. Buy stars for 20 coins when you reach (or pass) the star, or get teleported, swapped or pushed onto it. After every round there's a
 mini-game. Most stars after the last round wins (coins break ties), after 2–3 bonus stars.
+
+### Spy Grid, Spectrum, Bluff Club
+
+Every game starts with a how-to-play screen (everyone taps *Got it!*), has timers on every step,
+a host pause and skip, test bots, a shared-screen (TV) layout and a results podium with highlights
+and per-player stats. In Spy Grid, players pick a team in the lobby (or get balanced at start) and
+may volunteer as clue-giver; otherwise the role rotates between games. Clue-givers' phones show the
+key; the TV never does.
 
 Refreshing or losing connection is fine: you get your seat back automatically. If you're gone
 on your turn, it auto-plays after a few seconds.
@@ -26,7 +41,7 @@ on your turn, it auto-plays after a few seconds.
 Players can play as guests, or sign in (username + password) for:
 
 - a **profile** (`/profile`) with a custom **profile picture** (shown instead of the icon in rooms and on the board)
-  and **stats**: games played, games won, stars collected (updated when a board game reaches the podium)
+  and **stats**: games played and won (in total and per game), stars collected (updated when a game reaches the podium)
 - **friends**: add by username (or from the lobby), accept/decline requests, see who's online and in which room;
   public profiles at `/u/<username>`
 - **invites**: in the lobby, invite online friends from your friend list; they get a pop-up with a Join button on any page
@@ -109,8 +124,11 @@ apps/
 packages/
   shared/         Types, zod schemas, pure game engine (state machine, rules, scoring),
                   socket contracts, all tunable numbers (src/config/game.ts)
+    src/hub/      the other hub games: catalog (names, rules), runtime (tutorial, pause,
+                  timers, bots, podium), games/ (spygrid, spectrum, bluff)
   content/        themes, tiles, items, events, bonus stars, mini-game metadata,
-                  boards/, packs/ (question packs)
+                  boards/, packs/ (question packs), hub/ (Spy Grid words, Spectrum cards,
+                  Bluff Club prompts)
   minigames/      one folder per mini-game: logic.ts (server) + Client.tsx (UI)
 tests/e2e/        Playwright smoke test
 docs/             decisions.md, content-guide.md
@@ -127,6 +145,11 @@ mini-game secrets never leak before the reveal).
 - **Questions, themes, packs, events, items, boards:** edit JSON in `packages/content/data/`.
   See [`docs/content-guide.md`](docs/content-guide.md).
 - **Mini-games:** see [`packages/minigames/README.md`](packages/minigames/README.md).
+- **Spy Grid words, Spectrum cards, Bluff Club prompts:** `packages/content/data/hub/` (see the content guide).
+- **A new hub game:** add a `HubGameDefinition` in `packages/shared/src/hub/games/`, register it in
+  `hub/registry.ts`, describe it in `hub/catalog.ts` (name, players, tutorial) and add its view to
+  `apps/web/components/hub/HubGameScreen.tsx`. The runtime gives it the tutorial, pause, timers,
+  disconnect handling, bots, podium and account stats.
 - **Tuning** (coins, timers, tolerances, star cost, rewards): `packages/shared/src/config/game.ts`.
 
 ## Developer shortcuts

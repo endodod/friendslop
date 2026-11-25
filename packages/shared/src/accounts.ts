@@ -18,6 +18,8 @@ export interface UserStats {
   gamesPlayed: number;
   gamesWon: number;
   starsCollected: number;
+  /** Per game of the hub (missing = never played). */
+  byGame?: Record<string, { played: number; won: number }>;
 }
 
 export interface PublicUser {

@@ -214,6 +214,20 @@ Metadata in `minigames.json`: `name`, `icon`, `goal` (one line, shown on the tut
 banner while playing), `howTo` (2–4 tutorial steps), `rules`, `controls`, `bonus`, `weight`, `enabled`. Set `weight: 0` or `enabled: false` to take one out of rotation. The logic and UI are
 code: see `packages/minigames/README.md`.
 
+## Hub games (`data/hub/`)
+
+All three files are optional (a game without its file can't start) and are validated on server start.
+
+- **`spygrid-words.json`** — `{ "words": [...] }`: single words, letters only, at most 10 characters
+  (longer words don't fit a phone grid). Stored upper-case; duplicates are dropped. A grid never holds
+  two words where one contains the other (SNOW / SNOWMAN). Keep at least a few hundred so grids vary.
+- **`spectrum.json`** — `{ "cards": [{ "id", "left", "right" }] }`: two opposites, each at most 32
+  characters. Good cards are subjective ("Overrated ↔ Underrated") so clues spark debate.
+- **`bluff.json`** — `{ "prompts": [{ "id", "prompt", "decoys", "spicy"? }] }`: the prompt uses
+  `{target}` for the player in the spotlight and asks something only they know ("What would {target}
+  name a boat?"). `decoys` (3+) are house lies mixed in when there are few players; make them as
+  believable as a real answer. `spicy: true` prompts are skipped in family-friendly rooms.
+
 ## Tuning numbers
 
 Coins, timers, tolerances, star cost and rewards are in `packages/shared/src/config/game.ts`.

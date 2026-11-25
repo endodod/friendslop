@@ -5,7 +5,7 @@ import { useStore } from "./store";
 export function serverNow(): number {
   const { pub, offset } = useStore.getState();
   // Paused: the game clock stands still at the moment the host paused.
-  if (pub?.game?.pause) return pub.serverNow;
+  if (pub?.game?.pause || pub?.hub?.pause) return pub.serverNow;
   return Date.now() + offset;
 }
 

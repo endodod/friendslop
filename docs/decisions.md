@@ -141,3 +141,25 @@ Defaults picked where the build prompt left room, or where the environment force
   star buy, centered. Log entries carry a `kind` for this; others stay in the state but aren't shown.
 - **Junction highlight:** only the roads leaving the junction you stand on light up, not every road into the
   option tiles.
+
+## Games hub
+- **Two engines, one room.** The party board game keeps its own engine (`room.game`). Every other game is a
+  `HubGameDefinition` run by a small shared runtime (`room.hub`, `packages/shared/src/hub/engine.ts`): tutorial with
+  "Got it!", pause (same game-clock trick as the board game), phase timers, autoplay for players who are gone,
+  host skip, bots, podium and projection. Games only write rules over their own state.
+- **The room's game is a lobby setting** (`settings.gameId`, picked on the hub page or switched by the host). Other games'
+  settings live in `settings.hub` so switching back and forth keeps them.
+- **Original names and looks:** Spy Grid, Spectrum and Bluff Club follow well-known party-game genres (team word clues,
+  a dial between opposites, bluffing answers) with their own names, teams, content and visuals.
+- **Spy Grid voting:** guessers vote on phones; a word is revealed once a majority of the team's guessers who are here
+  agree (one guesser = instant). "End our turn" works the same way. The clue-giver role goes to a volunteer, else to
+  someone who didn't give clues last game (humans before bots). A clue-giver who leaves hands the role to a teammate.
+- **Spectrum** is free-for-all: everyone guesses on their own dial, and the clue-giver scores the average, so clear
+  clues pay. Clues may not contain digits.
+- **Bluff Club** is about the players (like the board game's questions), not trivia: the spotlight player writes the
+  truth. Fakes identical to the truth (ignoring case, punctuation, "a/the") make you a mind reader (+3, no vote);
+  identical fakes are merged and share the credit. House lies pad the list to 4 answers.
+- **Brief disconnects don't end a step.** A step that waits for everyone (guesses, answers, votes) only stops waiting
+  for a player once they've been gone `disconnectedAutoplayMs`, so a page refresh doesn't cost your answer.
+- **Per-game account stats** (`UserGameStat`); `User.gamesPlayed/gamesWon` stay the totals. The migration backfills
+  existing totals as Party Board games.

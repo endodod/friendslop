@@ -5,7 +5,7 @@
 export const BRANDING = {
   name: "Friendslop",
   slug: "friendslop",
-  tagline: "How well do you really know your friends?",
+  tagline: "Party games for you and your friends. Phones are the controllers.",
   /** Prefix for localStorage keys. */
   storagePrefix: "party-game",
 } as const;

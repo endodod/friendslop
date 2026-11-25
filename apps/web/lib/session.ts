@@ -1,4 +1,4 @@
-import { BRANDING } from "@party-game/shared";
+import { BRANDING, GAMES, type GameId } from "@party-game/shared";
 
 const P = BRANDING.storagePrefix;
 
@@ -90,4 +90,13 @@ export function savedUsePhoto(): boolean {
 }
 export function saveUsePhoto(v: boolean) {
   safeSet(`${P}:usePhoto`, v ? "1" : "0");
+}
+
+/** The game last picked on the hub page. */
+export function savedGame(): GameId | null {
+  const v = safeGet(`${P}:game`);
+  return GAMES.some((g) => g.id === v) ? (v as GameId) : null;
+}
+export function saveGame(id: GameId) {
+  safeSet(`${P}:game`, id);
 }

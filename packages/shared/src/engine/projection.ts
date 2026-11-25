@@ -1,5 +1,6 @@
 import { countAnswers } from "../formats";
 import type { MinigameRegistry } from "../minigame/types";
+import { toPrivateHub, toPublicHub, type PublicHub } from "../hub/engine";
 import type {
   Answer,
   GameState,
@@ -40,8 +41,9 @@ export type PublicGameState = Omit<GameState, "question" | "minigame" | "players
   history: { targetCounts: Record<PlayerId, number>; minigamesPlayed: string[] };
 };
 
-export type PublicRoomState = Omit<RoomState, "game" | "askedQuestionIds"> & {
+export type PublicRoomState = Omit<RoomState, "game" | "hub" | "askedQuestionIds" | "lastClueGivers"> & {
   game: PublicGameState | null;
+  hub: PublicHub | null;
   serverNow: number;
 };
 
@@ -58,6 +60,8 @@ export interface PrivateState {
   minigame: unknown;
   /** Solo mini-games: the shared seed for the local layout. */
   minigameSeed: number | null;
+  /** Hub games: this player's secrets (e.g. the Spy Grid key for clue-givers). */
+  hub: unknown;
 }
 
 function publicQuestion(q: QuestionRound): PublicQuestionRound {
@@ -84,8 +88,8 @@ function publicQuestion(q: QuestionRound): PublicQuestionRound {
 }
 
 export function toPublicState(room: RoomState, registry: MinigameRegistry, now: number): PublicRoomState {
-  const { game, askedQuestionIds: _asked, ...rest } = room;
-  if (!game) return { ...rest, game: null, serverNow: now };
+  const { game, hub, askedQuestionIds: _asked, lastClueGivers: _lcg, ...rest } = room;
+  if (!game) return { ...rest, game: null, hub: hub ? toPublicHub(hub, now) : null, serverNow: now };
   const { question, minigame, players, history, starNext: _next, starRadar: _radar, ...g } = game;
   let mg: PublicMinigame | null = null;
   if (minigame) {
@@ -97,6 +101,7 @@ export function toPublicState(room: RoomState, registry: MinigameRegistry, now: 
   return {
     ...rest,
     serverNow: now,
+    hub: null,
     game: {
       ...g,
       question: question ? publicQuestion(question) : null,
@@ -125,7 +130,9 @@ export function toPrivateState(
     minigame: null,
     minigameSeed: null,
     starNext: null,
+    hub: null,
   };
+  if (room.hub) out.hub = toPrivateHub(room.hub, playerId, now);
   if (!g || !playerId) return out;
   out.items = [...(g.players[playerId]?.items ?? [])];
   if (g.starNext && g.starRadar?.includes(playerId)) out.starNext = g.starNext;
