@@ -29,7 +29,8 @@ export function MemoryFlipClient(p: MinigameClientProps<SoloPublic, SoloPrivate>
 
   // Time runs out: submit what we have (polls the pause-aware clock).
   useEffect(() => {
-    if (done) return;
+    // Untimed (endsAt 0): play until every pair is found.
+    if (done || !p.endsAt) return;
     const id = setInterval(() => {
       if (p.endsAt - p.now() > 400) return;
       clearInterval(id);

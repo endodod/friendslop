@@ -95,16 +95,24 @@ export default function Landing() {
         <p className="mt-2 text-muted">{BRANDING.tagline}</p>
       </motion.header>
 
-      <div className="grid grid-cols-[minmax(0,1fr)] gap-6 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
-        <section className="order-2 flex flex-col gap-3 lg:order-1" aria-labelledby="games-heading">
-          <h2 id="games-heading" className="font-display text-3xl">Pick a game</h2>
-          <div className="grid gap-3 sm:grid-cols-2" role="radiogroup" aria-label="Games">
+      {/* Two columns on wide screens that start and end on the same lines; phones stack (join first). */}
+      <div className="grid grid-cols-[minmax(0,1fr)] items-stretch gap-6 lg:grid-cols-[minmax(0,1.7fr)_minmax(0,1fr)]">
+        <section className="card order-2 flex flex-col gap-4 p-5 lg:order-1" aria-labelledby="games-heading">
+          <h2 id="games-heading" className="font-display text-2xl">Pick a game</h2>
+          <div className="grid auto-rows-fr gap-3 sm:grid-cols-2" role="radiogroup" aria-label="Games">
             {GAMES.map((g) => (
               <GameCard key={g.id} info={g} selected={g.id === gameId} onSelect={() => setGameId(g.id)} />
             ))}
           </div>
-          <motion.div key={gameId} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="card flex flex-col gap-3 p-5" data-testid="create-panel">
-            <p className="text-sm leading-snug text-muted">{game.description}</p>
+          <motion.div
+            key={gameId}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mt-auto flex flex-col gap-3 rounded-2xl bg-bg-2 p-4"
+            data-testid="create-panel"
+          >
+            {/* Same height for every game, so the buttons don't jump when you switch. */}
+            <p className="min-h-[3lh] text-sm leading-snug text-muted">{game.description}</p>
             <div className="grid gap-2 sm:grid-cols-2">
               <button className="btn-primary" disabled={busy} onClick={() => create("player")} data-testid="create-room">
                 <Smartphone size={20} /> Create room & play
@@ -140,7 +148,8 @@ export default function Landing() {
             </form>
           </section>
 
-          <section className="card flex flex-col gap-4 p-5">
+          <section className="card flex flex-1 flex-col gap-4 p-5">
+            <h2 className="font-display text-2xl">You</h2>
             <label className="flex flex-col gap-2">
               <span className="font-display text-lg">Your name</span>
               <input

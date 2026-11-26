@@ -176,7 +176,11 @@ Defaults picked where the build prompt left room, or where the environment force
 - **Vote and question mini-games have no clock** (`untimed`: Most Likely To, Judge's Call, Hall of Fame, Ranking, Speed Sync,
   Duel, Hot or Not). Each step waits for everyone present (players gone longer than `disconnectedAutoplayMs` are skipped);
   the host can press "End mini-game" for an AFK player. Speed Sync keeps its speed bonus for answering within 4 s.
-  Action mini-games keep their clocks.
+  Finish-the-task games are untimed too (Memory Flip, Number Hunt, Type Race, Simon, Higher or Lower, Stacker, Minefield,
+  Thin Ice): they run until everyone is done or out; Minefield and Thin Ice have no turn countdown either (the game only moves
+  for a player who left). Games where the clock is the game keep it (Quick Math, Color Clash, Arrow Rush, Pump It,
+  Whack-a-Mole, Reaction Tap, Perfect Timing, Stop the Bar, Count It, Spot the Odd One, and the live ones).
+- **Chance tiles build suspense:** the Lucky die tumbles and the Gamble coin spins for about a second before the coins show.
 - **Underdog** was removed.
 - **Late joiners:** joining a running game gives a seat at the end of the turn order, on Start, with the average coins of the
   others (at least the starting coins) and no stars. Hub games add the newcomer's rounds at the end (Spy Grid: smaller team).

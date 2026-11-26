@@ -198,7 +198,8 @@ export function botActions(
       const def = mg && registry[mg.id];
       if (!mg || !def) break;
       const players = [...mg.participants, ...(mg.state != null ? (def.extraInputPlayers?.(mg.state) ?? []) : [])];
-      const total = Math.max(1, mg.endsAt - mg.startedAt);
+      // Untimed mini-games have no end time: bots take 5–12 s like a quick player would.
+      const total = mg.untimed ? 15_000 : Math.max(1, mg.endsAt - mg.startedAt);
       for (const b of bots.filter((p) => players.includes(p))) {
         const key = `${mg.startedAt}:${b}`;
         if (def.submitSchema && !memo.submitted.has(key)) {

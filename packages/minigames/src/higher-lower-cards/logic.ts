@@ -27,6 +27,7 @@ export function streak(cards: number[], guesses: ("h" | "l" | "s")[], bonus: boo
 
 export const higherLowerCards = defineSoloGame({
   id: "higher-lower-cards",
+  untimed: true,
   durationSec: 45,
   submitSchema: z.object({ guesses: z.array(z.enum(["h", "l", "s"])).max(DECK) }),
   label: (n) => `${n} streak`,

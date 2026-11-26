@@ -20,9 +20,12 @@ export function NumberHuntClient(p: MinigameClientProps<SoloPublic, SoloPrivate>
     setDone(true);
     p.submit({ taps: t, timeMs: Math.round(timeMs) });
   };
+  const untimed = !p.endsAt;
   useEffect(() => {
     const end = gameNow() + deadlineMs(p, GAME_MS);
     const id = setInterval(() => {
+      // Untimed: count up (your time is your score) instead of down.
+      if (untimed) return setLeft(gameNow() - start.current);
       const l = end - gameNow();
       setLeft(l);
       if (l <= 0) {
@@ -62,7 +65,7 @@ export function NumberHuntClient(p: MinigameClientProps<SoloPublic, SoloPrivate>
           </>
         }
       />
-      <TimeBar left={left} total={GAME_MS} />
+      {!untimed && <TimeBar left={left} total={GAME_MS} />}
       <Arena tone="#ffc933" className="relative mx-auto aspect-square w-full max-w-[min(100%,52dvh)] p-3" pattern="none">
         <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
           <PopText id={miss} text="+1s" color="#ff4d5e" />

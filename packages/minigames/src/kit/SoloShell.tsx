@@ -15,6 +15,8 @@ export function SoloDone({ p, label }: { p: MinigameClientProps<SoloPublic, Solo
 
 /** Calls `onEnd` shortly before the server deadline so local runs always get submitted. */
 export function deadlineMs(p: MinigameClientProps, localLimitMs: number): number {
+  // Untimed mini-games (endsAt 0) have no server deadline.
+  if (!p.endsAt) return localLimitMs;
   return Math.max(500, Math.min(localLimitMs, p.endsAt - p.now() - 500));
 }
 
@@ -29,7 +31,8 @@ export function useDeadlineSubmit(p: MinigameClientProps, payload: () => unknown
   const nowRef = useRef(p.now);
   nowRef.current = p.now;
   useEffect(() => {
-    if (!p.isParticipant) return;
+    // Untimed mini-games (endsAt 0): nothing to beat, the player finishes when they're done.
+    if (!p.isParticipant || !p.endsAt) return;
     // Poll the (pause-aware) server clock instead of one long timeout, so a pause holds the deadline.
     const id = setInterval(() => {
       if (doneRef.current || p.endsAt - nowRef.current() > 600) return;

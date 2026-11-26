@@ -30,7 +30,7 @@ export function GameCard({
       disabled={disabled}
       aria-pressed={selected}
       data-testid={`game-${info.id}`}
-      className={`relative flex min-w-0 flex-col gap-2 overflow-hidden rounded-3xl border-2 p-4 text-left transition-[transform,border-color] ${
+      className={`relative flex h-full min-w-0 flex-col gap-2 overflow-hidden rounded-3xl border-2 p-4 text-left transition-[transform,border-color] ${
         selected ? "" : "border-line"
       } ${onSelect && !disabled ? "cursor-pointer hover:-translate-y-0.5" : "cursor-default"} disabled:opacity-100`}
       style={{
@@ -59,9 +59,10 @@ export function GameCard({
           </span>
         )}
       </div>
-      <p className="text-sm leading-snug text-ink/90">{info.tagline}</p>
+      {/* Two lines reserved so every card's tags sit on the same line. */}
+      <p className="line-clamp-2 min-h-[2lh] text-sm leading-snug text-ink/90">{info.tagline}</p>
       {!compact && (
-        <div className="flex flex-wrap gap-1.5">
+        <div className="mt-auto flex flex-wrap gap-1.5">
           {info.tags.map((t) => (
             <span key={t} className="rounded-full bg-bg-2/80 px-2 py-0.5 text-xs text-muted">
               {t}

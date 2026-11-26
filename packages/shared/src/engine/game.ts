@@ -922,7 +922,7 @@ function resolveTileChoice(d: Draft, accept: boolean) {
     if (delta < 0 && Object.values(g.tileTypes).some((t) => tileDef(s.ctx.content, t)?.effect === "bank")) g.bank += -delta;
     g.tileResult.coinsDelta = delta;
     g.tileResult.text = won ? `${name} doubled up: +${delta} coins!` : `${name} lost the bet: ${delta} coins.`;
-    emit(s, { type: "sfx", id: won ? "fanfare" : "bad" });
+    // No sound here: the coin flips on screen first, the client plays the outcome when it lands.
     log(g, s, g.tileResult.text, pid);
     return goto(d, "tileEffect", T.tileEffectMs);
   }

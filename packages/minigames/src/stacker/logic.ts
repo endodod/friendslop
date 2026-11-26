@@ -53,6 +53,7 @@ const Submit = z.object({ drops: z.array(z.number().finite().min(0).max(60000)).
 
 export const stacker = defineSoloGame({
   id: "stacker",
+  untimed: true,
   durationSec: 45,
   submitSchema: Submit,
   label: (s) => `${s} ${s === 1 ? "block" : "blocks"}`,

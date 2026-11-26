@@ -33,7 +33,9 @@ function newGrid(s: MinefieldState, now: number, rng: () => number): MinefieldSt
   }
   const safeHint: Record<PlayerId, number> = {};
   s.bonuses.filter((b) => s.alive.includes(b)).forEach((b, i) => (safeHint[b] = safe[i % safe.length]));
-  return { ...s, grid: s.grid + 1, bomb, safeHint, opened: [], boom: null, cleared: null, turnEndsAt: now + TURN_MS };
+  void now;
+  // turnEndsAt 0: no turn clock (the game moves only for players who left).
+  return { ...s, grid: s.grid + 1, bomb, safeHint, opened: [], boom: null, cleared: null, turnEndsAt: 0 };
 }
 
 const current = (s: MinefieldState) => s.alive[s.turn % s.alive.length];
@@ -44,7 +46,7 @@ function pickTile(s: MinefieldState, pid: PlayerId, tile: number, now: number): 
     return { ...s, alive, out: [...s.out, pid], boom: { tile, playerId: pid, until: now + 2500 }, opened: [...s.opened, tile], turn: s.turn % Math.max(1, alive.length) };
   }
   const opened = [...s.opened, tile];
-  const next = { ...s, opened, turn: (s.turn + 1) % s.alive.length, turnEndsAt: now + TURN_MS };
+  const next = { ...s, opened, turn: (s.turn + 1) % s.alive.length, turnEndsAt: 0 };
   // Only the bomb is left: don't force the next player onto it. New field after a short pause.
   if (opened.length >= TILES - 1) return { ...next, cleared: { until: now + CLEARED_MS } };
   return next;
@@ -54,6 +56,7 @@ export const minefield: MiniGameDefinition<MinefieldState, { tile: number }> = {
   id: "minefield",
   kind: "turnBased",
   durationSec: 120,
+  untimed: true,
   minPlayers: 2,
   inputSchema: z.object({ tile: z.number().int().min(0).max(TILES - 1) }),
   init: ({ players, bonuses, now, rng }) =>
@@ -62,13 +65,14 @@ export const minefield: MiniGameDefinition<MinefieldState, { tile: number }> = {
     if (s.boom || s.cleared || current(s) !== pid || s.opened.includes(tile)) return s;
     return pickTile(s, pid, tile, now);
   },
-  tick: (s, { now, rng }) => {
+  tick: (s, { now, rng, services }) => {
     if (s.boom) {
       if (now >= s.boom.until && s.alive.length > 1) return newGrid(s, now, rng);
       return s;
     }
     if (s.cleared) return now >= s.cleared.until ? newGrid(s, now, rng) : s;
-    if (now >= s.turnEndsAt) {
+    // No turn clock: only a player who has left gets a random tile picked for them.
+    if (!services.isPresent(current(s))) {
       const free = Array.from({ length: TILES }, (_, i) => i).filter((i) => !s.opened.includes(i));
       return pickTile(s, current(s), free[Math.floor(rng() * free.length)], now);
     }

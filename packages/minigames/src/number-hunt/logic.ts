@@ -40,6 +40,7 @@ export const huntLabel = (s: number) => (s >= 1_000_000 ? `${COUNT - (s - 1_000_
 
 export const numberHunt = defineSoloGame({
   id: "number-hunt",
+  untimed: true,
   durationSec: 46,
   submitSchema: z.object({ taps: z.array(z.number().int().min(0).max(COUNT - 1)).max(200), timeMs: z.number().finite().min(0).max(60000) }),
   higherIsBetter: false,

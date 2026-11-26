@@ -191,9 +191,17 @@ describe("untimed vote and question mini-games", () => {
   } as unknown as MinigameServices;
   const ctx = (now: number): MinigameStepCtx => ({ now, rng: createRng(1), services });
 
-  it("vote games, Ranking, Speed Sync, Duel and Hot or Not have no clock", () => {
-    for (const id of ["most-likely-to", "judges-call", "hall-of-fame", "ranking", "speed-sync", "duel", "hot-or-not"]) expect(MINIGAMES[id].untimed, id).toBe(true);
-    for (const id of ["pump-it", "quick-math", "color-clash", "red-light"]) expect(MINIGAMES[id].untimed, id).toBeFalsy();
+  it("vote/answer and finish-the-task games have no clock; clock games keep theirs", () => {
+    const untimed = [
+      // vote / answer games
+      "most-likely-to", "judges-call", "hall-of-fame", "ranking", "speed-sync", "duel", "hot-or-not",
+      // finish-the-task games
+      "memory-flip", "number-hunt", "type-race", "simon", "higher-lower-cards", "stacker", "minefield", "thin-ice",
+    ];
+    for (const id of untimed) expect(MINIGAMES[id].untimed, id).toBe(true);
+    // The clock is the game here.
+    for (const id of ["pump-it", "quick-math", "color-clash", "arrow-rush", "whack-a-mole", "spot-the-odd", "red-light", "tug-of-war"])
+      expect(MINIGAMES[id].untimed, id).toBeFalsy();
   });
 
   it("a vote waits for everyone who's here, however long it takes", () => {
