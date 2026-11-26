@@ -87,6 +87,41 @@ function TopThree({ r }: { r: HubResults }) {
   );
 }
 
+/** Co-op: one crew, one score. */
+function CoopPodium({ r, color }: { r: HubResults; color: string }) {
+  const players = usePlayers();
+  const c = r.coop!;
+  const pct = c.total ? c.score / c.total : 0;
+  return (
+    <motion.div
+      initial={{ y: 60, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ delay: 0.3, type: "spring", stiffness: 90 }}
+      className="flex flex-col items-center gap-4 rounded-3xl p-6 text-center"
+      style={{ background: `linear-gradient(180deg, ${color}44, #2a2549)`, boxShadow: `inset 0 0 0 3px ${color}88` }}
+      data-testid="coop-podium"
+    >
+      <Icon id={pct >= 0.5 ? "trophy" : "friends"} size={48} className="text-accent" />
+      <span className="font-display text-7xl leading-none">
+        {c.score}
+        <span className="text-3xl text-muted">/{c.total}</span>
+      </span>
+      <span className="text-muted">{c.text}</span>
+      <div className="h-3 w-full max-w-sm overflow-hidden rounded-full bg-bg-2">
+        <motion.div initial={{ width: 0 }} animate={{ width: `${pct * 100}%` }} transition={{ delay: 0.8, duration: 1.2 }} className="h-full rounded-full" style={{ background: color }} />
+      </div>
+      <div className="flex flex-wrap justify-center gap-2">
+        {r.ranking.map((e) => (
+          <span key={e.playerId} className="flex items-center gap-1.5 rounded-full bg-bg-2 py-0.5 pl-0.5 pr-2.5">
+            <Avatar player={players[e.playerId]} size={28} ring={pct >= 0.5} />
+            <span className="font-display text-sm">{players[e.playerId]?.name}</span>
+          </span>
+        ))}
+      </div>
+    </motion.div>
+  );
+}
+
 export function HubPodium() {
   const hub = useHub();
   const players = usePlayers();
@@ -104,9 +139,10 @@ export function HubPodium() {
           {r.headline}
         </h2>
         {r.teams && <p className="mt-1 text-muted">{r.scoreLabel}</p>}
+        {r.coop && <p className="mt-1 text-muted">Your crew&apos;s rating</p>}
       </div>
 
-      {r.teams ? <TeamsPodium r={r} /> : <TopThree r={r} />}
+      {r.coop ? <CoopPodium r={r} color={info.color} /> : r.teams ? <TeamsPodium r={r} /> : <TopThree r={r} />}
 
       {r.highlights.length > 0 && (
         <section className="flex flex-col gap-3">
@@ -144,10 +180,10 @@ export function HubPodium() {
           {r.ranking.map((e) => (
             <div key={e.playerId} className="flex flex-col gap-2 rounded-2xl bg-bg-2 p-3" data-testid="hub-player-card">
               <div className="flex items-center gap-2">
-                <span className="w-6 text-center font-display text-xl text-accent">{e.rank}</span>
+                {!r.coop && <span className="w-6 text-center font-display text-xl text-accent">{e.rank}</span>}
                 <Avatar player={players[e.playerId]} size={34} />
                 <PlayerName player={players[e.playerId]} className="min-w-0 flex-1 truncate text-lg" />
-                {!r.teams && (
+                {!r.teams && !r.coop && (
                   <span className="font-display text-xl">
                     {e.score} <span className="text-sm text-muted">{r.scoreLabel}</span>
                   </span>

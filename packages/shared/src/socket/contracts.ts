@@ -32,12 +32,16 @@ export const RoomSettingsPatchSchema = z
     familyFriendly: z.boolean(),
     language: LanguageSchema,
     boardId: z.string().max(64),
-    gameId: z.enum(["party", "spygrid", "spectrum", "bluff"]),
+    gameId: z.enum(["party", "spygrid", "spectrum", "bluff", "whowrote", "countup", "cluecrew", "oddword"]),
     hub: z
       .object({
         spygrid: z.object({ pace: z.enum(["fast", "normal", "relaxed", "off"]) }).partial(),
         spectrum: z.object({ cluesEach: z.number().int() }).partial(),
         bluff: z.object({ roundsEach: z.number().int() }).partial(),
+        whowrote: z.object({ rounds: z.number().int() }).partial(),
+        countup: z.object({ levels: z.number().int() }).partial(),
+        oddword: z.object({ rounds: z.number().int() }).partial(),
+        cluecrew: z.object({ cards: z.number().int() }).partial(),
       })
       .partial(),
   })
@@ -54,7 +58,7 @@ export const ClientEvents = {
     /** Signed in with a profile picture: show it (default) or use the chosen icon instead. */
     usePhoto: z.boolean().optional(),
     /** Game picked on the hub page (the host can change it in the lobby). */
-    gameId: z.enum(["party", "spygrid", "spectrum", "bluff"]).optional(),
+    gameId: z.enum(["party", "spygrid", "spectrum", "bluff", "whowrote", "countup", "cluecrew", "oddword"]).optional(),
   }),
   "room:join": z.object({
     code: RoomCodeSchema,

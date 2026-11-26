@@ -3,12 +3,16 @@
 A browser-based **games hub** for 2–8 friends. One room, one code, phones as controllers. The
 host picks the game in the lobby and can switch between games without anyone leaving:
 
-| Game | Players | What it is |
-| --- | --- | --- |
-| **Party Board** | 2–8 | Board game: roll, move, buy stars. Every question is about one player (the **target**): you score by landing on the same answer as the target. A mini-game after every round. |
-| **Spy Grid** | 4–8 | Two teams (Foxes vs Owls), 25 words. Each team's clue-giver sees the secret key and gives one-word clues; teammates vote on words. Find all your agents first, never touch the trap. |
-| **Spectrum** | 2–8 | A hidden target sits on a scale between two opposites. The clue-giver sees it and gives a clue; everyone drags a dial. Bullseye 4, close 3, near 2; the clue-giver gets the average. |
-| **Bluff Club** | 3–8 | Each round is about one player: they write the real answer to "What would Sam name a boat?", everyone else writes a fake. Find the truth (+3), fool friends (+2 each), 😂 the funniest fake (+1). |
+| Game | Players | Mode | What it is |
+| --- | --- | --- | --- |
+| **Party Board** | 2–8 | Free-for-all | Board game: roll, move, buy stars. Every question is about one player (the **target**): you score by landing on the same answer as the target. A mini-game after every round. |
+| **Spy Grid** | 4–8 | Teams | Two teams (Foxes vs Owls), 25 words. Each team's clue-giver sees the secret key and gives one-word clues; teammates vote on words. Find all your agents first, never touch the trap. |
+| **Spectrum** | 2–8 | Free-for-all | A hidden target sits on a scale between two opposites. The clue-giver sees it and gives a clue; everyone drags a dial. Bullseye 4, close 3, near 2; the clue-giver gets the average. |
+| **Bluff Club** | 3–8 | Free-for-all | Each round is about one player: they write the real answer to "What would Sam name a boat?", everyone else writes a fake. Find the truth (+3), fool friends (+2 each), 😂 the funniest fake (+1). |
+| **Who Wrote That?** | 3–8 | Free-for-all | Everyone answers a question about themselves ("Your most useless talent") anonymously; then each answer comes up and you guess who wrote it. Right guess +2, each friend you fool +1, 😂 +1. |
+| **Odd Word Out** | 4–8 | Free-for-all | Everyone gets the same secret word except one player, who gets a close one and doesn't know it. One-word clues in turn, two laps, then vote. Caught: voters +2, but the odd one out can steal (+3) by guessing the crowd's word. Not caught: +4. |
+| **Clue Crew** | 3–8 | Co-op | One guesser per card; everyone else writes a one-word clue for the secret word. Identical clues cancel out. One guess: right +1 card, wrong burns the next card too. How many of the 13 cards can the crew solve? |
+| **Count Up** | 2–8 | Co-op | Real-time. Everyone gets secret cards from 1–100 (one more each level); play all of them in rising order without talking about numbers. Out of order costs a life; everyone raising a hand syncs (all drop their lowest card). A minute without a card loses the game. |
 
 > Working title. Rename it in one place: `packages/shared/src/config/branding.ts`.
 
@@ -25,13 +29,17 @@ Each round every player rolls and moves; tiles give coins, start question rounds
 or duels. Buy stars for 20 coins when you reach (or pass) the star, or get teleported, swapped or pushed onto it. After every round there's a
 mini-game. Most stars after the last round wins (coins break ties), after 2–3 bonus stars.
 
-### Spy Grid, Spectrum, Bluff Club
+### The other games
 
 Every game starts with a how-to-play screen (everyone taps *Got it!*), has timers on every step,
 a host pause and skip, test bots, a shared-screen (TV) layout and a results podium with highlights
 and per-player stats. In Spy Grid, players pick a team in the lobby (or get balanced at start) and
 may volunteer as clue-giver; otherwise the role rotates between games. Clue-givers' phones show the
-key; the TV never does.
+key; the TV never does. Secret words (Clue Crew, Odd Word Out) only ever show on phones too.
+Co-op games (Clue Crew, Count Up) end with one crew score and a rating instead of a top 3.
+
+The lobby shows the current game; *Change game* opens the full list (each card shows players,
+length and mode: free-for-all, teams or co-op). The home page can filter games by mode.
 
 Refreshing or losing connection is fine: you get your seat back automatically. If you're gone
 on your turn, it auto-plays after a few seconds.
@@ -125,7 +133,8 @@ packages/
   shared/         Types, zod schemas, pure game engine (state machine, rules, scoring),
                   socket contracts, all tunable numbers (src/config/game.ts)
     src/hub/      the other hub games: catalog (names, rules), runtime (tutorial, pause,
-                  timers, bots, podium), games/ (spygrid, spectrum, bluff)
+                  timers, bots, podium), games/ (spygrid, spectrum, bluff, whowrote,
+                  oddword, cluecrew, countup)
   content/        themes, tiles, items, events, bonus stars, mini-game metadata,
                   boards/, packs/ (question packs), hub/ (Spy Grid words, Spectrum cards,
                   Bluff Club prompts)
@@ -145,7 +154,8 @@ mini-game secrets never leak before the reveal).
 - **Questions, themes, packs, events, items, boards:** edit JSON in `packages/content/data/`.
   See [`docs/content-guide.md`](docs/content-guide.md).
 - **Mini-games:** see [`packages/minigames/README.md`](packages/minigames/README.md).
-- **Spy Grid words, Spectrum cards, Bluff Club prompts:** `packages/content/data/hub/` (see the content guide).
+- **Spy Grid words, Spectrum cards, Bluff Club prompts, Who Wrote That? questions, Odd Word Out pairs:**
+  `packages/content/data/hub/` (see the content guide). Clue Crew uses the Spy Grid words.
 - **A new hub game:** add a `HubGameDefinition` in `packages/shared/src/hub/games/`, register it in
   `hub/registry.ts`, describe it in `hub/catalog.ts` (name, players, tutorial) and add its view to
   `apps/web/components/hub/HubGameScreen.tsx`. The runtime gives it the tutorial, pause, timers,

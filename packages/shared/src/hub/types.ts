@@ -8,7 +8,7 @@ import type { Rng } from "../rng";
  * engine in engine/game.ts). A hub game is a `HubGameDefinition`: pure rules over its own state,
  * driven by the shared runtime in hub/engine.ts (tutorial, pause, timers, bots, podium, projection).
  */
-export type HubGameId = "spygrid" | "spectrum" | "bluff";
+export type HubGameId = "spygrid" | "spectrum" | "bluff" | "whowrote" | "countup" | "cluecrew" | "oddword";
 export type GameId = "party" | HubGameId;
 
 export type TeamId = "a" | "b";
@@ -27,12 +27,31 @@ export interface HubSettings {
     /** How many rounds each player is the one everyone bluffs about. */
     roundsEach: number;
   };
+  whowrote: {
+    /** Prompts per game (every prompt: everyone answers, then each answer is guessed). */
+    rounds: number;
+  };
+  countup: {
+    /** Levels to clear (level n deals n cards to everyone). */
+    levels: number;
+  };
+  oddword: {
+    rounds: number;
+  };
+  cluecrew: {
+    /** Cards in the deck (the team's best possible score). */
+    cards: number;
+  };
 }
 
 export const DEFAULT_HUB_SETTINGS: HubSettings = {
   spygrid: { pace: "normal" },
   spectrum: { cluesEach: 2 },
   bluff: { roundsEach: 1 },
+  whowrote: { rounds: 3 },
+  countup: { levels: 8 },
+  oddword: { rounds: 5 },
+  cluecrew: { cards: 13 },
 };
 
 /** Every hub game state has a phase with a clock. The runtime handles timeouts from these. */
@@ -73,6 +92,8 @@ export interface HubResults {
   scoreLabel: string;
   stats: Record<PlayerId, HubStatLine[]>;
   highlights: HubHighlight[];
+  /** Co-op games: everyone plays together; the podium shows the team's score and rating instead of a top 3. */
+  coop?: { score: number; total: number; rating: string; text: string };
   /** Team games: the podium shows teams instead of a top 3. */
   teams?: { id: TeamId; name: string; score: number; won: boolean; players: PlayerId[] }[];
 }

@@ -60,3 +60,25 @@ export function present(ctx: HubCtx, pid: PlayerId): boolean {
 export function pickRandom<T>(rng: () => number, xs: readonly T[]): T | undefined {
   return xs.length ? xs[Math.floor(rng() * xs.length)] : undefined;
 }
+
+/** For comparing single words: `normalizeAnswer` plus a light plural/verb-ending strip ("fishes" = "fish"). */
+export function wordKey(text: string): string {
+  const n = normalizeAnswer(text);
+  if (n.length > 5 && n.endsWith("ing")) return n.slice(0, -3);
+  if (n.length > 4 && n.endsWith("es")) return n.slice(0, -2);
+  if (n.length > 4 && n.endsWith("ed")) return n.slice(0, -2);
+  if (n.length > 3 && n.endsWith("s") && !n.endsWith("ss")) return n.slice(0, -1);
+  return n;
+}
+
+/** Edit distance (insert, delete, replace), for forgiving small typos. */
+export function editDistance(a: string, b: string): number {
+  if (a === b) return 0;
+  let prev = Array.from({ length: b.length + 1 }, (_, i) => i);
+  for (let i = 1; i <= a.length; i++) {
+    const cur = [i];
+    for (let j = 1; j <= b.length; j++) cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+    prev = cur;
+  }
+  return prev[b.length];
+}

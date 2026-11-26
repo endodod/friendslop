@@ -420,6 +420,54 @@ function HubSettingsPanel({ settings, editable, playerCount }: { settings: RoomS
           />
         </>
       )}
+      {gameId === "whowrote" && (
+        <>
+          <Row label={`Questions (${n} answers each to guess)`}>
+            <Segmented
+              value={hub.whowrote?.rounds ?? 3}
+              options={O.whowroteRounds.map((v) => ({ value: v, label: String(v) }))}
+              disabled={!editable}
+              onChange={(rounds) => set({ hub: { whowrote: { rounds } } })}
+            />
+          </Row>
+          <Toggle
+            label="Family-friendly (no spicy questions)"
+            value={settings.familyFriendly}
+            disabled={!editable}
+            onChange={(familyFriendly) => set({ familyFriendly })}
+          />
+        </>
+      )}
+      {gameId === "countup" && (
+        <Row label="Levels to clear">
+          <Segmented
+            value={hub.countup?.levels ?? 8}
+            options={O.countupLevels.map((v) => ({ value: v, label: String(v) }))}
+            disabled={!editable}
+            onChange={(levels) => set({ hub: { countup: { levels } } })}
+          />
+        </Row>
+      )}
+      {gameId === "oddword" && (
+        <Row label="Rounds">
+          <Segmented
+            value={hub.oddword?.rounds ?? 5}
+            options={O.oddwordRounds.map((v) => ({ value: v, label: String(v) }))}
+            disabled={!editable}
+            onChange={(rounds) => set({ hub: { oddword: { rounds } } })}
+          />
+        </Row>
+      )}
+      {gameId === "cluecrew" && (
+        <Row label="Cards in the deck">
+          <Segmented
+            value={hub.cluecrew?.cards ?? 13}
+            options={O.cluecrewCards.map((v) => ({ value: v, label: String(v) }))}
+            disabled={!editable}
+            onChange={(cards) => set({ hub: { cluecrew: { cards } } })}
+          />
+        </Row>
+      )}
     </section>
   );
 }

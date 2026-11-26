@@ -4,7 +4,7 @@ import { Monitor, Smartphone } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { BRANDING, GAMES, PLAYER_COLORS, gameInfo, type GameId, type JoinResult } from "@party-game/shared";
+import { BRANDING, GAMES, PLAYER_COLORS, PLAY_MODES, gameInfo, type GameId, type JoinResult, type PlayMode } from "@party-game/shared";
 import { GameCard } from "@/components/lobby/GamePicker";
 import { AvatarPicker } from "@/components/AvatarPicker";
 import { ColorPicker } from "@/components/ColorPicker";
@@ -28,6 +28,7 @@ export default function Landing() {
   const [usePhoto, setUsePhoto] = useState(true);
   const [gameId, setGameId] = useState<GameId>("party");
   const game = gameInfo(gameId);
+  const [mode, setMode] = useState<"all" | PlayMode>("all");
   // Signed in without a saved name: play under the username.
   useEffect(() => {
     if (username) setName((n) => n || username);
@@ -97,9 +98,24 @@ export default function Landing() {
 
       <div className="grid grid-cols-[minmax(0,1fr)] gap-6 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
         <section className="order-2 flex flex-col gap-3 lg:order-1" aria-labelledby="games-heading">
-          <h2 id="games-heading" className="font-display text-3xl">Pick a game</h2>
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <h2 id="games-heading" className="font-display text-3xl">Pick a game</h2>
+            <div className="flex flex-wrap gap-1.5" role="group" aria-label="Filter games">
+              {(["all", "ffa", "teams", "coop"] as const).map((m) => (
+                <button
+                  key={m}
+                  className={`min-h-9 rounded-full px-3 text-sm font-semibold transition-colors ${mode === m ? "bg-accent text-[#14112a]" : "bg-panel-2 text-muted hover:text-ink"}`}
+                  aria-pressed={mode === m}
+                  onClick={() => setMode(m)}
+                  data-testid={`filter-${m}`}
+                >
+                  {m === "all" ? `All ${GAMES.length}` : PLAY_MODES[m].label}
+                </button>
+              ))}
+            </div>
+          </div>
           <div className="grid gap-3 sm:grid-cols-2" role="radiogroup" aria-label="Games">
-            {GAMES.map((g) => (
+            {GAMES.filter((g) => mode === "all" || g.mode === mode).map((g) => (
               <GameCard key={g.id} info={g} selected={g.id === gameId} onSelect={() => setGameId(g.id)} />
             ))}
           </div>

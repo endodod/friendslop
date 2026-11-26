@@ -1,0 +1,658 @@
+{
+  "prompts": [
+    {
+      "id": "ww.001",
+      "prompt": "Your most useless talent"
+    },
+    {
+      "id": "ww.002",
+      "prompt": "A hill you will die on that nobody else cares about"
+    },
+    {
+      "id": "ww.003",
+      "prompt": "What your parents think you do all day"
+    },
+    {
+      "id": "ww.004",
+      "prompt": "The worst purchase you're secretly proud of"
+    },
+    {
+      "id": "ww.005",
+      "prompt": "A lie you told as a kid that went way too far"
+    },
+    {
+      "id": "ww.006",
+      "prompt": "What you'd be famous for if you went viral tomorrow"
+    },
+    {
+      "id": "ww.007",
+      "prompt": "Your most irrational fear"
+    },
+    {
+      "id": "ww.008",
+      "prompt": "Your toxic trait, in five words or fewer"
+    },
+    {
+      "id": "ww.009",
+      "prompt": "The first thing you'd buy with €1,000 you're not allowed to save"
+    },
+    {
+      "id": "ww.010",
+      "prompt": "What you'd name your autobiography"
+    },
+    {
+      "id": "ww.011",
+      "prompt": "The weirdest food combination you genuinely enjoy"
+    },
+    {
+      "id": "ww.012",
+      "prompt": "A song you know every word to but would never admit"
+    },
+    {
+      "id": "ww.013",
+      "prompt": "The most embarrassing thing you did to impress a crush"
+    },
+    {
+      "id": "ww.014",
+      "prompt": "Your go-to karaoke song"
+    },
+    {
+      "id": "ww.015",
+      "prompt": "A smell that instantly takes you back to childhood"
+    },
+    {
+      "id": "ww.016",
+      "prompt": "The worst haircut you've ever had"
+    },
+    {
+      "id": "ww.017",
+      "prompt": "Your most-used emoji, and what you use it for"
+    },
+    {
+      "id": "ww.018",
+      "prompt": "What would be your wrestler name?"
+    },
+    {
+      "id": "ww.019",
+      "prompt": "The dumbest way you've ever hurt yourself"
+    },
+    {
+      "id": "ww.020",
+      "prompt": "A thing you were weirdly good at as a kid"
+    },
+    {
+      "id": "ww.021",
+      "prompt": "The strangest thing you've ever Googled at 3 am"
+    },
+    {
+      "id": "ww.022",
+      "prompt": "Something you pretend to understand but don't"
+    },
+    {
+      "id": "ww.023",
+      "prompt": "Your guilty pleasure TV show"
+    },
+    {
+      "id": "ww.024",
+      "prompt": "A word you always spell wrong"
+    },
+    {
+      "id": "ww.025",
+      "prompt": "The pettiest thing you've ever done"
+    },
+    {
+      "id": "ww.026",
+      "prompt": "Your hidden talent nobody here knows about"
+    },
+    {
+      "id": "ww.027",
+      "prompt": "A conspiracy theory you half believe"
+    },
+    {
+      "id": "ww.028",
+      "prompt": "The best excuse you've ever used to get out of plans"
+    },
+    {
+      "id": "ww.029",
+      "prompt": "Your most controversial food opinion"
+    },
+    {
+      "id": "ww.030",
+      "prompt": "The worst job you've ever had"
+    },
+    {
+      "id": "ww.031",
+      "prompt": "What you were like at age 13, in one sentence"
+    },
+    {
+      "id": "ww.032",
+      "prompt": "Your signature dance move"
+    },
+    {
+      "id": "ww.033",
+      "prompt": "A celebrity you've been told you look like"
+    },
+    {
+      "id": "ww.034",
+      "prompt": "The most money you've wasted on something silly"
+    },
+    {
+      "id": "ww.035",
+      "prompt": "The last thing that made you cry (it can be an advert)"
+    },
+    {
+      "id": "ww.036",
+      "prompt": "What's in your search history right now? (the cleanest bit)"
+    },
+    {
+      "id": "ww.037",
+      "prompt": "Your strangest childhood belief"
+    },
+    {
+      "id": "ww.038",
+      "prompt": "Something you've never done that most people have"
+    },
+    {
+      "id": "ww.039",
+      "prompt": "A rule you always break"
+    },
+    {
+      "id": "ww.040",
+      "prompt": "Your favourite way to waste a Sunday"
+    },
+    {
+      "id": "ww.041",
+      "prompt": "The weirdest thing you own"
+    },
+    {
+      "id": "ww.042",
+      "prompt": "A movie you've seen way too many times"
+    },
+    {
+      "id": "ww.043",
+      "prompt": "What you'd do on your last day on Earth"
+    },
+    {
+      "id": "ww.044",
+      "prompt": "The worst gift you've ever received"
+    },
+    {
+      "id": "ww.045",
+      "prompt": "The best gift you've ever given"
+    },
+    {
+      "id": "ww.046",
+      "prompt": "Your most unpopular opinion about music"
+    },
+    {
+      "id": "ww.047",
+      "prompt": "A fictional character you'd date"
+    },
+    {
+      "id": "ww.048",
+      "prompt": "A fictional character you'd fight"
+    },
+    {
+      "id": "ww.049",
+      "prompt": "The worst advice you've ever followed"
+    },
+    {
+      "id": "ww.050",
+      "prompt": "What you'd bring to a desert island (one thing, not useful)"
+    },
+    {
+      "id": "ww.051",
+      "prompt": "The weirdest compliment you've ever got"
+    },
+    {
+      "id": "ww.052",
+      "prompt": "Your dream job if money didn't matter"
+    },
+    {
+      "id": "ww.053",
+      "prompt": "The most rebellious thing you did as a teenager"
+    },
+    {
+      "id": "ww.054",
+      "prompt": "A habit you picked up from your parents"
+    },
+    {
+      "id": "ww.055",
+      "prompt": "The first thing you do when you get home"
+    },
+    {
+      "id": "ww.056",
+      "prompt": "Your biggest pet peeve"
+    },
+    {
+      "id": "ww.057",
+      "prompt": "The most overrated thing in the world"
+    },
+    {
+      "id": "ww.058",
+      "prompt": "The most underrated snack"
+    },
+    {
+      "id": "ww.059",
+      "prompt": "A skill you'd love to learn instantly"
+    },
+    {
+      "id": "ww.060",
+      "prompt": "Your worst cooking disaster"
+    },
+    {
+      "id": "ww.061",
+      "prompt": "Your phone wallpaper right now"
+    },
+    {
+      "id": "ww.062",
+      "prompt": "The longest you've gone without showering (be honest)"
+    },
+    {
+      "id": "ww.063",
+      "prompt": "The animal you'd be, and why"
+    },
+    {
+      "id": "ww.064",
+      "prompt": "Your worst travel story"
+    },
+    {
+      "id": "ww.065",
+      "prompt": "The strangest place you've fallen asleep"
+    },
+    {
+      "id": "ww.066",
+      "prompt": "A thing you collect (or used to)"
+    },
+    {
+      "id": "ww.067",
+      "prompt": "A trend you fully fell for"
+    },
+    {
+      "id": "ww.068",
+      "prompt": "Your comfort food"
+    },
+    {
+      "id": "ww.069",
+      "prompt": "The most childish thing you still do"
+    },
+    {
+      "id": "ww.070",
+      "prompt": "Your weirdest recurring dream"
+    },
+    {
+      "id": "ww.071",
+      "prompt": "What you'd do if you were invisible for a day"
+    },
+    {
+      "id": "ww.072",
+      "prompt": "The app you waste the most time on"
+    },
+    {
+      "id": "ww.073",
+      "prompt": "A word you overuse"
+    },
+    {
+      "id": "ww.074",
+      "prompt": "Your most memorable teacher, in one line"
+    },
+    {
+      "id": "ww.075",
+      "prompt": "The best thing you've ever found on the street"
+    },
+    {
+      "id": "ww.076",
+      "prompt": "A completely irrational grudge you hold"
+    },
+    {
+      "id": "ww.077",
+      "prompt": "What you're secretly competitive about"
+    },
+    {
+      "id": "ww.078",
+      "prompt": "The worst nickname you've ever had"
+    },
+    {
+      "id": "ww.079",
+      "prompt": "Something you're unreasonably proud of"
+    },
+    {
+      "id": "ww.080",
+      "prompt": "Your first ever email address (or what it was like)"
+    },
+    {
+      "id": "ww.081",
+      "prompt": "What you'd name a pet dragon"
+    },
+    {
+      "id": "ww.082",
+      "prompt": "Your favourite insult that isn't a swear word"
+    },
+    {
+      "id": "ww.083",
+      "prompt": "The most chaotic thing in your fridge right now"
+    },
+    {
+      "id": "ww.084",
+      "prompt": "Your ideal pizza topping combo"
+    },
+    {
+      "id": "ww.085",
+      "prompt": "The worst date you've been on (or heard about first-hand)"
+    },
+    {
+      "id": "ww.086",
+      "prompt": "A text you regret sending (paraphrased)"
+    },
+    {
+      "id": "ww.087",
+      "prompt": "Something you broke and never admitted to"
+    },
+    {
+      "id": "ww.088",
+      "prompt": "The last lie you told"
+    },
+    {
+      "id": "ww.089",
+      "prompt": "The worst thing you've said to someone by accident"
+    },
+    {
+      "id": "ww.090",
+      "prompt": "Your first celebrity crush"
+    },
+    {
+      "id": "ww.091",
+      "prompt": "What you'd be arrested for"
+    },
+    {
+      "id": "ww.092",
+      "prompt": "Your worst party moment"
+    },
+    {
+      "id": "ww.093",
+      "prompt": "A secret skill that would help in a zombie apocalypse"
+    },
+    {
+      "id": "ww.094",
+      "prompt": "The thing you'd save first in a fire (not people or pets)"
+    },
+    {
+      "id": "ww.095",
+      "prompt": "Your most expensive mistake"
+    },
+    {
+      "id": "ww.096",
+      "prompt": "A place you'd never go back to"
+    },
+    {
+      "id": "ww.097",
+      "prompt": "The best meal of your life"
+    },
+    {
+      "id": "ww.098",
+      "prompt": "Your weirdest phobia"
+    },
+    {
+      "id": "ww.099",
+      "prompt": "Your morning routine in five words"
+    },
+    {
+      "id": "ww.100",
+      "prompt": "What you'd put on your gravestone"
+    },
+    {
+      "id": "ww.101",
+      "prompt": "Your worst online purchase"
+    },
+    {
+      "id": "ww.102",
+      "prompt": "The best prank you've pulled (or suffered)"
+    },
+    {
+      "id": "ww.103",
+      "prompt": "The fictional world you'd live in"
+    },
+    {
+      "id": "ww.104",
+      "prompt": "The worst fashion choice you've ever made"
+    },
+    {
+      "id": "ww.105",
+      "prompt": "What your future self would yell at you about"
+    },
+    {
+      "id": "ww.106",
+      "prompt": "Something everyone loves that you can't stand"
+    },
+    {
+      "id": "ww.107",
+      "prompt": "Your favourite time of day, and why"
+    },
+    {
+      "id": "ww.108",
+      "prompt": "The best compliment you've ever got"
+    },
+    {
+      "id": "ww.109",
+      "prompt": "Your most used phrase"
+    },
+    {
+      "id": "ww.110",
+      "prompt": "What you'd do with a free week, no plans allowed"
+    },
+    {
+      "id": "ww.111",
+      "prompt": "The thing that would make you instantly leave a party"
+    },
+    {
+      "id": "ww.112",
+      "prompt": "A sport you'd be surprisingly good at"
+    },
+    {
+      "id": "ww.113",
+      "prompt": "Your worst habit with money"
+    },
+    {
+      "id": "ww.114",
+      "prompt": "A superpower you'd want, but it's slightly useless"
+    },
+    {
+      "id": "ww.115",
+      "prompt": "Your favourite childhood TV show"
+    },
+    {
+      "id": "ww.116",
+      "prompt": "The weirdest thing you believed about adults as a kid"
+    },
+    {
+      "id": "ww.117",
+      "prompt": "A household chore you weirdly enjoy"
+    },
+    {
+      "id": "ww.118",
+      "prompt": "The biggest risk you've ever taken"
+    },
+    {
+      "id": "ww.119",
+      "prompt": "Your favourite smell"
+    },
+    {
+      "id": "ww.120",
+      "prompt": "Something you did that your parents still don't know about"
+    },
+    {
+      "id": "ww.121",
+      "prompt": "The most awkward thing that happened at a family dinner"
+    },
+    {
+      "id": "ww.122",
+      "prompt": "Your strongest controversial opinion about breakfast"
+    },
+    {
+      "id": "ww.123",
+      "prompt": "What you'd name your band"
+    },
+    {
+      "id": "ww.124",
+      "prompt": "What you'd name your boat"
+    },
+    {
+      "id": "ww.125",
+      "prompt": "Your biggest \"I told you so\" moment"
+    },
+    {
+      "id": "ww.126",
+      "prompt": "A celebrity you'd want as your best friend"
+    },
+    {
+      "id": "ww.127",
+      "prompt": "The last thing you bought that you didn't need"
+    },
+    {
+      "id": "ww.128",
+      "prompt": "Something you can't do even though you're an adult"
+    },
+    {
+      "id": "ww.129",
+      "prompt": "The scariest thing you've ever done"
+    },
+    {
+      "id": "ww.130",
+      "prompt": "Your worst sports moment"
+    },
+    {
+      "id": "ww.131",
+      "prompt": "The weirdest thing you've done out of boredom"
+    },
+    {
+      "id": "ww.132",
+      "prompt": "A time you got way too into a game"
+    },
+    {
+      "id": "ww.133",
+      "prompt": "The most ridiculous argument you've ever had"
+    },
+    {
+      "id": "ww.134",
+      "prompt": "The thing you'd change about yourself, in a funny way"
+    },
+    {
+      "id": "ww.135",
+      "prompt": "Your perfect day, in one sentence"
+    },
+    {
+      "id": "ww.136",
+      "prompt": "A film that ruined you emotionally"
+    },
+    {
+      "id": "ww.137",
+      "prompt": "Your weirdest talent with your body"
+    },
+    {
+      "id": "ww.138",
+      "prompt": "The smallest thing that makes you irrationally angry"
+    },
+    {
+      "id": "ww.139",
+      "prompt": "The last thing you laughed really hard at"
+    },
+    {
+      "id": "ww.140",
+      "prompt": "The worst thing you've eaten to be polite"
+    },
+    {
+      "id": "ww.141",
+      "prompt": "What you'd do if you won the lottery tomorrow (first hour only)"
+    },
+    {
+      "id": "ww.142",
+      "prompt": "Your weirdest late-night snack"
+    },
+    {
+      "id": "ww.143",
+      "prompt": "The most embarrassing thing on your phone (keep it clean)"
+    },
+    {
+      "id": "ww.144",
+      "prompt": "Your most dramatic overreaction"
+    },
+    {
+      "id": "ww.145",
+      "prompt": "The worst pickup line you've used or received"
+    },
+    {
+      "id": "ww.146",
+      "prompt": "A crush you'd never admit to (fictional counts)"
+    },
+    {
+      "id": "ww.147",
+      "prompt": "The wildest thing you've done on a night out",
+      "spicy": true
+    },
+    {
+      "id": "ww.148",
+      "prompt": "The most embarrassing thing you've done while drunk",
+      "spicy": true
+    },
+    {
+      "id": "ww.149",
+      "prompt": "The worst kiss you've ever had, in a few words",
+      "spicy": true
+    },
+    {
+      "id": "ww.150",
+      "prompt": "The strangest place you've been flirted with",
+      "spicy": true
+    },
+    {
+      "id": "ww.151",
+      "prompt": "A lie you told on a first date",
+      "spicy": true
+    },
+    {
+      "id": "ww.152",
+      "prompt": "The most awkward thing a partner's parents caught you doing",
+      "spicy": true
+    },
+    {
+      "id": "ww.153",
+      "prompt": "The worst thing you've done to get out of a date",
+      "spicy": true
+    },
+    {
+      "id": "ww.154",
+      "prompt": "Your most embarrassing hangover cure",
+      "spicy": true
+    },
+    {
+      "id": "ww.155",
+      "prompt": "A secret you kept from an ex",
+      "spicy": true
+    },
+    {
+      "id": "ww.156",
+      "prompt": "The pettiest revenge you've taken on an ex",
+      "spicy": true
+    },
+    {
+      "id": "ww.157",
+      "prompt": "Your dating app bio, if you had to be brutally honest",
+      "spicy": true
+    },
+    {
+      "id": "ww.158",
+      "prompt": "The worst thing you've done at a wedding",
+      "spicy": true
+    },
+    {
+      "id": "ww.159",
+      "prompt": "The most scandalous thing in your camera roll (described politely)",
+      "spicy": true
+    },
+    {
+      "id": "ww.160",
+      "prompt": "The rudest thing you've ever said to a stranger",
+      "spicy": true
+    }
+  ]
+}

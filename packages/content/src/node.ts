@@ -40,6 +40,8 @@ export function readRawContent(dir = CONTENT_DIR): RawContent {
       spygridWords: readOptional(join(dir, "hub", "spygrid-words.json")),
       spectrum: readOptional(join(dir, "hub", "spectrum.json")),
       bluff: readOptional(join(dir, "hub", "bluff.json")),
+      whowrote: readOptional(join(dir, "hub", "whowrote.json")),
+      oddword: readOptional(join(dir, "hub", "oddword.json")),
     },
   };
 }

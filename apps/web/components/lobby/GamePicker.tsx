@@ -1,10 +1,31 @@
 "use client";
-import { motion } from "framer-motion";
-import { Check, Clock, Eye, Shuffle, Users } from "lucide-react";
-import { GAMES, TEAM_INFO, type GameId, type GameInfo, type TeamId } from "@party-game/shared";
+import { AnimatePresence, motion } from "framer-motion";
+import { Check, ChevronDown, Clock, Eye, Shuffle, Users } from "lucide-react";
+import { useState } from "react";
+import { GAMES, PLAY_MODES, TEAM_INFO, type GameId, type GameInfo, type PlayMode, type TeamId } from "@party-game/shared";
 import { useStore } from "@/lib/store";
 import { act } from "@/lib/useRoom";
 import { Avatar, Icon, useIsHost, useMe } from "../ui";
+
+const MODE_STYLE: Record<PlayMode, string> = {
+  ffa: "bg-bg-2/80 text-muted",
+  teams: "bg-[#ff8a3d]/20 text-[#ffb27a]",
+  coop: "bg-good/20 text-good",
+};
+
+/** "Co-op" / "Teams" / "Free-for-all" chip on game cards. */
+export function ModeChip({ mode, className = "" }: { mode: PlayMode; className?: string }) {
+  const m = PLAY_MODES[mode];
+  return (
+    <span
+      className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-semibold ${MODE_STYLE[mode]} ${className}`}
+      title={m.short}
+      data-testid={`mode-${mode}`}
+    >
+      <Icon id={m.icon} size={12} /> {m.label}
+    </span>
+  );
+}
 
 export function GameCard({
   info,
@@ -51,6 +72,7 @@ export function GameCard({
             <span className="flex items-center gap-1">
               <Clock size={12} /> {info.minutes}
             </span>
+            <ModeChip mode={info.mode} className="-ml-1" />
           </span>
         </div>
         {selected && (
@@ -62,7 +84,7 @@ export function GameCard({
       <p className="text-sm leading-snug text-ink/90">{info.tagline}</p>
       {!compact && (
         <div className="flex flex-wrap gap-1.5">
-          {info.tags.map((t) => (
+          {info.tags.filter((t) => t !== PLAY_MODES[info.mode].label).map((t) => (
             <span key={t} className="rounded-full bg-bg-2/80 px-2 py-0.5 text-xs text-muted">
               {t}
             </span>
@@ -73,29 +95,73 @@ export function GameCard({
   );
 }
 
-/** Lobby: which game this room plays. The host switches; everyone sees it. */
+/** Lobby: which game this room plays. The host switches; everyone sees it. Collapsed to the current game. */
 export function GamePicker() {
   const pub = useStore((s) => s.pub!);
   const isHost = useIsHost();
+  const [open, setOpen] = useState(false);
   const current = pub.settings.gameId ?? "party";
+  const info = GAMES.find((g) => g.id === current) ?? GAMES[0];
+  const others = GAMES.filter((g) => g.id !== current);
+  const n = pub.players.length;
+  const fitting = others.filter((g) => n >= g.players.min && n <= g.players.max).length;
   return (
     <section className="card flex flex-col gap-3 p-5" data-testid="game-picker">
-      <h2 className="font-display text-2xl">
-        Game {!isHost && <span className="text-sm text-muted">(host decides)</span>}
-      </h2>
-      <div className="grid gap-3 sm:grid-cols-2">
-        {GAMES.map((g) => (
-          <GameCard
-            key={g.id}
-            info={g}
-            compact
-            selected={g.id === current}
-            playerCount={pub.players.length}
-            disabled={!isHost}
-            onSelect={isHost && g.id !== current ? () => act("room:settings", { gameId: g.id as GameId }) : undefined}
-          />
-        ))}
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <h2 className="font-display text-2xl">
+          Game {!isHost && <span className="text-sm text-muted">(host decides)</span>}
+        </h2>
+        <button
+          className="btn-ghost min-h-11 text-sm"
+          aria-expanded={open}
+          aria-controls="game-list"
+          onClick={() => setOpen((o) => !o)}
+          data-testid="game-picker-toggle"
+        >
+          {open ? "Hide games" : isHost ? `Change game (${GAMES.length})` : `All games (${GAMES.length})`}
+          <motion.span animate={{ rotate: open ? 180 : 0 }} className="flex">
+            <ChevronDown size={18} />
+          </motion.span>
+        </button>
       </div>
+      <GameCard info={info} compact selected playerCount={n} disabled />
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.div
+            id="game-list"
+            key="list"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            className="overflow-hidden"
+          >
+            <p className="pb-2 text-sm text-muted">
+              {fitting} of {others.length} other games fit {n} player{n === 1 ? "" : "s"}.
+            </p>
+            <div className="grid gap-3 pb-1 sm:grid-cols-2">
+              {others.map((g) => (
+                <GameCard
+                  key={g.id}
+                  info={g}
+                  compact
+                  selected={false}
+                  playerCount={n}
+                  disabled={!isHost}
+                  onSelect={
+                    isHost
+                      ? () => {
+                          setOpen(false);
+                          void act("room:settings", { gameId: g.id as GameId });
+                        }
+                      : undefined
+                  }
+                />
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }

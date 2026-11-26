@@ -12,7 +12,7 @@ export type TileFrequency = "off" | "few" | "normal" | "many";
 export interface RoomSettings {
   /** Which game of the hub this room plays. */
   gameId: GameId;
-  /** Settings of the other hub games (Spy Grid, Spectrum, Bluff Club). */
+  /** Settings of the other hub games (Spy Grid, Spectrum, Bluff Club, …). */
   hub: HubSettings;
   turnCount: number;
   /** Tile mix: tile type id → how often it appears (missing = normal). */
@@ -88,7 +88,7 @@ export interface RoomState {
   stage: RoomStage;
   /** The party board game (null while a hub game or the lobby is up). */
   game: GameState | null;
-  /** Any other hub game (Spy Grid, Spectrum, Bluff Club). */
+  /** Any other hub game (Spy Grid, Spectrum, Bluff Club, …). */
   hub?: HubRuntime | null;
   /** Spy Grid: last game's clue-givers, so the role rotates. */
   lastClueGivers?: PlayerId[];

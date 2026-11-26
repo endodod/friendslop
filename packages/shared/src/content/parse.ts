@@ -2,6 +2,8 @@ import { z } from "zod";
 import {
   BoardSchema,
   BluffFileSchema,
+  WhoWroteFileSchema,
+  OddWordFileSchema,
   SpectrumFileSchema,
   SpyGridWordsFileSchema,
   BonusStarsFileSchema,
@@ -25,7 +27,7 @@ export interface RawContent {
   boards: { file: string; data: unknown }[];
   packs: { file: string; data: unknown }[];
   /** Hub game content (data/hub). Missing = empty (those games can't start). */
-  hub?: { spygridWords?: unknown; spectrum?: unknown; bluff?: unknown };
+  hub?: { spygridWords?: unknown; spectrum?: unknown; bluff?: unknown; whowrote?: unknown; oddword?: unknown };
 }
 
 export class ContentError extends Error {
@@ -55,12 +57,16 @@ export function parseContent(raw: RawContent, opts: { lint?: boolean } = {}): Co
   const words = raw.hub?.spygridWords ? parse(SpyGridWordsFileSchema, raw.hub.spygridWords, "hub/spygrid-words.json", problems) : null;
   const spectrum = raw.hub?.spectrum ? parse(SpectrumFileSchema, raw.hub.spectrum, "hub/spectrum.json", problems) : null;
   const bluff = raw.hub?.bluff ? parse(BluffFileSchema, raw.hub.bluff, "hub/bluff.json", problems) : null;
+  const whowrote = raw.hub?.whowrote ? parse(WhoWroteFileSchema, raw.hub.whowrote, "hub/whowrote.json", problems) : null;
+  const oddword = raw.hub?.oddword ? parse(OddWordFileSchema, raw.hub.oddword, "hub/oddword.json", problems) : null;
   if (problems.length) throw new ContentError(problems);
   const bundle: ContentBundle = {
     hub: {
       spygridWords: [...new Set((words?.words ?? []).map((w) => w.toUpperCase()))],
       spectrumCards: spectrum?.cards ?? [],
       bluffPrompts: bluff?.prompts ?? [],
+      whowrotePrompts: whowrote?.prompts ?? [],
+      oddwordPairs: oddword?.pairs ?? [],
     },
     themes: themes!.themes,
     tiles: tiles!.tiles,

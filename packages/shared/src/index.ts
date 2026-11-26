@@ -33,3 +33,7 @@ export * from "./hub/registry";
 export * from "./hub/games/spygrid";
 export * from "./hub/games/spectrum";
 export * from "./hub/games/bluff";
+export * from "./hub/games/whowrote";
+export * from "./hub/games/countup";
+export * from "./hub/games/oddword";
+export * from "./hub/games/cluecrew";

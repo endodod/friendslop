@@ -163,3 +163,25 @@ Defaults picked where the build prompt left room, or where the environment force
   for a player once they've been gone `disconnectedAutoplayMs`, so a page refresh doesn't cost your answer.
 - **Per-game account stats** (`UserGameStat`); `User.gamesPlayed/gamesWon` stay the totals. The migration backfills
   existing totals as Party Board games.
+- **Play modes:** every game in the catalog has a `mode` (`ffa`, `teams`, `coop`), shown as a chip on every
+  game card and used by the home page's filter. Tags no longer repeat the mode.
+- **Collapsible game picker:** the lobby shows only the current game; *Change game* expands the full list,
+  and picking a game collapses it again (the list grows with the hub).
+- **Co-op results:** `HubResults.coop` (`score`, `total`, `rating`, `text`). Everyone gets rank 1 with the crew's
+  score; `winners` is everyone when the crew did well (Clue Crew: half the deck; Count Up: every level), else
+  nobody, so account stats count co-op wins too. The podium shows one crew card instead of a top 3.
+- **Who Wrote That?** is about the players, like Bluff Club, but anonymous: everyone answers the same question,
+  then each answer is guessed one by one (only players who answered can be picked). Prompts with fewer than two
+  answers are skipped.
+- **Clue Crew** deals Spy Grid words. Clues are one word; duplicates (same `wordKey`: case, articles and simple
+  plural/verb endings ignored) cancel automatically, and clue-givers can strike near-duplicates in a short check.
+  Guesses forgive one typo for words of 5+ letters, and any clue-giver can count a near miss. A wrong guess burns
+  the next card (on the last card: one solved card is lost). With 3 players each clue-giver writes 2 clues.
+- **Count Up** is real-time on the hub runtime: actions are applied in arrival order. Lives = players (2–5),
+  one sync to start; rewards after set levels. Nobody playing for 60 s **loses** the game (clients warn for
+  the last 10 s): auto-playing the lowest card instead would let a crew wait out every level and always win.
+  Players who are gone for good have their cards set aside so the rest can go on.
+- **Odd Word Out:** the odd one out doesn't know it. Clues go in turn, two laps, 30 s each (time out = no
+  clue); a clue can't contain your own word or repeat an earlier clue. A tie in the vote accuses nobody.
+  Caught players get a last chance to guess the crowd's word.
+- **Lucky Low** (lowest unique number) was built and dropped in favour of Count Up.

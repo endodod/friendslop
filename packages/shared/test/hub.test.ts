@@ -381,7 +381,7 @@ describe("Bluff Club", () => {
 });
 
 describe("hub bots", () => {
-  for (const gameId of ["spygrid", "spectrum", "bluff"] as const) {
+  for (const gameId of ["spygrid", "spectrum", "bluff", "whowrote", "countup", "cluecrew", "oddword"] as const) {
     it(`bots play a whole game of ${gameId}`, () => {
       const h = new HubHarness(1, gameId, {}, (r) => {
         for (let i = 0; i < 4; i++) r = addBot(r, `bot${i}`, 0);
@@ -403,7 +403,9 @@ describe("hub bots", () => {
       }
       expect(h.rt.stage).toBe("podium");
       expect(h.rt.results!.ranking).toHaveLength(5);
-      expect(h.rt.results!.winners.length).toBeGreaterThan(0);
+      // Co-op: the crew can lose together (the human guesser never guesses here).
+      if (gameId === "cluecrew" || gameId === "countup") expect(h.rt.results!.coop).toBeDefined();
+      else expect(h.rt.results!.winners.length).toBeGreaterThan(0);
     });
   }
   void SPECTRUM;

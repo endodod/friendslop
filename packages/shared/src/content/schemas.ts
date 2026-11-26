@@ -322,10 +322,30 @@ export const BluffPromptSchema = z.object({
 export const BluffFileSchema = z.object({ prompts: z.array(BluffPromptSchema).min(10) });
 export type BluffPrompt = z.infer<typeof BluffPromptSchema>;
 
+export const WhoWrotePromptSchema = z.object({
+  id: z.string().regex(/^[a-z0-9.-]+$/),
+  /** Asked to everyone at once; answers are anonymous until guessed. */
+  prompt: z.string().min(8).max(140),
+  /** Not shown with the family-friendly setting. */
+  spicy: z.boolean().optional(),
+});
+export const WhoWroteFileSchema = z.object({ prompts: z.array(WhoWrotePromptSchema).min(10) });
+export type WhoWrotePrompt = z.infer<typeof WhoWrotePromptSchema>;
+
+/** Two close words: most players get one, the odd one out gets the other. */
+export const OddWordPairSchema = z.tuple([
+  z.string().trim().min(2).max(16).regex(/^[A-Za-z][A-Za-z -]*$/),
+  z.string().trim().min(2).max(16).regex(/^[A-Za-z][A-Za-z -]*$/),
+]);
+export const OddWordFileSchema = z.object({ pairs: z.array(OddWordPairSchema).min(20) });
+export type OddWordPair = z.infer<typeof OddWordPairSchema>;
+
 export interface HubContent {
   spygridWords: string[];
   spectrumCards: SpectrumCard[];
   bluffPrompts: BluffPrompt[];
+  whowrotePrompts: WhoWrotePrompt[];
+  oddwordPairs: OddWordPair[];
 }
 
 export interface ContentBundle {

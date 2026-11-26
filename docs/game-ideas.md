@@ -6,7 +6,11 @@ written so it can be a `HubGameDefinition` (phases with timers, pure rules, bots
 Spy Grid, Spectrum and Bluff Club, each takes a known party-game *genre* but has its own name,
 rules, content and look.
 
-**What the hub has now:** a board game, team word clues (Spy Grid), a dial between two opposites
+> **Built so far:** Who Wrote That? (#2), Clue Crew (#3), Count Up (#7) and Odd Word Out (#5, the
+> "Imposter Word" idea), plus play-mode tags and a collapsible game picker. Lucky Low (#4) was built and
+> then replaced by Count Up.
+
+**What the hub had before:** a board game, team word clues (Spy Grid), a dial between two opposites
 (Spectrum) and bluffing answers (Bluff Club). **What's missing:** drawing, hidden roles / social
 deduction, co-op, "match the group", real-time play, and quick filler games for between longer ones.
 
@@ -30,7 +34,7 @@ input and grouping almost one to one. Content: a `hub/herd.json` prompt list; ma
 packs' open questions can be re-used ("about the group" prompts like "Who here is most likely to
 be late?" work too, answers are player names).
 
-### 2. Who Wrote That? — *anonymous answers, guess the author* (4–8, 15–20 min, S)
+### 2. Who Wrote That? (built) — *anonymous answers, guess the author* (4–8, 15–20 min, S)
 Prompts about yourself: "Your most useless talent", "The worst gift you ever got". Everyone answers
 anonymously. Then each answer is shown one at a time and everyone else guesses who wrote it.
 - +2 per correct guess; the author gets +1 for every player they fool (being hard to read pays).
@@ -40,7 +44,7 @@ Why it fits: the purest "how well do you know your friends" game, the site's cor
 the board game's question packs (`core-confessions`, `core-childhood`, `core-guilty-pleasures`…)
 directly; the podium can reuse the board game's "best mind reader / hardest to read" highlights.
 
-### 3. Clue Crew — *co-op one-word clues* (3–8, 15 min, S)
+### 3. Clue Crew (built) — *co-op one-word clues* (3–8, 15 min, S)
 Co-op. One guesser per round; everyone else sees the secret word and writes one clue word.
 Identical clues **cancel out** before the guesser sees them, so be helpful *and* unique.
 The guesser gets one guess. The team scores out of 13 cards, with a rating at the end
@@ -62,7 +66,7 @@ play simple strategies, so it's fun even at 3 players). Tiny state, tiny UI.
 
 ## Tier 2: new genres, medium effort
 
-### 5. The Imposter Word — *one of you has a different word* (4–8, 15 min, M)
+### 5. The Imposter Word (built as Odd Word Out) — *one of you has a different word* (4–8, 15 min, M)
 Social deduction. Everyone gets the same secret word ("Beach"), except the imposter, who gets a
 close one ("Pool"), or in hard mode no word at all. Players take turns giving **one-word clues**
 (shown on the TV in order), two laps. Then everyone votes.
@@ -85,7 +89,7 @@ Why it fits: like Spectrum but about a person instead of a clue, and like the bo
 "ranking" mini-game grown into a full game. Needs a drag-to-order component (the ranking
 mini-game's UI is a starting point) and `hub/rankings.json` lists.
 
-### 7. Count Up — *co-op, no talking, play in order* (2–8, 10 min, M, real-time)
+### 7. Count Up (built) — *co-op, no talking, play in order* (2–8, 10 min, M, real-time)
 Co-op and real-time. Each player gets a few secret numbers from 1–100. Without saying numbers,
 the group has to play all of them **in rising order**: anyone can tap "play my lowest" at any
 time. Play out of order: lose a life. Clear a level with lives left to get more cards next level.

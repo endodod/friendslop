@@ -2,7 +2,7 @@
 import { motion } from "framer-motion";
 import { FastForward, LogOut, MoreHorizontal, Pause, Play } from "lucide-react";
 import { useEffect, useState } from "react";
-import { gameInfo, type BluffPublic, type HubGameId, type SpectrumPublic, type SpyPublic } from "@party-game/shared";
+import { gameInfo, type BluffPublic, type CrewPublic, type HubGameId, type CountPublic, type OddPublic, type SpectrumPublic, type SpyPublic, type WhoPublic } from "@party-game/shared";
 import { useStore } from "@/lib/store";
 import { act } from "@/lib/useRoom";
 import { ChatPanel } from "../ChatPanel";
@@ -13,6 +13,10 @@ import { HubPodium } from "./HubPodium";
 import { SpyGridIntroTeams, SpyGridSide, SpyGridView } from "./SpyGridView";
 import { SpectrumView } from "./SpectrumView";
 import { BluffView } from "./BluffView";
+import { WhoWroteView } from "./WhoWroteView";
+import { CountUpSide, CountUpView } from "./CountUpView";
+import { OddWordView } from "./OddWordView";
+import { ClueCrewSide, ClueCrewView } from "./ClueCrewView";
 import { ScoreList } from "./ScoreList";
 
 function useIsWide() {
@@ -44,6 +48,22 @@ function useStatus(): string {
     case "bluff": {
       const s = hub.state as BluffPublic;
       return `Round ${Math.min(s.totalRounds, (s.round?.index ?? s.history.length) + 1)}/${s.totalRounds}`;
+    }
+    case "whowrote": {
+      const s = hub.state as WhoPublic;
+      return `Question ${Math.min(s.totalRounds, (s.round?.index ?? 0) + 1)}/${s.totalRounds}`;
+    }
+    case "countup": {
+      const s = hub.state as CountPublic;
+      return `Level ${s.level}/${s.totalLevels}`;
+    }
+    case "oddword": {
+      const s = hub.state as OddPublic;
+      return `Round ${Math.min(s.totalRounds, (s.round?.index ?? 0) + 1)}/${s.totalRounds}`;
+    }
+    case "cluecrew": {
+      const s = hub.state as CrewPublic;
+      return `Card ${Math.min(s.deckSize, s.history.length + 1)} · ${s.score} solved`;
     }
   }
 }
@@ -142,12 +162,22 @@ function GameView({ display, controller }: { display: boolean; controller: boole
       return <SpectrumView display={display} controller={controller} />;
     case "bluff":
       return <BluffView display={display} controller={controller} />;
+    case "whowrote":
+      return <WhoWroteView display={display} controller={controller} />;
+    case "countup":
+      return <CountUpView display={display} controller={controller} />;
+    case "oddword":
+      return <OddWordView display={display} controller={controller} />;
+    case "cluecrew":
+      return <ClueCrewView display={display} controller={controller} />;
   }
 }
 
 function Side() {
   const hub = useHub();
   if (hub.gameId === "spygrid") return <SpyGridSide />;
+  if (hub.gameId === "cluecrew") return <ClueCrewSide />;
+  if (hub.gameId === "countup") return <CountUpSide />;
   return <ScoreList />;
 }
 

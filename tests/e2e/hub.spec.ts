@@ -14,7 +14,7 @@ async function setup(browser: import("@playwright/test").Browser, gameId: string
   await b.goto(`/r/${code}`);
   await b.fill("input", "Sam");
   await b.click("button:has-text('Join')");
-  await expect(a.getByText("Sam")).toBeVisible();
+  await expect(a.getByText("Sam", { exact: true })).toBeVisible();
   return { a, b, errors };
 }
 
@@ -47,7 +47,12 @@ test("Spectrum: clue, guess, reveal; refresh keeps the seat", async ({ browser }
 
 test("Lobby: switch to Spy Grid, teams need 4 players", async ({ browser }) => {
   const { a, b, errors } = await setup(browser, "party");
+  // The picker is collapsed to the current game.
+  await expect(a.getByTestId("game-spygrid")).toHaveCount(0);
+  await a.getByTestId("game-picker-toggle").click();
   await a.getByTestId("game-spygrid").click();
+  // Picking a game collapses the list again: only the current game stays.
+  await expect(a.getByTestId("game-spygrid")).toHaveCount(1);
   await expect(b.getByTestId("teams-panel")).toBeVisible();
   await a.getByTestId("ready-button").click();
   await b.getByTestId("ready-button").click();
@@ -61,5 +66,73 @@ test("Lobby: switch to Spy Grid, teams need 4 players", async ({ browser }) => {
   await b.getByTestId("got-it").click();
   await expect(a.getByTestId("spy-grid")).toBeVisible();
   await expect(a.getByTestId("spy-grid").getByRole("gridcell")).toHaveCount(25);
+  expect(errors).toEqual([]);
+});
+
+test("Count Up: play the lowest card, the pile grows", async ({ browser }) => {
+  const { a, b, errors } = await setup(browser, "countup");
+  await start(a, b);
+  await expect(a.getByTestId("countup-play")).toBeEnabled({ timeout: 20_000 });
+  await a.getByTestId("countup-play").click();
+  await expect(b.getByTestId("countup-pile")).toBeVisible();
+  // The other player's card is secret: only counts show.
+  await expect(b.getByTestId("countup-hand")).toBeVisible();
+  expect(errors).toEqual([]);
+});
+
+test("Odd Word Out: secret words, clues in turn", async ({ browser }) => {
+  const { a, b, errors } = await setup(browser, "oddword");
+  await a.getByTestId("add-bot").click();
+  await a.getByTestId("add-bot").click();
+  await start(a, b);
+  await expect(a.getByTestId("odd-word")).toBeVisible({ timeout: 20_000 });
+  await expect(b.getByTestId("odd-word")).toBeVisible();
+  await expect(a.getByTestId("odd-clues")).toBeVisible();
+  expect(errors).toEqual([]);
+});
+
+test("Who Wrote That?: answer, then guess an anonymous answer", async ({ browser }) => {
+  const { a, b, errors } = await setup(browser, "whowrote");
+  await a.getByTestId("add-bot").click();
+  await start(a, b);
+  for (const [p, text] of [
+    [a, "Juggling oranges"],
+    [b, "Whistling backwards"],
+  ] as const) {
+    await p.fill('[aria-label="Your answer"]', text);
+    await p.getByTestId("whowrote-write").locator("button.btn-primary").click();
+  }
+  await expect(a.getByTestId("whowrote-answer")).toBeVisible({ timeout: 20_000 });
+  // Each player either guesses or is told the answer is theirs.
+  for (const p of [a, b]) {
+    const pick = p.getByTestId("whowrote-candidate").first();
+    if (await pick.isVisible()) await pick.click();
+  }
+  await expect(a.getByTestId("whowrote-result")).toBeVisible({ timeout: 30_000 });
+  expect(errors).toEqual([]);
+});
+
+test("Clue Crew: the guesser never sees the word; clues cancel out", async ({ browser }) => {
+  const { a, b, errors } = await setup(browser, "cluecrew");
+  await a.getByTestId("add-bot").click();
+  await start(a, b);
+  await expect(a.getByTestId("cluecrew")).toBeVisible({ timeout: 20_000 });
+  const forms = await Promise.all([a, b].map((p) => p.getByTestId("crew-clue-form").count()));
+  const givers = [a, b].filter((_, i) => forms[i] > 0);
+  const guessers = [a, b].filter((_, i) => forms[i] === 0);
+  for (const g of guessers) await expect(g.getByTestId("crew-word")).toHaveCount(0);
+  for (const g of givers) {
+    const inputs = g.getByTestId("crew-clue-form").locator("input");
+    const n = await inputs.count();
+    for (let i = 0; i < n; i++) await inputs.nth(i).fill(`zq${i}${givers.indexOf(g)}x`);
+    await g.getByTestId("crew-clue-form").locator("button.btn-primary").click();
+  }
+  for (const g of givers) {
+    const ok = g.getByTestId("crew-ok");
+    await ok.waitFor({ timeout: 20_000 }).catch(() => {});
+    if (await ok.isVisible()) await ok.click();
+  }
+  await expect(a.getByTestId("crew-clue").first()).toBeVisible({ timeout: 30_000 });
+  for (const g of guessers) await expect(g.getByTestId("crew-word")).toHaveCount(0);
   expect(errors).toEqual([]);
 });

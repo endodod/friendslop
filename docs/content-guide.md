@@ -216,7 +216,7 @@ code: see `packages/minigames/README.md`.
 
 ## Hub games (`data/hub/`)
 
-All three files are optional (a game without its file can't start) and are validated on server start.
+All files are optional (a game without its file can't start) and are validated on server start.
 
 - **`spygrid-words.json`** — `{ "words": [...] }`: single words, letters only, at most 10 characters
   (longer words don't fit a phone grid). Stored upper-case; duplicates are dropped. A grid never holds
@@ -227,6 +227,15 @@ All three files are optional (a game without its file can't start) and are valid
   `{target}` for the player in the spotlight and asks something only they know ("What would {target}
   name a boat?"). `decoys` (3+) are house lies mixed in when there are few players; make them as
   believable as a real answer. `spicy: true` prompts are skipped in family-friendly rooms.
+- **`whowrote.json`** — `{ "prompts": [{ "id", "prompt", "spicy"? }] }`: Who Wrote That? questions,
+  asked to everyone at once and answered about themselves. The best ones get specific, personal,
+  funny answers that are hard to pin on someone ("Your most useless talent"), not yes/no or answers
+  everyone would give. `spicy: true` ones are skipped in family-friendly rooms.
+- **`oddword.json`** — `{ "pairs": [["Beach", "Pool"], ...] }`: Odd Word Out word pairs. Close enough
+  that clues overlap, different enough that clues can give the odd one out away. Which side is the
+  odd word is random each round.
+
+Clue Crew deals its cards from `spygrid-words.json`.
 
 ## Tuning numbers
 

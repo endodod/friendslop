@@ -14,6 +14,10 @@ export const HUB_SETTING_OPTIONS = {
   spygridPace: ["fast", "normal", "relaxed", "off"] as const,
   spectrumCluesEach: [1, 2, 3] as const,
   bluffRoundsEach: [1, 2, 3] as const,
+  whowroteRounds: [2, 3, 4] as const,
+  countupLevels: [6, 8, 10] as const,
+  oddwordRounds: [3, 5, 8] as const,
+  cluecrewCards: [7, 10, 13] as const,
 };
 
 export function generateRoomCode(rng: Rng, taken: (code: string) => boolean = () => false): string {
@@ -178,6 +182,10 @@ export function updateSettings(room: RoomState, patch: RoomSettingsPatch, conten
     spygrid: { ...DEFAULT_HUB_SETTINGS.spygrid, ...base.spygrid, ...patch.hub?.spygrid },
     spectrum: { ...DEFAULT_HUB_SETTINGS.spectrum, ...base.spectrum, ...patch.hub?.spectrum },
     bluff: { ...DEFAULT_HUB_SETTINGS.bluff, ...base.bluff, ...patch.hub?.bluff },
+    whowrote: { ...DEFAULT_HUB_SETTINGS.whowrote, ...base.whowrote, ...patch.hub?.whowrote },
+    countup: { ...DEFAULT_HUB_SETTINGS.countup, ...base.countup, ...patch.hub?.countup },
+    oddword: { ...DEFAULT_HUB_SETTINGS.oddword, ...base.oddword, ...patch.hub?.oddword },
+    cluecrew: { ...DEFAULT_HUB_SETTINGS.cluecrew, ...base.cluecrew, ...patch.hub?.cluecrew },
   };
   const s: RoomSettings = { ...room.settings, ...patch, hub, gameId: patch.gameId ?? room.settings.gameId ?? "party" };
   if (!GAMES.some((g) => g.id === s.gameId)) fail("INVALID_INPUT", "Unknown game.");
@@ -185,6 +193,10 @@ export function updateSettings(room: RoomState, patch: RoomSettingsPatch, conten
   if (!(O.spygridPace as readonly string[]).includes(hub.spygrid.pace)) fail("INVALID_INPUT", "Invalid timer setting.");
   if (!(O.spectrumCluesEach as readonly number[]).includes(hub.spectrum.cluesEach)) fail("INVALID_INPUT", "Invalid round count.");
   if (!(O.bluffRoundsEach as readonly number[]).includes(hub.bluff.roundsEach)) fail("INVALID_INPUT", "Invalid round count.");
+  if (!(O.whowroteRounds as readonly number[]).includes(hub.whowrote.rounds)) fail("INVALID_INPUT", "Invalid round count.");
+  if (!(O.countupLevels as readonly number[]).includes(hub.countup.levels)) fail("INVALID_INPUT", "Invalid level count.");
+  if (!(O.oddwordRounds as readonly number[]).includes(hub.oddword.rounds)) fail("INVALID_INPUT", "Invalid round count.");
+  if (!(O.cluecrewCards as readonly number[]).includes(hub.cluecrew.cards)) fail("INVALID_INPUT", "Invalid deck size.");
   if (!(GAME_CONFIG.turns.options as readonly number[]).includes(s.turnCount)) fail("INVALID_INPUT", "Invalid turn count.");
   // Themes used to be a separate filter; packs are the only switch now.
   delete (s as { themes?: unknown }).themes;

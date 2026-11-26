@@ -138,7 +138,7 @@ model SavedQuestion {
   @@unique([userId, promptKey])
 }
 
-/// Games played and won per hub game ("party", "spygrid", "spectrum", "bluff"). User.gamesPlayed/gamesWon are the totals.
+/// Games played and won per hub game ("party", "spygrid", "spectrum", "bluff", "whowrote", "oddword", "cluecrew", "countup"). User.gamesPlayed/gamesWon are the totals.
 model UserGameStat {
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
