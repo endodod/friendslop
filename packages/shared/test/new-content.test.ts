@@ -90,7 +90,7 @@ describe("Swapper", () => {
 });
 
 describe("Toll Booth", () => {
-  it("charges others who pass, then gets torn down by someone landing on it", () => {
+  it("charges others who pass or land, and stays for the rest of the game", () => {
     const { h, me, others } = atTurnStart(2);
     const g = h.room.game!;
     g.players[me].items = ["toll-booth"];
@@ -100,7 +100,7 @@ describe("Toll Booth", () => {
     g.players[me].tileId = tile;
     g.tileTypes[tile] = "blue"; // a plain tile, so the landing doesn't start a question
     h.act({ type: "useItem", playerId: me, itemId: "toll-booth" });
-    expect(h.g.tolls).toEqual([{ tileId: tile, ownerId: me, amount: 3, untilRound: h.g.round + 1 }]);
+    expect(h.g.tolls).toEqual([{ tileId: tile, ownerId: me, amount: 3 }]);
     expect(() => h.act({ type: "useItem", playerId: me, itemId: "toll-booth" })).toThrow();
     // Put the other player right behind the toll and walk them through it.
     const r = h.room.game!;
@@ -113,7 +113,7 @@ describe("Toll Booth", () => {
     r.phase = "rolling";
     h.advanceTo("turnEnd");
     expect(h.g.players[me].coins).toBe(3);
-    expect(h.g.tolls).toEqual([]); // landed on it: torn down
+    expect(h.g.tolls).toEqual([{ tileId: tile, ownerId: me, amount: 3 }]); // landing doesn't tear it down
   });
 });
 

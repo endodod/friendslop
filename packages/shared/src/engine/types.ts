@@ -353,8 +353,8 @@ export interface GameState {
   duel: { challengerId: PlayerId; opponentId: PlayerId | null } | null;
   /** A tile that asks the lander yes/no: Gamble (bet `amount` coins) or Rest Stop (pay `amount` to roll again). */
   tileChoice: { kind: "gamble" | "restStop"; amount: number } | null;
-  /** Toll Booths: anyone else passing or landing here pays the owner. Gone when someone lands on it or the round passes `untilRound`. */
-  tolls?: { tileId: string; ownerId: PlayerId; amount: number; untilRound: number }[];
+  /** Toll Booths: anyone else passing or landing here pays the owner. They stay for the whole game; at most one per tile. */
+  tolls?: { tileId: string; ownerId: PlayerId; amount: number }[];
   /** Star Surge event: the star costs `extra` more until the end of `round`. */
   starSurge?: { round: number; extra: number } | null;
   /** Spotlight event: the next `left` questions are about this player. */

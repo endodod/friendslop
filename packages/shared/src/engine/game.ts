@@ -762,12 +762,6 @@ function land(d: Draft, starDone = false) {
   const { g, s } = d;
   const pid = activeId(g);
   const p = g.players[pid];
-  // Landing on someone else's Toll Booth (after paying) tears it down.
-  const torn = g.tolls?.filter((t) => t.tileId === p.tileId && t.ownerId !== pid) ?? [];
-  if (torn.length) {
-    g.tolls = g.tolls!.filter((t) => !torn.includes(t));
-    log(g, s, `${playerName(d, pid)} tore down ${playerName(d, torn[0].ownerId)}'s Toll Booth.`, pid);
-  }
   if (p.tileId === g.starTileId && !starDone) {
     g.star = { passing: false };
     return goto(d, "starPurchase", T.starPurchaseMs);
@@ -1553,7 +1547,6 @@ function afterMinigameResults(d: Draft): void {
   if (origin === "duel") return turnEnd(d);
   if (g.mode === "minigameDebug") return startRoundMinigame(d);
   g.round++;
-  g.tolls = (g.tolls ?? []).filter((t) => t.untilRound >= g.round);
   if (g.starSurge && g.starSurge.round < g.round) g.starSurge = null;
   if (g.turnCount > 0 && g.round > g.turnCount) {
     g.round = g.turnCount;

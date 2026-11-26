@@ -162,7 +162,7 @@ export function applyTurnStartItem(
     }
     case "tollBooth": {
       if (g.tolls?.some((t) => t.tileId === p.tileId)) fail("INVALID_INPUT", "There's already a Toll Booth here.");
-      g.tolls = [...(g.tolls ?? []), { tileId: p.tileId, ownerId: playerId, amount: item.params.amount ?? 3, untilRound: g.round + 1 }];
+      g.tolls = [...(g.tolls ?? []), { tileId: p.tileId, ownerId: playerId, amount: item.params.amount ?? 3 }];
       emit(s, { type: "sfx", id: "buy" });
       return `built a Toll Booth here (${item.params.amount ?? 3} coins per visitor)`;
     }

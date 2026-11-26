@@ -22,20 +22,26 @@ export function HotPotatoClient(p: MinigameClientProps<Pub>) {
   }, [mine, p.ui]);
   const n = p.participants.length;
   const holderIdx = p.participants.indexOf(p.pub.holder);
+  // Room for up to 8 around the circle: smaller seats and a slightly wider ring as it fills up.
+  const crowded = n > 5;
+  const avatarSize = n > 6 ? 46 : crowded ? 50 : 56;
+  const radius = crowded ? 38 : 36;
+  // A touch above centre: each seat has its name underneath, so the bottom one needs the room.
+  const cy = 48;
   const posOf = (i: number) => {
     const ang = (i / n) * Math.PI * 2 - Math.PI / 2;
-    return { x: 50 + Math.cos(ang) * 38, y: 50 + Math.sin(ang) * 38 };
+    return { x: 50 + Math.cos(ang) * radius, y: cy + Math.sin(ang) * radius };
   };
-  const bombPos = holderIdx >= 0 ? posOf(holderIdx) : { x: 50, y: 50 };
+  const bombPos = holderIdx >= 0 ? posOf(holderIdx) : { x: 50, y: cy };
   return (
     <div className="flex flex-col items-center gap-4">
       <Arena
         tone={mine ? "#ff4d5e" : "#ff8a3d"}
-        className="relative aspect-square w-full max-w-[min(100%,34dvh)]"
+        className="relative aspect-square w-full max-w-[min(100%,52dvh,560px)]"
         bg={`radial-gradient(60% 60% at 50% 50%, ${p.pub.boom ? "#ff4d5e55" : "#ff8a3d33"} 0%, transparent 70%), linear-gradient(180deg, #1d1838, #120f24)`}
       >
         {/* circle */}
-        <span className="absolute inset-[12%] rounded-full border-2 border-dashed border-white/15" />
+        <span className="absolute rounded-full border-2 border-dashed border-white/15" style={{ left: `${50 - radius}%`, right: `${50 - radius}%`, top: `${cy - radius}%`, bottom: `${100 - cy - radius}%` }} />
         {p.participants.map((pid, i) => {
           const pos = posOf(i);
           const alive = p.pub.alive.includes(pid);
@@ -46,14 +52,14 @@ export function HotPotatoClient(p: MinigameClientProps<Pub>) {
               style={{ left: `${pos.x}%`, top: `${pos.y}%` }}
             >
               <span className="relative">
-                <p.ui.Avatar player={p.players[pid]} size={52} dim={!alive} ring={p.pub.holder === pid} />
+                <p.ui.Avatar player={p.players[pid]} size={avatarSize} dim={!alive} ring={p.pub.holder === pid} />
                 {(p.pub.extraLife ?? []).includes(pid) && (
                   <span className="absolute -right-1 -top-1 text-lg drop-shadow" title="Bonus: one revive">
                     ❤️
                   </span>
                 )}
               </span>
-              <span className="max-w-20 truncate font-display text-sm">{p.players[pid]?.name}</span>
+              <span className={`truncate font-display leading-tight ${crowded ? "max-w-16 text-xs" : "max-w-20 text-sm"}`}>{p.players[pid]?.name}</span>
             </span>
           );
         })}
@@ -61,7 +67,7 @@ export function HotPotatoClient(p: MinigameClientProps<Pub>) {
         {!p.pub.boom && holderIdx >= 0 && (
           <motion.span
             className="absolute -translate-x-1/2 -translate-y-1/2"
-            animate={{ left: `${50 + (bombPos.x - 50) * 0.38}%`, top: `${50 + (bombPos.y - 50) * 0.38}%` }}
+            animate={{ left: `${50 + (bombPos.x - 50) * 0.38}%`, top: `${cy + (bombPos.y - cy) * 0.38}%` }}
             transition={{ type: "spring", stiffness: 160, damping: 14 }}
           >
             <motion.span
@@ -91,7 +97,7 @@ export function HotPotatoClient(p: MinigameClientProps<Pub>) {
             initial={{ scale: 0.3, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
           >
-            <span className="font-display text-6xl text-accent drop-shadow-[0_0_20px_#ff4d5e]">{p.pub.revive ? "SAVED!" : "BOOM!"}</span>
+            <span className={`font-display text-accent drop-shadow-[0_0_20px_#ff4d5e] ${crowded ? "text-5xl" : "text-6xl"}`}>{p.pub.revive ? "SAVED!" : "BOOM!"}</span>
           </motion.span>
         )}
       </Arena>

@@ -215,7 +215,7 @@
     {
       "id": "toll-booth",
       "name": "Toll Booth",
-      "description": "Build a toll on your tile: everyone else who passes or lands there pays you 3 coins. Torn down when someone lands on it, or after next round.",
+      "description": "Build a toll on your tile: everyone else who passes or lands there pays you 3 coins, for the rest of the game. One Toll Booth per tile.",
       "icon": "toll-booth",
       "price": 10,
       "useTiming": "turnStart",
