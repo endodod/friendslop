@@ -16,14 +16,14 @@ export const SPECTRUM = {
   /** Reveal screen; the host can skip it. */
   revealMs: 9_000,
   clueMaxLength: 40,
-  /** The target never sits right at an edge. */
-  targetMin: 3,
-  targetMax: 97,
-  /** Distance → points, first match wins. */
+  /** The scale: whole numbers from min to max. Target and guesses are on it. */
+  min: 1,
+  max: 10,
+  /** Distance (in steps) → points, first match wins. */
   zones: [
-    { within: 3, points: 4, label: "Bullseye!" },
-    { within: 8, points: 3, label: "So close" },
-    { within: 14, points: 2, label: "Near" },
+    { within: 0, points: 4, label: "Bullseye!" },
+    { within: 1, points: 2, label: "One off" },
+    { within: 2, points: 1, label: "Two off" },
   ],
 };
 
@@ -35,7 +35,7 @@ export interface SpectrumRound {
   index: number;
   giverId: PlayerId;
   card: SpectrumCard;
-  /** 0..100, secret until the reveal. */
+  /** SPECTRUM.min..max, secret until the reveal. */
   target: number;
   clue: string | null;
   guesses: Record<PlayerId, number>;
@@ -69,8 +69,8 @@ export interface SpectrumState extends HubPhaseState {
 
 export const SpectrumActionSchema = z.discriminatedUnion("type", [
   z.object({ type: z.literal("clue"), text: z.string().min(1).max(80) }),
-  z.object({ type: z.literal("guess"), value: z.number().min(0).max(100) }),
-  z.object({ type: z.literal("draft"), value: z.number().min(0).max(100) }),
+  z.object({ type: z.literal("guess"), value: z.number().int().min(SPECTRUM.min).max(SPECTRUM.max) }),
+  z.object({ type: z.literal("draft"), value: z.number().int().min(SPECTRUM.min).max(SPECTRUM.max) }),
 ]);
 export type SpectrumAction = z.infer<typeof SpectrumActionSchema>;
 
@@ -96,7 +96,7 @@ function startRound(s: SpectrumState, ctx: HubCtx) {
     return startRound(s, ctx);
   }
   const card = s.cards[index % s.cards.length];
-  const target = SPECTRUM.targetMin + Math.floor(ctx.rng() * (SPECTRUM.targetMax - SPECTRUM.targetMin + 1));
+  const target = SPECTRUM.min + Math.floor(ctx.rng() * (SPECTRUM.max - SPECTRUM.min + 1));
   s.round = { index, giverId, card, target, clue: null, guesses: {}, drafts: {}, points: null };
   setPhase(s, "clue", SPECTRUM.clueMs, ctx);
 }
@@ -294,6 +294,16 @@ export const spectrum: HubGameDefinition<SpectrumState, SpectrumAction> = {
     maybeReveal(s, ctx);
   },
 
+  addPlayer(s, pid, ctx) {
+    if (s.players.includes(pid)) return;
+    s.players.push(pid);
+    s.scores[pid] = 0;
+    s.stats[pid] = { bullseyes: 0, guesses: 0, guessPoints: 0, totalDistance: 0, cluesGiven: 0, cluePoints: 0 };
+    // Their clue rounds go at the end, as many as everyone else gets.
+    const each = ctx.settings.hub?.spectrum?.cluesEach ?? 2;
+    for (let i = 0; i < each; i++) s.schedule.push(pid);
+  },
+
   connectionChanged(s, ctx) {
     maybeReveal(s, ctx);
   },
@@ -309,7 +319,7 @@ export const spectrum: HubGameDefinition<SpectrumState, SpectrumAction> = {
       const st = s.stats[p];
       stats[p] = [
         { label: "Bullseyes", value: st.bullseyes },
-        { label: "Avg. distance", value: st.guesses ? Math.round(st.totalDistance / st.guesses) : "–" },
+        { label: "Avg. steps off", value: st.guesses ? (st.totalDistance / st.guesses).toFixed(1) : "–" },
         { label: "Points as clue-giver", value: st.cluePoints },
       ];
     }
@@ -338,7 +348,7 @@ export const spectrum: HubGameDefinition<SpectrumState, SpectrumAction> = {
       highlights.push({
         icon: "friends",
         title: "Mind meld",
-        text: `"${meld.r.clue}" (${meld.r.card.left} ↔ ${meld.r.card.right}): everyone within ${Math.round(meld.avg)} on average.`,
+        text: `"${meld.r.clue}" (${meld.r.card.left} ↔ ${meld.r.card.right}): ${meld.avg === 0 ? "everyone hit the bullseye!" : `${meld.avg.toFixed(1)} steps off on average.`}`,
         playerIds: [meld.r.giverId],
       });
     const top = ranking.filter((r) => r.rank === 1).map((r) => r.playerId);
@@ -393,13 +403,15 @@ export const spectrum: HubGameDefinition<SpectrumState, SpectrumAction> = {
     if (!r) return [];
     if (s.phase === "clue" && r.giverId === bot) {
       const t = r.target;
-      const side = t < 50 ? r.card.left : r.card.right;
-      const word = Math.abs(t - 50) > 35 ? "extremely" : Math.abs(t - 50) > 18 ? "fairly" : "slightly";
-      return [{ type: "clue", text: Math.abs(t - 50) <= 6 ? "Right in the middle" : `${word} ${side.toLowerCase()}`.slice(0, SPECTRUM.clueMaxLength) }];
+      const mid = (SPECTRUM.min + SPECTRUM.max) / 2;
+      const side = t < mid ? r.card.left : r.card.right;
+      const off = Math.abs(t - mid);
+      const word = off >= 4 ? "extremely" : off >= 2.5 ? "fairly" : "slightly";
+      return [{ type: "clue", text: off < 1 ? "Right in the middle" : `${word} ${side.toLowerCase()}`.slice(0, SPECTRUM.clueMaxLength) }];
     }
     if (s.phase === "guess" && r.giverId !== bot && r.guesses[bot] === undefined) {
       // Test bots read the clue a bit too well: a noisy guess around the target.
-      const v = Math.max(0, Math.min(100, r.target + Math.round((ctx.rng() - 0.5) * 40)));
+      const v = Math.max(SPECTRUM.min, Math.min(SPECTRUM.max, r.target + Math.round((ctx.rng() - 0.5) * 5)));
       return [{ type: "guess", value: v }];
     }
     return [];

@@ -62,12 +62,15 @@ export function defineSoloGame<Sub>(opts: {
   score(sub: Sub, ctx: { seed: number; bonus: boolean }): number | null;
   higherIsBetter?: boolean;
   label?: (score: number) => string;
+  /** No clock: runs until everyone submitted (finish-the-task games); the host can end it early. */
+  untimed?: boolean;
 }): MiniGameDefinition<SoloState, never, Sub> {
   const higher = opts.higherIsBetter ?? true;
   return {
     id: opts.id,
     kind: "soloScored",
     durationSec: opts.durationSec,
+    untimed: opts.untimed,
     minPlayers: opts.minPlayers ?? 2,
     submitSchema: opts.submitSchema,
     init: ({ players, bonuses, seed }) => ({

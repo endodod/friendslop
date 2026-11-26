@@ -441,6 +441,14 @@ export const clueCrew: HubGameDefinition<CrewState, CrewAction> = {
     maybeEndCheck(s, ctx);
   },
 
+  addPlayer(s, pid) {
+    if (s.players.includes(pid)) return;
+    // Last seat in the guesser rotation; they write clues from the current card on.
+    s.players.push(pid);
+    if (!s.seats.includes(pid)) s.seats.push(pid);
+    s.stats[pid] = emptyStats();
+  },
+
   connectionChanged(s, ctx) {
     maybeEndClues(s, ctx);
     maybeEndCheck(s, ctx);

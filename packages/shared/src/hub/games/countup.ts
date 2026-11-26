@@ -98,7 +98,8 @@ function deal(s: CountState, ctx: HubCtx) {
     Array.from({ length: COUNTUP.maxCard }, (_, i) => i + 1),
   );
   s.hands = {};
-  for (const p of s.players) s.hands[p] = deck.splice(0, s.level).sort((a, b) => a - b);
+  const each = Math.min(s.level, Math.floor(COUNTUP.maxCard / Math.max(1, s.players.length)));
+  for (const p of s.players) s.hands[p] = deck.splice(0, each).sort((a, b) => a - b);
   s.pile = [];
   s.raised = [];
   s.mistake = null;
@@ -317,6 +318,15 @@ export const countUp: HubGameDefinition<CountState, CountAction> = {
     if (s.phase === "play") {
       if (!maybeClear(s, ctx)) maybeSync(s, ctx);
     }
+  },
+
+  addPlayer(s, pid) {
+    if (s.players.includes(pid)) return;
+    // Cards from the next level on; fewer levels if the deck would run out.
+    s.players.push(pid);
+    s.hands[pid] = [];
+    s.stats[pid] = emptyStats();
+    s.totalLevels = Math.max(s.level, Math.min(s.totalLevels, countLevels(s.totalLevels, s.players.length)));
   },
 
   connectionChanged(s, ctx) {

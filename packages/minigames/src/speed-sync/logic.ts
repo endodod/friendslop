@@ -1,5 +1,6 @@
 import { defineQuestionSeries } from "../kit/questionSeries";
 
+/** Answering this fast (half of it) earns the speed bonus. There's no time limit. */
 export const ANSWER_MS = 8000;
 
 /** 5 quick tile questions. Matching scores 2, answering in the first half of the window +1; targets get 1 per matcher. */
@@ -7,7 +8,7 @@ export const speedSync = defineQuestionSeries({
   id: "speed-sync",
   rounds: () => 5,
   formats: ["tiles"],
-  answerMs: ANSWER_MS,
+  answerMs: null,
   durationSec: 120,
   points: (r) => {
     const out: Record<string, number> = {};

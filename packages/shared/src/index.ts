@@ -37,3 +37,4 @@ export * from "./hub/games/whowrote";
 export * from "./hub/games/countup";
 export * from "./hub/games/oddword";
 export * from "./hub/games/cluecrew";
+export { COMEBACK_EFFECTS, shopStock } from "./logic/items";

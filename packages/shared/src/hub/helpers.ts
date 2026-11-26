@@ -22,6 +22,21 @@ export function cleanText(raw: string, max: number): string {
     .trim();
 }
 
+/**
+ * Bluff Club answers all look the same, so nobody can tell the truth from a lie by its style:
+ * lower case, no punctuation (apostrophes and hyphens inside words stay), single spaces. Emoji stay.
+ */
+export function styleAnswer(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[\u2018\u2019\u02bc]/g, "'")
+    .replace(/[\u2010-\u2014]/g, "-")
+    .replace(/[^\p{L}\p{N}\p{M}'\-\s]/gu, (c) => (/\p{Extended_Pictographic}|\u200d|\ufe0f/u.test(c) ? c : " "))
+    .replace(/(^|[^\p{L}\p{N}])['-]+|['-]+(?=[^\p{L}\p{N}]|$)/gu, "$1")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 /** For comparing answers: lower case, letters and digits only, no leading article. */
 export function normalizeAnswer(text: string): string {
   return text

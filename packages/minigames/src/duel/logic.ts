@@ -56,6 +56,7 @@ function decide(s: DuelState, names: Record<PlayerId, string>): DuelState {
 export const duel: MiniGameDefinition<DuelState, { answer: unknown }> = {
   id: "duel",
   kind: "questionOnly",
+  untimed: true,
   durationSec: 75,
   minPlayers: 2,
   inputSchema: z.object({ answer: AnswerSchema }) as never,
@@ -83,7 +84,7 @@ export const duel: MiniGameDefinition<DuelState, { answer: unknown }> = {
         participants,
         now,
         rng,
-        answerMs: GAME_CONFIG.duel.answerMs,
+        answerMs: null,
       }),
       winner: null,
       loser: null,
@@ -100,7 +101,7 @@ export const duel: MiniGameDefinition<DuelState, { answer: unknown }> = {
   tick: (s, { now, services }) => {
     if (!s.round || s.done) return s;
     const before = s.round.stage;
-    const round = stepMiniRound(s.round, now, (r) => services.scoreAnswers(r.question, r.targetId, r.participants, r.answers), { resultsMs: 4500 });
+    const round = stepMiniRound(s.round, now, (r) => services.scoreAnswers(r.question, r.targetId, r.participants, r.answers), { resultsMs: 4500, present: services.isPresent });
     let next: DuelState = { ...s, round };
     if (before === "answering" && round.stage === "reveal") next = decide(next, services.names);
     if (miniRoundDone(round, now)) next = { ...next, done: true };

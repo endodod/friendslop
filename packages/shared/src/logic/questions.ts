@@ -149,8 +149,10 @@ export function resolveQuestion(q: Question, pack: Pack, args: ResolveArgs): Res
   };
   if (q.answers && (q.format === "tiles" || q.format === "ranking")) {
     const opts = q.answers.map((a, i) => ({ id: `a${i}`, label: substitutePlaceholders(loc(a), args) }));
-    // Same shuffled order for everyone in this round.
-    base.options = shuffle(args.rng, opts);
+    // Same shuffled order for everyone in this round. Tiles show at most maxOptions answers
+    // (rankings keep all their items: the order is the answer).
+    const shuffled = shuffle(args.rng, opts);
+    base.options = q.format === "tiles" ? shuffled.slice(0, GAME_CONFIG.question.maxOptions) : shuffled;
   }
   if (q.format === "number" || q.format === "scale") {
     const spec = q.number ?? {
@@ -170,8 +172,12 @@ export function resolveQuestion(q: Question, pack: Pack, args: ResolveArgs): Res
     base.reference = q.reference;
     if (q.number) base.number = { ...q.number, unit: q.number.unit ? loc(q.number.unit) : undefined };
   }
-  if (q.format === "player")
-    base.playerChoices = excludesTarget(q) ? args.participants.filter((p) => p !== args.targetId) : [...args.participants];
+  if (q.format === "player") {
+    // Never more than maxOptions players to pick from, however many are playing (random ones, in seat order).
+    const eligible = excludesTarget(q) ? args.participants.filter((p) => p !== args.targetId) : [...args.participants];
+    const keep = new Set(shuffle(args.rng, eligible).slice(0, GAME_CONFIG.question.maxOptions));
+    base.playerChoices = eligible.filter((p) => keep.has(p));
+  }
   void pack;
   return base;
 }

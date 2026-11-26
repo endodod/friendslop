@@ -28,6 +28,7 @@ export function bestLength(seq: number[], inputs: number[]): number {
 
 export const simon = defineSoloGame({
   id: "simon",
+  untimed: true,
   durationSec: 90,
   submitSchema: z.object({ inputs: z.array(z.number().int().min(0).max(3)).max(500) }),
   label: (n) => `${n} long`,

@@ -3,7 +3,7 @@ import { fail } from "../../engine/errors";
 import type { PlayerId } from "../../engine/types";
 import type { BluffPrompt } from "../../content/schemas";
 import { shuffle } from "../../rng";
-import { cleanText, goneLong, normalizeAnswer, pickRandom, present, hubRanking, setPhase } from "../helpers";
+import { cleanText, goneLong, normalizeAnswer, styleAnswer, pickRandom, present, hubRanking, setPhase } from "../helpers";
 import type { HubCtx, HubGameDefinition, HubHighlight, HubPhaseState, HubStatLine } from "../types";
 
 /**
@@ -151,7 +151,7 @@ function startVoting(s: BluffState, ctx: HubCtx) {
     if (entries.length >= BLUFF.minEntries) break;
     const key = normalizeAnswer(d);
     if (byKey.has(key)) continue;
-    const e: BluffEntry = { id: "", text: d, authors: [], truth: false, house: true };
+    const e: BluffEntry = { id: "", text: styleAnswer(d), authors: [], truth: false, house: true };
     byKey.set(key, e);
     entries.push(e);
   }
@@ -306,7 +306,7 @@ export const bluff: HubGameDefinition<BluffState, BluffAction> = {
     switch (a.type) {
       case "write": {
         if (s.phase !== "write") fail("WRONG_PHASE", "Writing time is over.");
-        const text = cleanText(a.text, BLUFF.answerMaxLength);
+        const text = styleAnswer(cleanText(a.text, BLUFF.answerMaxLength));
         if (!text) fail("INVALID_INPUT", "Write something first.");
         if (pid === r.targetId) r.truth = text;
         else r.fakes[pid] = text;
@@ -393,6 +393,23 @@ export const bluff: HubGameDefinition<BluffState, BluffAction> = {
     for (const e of r.entries) e.authors = e.authors.filter((a) => a !== pid);
     maybeEndWriting(s, ctx);
     maybeEndVoting(s, ctx);
+  },
+
+  addPlayer(s, pid, ctx) {
+    if (s.players.includes(pid)) return;
+    s.players.push(pid);
+    s.scores[pid] = 0;
+    s.stats[pid] = emptyStats();
+    // Their spotlight rounds go at the end, with prompts nobody had yet.
+    const each = ctx.settings.hub?.bluff?.roundsEach ?? 1;
+    const family = !!ctx.settings.familyFriendly;
+    const used = new Set(s.schedule.map((x) => x.prompt.id));
+    const fresh = shuffle(
+      ctx.rng,
+      ctx.content.hub.bluffPrompts.filter((p) => (!family || !p.spicy) && !used.has(p.id)),
+    );
+    const pool = fresh.length ? fresh : ctx.content.hub.bluffPrompts;
+    for (let i = 0; i < each && pool.length; i++) s.schedule.push({ targetId: pid, prompt: pool[i % pool.length] });
   },
 
   connectionChanged(s, ctx) {

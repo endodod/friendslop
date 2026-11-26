@@ -198,7 +198,8 @@ export function botActions(
       const def = mg && registry[mg.id];
       if (!mg || !def) break;
       const players = [...mg.participants, ...(mg.state != null ? (def.extraInputPlayers?.(mg.state) ?? []) : [])];
-      const total = Math.max(1, mg.endsAt - mg.startedAt);
+      // Untimed mini-games have no end time: bots take 5–12 s like a quick player would.
+      const total = mg.untimed ? 15_000 : Math.max(1, mg.endsAt - mg.startedAt);
       for (const b of bots.filter((p) => players.includes(p))) {
         const key = `${mg.startedAt}:${b}`;
         if (def.submitSchema && !memo.submitted.has(key)) {
@@ -212,7 +213,13 @@ export function botActions(
         if (def.inputSchema && now - (memo.lastInput.get(b) ?? 0) >= BOT_INPUT_EVERY_MS && now - mg.startedAt >= 800) {
           memo.lastInput.set(b, now);
           // Question mini-games: answer the current question properly; anything else gets random input.
-          const st = mg.state as { round?: { question?: ResolvedQuestion } | null; question?: ResolvedQuestion } | null;
+          const st = mg.state as { round?: { question?: ResolvedQuestion; stage?: string } | null; question?: ResolvedQuestion } | null;
+          // Hot or Not: after the target answered, everyone guesses higher/lower.
+          const hl = { dir: rng() < 0.5 ? "higher" : "lower" };
+          if (st?.round?.stage === "guess" && def.inputSchema.safeParse(hl).success) {
+            out.push({ type: "minigameInput", playerId: b, input: hl });
+            continue;
+          }
           const q = st?.round?.question ?? st?.question;
           const answer = q?.format ? randomAnswer(q, rng) : null;
           const asAnswer = answer && def.inputSchema.safeParse({ answer }).success ? { answer } : null;

@@ -53,6 +53,9 @@ test("create room → 2 players join → play one full turn", async ({ browser }
   await b.click("button:has-text('Join')");
   await expect(a.getByText("Sam")).toBeVisible();
 
+  // Party Board needs 3 players: a bot fills the seat.
+  await a.getByTestId("add-bot").click();
+
   // Ready + start
   await a.getByTestId("ready-button").click();
   await b.getByTestId("ready-button").click();

@@ -2,13 +2,13 @@
 import { motion } from "framer-motion";
 import { FastForward, LogOut, MoreHorizontal, Pause, Play } from "lucide-react";
 import { useEffect, useState } from "react";
-import { gameInfo, type BluffPublic, type CrewPublic, type HubGameId, type CountPublic, type OddPublic, type SpectrumPublic, type SpyPublic, type WhoPublic } from "@party-game/shared";
+import { TEAM_INFO, gameInfo, type BluffPublic, type CrewPublic, type HubGameId, type CountPublic, type OddPublic, type SpectrumPublic, type SpyPublic, type WhoPublic } from "@party-game/shared";
 import { useStore } from "@/lib/store";
 import { act } from "@/lib/useRoom";
 import { ChatPanel } from "../ChatPanel";
 import { MuteButton, useIsHost } from "../ui";
 import { PauseOverlay } from "../game/GameScreen";
-import { GameBadge, HubHelpButton, HubIntro, useHub } from "./common";
+import { GameBadge, HubHelpButton, HubIntro, PlayerStrip, Stage, useHub, type StripItem } from "./common";
 import { HubPodium } from "./HubPodium";
 import { SpyGridIntroTeams, SpyGridSide, SpyGridView } from "./SpyGridView";
 import { SpectrumView } from "./SpectrumView";
@@ -173,6 +173,45 @@ function GameView({ display, controller }: { display: boolean; controller: boole
   }
 }
 
+/** Chips along the top of the stage: who's who, who's up, who's done. */
+function GameStrip() {
+  const hub = useHub();
+  let items: StripItem[] = [];
+  if (hub.gameId === "spygrid") {
+    const s = hub.state as SpyPublic;
+    const team = (t: "a" | "b") => Object.keys(s.teams).filter((p) => s.teams[p] === t);
+    items = [...team("a"), ...team("b")].map((pid) => {
+      const t = s.teams[pid];
+      const giver = s.clueGivers[t] === pid;
+      return {
+        pid,
+        tint: TEAM_INFO[t].color,
+        right: giver ? "👁" : undefined,
+        active: t === s.turn && (s.phase === "clue" ? giver : s.phase === "guess" && !giver),
+        done: s.phase === "guess" && s.votes[pid] !== undefined,
+      };
+    });
+  } else if (hub.gameId === "spectrum") {
+    const s = hub.state as SpectrumPublic;
+    items = s.players.map((pid) => ({
+      pid,
+      right: s.scores[pid] ?? 0,
+      active: s.round?.giverId === pid,
+      done: s.phase === "guess" && !!s.round?.locked.includes(pid),
+    }));
+  } else if (hub.gameId === "bluff") {
+    const s = hub.state as BluffPublic;
+    const r = s.round;
+    items = s.players.map((pid) => ({
+      pid,
+      right: s.scores[pid] ?? 0,
+      active: r?.targetId === pid,
+      done: !!r && ((s.phase === "write" && r.written.includes(pid)) || (s.phase === "vote" && r.voted.includes(pid))),
+    }));
+  }
+  return <PlayerStrip items={items} />;
+}
+
 function Side() {
   const hub = useHub();
   if (hub.gameId === "spygrid") return <SpyGridSide />;
@@ -207,7 +246,9 @@ function HubGameScreenInner() {
   // screen twice (losing anything typed into it).
   const view = (
     <motion.div key={hub.stage} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
-      <GameView display={display} controller={controller} />
+      <Stage color={gameInfo(hub.gameId).color} header={hub.stage === "playing" ? <GameStrip /> : undefined}>
+        <GameView display={display} controller={controller} />
+      </Stage>
     </motion.div>
   );
 
@@ -216,7 +257,7 @@ function HubGameScreenInner() {
       <main className="flex h-dvh flex-col">
         <TopBar />
         <div className={`grid min-h-0 flex-1 gap-4 px-4 pb-4 ${display ? "grid-cols-[1fr_340px]" : "grid-cols-[1fr_380px]"}`}>
-          <div className="min-h-0 overflow-y-auto rounded-3xl bg-bg-2/60 p-4 sm:p-6">
+          <div className="min-h-0 overflow-y-auto">
             <div className="mx-auto max-w-5xl">{view}</div>
           </div>
           <aside className="grid min-h-0 grid-rows-[minmax(0,3fr)_minmax(0,2fr)] gap-4">
@@ -233,8 +274,8 @@ function HubGameScreenInner() {
   return (
     <main className="mx-auto flex min-h-dvh max-w-xl flex-col">
       <TopBar compact />
-      <div className="flex flex-1 flex-col gap-3 px-3 pb-6">
-        <section className="card p-4">{view}</section>
+      <div className="flex flex-1 flex-col gap-3 px-2 pb-6">
+        {view}
         {hub.stage === "playing" && (
           <section className="card p-4">
             <Side />

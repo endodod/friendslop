@@ -184,6 +184,7 @@ export function registerSocketHandlers(io: Server<any, ServerToClientEvents, any
       rooms.action(rec, socket.data, { type: "continue" });
     });
     on("game:finish", () => rooms.action(current(), socket.data, { type: "finish" }));
+    on("game:endMinigame", () => rooms.action(current(), socket.data, { type: "endMinigame" }));
     on("chat:send", (p) => rooms.chat(current(), me(), p.text));
     on("game:ready", () => {
       const rec = current();

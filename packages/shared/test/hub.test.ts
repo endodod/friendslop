@@ -10,12 +10,16 @@ import {
   gameClock,
   hubBotActions,
   hubConnectionChange,
+  addPlayer,
+  addPlayerToHub,
   newHubBotMemory,
   removePlayerFromHub,
   setPaused,
   setTeam,
   shuffleTeams,
   spectrumPoints,
+  spyChatProblem,
+  styleAnswer,
   startHubGame,
   tickHub,
   toPrivateState,
@@ -119,6 +123,16 @@ describe("hub rooms", () => {
     room = shuffleTeams(room, createRng(1));
     expect(room.players.filter((p) => p.team === "a")).toHaveLength(2);
     expect(canStart(room)).toEqual({ ok: true });
+  });
+
+  it("Party Board needs 3 players; its practice modes work with 2", () => {
+    const two = makeRoom(2);
+    expect(canStart(two)).toMatchObject({ ok: false, reason: expect.stringMatching(/at least 3/) });
+    expect(canStart(two, "questionDebug")).toEqual({ ok: true });
+    expect(canStart(two, "minigameDebug")).toEqual({ ok: true });
+    expect(canStart(makeRoom(3))).toEqual({ ok: true });
+    // Spectrum is still fine with 2.
+    expect(canStart(updateSettings(makeRoom(2), { gameId: "spectrum" }, content))).toMatchObject({ ok: false, reason: expect.stringMatching(/ready/) });
   });
 
   it("allows one clue-giver per team", () => {
@@ -241,6 +255,18 @@ describe("Spy Grid", () => {
     expect(s(h).turn).not.toBe(team);
   });
 
+  it("bans hidden grid words in chat", () => {
+    const h = setup();
+    const st = s(h);
+    const word = st.cards[0].word;
+    expect(spyChatProblem(st, `I think ${word.toLowerCase()} is ours`)).toMatch(/No grid words/);
+    expect(spyChatProblem(st, `${word.toLowerCase()}s!`)).toMatch(/No grid words/);
+    expect(spyChatProblem(st, "good luck everyone")).toBeNull();
+    // Revealed words are fine.
+    const revealed = { ...st, cards: st.cards.map((c, i) => (i === 0 ? { ...c, revealed: true } : c)) };
+    expect(spyChatProblem(revealed, word)).toBeNull();
+  });
+
   it("forfeits when a team is empty", () => {
     const h = setup();
     h.room = removePlayerFromHub(h.room, "p3", h.ctx()).room;
@@ -254,9 +280,9 @@ describe("Spy Grid", () => {
 describe("Spectrum", () => {
   it("scores by distance and gives the clue-giver the average", () => {
     expect(spectrumPoints(0)).toBe(4);
-    expect(spectrumPoints(8)).toBe(3);
-    expect(spectrumPoints(14)).toBe(2);
-    expect(spectrumPoints(15)).toBe(0);
+    expect(spectrumPoints(1)).toBe(2);
+    expect(spectrumPoints(2)).toBe(1);
+    expect(spectrumPoints(3)).toBe(0);
     const h = new HubHarness(3, "spectrum", { hub: { spectrum: { cluesEach: 1 } } });
     h.readyAll();
     const st = () => h.state<SpectrumState>();
@@ -270,7 +296,11 @@ describe("Spectrum", () => {
     expect(() => h.play(r.giverId, { type: "clue", text: "about 40" })).toThrow(/numbers/);
     h.play(r.giverId, { type: "clue", text: "Lukewarm tea" });
     h.play(others[0], { type: "guess", value: r.target });
-    h.play(others[1], { type: "draft", value: Math.min(100, r.target + 20) });
+    expect(r.target).toBeGreaterThanOrEqual(1);
+    expect(r.target).toBeLessThanOrEqual(10);
+    expect(() => h.play(others[0], { type: "guess", value: 11 })).toThrow();
+    expect(() => h.play(others[0], { type: "guess", value: 5.5 })).toThrow();
+    h.play(others[1], { type: "draft", value: r.target <= 5 ? r.target + 3 : r.target - 3 });
     h.timeout();
     expect(st().phase).toBe("reveal");
     expect(st().round!.points).toEqual({ [others[0]]: 4, [others[1]]: 0, [r.giverId]: 2 });
@@ -365,6 +395,28 @@ describe("Bluff Club", () => {
     expect((h.priv(b).hub as BluffPrivate).myVote).toBe(truth.id);
   });
 
+  it("writes every answer in the same style", () => {
+    expect(styleAnswer("The Unsinkable Sock!!!")).toBe("the unsinkable sock");
+    expect(styleAnswer("Don't Stop Believin'")).toBe("don't stop believin");
+    expect(styleAnswer("\"Mom\" in a heart.")).toBe("mom in a heart");
+    expect(styleAnswer("Pickles... and   peanut-butter?")).toBe("pickles and peanut-butter");
+    expect(styleAnswer("A dog - obviously")).toBe("a dog obviously");
+    expect(styleAnswer("Error 404: Motivation")).toBe("error 404 motivation");
+    expect(styleAnswer("😂")).toBe("😂");
+    expect(styleAnswer("Café Olé!")).toBe("café olé");
+    expect(styleAnswer("?!...")).toBe("");
+
+    const h = setup(3);
+    const r = st(h).round!;
+    const [a, b] = ["p1", "p2", "p3"].filter((p) => p !== r.targetId);
+    expect(() => h.play(a, { type: "write", text: "!!!" })).toThrow(/Write something/);
+    h.play(r.targetId, { type: "write", text: "Sir Swims-a-Lot!" });
+    h.play(a, { type: "write", text: "BUBBLES." });
+    h.play(b, { type: "write", text: "Gordon?" });
+    for (const e of st(h).round!.entries) expect(e.text).toBe(styleAnswer(e.text));
+    expect(st(h).round!.entries.map((e) => e.text)).toEqual(expect.arrayContaining(["sir swims-a-lot", "bubbles", "gordon"]));
+  });
+
   it("skips the round when the spotlight player writes nothing", () => {
     const h = setup(3);
     const first = st(h).round!.targetId;
@@ -377,6 +429,39 @@ describe("Bluff Club", () => {
     const h = new HubHarness(3, "bluff", { familyFriendly: true, hub: { bluff: { roundsEach: 3 } } });
     expect(st(h).schedule.every((x) => !x.prompt.spicy)).toBe(true);
     expect(st(h).schedule).toHaveLength(9);
+  });
+});
+
+describe("joining a running hub game", () => {
+  const join = (h: HubHarness, id: string) => {
+    h.room = addPlayer(h.room, { id, name: id, now: h.now });
+    h.room = addPlayerToHub(h.room, id, h.ctx()).room;
+  };
+  it("Spectrum and Bluff Club add the newcomer's own rounds at the end", () => {
+    const sp = new HubHarness(3, "spectrum", { hub: { spectrum: { cluesEach: 2 } } });
+    sp.readyAll();
+    join(sp, "late");
+    const st = sp.state<SpectrumState>();
+    expect(st.players).toContain("late");
+    expect(st.schedule.slice(-2)).toEqual(["late", "late"]);
+    expect(st.scores.late).toBe(0);
+
+    const bl = new HubHarness(3, "bluff", { hub: { bluff: { roundsEach: 1 } } });
+    bl.readyAll();
+    join(bl, "late");
+    const bs = bl.state<BluffState>();
+    expect(bs.schedule).toHaveLength(4);
+    expect(bs.schedule[3].targetId).toBe("late");
+    expect(new Set(bs.schedule.map((x) => x.prompt.id)).size).toBe(4);
+  });
+  it("Spy Grid puts the newcomer on the smaller team as a guesser", () => {
+    const h = new HubHarness(5, "spygrid");
+    h.readyAll();
+    const st = h.state<SpyState>();
+    const small = Object.values(st.teams).filter((t) => t === "a").length < Object.values(st.teams).filter((t) => t === "b").length ? "a" : "b";
+    join(h, "late");
+    expect(h.state<SpyState>().teams.late).toBe(small);
+    expect(Object.values(h.state<SpyState>().clueGivers)).not.toContain("late");
   });
 });
 

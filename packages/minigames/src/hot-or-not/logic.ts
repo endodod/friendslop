@@ -84,6 +84,7 @@ export const hotOrNot: MiniGameDefinition<HotOrNotState, { answer: Answer } | { 
   id: "hot-or-not",
   kind: "questionOnly",
   durationSec: 140,
+  untimed: true,
   minPlayers: 2,
   inputSchema: z.union([z.object({ answer: AnswerSchema }), z.object({ dir: z.enum(["higher", "lower"]) })]) as never,
   init: ({ players, services, now, rng }) => {
@@ -97,7 +98,8 @@ export const hotOrNot: MiniGameDefinition<HotOrNotState, { answer: Answer } | { 
     if ("answer" in input && r.stage === "target" && pid === r.targetId && !r.question.isData) {
       const a = input.answer;
       if (a.kind !== "number" || !services.validateAnswer(r.question, a)) return s;
-      return { ...s, round: { ...r, truth: a.value, stage: "guess", reference: makeReference(a.value, rng), stageEndsAt: now + GUESS_MS } };
+      void now;
+      return { ...s, round: { ...r, truth: a.value, stage: "guess", reference: makeReference(a.value, rng), stageEndsAt: 0 } };
     }
     if ("dir" in input && r.stage === "guess" && !r.guesses[pid] && (pid !== r.targetId || r.question.isData)) {
       return { ...s, round: { ...r, guesses: { ...r.guesses, [pid]: input.dir } } };
@@ -111,14 +113,15 @@ export const hotOrNot: MiniGameDefinition<HotOrNotState, { answer: Answer } | { 
     const guessers = s.players.filter((p) => p !== r.targetId || r.question.isData);
     if (r.stage === "intro" && now >= r.stageEndsAt) {
       if (r.question.isData && r.truth !== null)
-        return { ...s, round: { ...r, stage: "guess", reference: makeReference(r.truth, rng), stageEndsAt: now + GUESS_MS } };
-      return { ...s, round: { ...r, stage: "target", stageEndsAt: now + TARGET_MS } };
+        return { ...s, round: { ...r, stage: "guess", reference: makeReference(r.truth, rng), stageEndsAt: 0 } };
+      // No clock: the target answers when ready (the host can end the mini-game if they're AFK).
+      return { ...s, round: { ...r, stage: "target", stageEndsAt: 0 } };
     }
-    if (r.stage === "target" && now >= r.stageEndsAt) {
-      // Target didn't answer: skip the round.
+    if (r.stage === "target" && !ctx.services.isPresent(r.targetId)) {
+      // The target left: skip the round.
       return startRound({ ...s, index: s.index + 1 }, now, ctx.services);
     }
-    if (r.stage === "guess" && (now >= r.stageEndsAt || guessers.every((p) => r.guesses[p]))) {
+    if (r.stage === "guess" && guessers.every((p) => r.guesses[p] || !ctx.services.isPresent(p))) {
       const correct: "higher" | "lower" = r.truth! > r.reference! ? "higher" : "lower";
       const points = { ...s.points };
       for (const p of guessers) if (r.guesses[p] === correct) points[p] += 1;

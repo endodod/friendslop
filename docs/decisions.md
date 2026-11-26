@@ -114,7 +114,7 @@ Defaults picked where the build prompt left room, or where the environment force
 
 ## Playtest batch (accounts follow-up)
 
-- **Piggy Bank** fills from red-tile losses instead of a walk-past toll. **Start** pays +5 coins when passed or landed on.
+- **Piggy Bank** fills from red-tile losses instead of a walk-past toll. **Start**: passing or landing on it gives another roll once the turn is over (it used to pay +5 coins).
 - **Item tiles** drop strong items rarely: weight × (6 / effective price)^1.5 (`economy.itemDrop`). Shops are unchanged.
 - **Bonus stars** are drawn at random from the highlight categories (`bonusStars.json`, now also Biggest Thief and a
   per-question Enigma), only among categories somebody won; count = 1 + ceil(players / 2). The results page shows one
@@ -154,15 +154,40 @@ Defaults picked where the build prompt left room, or where the environment force
 - **Spy Grid voting:** guessers vote on phones; a word is revealed once a majority of the team's guessers who are here
   agree (one guesser = instant). "End our turn" works the same way. The clue-giver role goes to a volunteer, else to
   someone who didn't give clues last game (humans before bots). A clue-giver who leaves hands the role to a teammate.
-- **Spectrum** is free-for-all: everyone guesses on their own dial, and the clue-giver scores the average, so clear
+- **Spectrum** is free-for-all on a 1–10 scale (whole numbers, easy to tap on a phone): everyone picks their own number, and the clue-giver scores the average, so clear
   clues pay. Clues may not contain digits.
 - **Bluff Club** is about the players (like the board game's questions), not trivia: the spotlight player writes the
   truth. Fakes identical to the truth (ignoring case, punctuation, "a/the") make you a mind reader (+3, no vote);
   identical fakes are merged and share the credit. House lies pad the list to 4 answers.
+  Every answer (truth, fakes, house lies) is stored in one style: lowercase, no punctuation (apostrophes and hyphens
+  inside words stay, emoji stay), so nobody gives themselves away with a capital letter or an exclamation mark.
 - **Brief disconnects don't end a step.** A step that waits for everyone (guesses, answers, votes) only stops waiting
   for a player once they've been gone `disconnectedAutoplayMs`, so a page refresh doesn't cost your answer.
 - **Per-game account stats** (`UserGameStat`); `User.gamesPlayed/gamesWon` stay the totals. The migration backfills
   existing totals as Party Board games.
+
+## Party Board changes (after playtests)
+- **3 players minimum** for the board game (practice modes still run with 2).
+- **Rounds:** 5 / 10 / 12 / 15 / 20 / ∞.
+- **Answer options:** never more than 4 (`question.maxOptions`): "pick a player" questions show 4 random eligible players,
+  5-answer tile questions show 4 of their answers. Rankings keep all their items.
+- **Start tile:** passing or landing on it gives another roll once the turn is over (instead of +5 coins).
+- **Shop:** always stocks at least one way to a star: Star Thief, Swap Places or Star Warp.
+- **Vote and question mini-games have no clock** (`untimed`: Most Likely To, Judge's Call, Hall of Fame, Ranking, Speed Sync,
+  Duel, Hot or Not). Each step waits for everyone present (players gone longer than `disconnectedAutoplayMs` are skipped);
+  the host can press "End mini-game" for an AFK player. Speed Sync keeps its speed bonus for answering within 4 s.
+  Finish-the-task games are untimed too (Memory Flip, Number Hunt, Type Race, Simon, Higher or Lower, Stacker, Minefield,
+  Thin Ice): they run until everyone is done or out; Minefield and Thin Ice have no turn countdown either (the game only moves
+  for a player who left). Games where the clock is the game keep it (Quick Math, Color Clash, Arrow Rush, Pump It,
+  Whack-a-Mole, Reaction Tap, Perfect Timing, Stop the Bar, Count It, Spot the Odd One, and the live ones).
+- **Chance tiles build suspense:** the Lucky die tumbles and the Gamble coin spins for about a second before the coins show.
+- **Underdog** was removed.
+- **Late joiners:** joining a running game gives a seat at the end of the turn order, on Start, with the average coins of the
+  others (at least the starting coins) and no stars. Hub games add the newcomer's rounds at the end (Spy Grid: smaller team).
+- **Token animations:** moves sent in one update (e.g. "Everyone moves back 3") walk at the same time, and the board waits a
+  moment before snapping to new server positions so it doesn't jump ahead of the walk.
+
+## More hub games
 - **Play modes:** every game in the catalog has a `mode` (`ffa`, `teams`, `coop`), shown as a chip on every
   game card and used by the home page's filter. Tags no longer repeat the mode.
 - **Collapsible game picker:** the lobby shows only the current game; *Change game* expands the full list,
@@ -185,3 +210,6 @@ Defaults picked where the build prompt left room, or where the environment force
   clue); a clue can't contain your own word or repeat an earlier clue. A tie in the vote accuses nobody.
   Caught players get a last chance to guess the crowd's word.
 - **Lucky Low** (lowest unique number) was built and dropped in favour of Count Up.
+- **Late joiners in the newer games:** Who Wrote That? lets them join in from the current step; Odd Word Out adds
+  one round at the end with them as the odd one out; Clue Crew gives them the last seat in the guesser rotation;
+  Count Up deals them cards from the next level (and caps the level count so 100 cards are always enough).

@@ -42,11 +42,13 @@ function nextTurn(s: ThinIceState, now: number): ThinIceState {
   let st = { ...s, turn: s.turn + 1 };
   for (let guard = 0; guard < 8 && st.alive.length > 1; guard++) {
     const pid = current(st);
-    if (validMoves(st, pid).length) return { ...st, turnEndsAt: now + TURN_MS };
+    if (validMoves(st, pid).length) return { ...st, turnEndsAt: 0 };
     const idx = st.alive.indexOf(pid);
     st = { ...st, alive: st.alive.filter((p) => p !== pid), out: [...st.out, pid], turn: idx };
   }
-  return { ...st, turnEndsAt: now + TURN_MS };
+  void now;
+  // turnEndsAt 0: no turn clock (the game moves only for players who left).
+  return { ...st, turnEndsAt: 0 };
 }
 
 function move(s: ThinIceState, pid: PlayerId, cell: number, now: number): ThinIceState {
@@ -58,6 +60,7 @@ export const thinIce: MiniGameDefinition<ThinIceState, { cell: number }> = {
   id: "thin-ice",
   kind: "turnBased",
   durationSec: 150,
+  untimed: true,
   minPlayers: 2,
   inputSchema: z.object({ cell: z.number().int().min(0).max(SIZE * SIZE - 1) }),
   init: ({ players, bonuses, now, rng }) => {
@@ -69,17 +72,21 @@ export const thinIce: MiniGameDefinition<ThinIceState, { cell: number }> = {
       const c = Math.floor(rng() * SIZE * SIZE);
       if (!protectedCells.has(c) && !broken.includes(c)) broken.push(c);
     }
-    return { players, pos, broken, alive: [...players], out: [], turn: 0, turnEndsAt: now + TURN_MS };
+    void now;
+    return { players, pos, broken, alive: [...players], out: [], turn: 0, turnEndsAt: 0 };
   },
   onInput: (s, pid, { cell }, { now }) => {
     if (s.alive.length <= 1 || current(s) !== pid || !validMoves(s, pid).includes(cell)) return s;
     return move(s, pid, cell, now);
   },
-  tick: (s, { now, rng }) => {
-    if (s.alive.length <= 1 || now < s.turnEndsAt) return s;
+  tick: (s, { now, rng, services }) => {
+    if (s.alive.length <= 1) return s;
     const pid = current(s);
     const moves = validMoves(s, pid);
+    // Nowhere to go: fall in right away.
     if (!moves.length) return nextTurn({ ...s, turn: s.turn - 1 }, now);
+    // No turn clock: only a player who has left gets moved for them.
+    if (services.isPresent(pid)) return s;
     return move(s, pid, moves[Math.floor(rng() * moves.length)], now);
   },
   isFinished: (s) => s.alive.length <= 1,

@@ -6,7 +6,11 @@ import {
   COUNTUP,
   ODDWORD,
   WHOWROTE,
+  addPlayer,
+  addPlayerToHub,
   applyHubAction,
+  hubBotActions,
+  newHubBotMemory,
   createRng,
   crewClueProblem,
   crewGuessMatches,
@@ -384,5 +388,41 @@ describe("Clue Crew", () => {
     expect(r.ranking.every((x) => x.rank === 1)).toBe(true);
     expect(r.winners).toEqual([]);
     expect(s().history.every((c) => c.outcome === "pass")).toBe(true);
+  });
+});
+
+describe("joining the newer games mid-game", () => {
+  for (const gameId of ["whowrote", "oddword", "cluecrew", "countup"] as const) {
+    it(`${gameId}: a late joiner gets a seat and the game still finishes`, () => {
+      const h = new H(4, gameId);
+      h.room = addPlayer(h.room, { id: "late", name: "Late", now: h.now });
+      h.room = addPlayerToHub(h.room, "late", h.ctx()).room;
+      expect((h.rt.state as { players: string[] }).players).toContain("late");
+      // Everyone becomes a bot so the game plays itself out.
+      h.room = { ...h.room, players: h.room.players.map((p) => ({ ...p, bot: true })) };
+      const memo = newHubBotMemory();
+      for (let i = 0; i < 6000 && h.rt.stage !== "podium"; i++) {
+        h.now += 500;
+        for (const a of hubBotActions(h.room, h.ctx(), memo)) {
+          try {
+            h.act(a);
+          } catch {
+            /* moved on */
+          }
+        }
+        const res = tickHub(h.room, h.ctx());
+        if (res) h.room = res.room;
+      }
+      expect(h.rt.stage).toBe("podium");
+      expect(h.rt.results!.ranking.map((r) => r.playerId)).toContain("late");
+    });
+  }
+  it("Odd Word Out adds a round with the newcomer as the odd one out", () => {
+    const h = new H(4, "oddword");
+    const before = h.st<OddState>().schedule.length;
+    h.room = addPlayer(h.room, { id: "late", name: "Late", now: h.now });
+    h.room = addPlayerToHub(h.room, "late", h.ctx()).room;
+    expect(h.st<OddState>().schedule).toHaveLength(before + 1);
+    expect(h.st<OddState>().schedule.at(-1)!.oddId).toBe("late");
   });
 });

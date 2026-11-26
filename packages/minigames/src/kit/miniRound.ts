@@ -26,7 +26,8 @@ export interface MiniRound {
   answeredAt: Record<PlayerId, number>;
   result: QuestionResult | null;
   revealOrder: PlayerId[];
-  answerMs: number;
+  /** null = no time limit: answering ends when everyone present has answered (stageEndsAt is then 0). */
+  answerMs: number | null;
   /** When the answering stage opened (for speed bonuses). */
   answeringStartedAt: number | null;
 }
@@ -37,7 +38,8 @@ export function createMiniRound(args: {
   targetId: PlayerId;
   participants: PlayerId[];
   now: number;
-  answerMs?: number;
+  /** null = no time limit. */
+  answerMs?: number | null;
   introMs?: number;
   rng: () => number;
 }): MiniRound {
@@ -60,7 +62,7 @@ export function createMiniRound(args: {
     answeredAt: {},
     result: null,
     revealOrder: args.participants.includes(args.targetId) ? [...guessers, args.targetId] : guessers,
-    answerMs: args.answerMs ?? Q.answerMs,
+    answerMs: args.answerMs === null ? null : (args.answerMs ?? Q.answerMs),
     answeringStartedAt: null,
   };
 }
@@ -77,17 +79,21 @@ export function answerMiniRound(r: MiniRound, pid: PlayerId, a: Answer, now: num
   return { ...r, answers: { ...r.answers, [pid]: a }, answeredAt: { ...r.answeredAt, [pid]: now } };
 }
 
-/** Advance stage on timeout or when everyone answered. `score` computes the result at reveal. */
+/**
+ * Advance stage on timeout or when everyone answered. `score` computes the result at reveal.
+ * `present`: who still counts (untimed rounds don't wait for players who left).
+ */
 export function stepMiniRound(
   r: MiniRound,
   now: number,
   score: (r: MiniRound) => QuestionResult,
-  opts: { resultsMs?: number; revealMs?: number } = {},
+  opts: { resultsMs?: number; revealMs?: number; present?: (pid: PlayerId) => boolean } = {},
 ): MiniRound {
-  const allIn = r.participants.every((p) => r.answers[p]);
+  const allIn = r.participants.every((p) => r.answers[p] || (opts.present ? !opts.present(p) : false));
+  const timeUp = r.stageEndsAt > 0 && now >= r.stageEndsAt;
   if (r.stage === "intro" && now >= r.stageEndsAt)
-    return { ...r, stage: "answering", stageStartedAt: now, stageEndsAt: now + r.answerMs, answeringStartedAt: now };
-  if (r.stage === "answering" && (now >= r.stageEndsAt || allIn)) {
+    return { ...r, stage: "answering", stageStartedAt: now, stageEndsAt: r.answerMs === null ? 0 : now + r.answerMs, answeringStartedAt: now };
+  if (r.stage === "answering" && (timeUp || allIn)) {
     const next = { ...r, stage: "reveal" as const, stageStartedAt: now, result: score(r) };
     return { ...next, stageEndsAt: now + (opts.revealMs ?? revealDurationMs(next)) };
   }

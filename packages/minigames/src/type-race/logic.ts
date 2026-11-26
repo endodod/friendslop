@@ -34,6 +34,7 @@ export const ERROR_PENALTY_MS = 1500;
 
 export const typeRace = defineSoloGame({
   id: "type-race",
+  untimed: true,
   durationSec: 45,
   submitSchema: z.object({ typed: z.string().max(200), timeMs: z.number().finite().min(0).max(120000) }),
   higherIsBetter: false,

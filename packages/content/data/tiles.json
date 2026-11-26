@@ -4,12 +4,12 @@
     {
       "id": "start",
       "name": "Start",
-      "description": "Pass or land here: +5 coins.",
+      "description": "Pass or land here: roll again once your turn is over.",
       "icon": "start",
       "color": "#e8e8f0",
       "effect": "none",
       "params": {
-        "passCoins": 5
+        "passReroll": 1
       }
     },
     {

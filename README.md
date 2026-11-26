@@ -5,10 +5,10 @@ host picks the game in the lobby and can switch between games without anyone lea
 
 | Game | Players | Mode | What it is |
 | --- | --- | --- | --- |
-| **Party Board** | 2–8 | Free-for-all | Board game: roll, move, buy stars. Every question is about one player (the **target**): you score by landing on the same answer as the target. A mini-game after every round. |
+| **Party Board** | 3–8 | Free-for-all | Board game: roll, move, buy stars. Every question is about one player (the **target**): you score by landing on the same answer as the target. A mini-game after every round. |
 | **Spy Grid** | 4–8 | Teams | Two teams (Foxes vs Owls), 25 words. Each team's clue-giver sees the secret key and gives one-word clues; teammates vote on words. Find all your agents first, never touch the trap. |
-| **Spectrum** | 2–8 | Free-for-all | A hidden target sits on a scale between two opposites. The clue-giver sees it and gives a clue; everyone drags a dial. Bullseye 4, close 3, near 2; the clue-giver gets the average. |
-| **Bluff Club** | 3–8 | Free-for-all | Each round is about one player: they write the real answer to "What would Sam name a boat?", everyone else writes a fake. Find the truth (+3), fool friends (+2 each), 😂 the funniest fake (+1). |
+| **Spectrum** | 2–8 | Free-for-all | A hidden target from 1 to 10 sits on a scale between two opposites. The clue-giver sees it and gives a clue; everyone picks a number. Exact 4, one off 2, two off 1; the clue-giver gets the average. |
+| **Bluff Club** | 3–8 | Free-for-all | Each round is about one player: they write the real answer to "What would your friend name a boat?", everyone else writes a fake. Find the truth (+3), fool friends (+2 each), 😂 the funniest fake (+1). |
 | **Who Wrote That?** | 3–8 | Free-for-all | Everyone answers a question about themselves ("Your most useless talent") anonymously; then each answer comes up and you guess who wrote it. Right guess +2, each friend you fool +1, 😂 +1. |
 | **Odd Word Out** | 4–8 | Free-for-all | Everyone gets the same secret word except one player, who gets a close one and doesn't know it. One-word clues in turn, two laps, then vote. Caught: voters +2, but the odd one out can steal (+3) by guessing the crowd's word. Not caught: +4. |
 | **Clue Crew** | 3–8 | Co-op | One guesser per card; everyone else writes a one-word clue for the secret word. Identical clues cancel out. One guess: right +1 card, wrong burns the next card too. How many of the 13 cards can the crew solve? |
@@ -35,7 +35,17 @@ Every game starts with a how-to-play screen (everyone taps *Got it!*), has timer
 a host pause and skip, test bots, a shared-screen (TV) layout and a results podium with highlights
 and per-player stats. In Spy Grid, players pick a team in the lobby (or get balanced at start) and
 may volunteer as clue-giver; otherwise the role rotates between games. Clue-givers' phones show the
-key; the TV never does. Secret words (Clue Crew, Odd Word Out) only ever show on phones too.
+key; the TV never does. Players can flag cards for themselves (the little flag on each card; only they
+see it), and while the game runs, chat rejects any word that is still hidden on the grid, so nobody can
+hint outside the official clue. Bluff Club shows every answer in lowercase without punctuation, so
+nobody gives themselves away by their writing style.
+
+Friends can join a game that's already running: in the Party Board they get a seat at the end of
+the turn order with the average coins of the others; in Spectrum and Bluff Club their own rounds
+are added at the end; in Spy Grid they join the smaller team. (How each newer game seats a
+late joiner is in `docs/decisions.md`.)
+
+Secret words (Clue Crew, Odd Word Out) only ever show on phones, never on the TV.
 Co-op games (Clue Crew, Count Up) end with one crew score and a rating instead of a top 3.
 
 The lobby shows the current game; *Change game* opens the full list (each card shows players,

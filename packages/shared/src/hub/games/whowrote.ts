@@ -348,6 +348,14 @@ export const whoWrote: HubGameDefinition<WhoState, WhoAction> = {
     maybeEndGuess(s, ctx);
   },
 
+  addPlayer(s, pid) {
+    if (s.players.includes(pid)) return;
+    // Everyone answers every question: they simply join in from the current step.
+    s.players.push(pid);
+    s.scores[pid] = 0;
+    s.stats[pid] = emptyStats();
+  },
+
   connectionChanged(s, ctx) {
     maybeEndWriting(s, ctx);
     maybeEndGuess(s, ctx);

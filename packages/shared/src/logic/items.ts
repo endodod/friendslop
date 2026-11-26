@@ -31,12 +31,21 @@ export function itemDropWeight(item: Item, playerCount: number): number {
   return item.weight * Math.pow(D.basePrice / Math.max(D.basePrice, price), D.falloff);
 }
 
+/** Items that let a player who is behind get to a star: at least one is always in the shop. */
+export const COMEBACK_EFFECTS = ["stealStar", "swapPlaces", "warpToStar"];
+
 export function shopStock(content: ContentBundle, step: Step, g?: Pick<GameState, "tileTypes">): string[] {
   const pool = shuffle(step.ctx.rng, g ? availableItems(content, g) : content.items);
   const out: string[] = [];
   while (out.length < Math.min(GAME_CONFIG.economy.shopStockSize, pool.length)) {
     const it = weightedPick(step.ctx.rng, pool.filter((i) => !out.includes(i.id)), (i) => i.weight)!;
     out.push(it.id);
+  }
+  // Guarantee a comeback item (Star Thief, Swap Places or Star Warp) so unlucky players always have a way to a star.
+  const comeback = pool.filter((i) => COMEBACK_EFFECTS.includes(i.effect));
+  if (comeback.length && !out.some((id) => comeback.some((c) => c.id === id))) {
+    const pick = weightedPick(step.ctx.rng, comeback, (i) => Math.max(i.weight, 0.01))!;
+    out[Math.floor(step.ctx.rng() * out.length)] = pick.id;
   }
   return out;
 }

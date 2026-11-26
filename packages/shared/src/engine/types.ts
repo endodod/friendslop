@@ -290,6 +290,8 @@ export interface MinigameRuntime {
   state: unknown;
   placements: Placement[] | null;
   payout: Record<PlayerId, number> | null;
+  /** No clock (vote/question mini-games): `endsAt` is 0, the host may end it early. */
+  untimed?: boolean;
   /** Players the intro question will be about (picked at intro). */
   introTargetId: PlayerId | null;
 }
@@ -328,6 +330,8 @@ export interface GameState {
   starTileId: string;
   /** Tiles the star has appeared on this game (it never returns to one until it has been everywhere). */
   starVisited?: string[];
+  /** Passed Start this turn: this player rolls again once the turn is over. */
+  startReroll?: PlayerId | null;
   /** Piggy Bank pot (coins dropped by players walking past). */
   bank: number;
 

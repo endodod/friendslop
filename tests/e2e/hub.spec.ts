@@ -7,14 +7,14 @@ async function setup(browser: import("@playwright/test").Browser, gameId: string
   const errors: string[] = [];
   for (const p of [a, b]) p.on("pageerror", (e) => errors.push(e.message));
   await a.goto("/");
-  await a.fill('input[autocomplete="nickname"]', "Alex");
+  await a.fill('input[autocomplete="nickname"]', "Player A");
   await a.getByTestId(`game-${gameId}`).click();
   await a.getByTestId("create-room").click();
   const code = (await a.getByTestId("room-code").textContent())!.trim();
   await b.goto(`/r/${code}`);
-  await b.fill("input", "Sam");
+  await b.fill("input", "Player B");
   await b.click("button:has-text('Join')");
-  await expect(a.getByText("Sam", { exact: true })).toBeVisible();
+  await expect(a.getByText("Player B", { exact: true })).toBeVisible();
   return { a, b, errors };
 }
 
@@ -40,7 +40,9 @@ test("Spectrum: clue, guess, reveal; refresh keeps the seat", async ({ browser }
   await giver.getByTestId("spectrum-clue-form").locator("button.btn-primary").click();
   await expect(guesser.getByTestId("spectrum-clue")).toContainText("Lukewarm tea");
   await guesser.reload();
-  await guesser.getByTestId("lock-guess").click({ timeout: 20_000 });
+  await expect(guesser.getByTestId("lock-guess")).toBeDisabled({ timeout: 20_000 });
+  await guesser.getByTestId("step-7").click();
+  await guesser.getByTestId("lock-guess").click();
   await expect(giver.getByTestId("spectrum-reveal")).toBeVisible();
   expect(errors).toEqual([]);
 });

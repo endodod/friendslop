@@ -9,7 +9,8 @@ import { serverNow, useRemaining } from "@/lib/time";
 import { send } from "@/lib/socket";
 import { play, vibrate } from "@/lib/sfx";
 import { act } from "@/lib/useRoom";
-import { Avatar, CoinCount, Icon, Timer, usePlayers } from "../ui";
+import { Avatar, CoinCount, Icon, Timer, useIsHost, usePlayers } from "../ui";
+import { Flag } from "lucide-react";
 import { AnswerLabel, FORMAT_INPUTS, ScaleEnds } from "../question/formats";
 import { QuestionView } from "../question/QuestionView";
 import { Confetti } from "../fx";
@@ -211,6 +212,7 @@ function Playing({ display }: { display: boolean }) {
         display={display}
         ui={uiKit}
       />
+      {mg.untimed && <EndMinigameButton />}
     </div>
   );
 }
@@ -312,3 +314,20 @@ function Outcome() {
 
 export type { Answer };
 void M;
+
+/** Untimed (vote/question) mini-games wait for everyone: the host can end one early, e.g. when someone is AFK. */
+function EndMinigameButton() {
+  const isHost = useIsHost();
+  if (!isHost) return null;
+  return (
+    <button
+      className="btn-ghost min-h-11 self-end text-sm"
+      data-testid="end-minigame"
+      onClick={() => {
+        if (confirm("End this mini-game now? Anyone who hasn't answered yet simply misses out.")) void act("game:endMinigame", {});
+      }}
+    >
+      <Flag size={16} /> End mini-game
+    </button>
+  );
+}

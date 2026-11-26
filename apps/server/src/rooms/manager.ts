@@ -36,6 +36,8 @@ import {
   updatePlayer,
   updateSettings,
   applyHubAction,
+  addPlayerToGame,
+  addPlayerToHub,
   hubBotActions,
   hubConnectionChange,
   newHubBotMemory,
@@ -44,6 +46,8 @@ import {
   shuffleTeams,
   startHubGame,
   tickHub,
+  spyChatProblem,
+  type SpyState,
   type GameId,
   type HubBotMemory,
   type RoomSettingsPatch,
@@ -199,6 +203,9 @@ export class RoomManager {
       rec.room = addPlayer(room, { id, name: args.name ?? "", color: args.color, avatar: args.avatar, now: Date.now(), account: args.account });
       seat = { token: this.newToken(), role: "player", playerId: id, profileId: args.profileId ?? null };
       rec.seats.set(seat.token, seat);
+      // Joined a game that's already running: give them a seat in it.
+      if (rec.room.game) this.apply(rec, addPlayerToGame(rec.room, id, this.ctx(rec)));
+      else if (rec.room.hub) this.apply(rec, addPlayerToHub(rec.room, id, this.ctx(rec)));
     }
     // Only one live socket per seat: kick older sockets holding the same token.
     for (const [, other] of this.io.of("/").sockets) {
@@ -353,7 +360,7 @@ export class RoomManager {
   start(rec: LiveRoom, actor: SocketData, mode: "board" | "questionDebug" | "minigameDebug", minigameId?: string) {
     assertHost(rec.room, { playerId: actor.playerId ?? undefined, isDisplay: actor.role === "display" });
     if (rec.room.stage !== "lobby") fail("GAME_IN_PROGRESS", "Game already running.");
-    const check = canStart(rec.room);
+    const check = canStart(rec.room, mode);
     if (!check.ok) fail(rec.room.players.length < 2 ? "NOT_ENOUGH_PLAYERS" : "NOT_READY", check.reason);
     const gameId = rec.room.settings.gameId ?? "party";
     if (gameId !== "party") {
@@ -419,6 +426,11 @@ export class RoomManager {
       return;
     }
     if (rec.room.game?.phase !== "podium") fail("WRONG_PHASE", "The game isn't over yet.");
+    if (rec.room.game.mode === "board") {
+      // Someone may have left during the game.
+      const check = canStart({ ...rec.room, players: rec.room.players.map((p) => ({ ...p, ready: true })) });
+      if (!check.ok) fail("NOT_ENOUGH_PLAYERS", check.reason);
+    }
     const lobby: RoomState = { ...rec.room, stage: "lobby", game: null, players: rec.room.players.map((p) => ({ ...p, ready: true })) };
     const res = startGame(lobby, this.ctx(rec), "board");
     this.apply(rec, res);
@@ -427,7 +439,7 @@ export class RoomManager {
 
   /** Invite a friend to this room. Checks are done by the caller (friendship, sender in room). */
   canInvite(rec: LiveRoom): void {
-    if (rec.room.stage !== "lobby") fail("GAME_IN_PROGRESS", "The game has already started.");
+    // Friends may join a running game too (they get a seat in it).
     if (rec.room.players.length >= GAME_CONFIG.players.max) fail("ROOM_FULL", "The room is full.");
   }
 
@@ -527,6 +539,11 @@ export class RoomManager {
     const text = sanitizeChat(raw);
     if (!text) fail("INVALID_INPUT", "Say something first.");
     if (!rec.room.players.some((p) => p.id === playerId)) fail("UNKNOWN_PLAYER", "Only players can chat.");
+    const hub = rec.room.hub;
+    if (hub?.gameId === "spygrid" && hub.stage === "playing") {
+      const problem = spyChatProblem(hub.state as SpyState, text);
+      if (problem) fail("INVALID_INPUT", problem);
+    }
     const now = Date.now();
     rec.lastChatAt ??= new Map();
     if (now - (rec.lastChatAt.get(playerId) ?? 0) < CHAT_MIN_INTERVAL_MS) fail("RATE_LIMITED", "Slow down!");

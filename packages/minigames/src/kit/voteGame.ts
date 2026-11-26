@@ -6,15 +6,17 @@ import { AnswerSchema, rankByScore, type MiniGameDefinition, type PlayerId, type
  * round is scored. The variants differ only in who may be picked and how votes turn into points.
  */
 export const VOTE_ROUNDS = 4;
+/** Kept for clients that show how long a vote usually takes; votes have no time limit. */
 export const VOTE_MS = 11000;
 export const VOTE_REVEAL_MS = 4500;
 
 export interface VoteRound {
   question: ResolvedQuestion;
   stage: "vote" | "reveal";
+  /** 0 while voting: no time limit. */
   stageEndsAt: number;
   votes: Record<PlayerId, PlayerId>;
-  /** Highlighted in the reveal (the majority, the judge's pick, the underdog…). */
+  /** Highlighted in the reveal (the majority, the judge's pick…). */
   winners: PlayerId[];
   /** Points each player got this round. */
   gained: Record<PlayerId, number>;
@@ -78,12 +80,14 @@ export function defineVoteGame(opts: VoteGameOptions): MiniGameDefinition<VoteSt
     const question = services.pickQuestion({ targetId: s.players[0], usage: "questionOnlyMinigame", formats: ["player"], tags: ["mostLikely"], participants: s.players } as never);
     if (!question) return { ...s, index: idx, round: null, done: true };
     const judge = opts.judge ? s.players[idx % s.players.length] : null;
-    return { ...s, index: idx, round: { question, stage: "vote", stageEndsAt: now + VOTE_MS, votes: {}, winners: [], gained: {}, judge } };
+    void now;
+    return { ...s, index: idx, round: { question, stage: "vote", stageEndsAt: 0, votes: {}, winners: [], gained: {}, judge } };
   };
   return {
     id: opts.id,
     kind: "questionOnly",
     durationSec: opts.durationSec ?? 80,
+    untimed: true,
     minPlayers: opts.selfVote ? 2 : 3,
     inputSchema: z.object({ answer: AnswerSchema }) as never,
     init: ({ players, services, now }) =>
@@ -98,7 +102,8 @@ export function defineVoteGame(opts: VoteGameOptions): MiniGameDefinition<VoteSt
     tick: (s, { now, services }) => {
       const r = s.round;
       if (!r || s.done) return s;
-      if (r.stage === "vote" && (now >= r.stageEndsAt || s.players.every((p) => r.votes[p]))) {
+      // Everyone who's still here voted (no clock: the host can end the mini-game if someone is AFK).
+      if (r.stage === "vote" && s.players.every((p) => r.votes[p] || !services.isPresent(p))) {
         const { winners, gained } = opts.score(r.votes, s.players, r.judge);
         const points = { ...s.points };
         for (const [pid, n] of Object.entries(gained)) if (pid in points) points[pid] += n;
@@ -155,19 +160,6 @@ export function scoreJudge(votes: Record<PlayerId, PlayerId>, _players: PlayerId
   }
   if (matched) gained[judge] = matched;
   return { winners: [pick], gained };
-}
-
-/** Underdog: picking the least-voted player (who got at least one vote) scores 2. All tied: nobody. */
-export function scoreUnderdog(votes: Record<PlayerId, PlayerId>) {
-  const counts = voteCounts(votes);
-  const values = Object.values(counts);
-  if (values.length < 2) return { winners: [], gained: {} };
-  const min = Math.min(...values);
-  if (min === Math.max(...values)) return { winners: [], gained: {} };
-  const winners = Object.keys(counts).filter((k) => counts[k] === min);
-  const gained: Record<PlayerId, number> = {};
-  for (const [voter, choice] of Object.entries(votes)) if (winners.includes(choice)) gained[voter] = 2;
-  return { winners, gained };
 }
 
 /** Hall of Fame: every vote you receive is a point; backing the round's top pick is another point. */

@@ -20,7 +20,7 @@ export function SeriesClient(p: MinigameClientProps<SeriesPublic, { myAnswer: An
           display={p.display}
           myAnswer={p.priv?.myAnswer ?? null}
           onAnswer={async (answer) => p.input({ answer })}
-          totalAnswerMs={p.pub.answerMs}
+          totalAnswerMs={p.pub.answerMs ?? undefined}
         />
       )}
       <ScoreStrip

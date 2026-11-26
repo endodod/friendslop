@@ -34,6 +34,8 @@ export interface MinigameServices {
   /** Least-targeted player (prefer fairness). */
   leastTargeted(candidates: PlayerId[]): PlayerId;
   noteTargeted(playerId: PlayerId): void;
+  /** Still playing: connected, or only gone briefly (a refresh). Untimed steps wait for these players only. */
+  isPresent(playerId: PlayerId): boolean;
 }
 
 export interface MinigameInitArgs {
@@ -59,6 +61,11 @@ export interface MiniGameDefinition<State = any, Input = any, Submission = any> 
   id: string;
   kind: MinigameKind;
   durationSec: number;
+  /**
+   * No clock: answer/vote steps wait until everyone present has answered, and the host can end the
+   * mini-game early. `durationSec` is ignored. Used by the vote and question mini-games.
+   */
+  untimed?: boolean;
   minPlayers: number;
   maxPlayers?: number;
   /** zod schema for `minigame:input` payloads */

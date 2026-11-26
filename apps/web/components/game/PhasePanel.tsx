@@ -7,6 +7,7 @@ import { clientContent } from "@party-game/content";
 import { useStore } from "@/lib/store";
 import { act } from "@/lib/useRoom";
 import { useRemaining } from "@/lib/time";
+import { play } from "@/lib/sfx";
 import { Avatar, CoinCount, Icon, PlayerName, StarCount, Timer, useIsHost, usePlayers } from "../ui";
 import { DieFace, RollingDie } from "./Dice";
 import { BoardRules, ReadyUp } from "./HowToPlay";
@@ -331,9 +332,29 @@ function JunctionPanel({ board, display }: { board: Board | null; display?: bool
   );
 }
 
+/** Lucky die tumble / Gamble coin spin before the result shows. */
+const CHANCE_SUSPENSE_MS = 1100;
+
+/** true once `ms` have passed since `key` changed (a new tile result). */
+function useSettled(key: string, ms: number): boolean {
+  const [settled, setSettled] = useState(false);
+  useEffect(() => {
+    setSettled(false);
+    const t = setTimeout(() => setSettled(true), ms);
+    return () => clearTimeout(t);
+  }, [key, ms]);
+  return settled;
+}
+
 function TileEffectPanel() {
   const { g, active } = useGameCtx();
   const r = g.tileResult;
+  // Chance tiles (Lucky die, Gamble bet) build a moment of suspense before the outcome.
+  const chance = r?.roll !== undefined || (r?.type === "gamble" && r.coinsDelta !== undefined);
+  const settled = useSettled(`${g.phaseStartedAt}`, chance ? CHANCE_SUSPENSE_MS : 0);
+  useEffect(() => {
+    if (chance && settled && r?.coinsDelta !== undefined) play(r.coinsDelta > 0 ? "coin" : "bad");
+  }, [chance, settled, r?.coinsDelta]);
   if (r?.type === "frozen")
     return (
       <Panel testId="tile-effect">
@@ -361,22 +382,37 @@ function TileEffectPanel() {
         </div>
       </motion.div>
       {r?.roll !== undefined && (
-        <div className="flex items-center justify-center gap-3">
-          <RollingDie value={r.roll} rolling={false} size={70} />
-          <span className="font-display text-2xl">× 2</span>
+        <div className="flex items-center justify-center gap-3" data-testid="lucky-roll">
+          <RollingDie value={r.roll} rolling={!settled} size={70} />
+          <span className="font-display text-2xl">× {def?.params?.multiplier ?? 2}</span>
         </div>
       )}
-      {r?.text && <p className="text-center font-display text-2xl">{r.text}</p>}
+      {r?.type === "gamble" && r.coinsDelta !== undefined && !settled && (
+        <div className="flex justify-center py-1" aria-label="Flipping the coin">
+          <motion.span
+            animate={{ rotateY: [0, 180, 360], y: [0, -24, 0] }}
+            transition={{ repeat: Infinity, duration: 0.45 }}
+            className="text-accent"
+          >
+            <Icon id="coin" size={64} />
+          </motion.span>
+        </div>
+      )}
+      {r?.text && (!chance || settled) && (
+        <motion.p initial={{ scale: 0.6, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="text-center font-display text-2xl">
+          {r.text}
+        </motion.p>
+      )}
       {r?.itemId && <GainedItem itemId={r.itemId} />}
       {r?.itemId === null && <p className="text-center text-muted">Bag full (3 items), coins instead!</p>}
-      {r?.coinsDelta !== undefined && (
-        <p className="text-center font-display text-3xl">
+      {r?.coinsDelta !== undefined && (!chance || settled) && (
+        <motion.p initial={{ scale: 0.6, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="text-center font-display text-3xl">
           <PlayerName player={active} />{" "}
           <span className={r.coinsDelta >= 0 ? "text-accent" : "text-bad"}>
             {r.coinsDelta >= 0 ? "+" : ""}
             {r.coinsDelta} coins
           </span>
-        </p>
+        </motion.p>
       )}
       <SkipButton />
     </Panel>

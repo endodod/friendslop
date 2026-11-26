@@ -354,6 +354,20 @@ export const oddWord: HubGameDefinition<OddState, OddAction> = {
     maybeEndVote(s, ctx);
   },
 
+  addPlayer(s, pid, ctx) {
+    if (s.players.includes(pid)) return;
+    s.players.push(pid);
+    s.scores[pid] = 0;
+    s.stats[pid] = emptyStats();
+    // One more round at the end, with them as the odd one out and a pair nobody had yet.
+    const used = new Set(s.schedule.map((x) => x.pair.join("|")));
+    const pair = pickRandom(
+      ctx.rng,
+      ctx.content.hub.oddwordPairs.filter((p) => !used.has(p.join("|"))),
+    );
+    if (pair) s.schedule.push({ pair: [pair[0], pair[1]], oddId: pid });
+  },
+
   connectionChanged(s, ctx) {
     maybeEndVote(s, ctx);
   },

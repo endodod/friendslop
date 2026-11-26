@@ -14,7 +14,7 @@ export function HotOrNotClient(p: MinigameClientProps<HotOrNotPublic, { myGuess:
   // Target forgot to lock in: their current number counts.
   useEffect(() => {
     const r = p.pub.round;
-    if (!r || r.stage !== "target" || p.me !== r.targetId || p.priv?.myTruth != null || !draft) return;
+    if (!r || r.stage !== "target" || !r.stageEndsAt || p.me !== r.targetId || p.priv?.myTruth != null || !draft) return;
     const t = setTimeout(() => p.input({ answer: draft }), Math.max(0, r.stageEndsAt - p.now() - 700));
     return () => clearTimeout(t);
   }, [p, draft]);

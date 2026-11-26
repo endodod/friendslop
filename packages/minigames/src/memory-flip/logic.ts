@@ -33,6 +33,7 @@ const Submit = z.object({ flips: z.array(z.number().int()).max(400), timeMs: z.n
 
 export const memoryFlip = defineSoloGame({
   id: "memory-flip",
+  untimed: true,
   durationSec: 75,
   submitSchema: Submit,
   higherIsBetter: false,
